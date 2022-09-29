@@ -1,16 +1,5 @@
-import React from 'react';
-import MapIcon from '@mui/icons-material/Map';
-import TableChartIcon from '@mui/icons-material/TableChart';
-
 export const DRAWER_WIDTH = 300;
 export const SM_BREAKPOINT = 600;
-export const MINI_SIDE_PANEL_WIDTH = 61;
-export const MINI_SIDE_PANEL_DENSE_WIDTH = 45;
-
-export const MINISIDEPANEL_CONFIG = [
-  {id: 'mapView', route: '../map', label: 'map', content: <MapIcon/>},
-  {id: 'detail', route: '../detail', label: 'detail', content: <TableChartIcon/>}
-];
 
 export const INITIAL_VIEWPORT = {
   latitude: 41.4,

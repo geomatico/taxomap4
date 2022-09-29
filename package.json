@@ -1,5 +1,5 @@
 {
-  "name": "plantilla-visor-react",
+  "name": "taxomap4",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/main.js",
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geomatico/plantilla-visor-react.git"
+    "url": "git+https://github.com/geomatico/taxomap4.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/geomatico/plantilla-visor-react/issues"
+    "url": "https://github.com/geomatico/taxomap4/issues"
   },
-  "homepage": "https://labs.geomatico.es/plantilla-visor-react",
+  "homepage": "https://labs.geomatico.es/taxomap4",
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/plugin-transform-runtime": "^7.17.0",
