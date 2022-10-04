@@ -3,7 +3,6 @@ import {HashRouter, Route, Routes, useParams} from 'react-router-dom';
 import i18n from 'i18next';
 import {Outlet, Navigate} from 'react-router-dom';
 import MapView from '../views/Map';
-import DeckSampleView from '../views/DeckSampleView';
 
 const LangSetter = () => {
   const {lang} = useParams();
@@ -22,7 +21,6 @@ const AppRoutes = () =>
         {/*
          <Route exact path="detail" element={<Layout mainContent={<MapView/>} miniSidePanelSelectedActionId='detail'/>}/>
         */}
-        <Route exact path="deck" element={<DeckSampleView/>}/>
         <Route path="*" element={<>404</>}/>
       </Route>
       <Route path="*" element={<Navigate to={i18n.resolvedLanguage}/>}/>
