@@ -1,20 +1,25 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {useNavigate} from 'react-router-dom';
 
+//MUI
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import styled from '@mui/styles/styled';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
+
+//GEOCOMPONENTS
 import ResponsiveHeader from '@geomatico/geocomponents/ResponsiveHeader';
 import SidePanel from '@geomatico/geocomponents/SidePanel';
-import MiniSidePanel from '@geomatico/geocomponents/MiniSidePanel';
+
+//UTILS
 import Logo from './icons/Logo';
-import {
-  DRAWER_WIDTH,
-  MINI_SIDE_PANEL_DENSE_WIDTH,
-  MINI_SIDE_PANEL_WIDTH,
-  MINISIDEPANEL_CONFIG, SM_BREAKPOINT,
-} from '../config';
+import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT} from '../config';
+import {useTranslation} from 'react-i18next';
+
+import AboutModal from './About/AboutModal';
+import HelpModal from './HelpModal';
+
 
 const Main = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'widescreen' && prop !== 'isLeftDrawerOpen'
@@ -22,78 +27,86 @@ const Main = styled(Box, {
   flexGrow: 1,
   padding: 0,
   position: 'absolute',
-  top: 56,
+  top: 56 + OFFSET_TOP,
   '@media (min-width: 0px) and (orientation: landscape)': {
-    top: 48
+    top: 48 + OFFSET_TOP
   },
   ['@media (min-width: '+ SM_BREAKPOINT +'px)']: {
-    top: 64
+    top: 64 + OFFSET_TOP
   },
   bottom: 0,
   right: 0,
-  left: widescreen ? (isLeftDrawerOpen && DRAWER_WIDTH) + MINI_SIDE_PANEL_WIDTH : MINI_SIDE_PANEL_DENSE_WIDTH
+  left: widescreen ? (isLeftDrawerOpen && DRAWER_WIDTH) : 0
 }));
 
-const Layout = ({mainContent, sidePanelContent, miniSidePanelSelectedActionId}) => {
-  const navigate = useNavigate();
+const helperTextStyle = {
+  mx: 1,
+  color: 'text.secondary',
+  textTransform: 'none',
+  '&:hover': {
+    color: 'text.contrastText'
+  }
+};
 
+const Layout = ({mainContent, sidePanelContent}) => {
+  const {t} = useTranslation();
   const widescreen = useMediaQuery(`@media (min-width:${SM_BREAKPOINT}px)`, {noSsr: true});
-  const [isSidePanelOpen, setIsSidePanelOpen] = useState(true);
+  const [isSidePanelOpen, setSidePanelOpen] = useState(true);
+  const [isAboutModalOpen, setAboutModalOpen] = useState(false);
+  const [isHelpModalOpen, setHelpModalOpen] = useState(false);
 
-  const handleActionClick = (id) => {
-    const config_element = MINISIDEPANEL_CONFIG.find(el => el.id === id);
-    if (miniSidePanelSelectedActionId === id && sidePanelContent) {
-      setIsSidePanelOpen(!isSidePanelOpen);
-    } else {
-      navigate(config_element.route);
-    }
-  };
+  const handleClose = () => setSidePanelOpen(!isSidePanelOpen);
 
-  const handleClose = () => setIsSidePanelOpen(!isSidePanelOpen);
-
-  return (
-    <>
-      <ResponsiveHeader
-        title='Pasión por la información geográfica'
-        logo={<Logo/>}
-        onStartIconClick={widescreen ? undefined : handleClose}
-        isStartIconCloseable={isSidePanelOpen}
-        sx={{'&.MuiAppBar-root': {zIndex: 1500}}}
-      >
-      </ResponsiveHeader>
-      <MiniSidePanel
-        actions={MINISIDEPANEL_CONFIG}
-        selectedActionId={miniSidePanelSelectedActionId}
-        onActionClick={handleActionClick}
-        dense={!widescreen}
-      />
-      {
-        sidePanelContent && isSidePanelOpen && <SidePanel
-          drawerWidth={DRAWER_WIDTH + 'px'}
-          anchor="left"
-          isOpen={isSidePanelOpen}
-          onClose={handleClose}
-          widescreen={widescreen}
-          sx={{'& .MuiPaper-root': {left: widescreen ? MINI_SIDE_PANEL_WIDTH : MINI_SIDE_PANEL_DENSE_WIDTH}}}
-        >
-          {sidePanelContent}
-        </SidePanel>
+  return <>
+    <ResponsiveHeader
+      title=''
+      logo={
+        <Link href="https://taxomap.bioexplora.cat/" target="_blank">
+          <Box sx={{my: 1.5, ml: 2}}>
+            <Logo/>
+          </Box>
+        </Link>
       }
-      <Main widescreen={widescreen} isLeftDrawerOpen={sidePanelContent && isSidePanelOpen}>
-        {mainContent}
-      </Main>
-    </>
-  );
+      onStartIconClick={widescreen ? undefined : handleClose}
+      isStartIconCloseable={isSidePanelOpen}
+      sx={{'&.MuiAppBar-root': {zIndex: 1500}, top: OFFSET_TOP}}
+    >
+      <Button onClick={() => setAboutModalOpen(true)} sx={helperTextStyle}>{t('about')}</Button>
+      <Button onClick={() => setHelpModalOpen(true)} sx={helperTextStyle}>{t('help')}</Button>
+      <AboutModal onClose={() => setAboutModalOpen(false)} isAboutModalOpen={isAboutModalOpen}/>
+      <HelpModal onClose={() => setHelpModalOpen(false)} isHelpModalOpen={isHelpModalOpen}/>
+
+    </ResponsiveHeader>
+    {
+      sidePanelContent && isSidePanelOpen && <SidePanel
+        drawerWidth={DRAWER_WIDTH + 'px'}
+        anchor="left"
+        isOpen={isSidePanelOpen}
+        onClose={handleClose}
+        widescreen={widescreen}
+        sx={{
+          '& .MuiPaper-root': {
+            top: OFFSET_TOP + 56,
+            '@media (min-width: 0px) and (orientation: landscape)': {
+              top: 48 + OFFSET_TOP
+            },
+            ['@media (min-width: '+ SM_BREAKPOINT +'px)']: {
+              top: 64 + OFFSET_TOP
+            },
+          }}}
+      >
+        {sidePanelContent}
+      </SidePanel>
+    }
+    <Main widescreen={widescreen} isLeftDrawerOpen={sidePanelContent && isSidePanelOpen}>
+      {mainContent}
+    </Main>
+  </>;
 };
 
 Layout.propTypes = {
   sidePanelContent: PropTypes.element.isRequired,
-  mainContent: PropTypes.element.isRequired,
-  miniSidePanelSelectedActionId: PropTypes.string.isRequired,
-};
-
-Layout.defaultProps = {
-  miniSidePanelSelectedActionId: 'mapView',
+  mainContent: PropTypes.element.isRequired
 };
 
 export default Layout;

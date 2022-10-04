@@ -1,0 +1,24 @@
+{
+  "version": 8,
+  "name": "Land Cover",
+  "sources": {
+    "source": {
+      "type": "raster",
+      "tiles": [
+        "https://maps.elie.ucl.ac.be/cgi-bin/mapserv?map=%2Fmaps_server%2FCCI%2Fmapfiles%2Flc2015_v207.map&service=WMS&request=GetMap&layers=lc2015_v2&styles=&format=image%2Fpng&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG:900913&bbox={bbox-epsg-3857}"
+      ],
+      "maxzoom": 20,
+      "tileSize": 256
+    }
+  },
+  "layers": [{
+    "id": "layer",
+    "type": "raster",
+    "source": "source",
+    "paint": {
+      "raster-saturation": 0,
+      "raster-contrast": 0,
+      "raster-opacity": 1
+    }
+  }]
+}

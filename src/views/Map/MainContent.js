@@ -1,22 +1,28 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
 
 import Map from '@geomatico/geocomponents/Map';
+import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
-import {INITIAL_VIEWPORT} from '../../config';
+import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 
-const MainContent = ({mapStyle}) => {
+const MainContent = () => {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
+  const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
 
-  return <Map
-    mapStyle={mapStyle}
-    viewport={viewport}
-    onViewportChange={setViewport}
-  />;
-};
-
-MainContent.propTypes = {
-  mapStyle: PropTypes.string.isRequired
+  return <>
+    <Map
+      mapStyle={mapStyle}
+      viewport={viewport}
+      onViewportChange={setViewport}
+    />
+    <BaseMapPicker
+      position='top-right'
+      direction='down'
+      styles={MAPSTYLES}
+      selectedStyleId={mapStyle}
+      onStyleChange={setMapStyle}
+    />
+  </>;
 };
 
 export default MainContent;
