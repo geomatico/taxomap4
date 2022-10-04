@@ -6,6 +6,8 @@ import Stack from '@mui/material/Stack';
 import styled from '@mui/styles/styled';
 
 import Geomatico from '../../components/Geomatico';
+import useDictionaries from '../../hooks/useDictionaries';
+import Typography from '@mui/material/Typography';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -13,9 +15,11 @@ const ScrollableContent = styled(Box)({
 });
 
 const SidePanelContent = () => {
+  const dictionaries = useDictionaries();
 
   return <Stack sx={{height: '100%', overflow: 'hidden'}}>
     <ScrollableContent>
+      {Object.entries(dictionaries).map(([key, values]) => <Typography key={key}>{`${key}: ${values.length}`}</Typography>)}
     </ScrollableContent>
     <Geomatico/>
   </Stack>;
