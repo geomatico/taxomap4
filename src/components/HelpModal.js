@@ -24,7 +24,6 @@ const HelpModal = ({isHelpModalOpen, onClose}) => {
         component='iframe'
         autoPlay
         controls
-        /*image='video.jpg'*/
         src='https://player.vimeo.com/video/252870272'
         sx={{width: 1024, height: 576, zIndex: 3000, p: 3}}
       />

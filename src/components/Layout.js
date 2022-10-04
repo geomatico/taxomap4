@@ -17,7 +17,7 @@ import Logo from './icons/Logo';
 import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT} from '../config';
 import {useTranslation} from 'react-i18next';
 
-import AboutModal from './AboutModal';
+import AboutModal from './About/AboutModal';
 import HelpModal from './HelpModal';
 
 
