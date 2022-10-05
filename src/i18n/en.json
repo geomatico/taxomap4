@@ -1,4 +1,6 @@
 {
   "about": "About",
-  "help": "Help"
+  "help": "Help",
+  "institution":"Institution",
+  "registerType":"Register type"
 }

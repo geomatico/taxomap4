@@ -11,6 +11,7 @@ import useDictionaries from '../../hooks/useDictionaries';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND} from '../../config';
+import {useTranslation} from 'react-i18next';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -24,14 +25,10 @@ const SidePanelContent = ({
                             onBasisOfRecordChange
                           }) => {
   const dictionaries = useDictionaries();
+  const {t} = useTranslation();
 
-  const options = [{
-    id: 1,
-    label: 'Institució'
-  }, {
-    id: 2,
-    label: 'Tipus de registre'
-  }];
+  const x = ['institution', 'registerType'];
+  const options = x.map(opt => ({id: opt, label: t(opt)}));
 
 
   const [selectedFilter, setSelectedFilter] = useState();
@@ -39,7 +36,7 @@ const SidePanelContent = ({
 
   useEffect(() => {
     if (selectedFilter) {
-      const options = selectedFilter === 1 ? INSTITUTION_LEGEND : BASIS_OF_RECORD_LEGEND;
+      const options = selectedFilter === 1 ? dictionaries.institutioncode : dictionaries.basisofrecord;
       setSecondOptions(options);
     }
   }, [selectedFilter]);
