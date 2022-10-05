@@ -1,25 +1,24 @@
 {
   "about": "¿Qué es?",
-  "help": "Ayuda",
-  "selectFilter": "Selecciona filtro",
-  "fieldLabel": {
-    "institution": "Institución",
-    "basisofrecord": "Tipo de registro",
-    "institutioncode": "Código de institución",
-    "domain": "Dominio",
-    "kingdom": "Reino",
-    "phylum": "Phylum",
-    "class": "Clase",
-    "order": "Orden",
-    "family": "Familia",
-    "genus": "Genus",
-    "species": "Especies",
-    "subspecies": "Subespecies"
-  },
   "basisofrecordLegend": {
     "1": "Fosil",
     "2": "No fosil"
   },
+  "fieldLabel": {
+    "basisofrecord": "Tipo de registro",
+    "class": "Clase",
+    "domain": "Dominio",
+    "family": "Familia",
+    "genus": "Genus",
+    "institution": "Institución",
+    "institutioncode": "Código de institución",
+    "kingdom": "Reino",
+    "order": "Orden",
+    "phylum": "Phylum",
+    "species": "Especies",
+    "subspecies": "Subespecies"
+  },
+  "help": "Ayuda",
   "institutionLegend": {
     "1": "Instituto Mediterranio de Estudios Avanzados",
     "2": "Museo de Ciencias Naturales Barcelona",
@@ -28,12 +27,13 @@
     "5": "Universidad de Barcelona"
   },
   "mapStyles": {
-    "Ortophoto": "Ortofoto",
-    "Gray": "Gris",
     "Bright": "Claro",
+    "Gray": "Gris",
     "Land_cover": "Cobertura de suelo",
-    "Temperature": "Temperatura",
-    "Rain": "Lluvia"
-  }
+    "Ortophoto": "Ortofoto",
+    "Rain": "Lluvia",
+    "Temperature": "Temperatura"
+  },
+  "selectFilter": "Selecciona filtro"
 }
 

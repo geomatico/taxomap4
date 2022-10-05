@@ -1,25 +1,24 @@
 {
   "about": "Què és?",
-  "help": "Ajuda",
-  "selectFilter": "Selecciona filtre",
-  "fieldLabel": {
-    "institution": "Institució",
-    "basisofrecord": "Tipu de registre",
-    "institutioncode": "Codi de institució",
-    "domain": "Domini",
-    "kingdom": "Regne",
-    "phylum": "Phylum",
-    "class": "Clase",
-    "order": "Ordre",
-    "family": "Família",
-    "genus": "Genus",
-    "species": "Espècies",
-    "subspecies": "Subespècies"
-  },
   "basisofrecordLegend": {
     "1": "Fossil",
     "2": "No fossil"
   },
+  "fieldLabel": {
+    "basisofrecord": "Tipu de registre",
+    "class": "Clase",
+    "domain": "Domini",
+    "family": "Família",
+    "genus": "Genus",
+    "institution": "Institució",
+    "institutioncode": "Codi de institució",
+    "kingdom": "Regne",
+    "order": "Ordre",
+    "phylum": "Phylum",
+    "species": "Espècies",
+    "subspecies": "Subespècies"
+  },
+  "help": "Ajuda",
   "institutionLegend": {
     "1": "Institut Mediterrani d'Estudis Avançats",
     "2": "Museu Ciències Naturals Barcelona",
@@ -28,11 +27,12 @@
     "5": "Universitat de Barcelona"
   },
   "mapStyles": {
-    "Ortophoto": "Ortofoto",
-    "Gray": "Gris",
     "Bright": "Clar",
+    "Gray": "Gris",
     "Land_cover": "Cobertura de sòl",
-    "Temperature": "Temperatura",
-    "Rain": "Plutja"
-  }
+    "Ortophoto": "Ortofoto",
+    "Rain": "Plutja",
+    "Temperature": "Temperatura"
+  },
+  "selectFilter": "Selecciona filtre"
 }
