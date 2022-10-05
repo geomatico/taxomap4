@@ -3,6 +3,7 @@ import SelectInput from '@geomatico/geocomponents/SelectInput';
 import Box from '@mui/material/Box';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, PHYLUM_LEGEND} from '../config';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import PropTypes from 'prop-types';
 
 const selectStyles = {
   '& .SelectInput-select': {
@@ -10,29 +11,30 @@ const selectStyles = {
     fontSize: '14px'
   }
 };
-export const LegendSelector = () => {
+export const LegendSelector = ({symbolizeBy, onSymbolizeByChange}) => {
 
   const options = [
     {
-      id: 'BASIS_OF_RECORD_LEGEND',
+      id: 'basisofrecord',
       label: 'Basis of Record',
       data: BASIS_OF_RECORD_LEGEND
     },
     {
-      id: 'PHYLUM_LEGEND',
+      id: 'phylum',
       label: 'Phylum',
       data: PHYLUM_LEGEND
     },
     {
-      id: 'INSTITUTION_LEGEND',
+      id: 'institutioncode',
       label: 'Institución',
       data: INSTITUTION_LEGEND
     }
   ];
 
-  const [selectedLegend, setSelectedLegend] = useState(options[2]);
+  const [selectedLegend, setSelectedLegend] = useState(options.find(leg => symbolizeBy === leg.id));
 
   const handleOnLegendChange = (id) => {
+    onSymbolizeByChange(id);
     setSelectedLegend(options.find(el => el.id === id));
   };
 
@@ -67,6 +69,11 @@ export const LegendSelector = () => {
       sx={selectStyles}
     />
   </>;
+};
+
+LegendSelector.propTypes = {
+  symbolizeBy: PropTypes.oneOf(['phylum', 'basisofrecord', 'institutioncode']).isRequired,
+  onSymbolizeByChange: PropTypes.func.isRequired,
 };
 
 export default LegendSelector;

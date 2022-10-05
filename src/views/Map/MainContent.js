@@ -22,7 +22,7 @@ const cssStyle = {
   overflow: 'hidden'
 };
 
-const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+const MainContent = ({symbolizeBy, onSymbolizeByChange, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
 
@@ -85,13 +85,14 @@ const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordF
       onStyleChange={setMapStyle}
     />
     <Box sx={{position: 'absolute', right: '12px', bottom: '20px'}}>
-      <LegendSelector/>
+      <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={onSymbolizeByChange}/>
     </Box>
   </>;
 };
 
 MainContent.propTypes = {
   symbolizeBy: PropTypes.oneOf(['phylum', 'basisofrecord', 'institutioncode']).isRequired,
+  onSymbolizeByChange: PropTypes.func.isRequired,
   yearFilter: PropTypes.arrayOf(PropTypes.number),
   institutionFilter: PropTypes.number,
   basisOfRecordFilter: PropTypes.number,
