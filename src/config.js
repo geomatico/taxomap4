@@ -66,6 +66,4 @@ export const INSTITUTION_LEGEND = [
   {id: 2, color: '#FABB5C', label: 'Museu Ciències Naturals Barcelona'}
 ];
 
-export const CATEGORIES = [
-
-];
+export const CATEGORIES = ['institution', 'basisofrecord'];

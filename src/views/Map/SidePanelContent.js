@@ -11,6 +11,7 @@ import useDictionaries from '../../hooks/useDictionaries';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
+import {CATEGORIES} from '../../config';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -54,7 +55,7 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
 
-  const categoryOptions = ['institution', 'basisofrecord'].map((opt) => ({
+  const categoryOptions = CATEGORIES.map((opt) => ({
     id: opt,
     label: t('fieldLabel.' + opt)
   }));
