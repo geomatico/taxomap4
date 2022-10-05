@@ -13,6 +13,8 @@ import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
 import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
+import Box from '@mui/material/Box';
+import LegendSelector from '../../components/LegendSelector';
 
 const cssStyle = {
   width: '100%',
@@ -82,6 +84,9 @@ const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordF
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />
+    <Box sx={{position: 'absolute', right: '12px', bottom: '20px'}}>
+      <LegendSelector/>
+    </Box>
   </>;
 };
 

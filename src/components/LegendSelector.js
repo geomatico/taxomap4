@@ -4,25 +4,57 @@ import Box from '@mui/material/Box';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, PHYLUM_LEGEND} from '../config';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
+const selectStyles = {
+  '& .SelectInput-select': {
+    bgcolor: 'white',
+    fontSize: '14px'
+  }
+};
 export const LegendSelector = () => {
 
   const options = [
-    {id: 'BASIS_OF_RECORD_LEGEND', label: 'Basis of Record', data: BASIS_OF_RECORD_LEGEND},
-    {id: 'PHYLUM_LEGEND', label: 'Phylum', data: PHYLUM_LEGEND },
-    {id: 'INSTITUTION_LEGEND', label: 'Institución', data: INSTITUTION_LEGEND}
+    {
+      id: 'BASIS_OF_RECORD_LEGEND',
+      label: 'Basis of Record',
+      data: BASIS_OF_RECORD_LEGEND
+    },
+    {
+      id: 'PHYLUM_LEGEND',
+      label: 'Phylum',
+      data: PHYLUM_LEGEND
+    },
+    {
+      id: 'INSTITUTION_LEGEND',
+      label: 'Institución',
+      data: INSTITUTION_LEGEND
+    }
   ];
 
   const [selectedLegend, setSelectedLegend] = useState(options[2]);
 
-  const handleOnLegendChange =(id)=> {
-    setSelectedLegend(options.find(el=> el.id === id));
+  const handleOnLegendChange = (id) => {
+    setSelectedLegend(options.find(el => el.id === id));
   };
 
   return <>
-    <Box sx={{background: 'lightgray', maxWidth: '200px', borderRadius: '3px', p: 1}}>
-      { selectedLegend?.data.map((el) => (
-        <Box key={el.label} sx={{display: 'flex', alignItems: 'center', fontSize: '10px'}}>
-          <FiberManualRecordIcon sx={{color: el.color, fontSize: '12px', mr: 1}}  />
+    <Box sx={{
+      background: 'white',
+      maxWidth: '200px',
+      borderRadius: '3px',
+      p: 1,
+      mb: 1
+    }}>
+      {selectedLegend?.data.map((el) => (
+        <Box key={el.label} sx={{
+          display: 'flex',
+          alignItems: 'center',
+          fontSize: '10px'
+        }}>
+          <FiberManualRecordIcon sx={{
+            color: el.color,
+            fontSize: '12px',
+            mr: 1
+          }}/>
           {el.label}
         </Box>
       ))
@@ -32,6 +64,7 @@ export const LegendSelector = () => {
       options={options}
       selectedOptionId={selectedLegend.id}
       onOptionChange={handleOnLegendChange}
+      sx={selectStyles}
     />
   </>;
 };
