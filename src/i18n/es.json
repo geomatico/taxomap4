@@ -1,7 +1,39 @@
 {
   "about": "¿Qué es?",
   "help": "Ayuda",
-  "institution":"Institución",
-  "registerType": "Tipo de registro"
+  "selectFilter": "Selecciona filtro",
+  "fieldLabel": {
+    "institution": "Institución",
+    "basisofrecord": "Tipo de registro",
+    "institutioncode": "Código de institución",
+    "domain": "Dominio",
+    "kingdom": "Reino",
+    "phylum": "Phylum",
+    "class": "Clase",
+    "order": "Orden",
+    "family": "Familia",
+    "genus": "Genus",
+    "species": "Especies",
+    "subspecies": "Subespecies"
+  },
+  "basisofrecordLegend": {
+    "1": "Fosil",
+    "2": "No fosil"
+  },
+  "institutionLegend": {
+    "1": "Instituto Mediterranio de Estudios Avanzados",
+    "2": "Museo de Ciencias Naturales Barcelona",
+    "3": "Museo Valenciano de Historia Natural",
+    "4": "Instituto Botanico de Barcelona",
+    "5": "Universidad de Barcelona"
+  },
+  "mapStyles": {
+    "Ortophoto": "Ortofoto",
+    "Gray": "Gris",
+    "Bright": "Claro",
+    "Land_cover": "Cobertura de suelo",
+    "Temperature": "Temperatura",
+    "Rain": "Lluvia"
+  }
 }
 

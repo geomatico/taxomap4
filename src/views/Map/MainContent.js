@@ -13,6 +13,7 @@ import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
 import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
+import {useTranslation} from 'react-i18next';
 
 const cssStyle = {
   width: '100%',
@@ -21,6 +22,7 @@ const cssStyle = {
 };
 
 const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+  const {t} = useTranslation();
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
 
@@ -71,6 +73,11 @@ const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordF
     })
   ]), [data]);
 
+  // TODO esto lo movemos a algun tipo de utils?
+  const translateBaseMapLabels = (mapStyles) => {
+    return mapStyles.map(el => ({...el, label: t('mapStyles.'+el.label) }));
+  };
+
   return <>
     <DeckGL layers={deckLayers} initialViewState={INITIAL_VIEWPORT} controller style={cssStyle} onResize={handleMapResize}>
       <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef}/>
@@ -78,7 +85,7 @@ const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordF
     <BaseMapPicker
       position='top-right'
       direction='down'
-      styles={MAPSTYLES}
+      styles={translateBaseMapLabels(MAPSTYLES)}
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />

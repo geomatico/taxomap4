@@ -27,7 +27,7 @@ export const MAPSTYLES = [
     'id': 'https://geoserveis.icgc.cat/contextmaps/osm-bright.json',
   },
   {
-    'label': 'Land cover',
+    'label': 'Land_cover',
     'thumbnail': 'images/landcover.png',
     'id': 'mapstyles/landcover.json',
   },
