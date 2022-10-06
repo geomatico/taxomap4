@@ -15,6 +15,7 @@ import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
 import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
+import YearSlider from '../../components/YearSlider';
 
 const cssStyle = {
   width: '100%',
@@ -22,15 +23,19 @@ const cssStyle = {
   overflow: 'hidden'
 };
 
-const MainContent = ({ yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+// TODO de donde saco estos años?
+const years = [1990, 1991, 1992, 1993, 1994, 1995];
+
+const MainContent = ({ institutionFilter, basisOfRecordFilter, taxonFilter}) => {
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
 
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
+  const [yearRange, setYearRange] = useState([1992, 1994]);
 
   const applyColors = useApplyColors(symbolizeBy);
 
-  console.log('Applied Filters:', JSON.stringify({yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter})); // TODO MCNB-62 Aplicar filtros a los datos del mapa
+  console.log('Applied Filters:', JSON.stringify({yearRange, institutionFilter, basisOfRecordFilter, taxonFilter})); // TODO MCNB-62 Aplicar filtros a los datos del mapa
 
   const mapRef = useRef(null);
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
@@ -86,6 +91,9 @@ const MainContent = ({ yearFilter, institutionFilter, basisOfRecordFilter, taxon
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />
+    <Box sx={{position: 'absolute', left: '12px', bottom: '20px', background: 'white', width: '400px', borderRadius: '3px'}}>
+      <YearSlider years={years} yearRange={yearRange} onYearRangeChange={setYearRange}/>
+    </Box>
     <Box sx={{position: 'absolute', right: '12px', bottom: '20px'}}>
       <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}/>
     </Box>
@@ -93,7 +101,6 @@ const MainContent = ({ yearFilter, institutionFilter, basisOfRecordFilter, taxon
 };
 
 MainContent.propTypes = {
-  yearFilter: PropTypes.arrayOf(PropTypes.number),
   institutionFilter: PropTypes.number,
   basisOfRecordFilter: PropTypes.number,
   taxonFilter: PropTypes.shape({
