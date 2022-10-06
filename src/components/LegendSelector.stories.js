@@ -10,8 +10,8 @@ export default {
 const Template = (args) => <LegendSelector {...args} />;
 
 // eslint-disable-next-line react/prop-types,no-unused-vars
-const ManagedTemplate = ({value, onSymbolizeByChange, ...other}) => {
-  const [getValue, setValue] = useState(value);
+const ManagedTemplate = ({symbolizeBy, onSymbolizeByChange, ...other}) => {
+  const [getValue, setValue] = useState(symbolizeBy);
   return <LegendSelector symbolizeBy={getValue} onSymbolizeByChange={setValue} {...other} />;
 };
 
