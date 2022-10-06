@@ -14,6 +14,8 @@ import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
 import {useTranslation} from 'react-i18next';
+import Box from '@mui/material/Box';
+import LegendSelector from '../../components/LegendSelector';
 
 const cssStyle = {
   width: '100%',
@@ -21,10 +23,12 @@ const cssStyle = {
   overflow: 'hidden'
 };
 
-const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
   const {t} = useTranslation();
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
+
+  const [symbolizeBy, setSymbolizeBy] = useState('phylum');
 
   const applyColors = useApplyColors(symbolizeBy);
 
@@ -89,11 +93,13 @@ const MainContent = ({symbolizeBy, yearFilter, institutionFilter, basisOfRecordF
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />
+    <Box sx={{position: 'absolute', right: '12px', bottom: '20px'}}>
+      <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}/>
+    </Box>
   </>;
 };
 
 MainContent.propTypes = {
-  symbolizeBy: PropTypes.oneOf(['phylum', 'basisofrecord', 'institutioncode']).isRequired,
   yearFilter: PropTypes.arrayOf(PropTypes.number),
   institutionFilter: PropTypes.number,
   basisOfRecordFilter: PropTypes.number,
