@@ -98,7 +98,13 @@ const Layout = ({mainContent, sidePanelContent}) => {
         {sidePanelContent}
       </SidePanel>
     }
-    <Main widescreen={widescreen} isLeftDrawerOpen={sidePanelContent && isSidePanelOpen}>
+
+    {/*
+      El toString de widescreen y de isleftdraweropen soluciona el warning que da en la consola que dice:
+      Received `true` for a non-boolean attribute `isleftdraweropen | widescreen`. If you want to write it
+      to the DOM, pass a string instead: isleftdraweropen="true" or isleftdraweropen={value.toString()}.
+     */}
+    <Main widescreen={widescreen} isleftdraweropen={(sidePanelContent && isSidePanelOpen)}>
       {mainContent}
     </Main>
   </>;

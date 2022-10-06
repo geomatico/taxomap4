@@ -120,9 +120,9 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
 };
 
 SidePanelContent.propTypes = {
-  institutionFilter: PropTypes.string.isRequired,
+  institutionFilter: PropTypes.string,
   onInstitutionFilterChange: PropTypes.func.isRequired,
-  basisOfRecordFilter: PropTypes.string.isRequired,
+  basisOfRecordFilter: PropTypes.string,
   onBasisOfRecordChange: PropTypes.func.isRequired,
 };
 
