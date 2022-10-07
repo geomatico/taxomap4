@@ -72,8 +72,8 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
 
   const handleOnOptionChange = (id) => {
     if (!id) return;
-    onInstitutionFilterChange(selectedCategory === 'institution' ? id.toString() : undefined); // FIXME tenemos otra vez el mismo problema de que el select espera un id string, y estos ids son numbers, asi que hay que parsear de ida y vuelta
-    onBasisOfRecordChange(selectedCategory === 'basisofrecord' ? id.toString() : undefined);
+    onInstitutionFilterChange(selectedCategory === 'institution' ? parseInt(id) : undefined); // FIXME tenemos otra vez el mismo problema de que el select espera un id string, y estos ids son numbers, asi que hay que parsear de ida y vuelta
+    onBasisOfRecordChange(selectedCategory === 'basisofrecord' ? parseInt(id) : undefined); // FIXME tenemos otra vez el mismo problema de que el select espera un id string, y estos ids son numbers, asi que hay que parsear de ida y vuelta
   };
 
   const institutionsOptions = useMemo(() => translateLabels(dictionaries.institutioncode, 'institutionLegend'), [dictionaries.institutioncode]);
@@ -105,7 +105,7 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
       />
       <SelectInput
         options={getOptions()}
-        selectedOptionId={(selectedCategory && selectedCategory === 'institution' ? institutionFilter : basisOfRecordFilter) || ''}
+        selectedOptionId={(selectedCategory && selectedCategory === 'institution' ? institutionFilter?.toString() : basisOfRecordFilter?.toString()) || ''}
         onOptionChange={handleOnOptionChange}
         allowEmptyValue
         placeholderLabel={'-'}
@@ -120,9 +120,9 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
 };
 
 SidePanelContent.propTypes = {
-  institutionFilter: PropTypes.string,
+  institutionFilter: PropTypes.number,
   onInstitutionFilterChange: PropTypes.func.isRequired,
-  basisOfRecordFilter: PropTypes.string,
+  basisOfRecordFilter: PropTypes.number,
   onBasisOfRecordChange: PropTypes.func.isRequired,
 };
 
