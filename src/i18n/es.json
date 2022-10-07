@@ -9,14 +9,13 @@
     "class": "Clase",
     "domain": "Dominio",
     "family": "Familia",
-    "genus": "Genus",
-    "institution": "Institución",
-    "institutioncode": "Código de institución",
+    "genus": "Género",
+    "institutioncode": "Institución",
     "kingdom": "Reino",
     "order": "Orden",
     "phylum": "Phylum",
-    "species": "Especies",
-    "subspecies": "Subespecies"
+    "species": "Especie",
+    "subspecies": "Subespecie"
   },
   "help": "Ayuda",
   "institutionLegend": {
@@ -27,12 +26,12 @@
     "5": "Universidad de Barcelona"
   },
   "mapStyles": {
-    "Bright": "Claro",
-    "Gray": "Gris",
-    "Land_cover": "Cobertura de suelo",
-    "Ortophoto": "Ortofoto",
-    "Rain": "Lluvia",
-    "Temperature": "Temperatura"
+    "bright": "Claro",
+    "gray": "Gris",
+    "landCover": "Cobertura de suelo",
+    "ortophoto": "Ortofoto",
+    "rain": "Lluvia",
+    "temperature": "Temperatura"
   },
   "selectFilter": "Selecciona filtro"
 }

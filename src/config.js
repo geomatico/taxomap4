@@ -12,32 +12,32 @@ export const INITIAL_VIEWPORT = {
 
 export const MAPSTYLES = [
   {
-    'label': 'Ortophoto',
+    'label': 'ortophoto',
     'thumbnail': 'https://openicgc.github.io/img/orto.png',
     'id': 'https://geoserveis.icgc.cat/contextmaps/hibrid.json',
   },
   {
-    'label': 'Gray',
+    'label': 'gray',
     'thumbnail': 'https://openicgc.github.io/img/positron.png',
     'id': 'https://geoserveis.icgc.cat/contextmaps/positron.json',
   },
   {
-    'label': 'Bright',
+    'label': 'bright',
     'thumbnail': 'https://openicgc.github.io/img/osm-bright.png',
     'id': 'https://geoserveis.icgc.cat/contextmaps/osm-bright.json',
   },
   {
-    'label': 'Land_cover',
+    'label': 'landCover',
     'thumbnail': 'images/landcover.png',
     'id': 'mapstyles/landcover.json',
   },
   {
-    'label': 'Temperature',
+    'label': 'temperature',
     'thumbnail': 'images/temperature.png',
     'id': 'mapstyles/temperature.json',
   },
   {
-    'label': 'Rain',
+    'label': 'rain',
     'thumbnail': 'images/rain.png',
     'id': 'mapstyles/rain.json',
   }
@@ -66,4 +66,4 @@ export const INSTITUTION_LEGEND = [
   {id: 2, color: '#FABB5C', label: 'Museu Ciències Naturals Barcelona'}
 ];
 
-export const CATEGORIES = ['institution', 'basisofrecord'];
+export const FILTER_BY = ['institutioncode', 'basisofrecord'];

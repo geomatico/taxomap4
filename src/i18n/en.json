@@ -10,8 +10,7 @@
     "domain": "Domain",
     "family": "Family",
     "genus": "Genus",
-    "institution": "Institution",
-    "institutioncode": "Institution Code",
+    "institutioncode": "Institution",
     "kingdom": "Kingdom",
     "order": "Order",
     "phylum": "Phylum",
@@ -27,12 +26,12 @@
     "5": "Universitat de Barcelona"
   },
   "mapStyles": {
-    "Bright": "Bright",
-    "Gray": "Gray",
-    "Land_cover": "Land cover",
-    "Ortophoto": "Ortophoto",
-    "Rain": "Rain",
-    "Temperature": "Temperature"
+    "bright": "Bright",
+    "gray": "Gray",
+    "landCover": "Land cover",
+    "ortophoto": "Ortophoto",
+    "rain": "Rain",
+    "temperature": "Temperature"
   },
   "selectFilter": "Select filter"
 }

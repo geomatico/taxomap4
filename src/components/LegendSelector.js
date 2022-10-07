@@ -19,17 +19,17 @@ export const LegendSelector = ({symbolizeBy, onSymbolizeByChange}) => {
   const options = [
     {
       id: 'basisofrecord',
-      label: t('basisofrecord'),
+      label: t('fieldLabel.basisofrecord'),
       data: BASIS_OF_RECORD_LEGEND
     },
     {
       id: 'phylum',
-      label: 'Phylum',
+      label: t('fieldLabel.phylum'),
       data: PHYLUM_LEGEND
     },
     {
       id: 'institutioncode',
-      label: 'Institución',
+      label: t('fieldLabel.institutioncode'),
       data: INSTITUTION_LEGEND
     }
   ];

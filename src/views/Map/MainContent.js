@@ -77,10 +77,9 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
     })
   ]), [data]);
 
-  // TODO esto lo movemos a algun tipo de utils?
-  const translateBaseMapLabels = (mapStyles) => {
-    return mapStyles.map(el => ({...el, label: t('mapStyles.'+el.label) }));
-  };
+
+
+  const translatedSyles = MAPSTYLES.map(style => ({...style, label: t('mapStyles.'+style.label) }));
 
   return <>
     <DeckGL layers={deckLayers} initialViewState={INITIAL_VIEWPORT} controller style={cssStyle} onResize={handleMapResize}>
@@ -89,7 +88,7 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
     <BaseMapPicker
       position='top-right'
       direction='down'
-      styles={translateBaseMapLabels(MAPSTYLES)}
+      styles={translatedSyles}
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />

@@ -5,18 +5,17 @@
     "2": "No fossil"
   },
   "fieldLabel": {
-    "basisofrecord": "Tipu de registre",
+    "basisofrecord": "Tipus de registre",
     "class": "Clase",
     "domain": "Domini",
     "family": "Família",
-    "genus": "Genus",
-    "institution": "Institució",
-    "institutioncode": "Codi de institució",
+    "genus": "Gènere",
+    "institutioncode": "Institució",
     "kingdom": "Regne",
     "order": "Ordre",
     "phylum": "Phylum",
-    "species": "Espècies",
-    "subspecies": "Subespècies"
+    "species": "Espècie",
+    "subspecies": "Subespècie"
   },
   "help": "Ajuda",
   "institutionLegend": {
@@ -27,12 +26,12 @@
     "5": "Universitat de Barcelona"
   },
   "mapStyles": {
-    "Bright": "Clar",
-    "Gray": "Gris",
-    "Land_cover": "Cobertura de sòl",
-    "Ortophoto": "Ortofoto",
-    "Rain": "Plutja",
-    "Temperature": "Temperatura"
+    "bright": "Clar",
+    "gray": "Gris",
+    "landCover": "Cobertura de sòl",
+    "ortophoto": "Ortofoto",
+    "rain": "Plutja",
+    "temperature": "Temperatura"
   },
   "selectFilter": "Selecciona filtre"
 }
