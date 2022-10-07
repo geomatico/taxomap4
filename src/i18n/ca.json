@@ -6,14 +6,14 @@
   },
   "fieldLabel": {
     "basisofrecord": "Tipus de registre",
-    "class": "Clase",
+    "class": "Classe",
     "domain": "Domini",
     "family": "Família",
     "genus": "Gènere",
     "institutioncode": "Institució",
     "kingdom": "Regne",
     "order": "Ordre",
-    "phylum": "Phylum",
+    "phylum": "Fílum",
     "species": "Espècie",
     "subspecies": "Subespècie"
   },
@@ -28,9 +28,9 @@
   "mapStyles": {
     "bright": "Clar",
     "gray": "Gris",
-    "landCover": "Cobertura de sòl",
+    "landCover": "Cobertura del sòl",
     "ortophoto": "Ortofoto",
-    "rain": "Plutja",
+    "rain": "Pluja",
     "temperature": "Temperatura"
   },
   "selectFilter": "Selecciona filtre"
