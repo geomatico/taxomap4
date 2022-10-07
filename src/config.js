@@ -46,11 +46,11 @@ export const MAPSTYLES = [
 export const INITIAL_MAPSTYLE_URL = MAPSTYLES[0].id;
 
 export const PHYLUM_LEGEND = [
-  {id: 1, color: '#FABB5C', label: 'Other', values: [6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21]},
-  {id: 5, color: '#58A062', label: 'Tracheophyta', values: [5]},
-  {id: 2, color: '#F07971', label: 'Chordata', values: [1]},
-  {id: 3, color: '#54BFDE', label: 'Mollusca', values: [2, 14]},
-  {id: 4, color: '#666666', label: 'Arthropoda', values: [3, 4, 12]}
+  {id: 1, color: '#FABB5C', values: [6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21]},
+  {id: 5, color: '#58A062', values: [5]},
+  {id: 2, color: '#F07971', values: [1]},
+  {id: 3, color: '#54BFDE',values: [2, 14]},
+  {id: 4, color: '#666666', values: [3, 4, 12]}
 ];
 
 export const BASIS_OF_RECORD_LEGEND = [
@@ -59,11 +59,11 @@ export const BASIS_OF_RECORD_LEGEND = [
 ];
 
 export const INSTITUTION_LEGEND = [
-  {id: 4, color: '#58A062', label: 'Institut Botànic de Barcelona'},
-  {id: 1, color: '#F02921', label: 'Institut Mediterrani d\'Estudis Avançats'},
-  {id: 3, color: '#343FCE', label: 'Museu Valencià d\'Història Natural'},
-  {id: 5, color: '#5A9DDA', label: 'Universitat de Barcelona'},
-  {id: 2, color: '#FABB5C', label: 'Museu Ciències Naturals Barcelona'}
+  {id: 4, color: '#58A062'},
+  {id: 1, color: '#F02921'},
+  {id: 3, color: '#343FCE'},
+  {id: 5, color: '#5A9DDA'},
+  {id: 2, color: '#FABB5C'}
 ];
 
 export const FILTER_BY = ['institutioncode', 'basisofrecord'];
