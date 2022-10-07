@@ -104,7 +104,7 @@ const Layout = ({mainContent, sidePanelContent}) => {
       Received `true` for a non-boolean attribute `isleftdraweropen | widescreen`. If you want to write it
       to the DOM, pass a string instead: isleftdraweropen="true" or isleftdraweropen={value.toString()}.
      */}
-    <Main widescreen={widescreen} isleftdraweropen={(sidePanelContent && isSidePanelOpen)}>
+    <Main widescreen={widescreen.toString()} isleftdraweropen={(sidePanelContent && isSidePanelOpen).toString()}>
       {mainContent}
     </Main>
   </>;
