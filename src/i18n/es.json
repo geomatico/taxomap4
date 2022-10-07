@@ -1,6 +1,44 @@
 {
   "about": "¿Qué es?",
-  "basisofrecord": "Tipo de registro",
-  "help": "Ayuda"
+  "basisofrecordLegend": {
+    "1": "Fosil",
+    "2": "No fosil"
+  },
+  "fieldLabel": {
+    "basisofrecord": "Tipo de registro",
+    "class": "Clase",
+    "domain": "Dominio",
+    "family": "Familia",
+    "genus": "Género",
+    "institutioncode": "Institución",
+    "kingdom": "Reino",
+    "order": "Orden",
+    "phylum": "Filo",
+    "species": "Especie",
+    "subspecies": "Subespecie"
+  },
+  "help": "Ayuda",
+  "institutionLegend": {
+    "1": "Institut Mediterrani d'Estudis Avançats",
+    "2": "Museu Ciències Naturals Barcelona",
+    "3": "Museu Valencià d'Història Natural",
+    "4": "Institut Botànic de Barcelona",
+    "5": "Universitat de Barcelona"
+  },
+  "mapStyles": {
+    "bright": "Claro",
+    "gray": "Gris",
+    "landCover": "Cobertura de suelo",
+    "ortophoto": "Ortofoto",
+    "rain": "Lluvia",
+    "temperature": "Temperatura"
+  },
+  "phylumLegend": {
+    "1": "Otros",
+    "2": "Chordata",
+    "3": "Mollusca",
+    "4": "Arthropoda",
+    "5": "Tracheophyta"
+  },
+  "selectFilter": "Selecciona filtro"
 }
-

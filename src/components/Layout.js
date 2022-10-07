@@ -22,8 +22,8 @@ import HelpModal from './HelpModal';
 
 
 const Main = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'widescreen' && prop !== 'isLeftDrawerOpen'
-})(({widescreen, isLeftDrawerOpen}) => ({
+  shouldForwardProp: (prop) => prop !== 'widescreen' && prop !== 'isleftdraweropen'
+})(({widescreen, isleftdraweropen}) => ({
   flexGrow: 1,
   padding: 0,
   position: 'absolute',
@@ -36,7 +36,7 @@ const Main = styled(Box, {
   },
   bottom: 0,
   right: 0,
-  left: widescreen ? (isLeftDrawerOpen && DRAWER_WIDTH) : 0
+  left: widescreen ? (isleftdraweropen && DRAWER_WIDTH) : 0
 }));
 
 const helperTextStyle = {
@@ -98,7 +98,13 @@ const Layout = ({mainContent, sidePanelContent}) => {
         {sidePanelContent}
       </SidePanel>
     }
-    <Main widescreen={widescreen} isLeftDrawerOpen={sidePanelContent && isSidePanelOpen}>
+
+    {/*
+      El toString de widescreen y de isleftdraweropen soluciona el warning que da en la consola que dice:
+      Received `true` for a non-boolean attribute `isleftdraweropen | widescreen`. If you want to write it
+      to the DOM, pass a string instead: isleftdraweropen="true" or isleftdraweropen={value.toString()}.
+     */}
+    <Main widescreen={widescreen.toString()} isleftdraweropen={(sidePanelContent && isSidePanelOpen).toString()}>
       {mainContent}
     </Main>
   </>;

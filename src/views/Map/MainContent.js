@@ -13,6 +13,7 @@ import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
 import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
+import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
 
@@ -22,7 +23,8 @@ const cssStyle = {
   overflow: 'hidden'
 };
 
-const MainContent = ({ yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+  const {t} = useTranslation();
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
 
@@ -75,6 +77,10 @@ const MainContent = ({ yearFilter, institutionFilter, basisOfRecordFilter, taxon
     })
   ]), [data]);
 
+
+
+  const translatedSyles = MAPSTYLES.map(style => ({...style, label: t('mapStyles.'+style.label) }));
+
   return <>
     <DeckGL layers={deckLayers} initialViewState={INITIAL_VIEWPORT} controller style={cssStyle} onResize={handleMapResize}>
       <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef}/>
@@ -82,7 +88,7 @@ const MainContent = ({ yearFilter, institutionFilter, basisOfRecordFilter, taxon
     <BaseMapPicker
       position='top-right'
       direction='down'
-      styles={MAPSTYLES}
+      styles={translatedSyles}
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />

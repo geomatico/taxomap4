@@ -5,61 +5,81 @@ import SelectInput from '@geomatico/geocomponents/SelectInput';
 import Box from '@mui/material/Box';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, PHYLUM_LEGEND} from '../config';
+import styled from '@mui/styles/styled';
 
 const selectStyles = {
   '& .SelectInput-select': {
     bgcolor: 'white',
-    fontSize: '14px'
+    fontSize: '14px',
+    width: '220px'
   }
 };
-export const LegendSelector = ({symbolizeBy, onSymbolizeByChange}) => {
 
+const Legend = styled(Box)(({theme}) => ({
+  backgroundColor: 'white',
+  maxWidth: '220px',
+  borderRadius: '3px',
+  padding: theme.spacing(1),
+  marginBottom: theme.spacing(1)
+}));
+
+const LegendItem = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '10px'
+});
+
+const LegendIcon = ({color}) => <FiberManualRecordIcon sx={{
+  fontSize: '12px',
+  marginRight: 1,
+  color: color
+}}/>;
+LegendIcon.propTypes = {color: PropTypes.string.isRequired};
+
+export const LegendSelector = ({symbolizeBy, onSymbolizeByChange}) => {
   const {t} = useTranslation();
 
   const options = [
     {
       id: 'basisofrecord',
-      label: t('basisofrecord'),
-      data: BASIS_OF_RECORD_LEGEND
+      label: t('fieldLabel.basisofrecord'),
+      legend: BASIS_OF_RECORD_LEGEND.map(({id, color}) => ({
+        id,
+        color,
+        label: t(`basisofrecordLegend.${id}`)
+      }))
     },
     {
       id: 'phylum',
-      label: 'Phylum',
-      data: PHYLUM_LEGEND
+      label: t('fieldLabel.phylum'),
+      legend: PHYLUM_LEGEND.map(({id, color}) => ({
+        id,
+        color,
+        label: t(`phylumLegend.${id}`)
+      }))
     },
     {
       id: 'institutioncode',
-      label: 'Institución',
-      data: INSTITUTION_LEGEND
+      label: t('fieldLabel.institutioncode'),
+      legend: INSTITUTION_LEGEND.map(({id, color}) => ({
+        id,
+        color,
+        label: t(`institutionLegend.${id}`)
+      }))
     }
   ];
 
+  const selectedLegend = options.find(option => option.id === symbolizeBy).legend;
+
   return <>
-    <Box sx={{
-      background: 'white',
-      maxWidth: '200px',
-      borderRadius: '3px',
-      p: 1,
-      mb: 1
-    }}>
-      { options
-        .find(opt=> opt.id === symbolizeBy).data
-        .map((cat) => (
-          <Box key={cat.label} sx={{
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '10px'
-          }}>
-            <FiberManualRecordIcon sx={{
-              color: cat.color,
-              fontSize: '12px',
-              mr: 1
-            }}/>
-            {cat.label}
-          </Box>
-        ))
-      }
-    </Box>
+    <Legend>
+      {selectedLegend.map(({id, color, label}) =>
+        <LegendItem key={id}>
+          <LegendIcon color={color}/>
+          {label}
+        </LegendItem>
+      )}
+    </Legend>
     <SelectInput
       options={options}
       selectedOptionId={symbolizeBy}

@@ -1,16 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import Layout from '../../components/Layout';
 import SidePanelContent from './SidePanelContent';
 import MainContent from './MainContent';
 
 const Index = () => {
-  const selectedInstitutionId = undefined; // TODO MCNB-59 Filtrado por Institucion, Basis Of Record
-  const selectedBasisOfRecordId = undefined; // TODO MCNB-59 Filtrado por Institucion, Basis Of Record
+
+  const [selectedInstitutionId, setInstitutionId] = useState();
+  const [selectedBasisOfRecordId, setBasisOfRecordId] = useState();
+
   const selectedYearRange = undefined; // TODO MCNB-58 Filtrado por Rango de Años
   const selectedTaxon = undefined; // TODO MCNB-55 Arbre taxonòmic navegable
 
-  const sidePanelContent = <SidePanelContent/>;
+  const sidePanelContent = <SidePanelContent
+    institutionFilter={selectedInstitutionId}
+    onInstitutionFilterChange={setInstitutionId}
+    basisOfRecordFilter={selectedBasisOfRecordId}
+    onBasisOfRecordChange={setBasisOfRecordId}
+  />;
+
   const mainContent = <MainContent
     yearFilter={selectedYearRange}
     institutionFilter={selectedInstitutionId}
