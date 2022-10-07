@@ -33,5 +33,12 @@
     "rain": "Pluja",
     "temperature": "Temperatura"
   },
+  "phylumLegend": {
+    "1": "Altres",
+    "2": "Chordata",
+    "3": "Mollusca",
+    "4": "Arthropoda",
+    "5": "Tracheophyta"
+  },
   "selectFilter": "Selecciona filtre"
 }

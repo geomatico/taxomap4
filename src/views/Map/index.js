@@ -6,8 +6,8 @@ import MainContent from './MainContent';
 
 const Index = () => {
 
-  const [selectedInstitutionId, setInstitutionId] = useState(); // TODO MCNB-59 Filtrado por Institucion, Basis Of Record
-  const [selectedBasisOfRecordId, setBasisOfRecordId] = useState(); // TODO MCNB-59 Filtrado por Institucion, Basis Of Record
+  const [selectedInstitutionId, setInstitutionId] = useState();
+  const [selectedBasisOfRecordId, setBasisOfRecordId] = useState();
 
   const selectedYearRange = undefined; // TODO MCNB-58 Filtrado por Rango de Años
   const selectedTaxon = undefined; // TODO MCNB-55 Arbre taxonòmic navegable

@@ -1,8 +1,13 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import SelectInput from '@geomatico/geocomponents/SelectInput';
-import {FILTER_BY} from '../config';
+
 import {useTranslation} from 'react-i18next';
+
+import SelectInput from '@geomatico/geocomponents/SelectInput';
+
+import {FILTER_BY} from '../config';
+import useDictionaries from '../hooks/useDictionaries';
+import NumericIdSelectInput from './NumericIdSelectInput'; // TODO import from @geomatico/geocomponents instead when v.2.0.9 is published
 
 const menuSelectStyles = {
   '& .SelectInput-menuItem': {
@@ -29,63 +34,60 @@ const selectStyles = {
   }
 };
 
-export const FilterByForm = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, dictionaries}) => {
+export const FilterByForm = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange}) => {
+  const dictionaries = useDictionaries();
   const {t} = useTranslation();
 
+  const [selectedField, setSelectedField] = useState('');
 
-  const [selectedCategory, setSelectedCategory] = useState('');
+  useEffect(() => {
+    onBasisOfRecordChange();
+    onInstitutionFilterChange();
+  }, [selectedField]);
 
-  const translateLabels = (array, translationRoute) => {
-    return array.map(el => ({
-      ...el,
-      id: el.id,
-      label: t(`${translationRoute}.${el.id}`)
-    }));
-  };
-
-  const categoryOptions = FILTER_BY.map((opt) => ({
-    id: opt,
-    label: t('fieldLabel.' + opt)
+  const fieldOptions = FILTER_BY.map(field => ({
+    id: field,
+    label: t(`fieldLabel.${field}`)
   }));
 
-  const handleOnOptionChange = (id) => {
-    if (!id) return;
-    onInstitutionFilterChange(selectedCategory === 'institutioncode' ? id : undefined);
-    onBasisOfRecordChange(selectedCategory === 'basisofrecord' ? id : undefined);
-  };
+  const institutionOptions = dictionaries.institutioncode.map(({id}) => ({
+    id,
+    label: t(`institutionLegend.${id}`)
+  }));
 
-  const institutionsOptions = useMemo(() => translateLabels(dictionaries.institutioncode, 'institutionLegend'), [dictionaries.institutioncode]);
-  const basisOptions = useMemo(() => translateLabels(dictionaries.basisofrecord, 'basisofrecordLegend'), [dictionaries.basisofrecord]);
-
-  const getOptions = () => {
-    if (selectedCategory === 'institutioncode') {
-      return institutionsOptions;
-    } else if (selectedCategory === 'basisofrecord') {
-      return basisOptions;
-    } else {
-      return [];
-    }
-  };
+  const basisOfRecordOptions = dictionaries.basisofrecord.map(({id}) => ({
+    id,
+    label: t(`basisofrecordLegend.${id}`)
+  }));
 
   return <>
     <SelectInput
-      options={categoryOptions}
-      selectedOptionId={selectedCategory}
-      onOptionChange={setSelectedCategory}
+      options={fieldOptions}
+      selectedOptionId={selectedField}
+      onOptionChange={setSelectedField}
       allowEmptyValue
       placeholderLabel={t('selectFilter')}
       sx={selectStyles}
       menuSx={menuSelectStyles}
     />
-    <SelectInput
-      options={getOptions()}
-      selectedOptionId={(selectedCategory && selectedCategory === 'institution' ? institutionFilter : basisOfRecordFilter) || ''}
-      onOptionChange={handleOnOptionChange}
+    {selectedField === 'institutioncode' && <NumericIdSelectInput
+      options={institutionOptions}
+      selectedOptionId={institutionFilter}
+      onOptionChange={onInstitutionFilterChange}
       allowEmptyValue
       placeholderLabel={'-'}
       sx={selectStyles}
       menuSx={menuSelectStyles}
-    />
+    />}
+    {selectedField === 'basisofrecord' && <NumericIdSelectInput
+      options={basisOfRecordOptions}
+      selectedOptionId={basisOfRecordFilter}
+      onOptionChange={onBasisOfRecordChange}
+      allowEmptyValue
+      placeholderLabel={'-'}
+      sx={selectStyles}
+      menuSx={menuSelectStyles}
+    />}
   </>;
 };
 
@@ -93,8 +95,7 @@ FilterByForm.propTypes = {
   institutionFilter: PropTypes.number,
   onInstitutionFilterChange: PropTypes.func.isRequired,
   basisOfRecordFilter: PropTypes.number,
-  onBasisOfRecordChange: PropTypes.func.isRequired,
-  dictionaries: PropTypes.object.isRequired,
+  onBasisOfRecordChange: PropTypes.func.isRequired
 };
 
 export default FilterByForm;

@@ -54,8 +54,8 @@ export const PHYLUM_LEGEND = [
 ];
 
 export const BASIS_OF_RECORD_LEGEND = [
-  {id: 2, color: '#58A062', label: 'Non-fossil'},
-  {id: 1, color: '#F07971', label: 'Fossil'}
+  {id: 2, color: '#58A062'},
+  {id: 1, color: '#F07971'}
 ];
 
 export const INSTITUTION_LEGEND = [

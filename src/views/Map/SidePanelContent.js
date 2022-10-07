@@ -30,7 +30,6 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         onInstitutionFilterChange={onInstitutionFilterChange}
         basisOfRecordFilter={basisOfRecordFilter}
         onBasisOfRecordChange={onBasisOfRecordChange}
-        dictionaries={dictionaries}
       />
 
       {Object.entries(dictionaries).map(([key, values]) => <Typography
