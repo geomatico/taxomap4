@@ -11,11 +11,12 @@ import {tableFromIPC} from 'apache-arrow';
 
 import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
-import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
+import {DATA_PROPS, INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
 import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
+import {DataFilterExtension} from '@deck.gl/extensions';
 
 const cssStyle = {
   width: '100%',
@@ -31,8 +32,6 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
 
   const applyColors = useApplyColors(symbolizeBy);
-
-  console.log('Applied Filters:', JSON.stringify({yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter})); // TODO MCNB-62 Aplicar filtros a los datos del mapa
 
   const mapRef = useRef(null);
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
@@ -55,11 +54,15 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
           value: arrowTable.getChild('geometry').getChildAt(0).data[0].values,
           size: 2
         },
-        getFillColor:  {
+        getFillColor: {
           value: applyColors(arrowTable.getChild(symbolizeBy[0]).data[0].values),
           size: 3
         }
-      }
+      },
+      ...Object.keys(DATA_PROPS).reduce((acc, field) => {
+        acc[field] = arrowTable.getChild(DATA_PROPS[field]).data[0].values;
+        return acc;
+      }, {})
     };
   }, [arrowTable, symbolizeBy]);
 
@@ -73,11 +76,22 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
       stroked: true,
       getLineColor: [255, 255, 255],
       getLineWidth: 1,
-      lineWidthUnits: 'pixels'
+      lineWidthUnits: 'pixels',
+      extensions: [new DataFilterExtension({filterSize: 4})],
+      getFilterValue: (_, {index, data}) => [
+        data.year[index],
+        data.institutioncode[index],
+        data.basisofrecord[index],
+        taxonFilter?.level === undefined ? 1 : data[taxonFilter.level][index]
+      ],
+      filterRange: [
+        yearFilter === undefined ? [0, 999999] : yearFilter,
+        institutionFilter === undefined ? [0, 999999] : [institutionFilter, institutionFilter],
+        basisOfRecordFilter === undefined ? [0, 999999] : [basisOfRecordFilter, basisOfRecordFilter],
+        taxonFilter?.id === undefined ? [0, 999999] : [taxonFilter.id, taxonFilter.id]
+      ]
     })
-  ]), [data]);
-
-
+  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter]);
 
   const translatedSyles = MAPSTYLES.map(style => ({...style, label: t('mapStyles.'+style.label) }));
 
