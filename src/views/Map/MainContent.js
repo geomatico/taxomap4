@@ -16,6 +16,7 @@ import useApplyColors from '../../hooks/useApplyColors';
 import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
+import YearSlider from '../../components/YearSlider';
 import {DataFilterExtension} from '@deck.gl/extensions';
 
 const cssStyle = {
@@ -24,12 +25,29 @@ const cssStyle = {
   overflow: 'hidden'
 };
 
-const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+const rangeSliderContainer = {
+  position: 'absolute',
+  left: '12px',
+  bottom: '20px',
+  background: 'white',
+  width: '400px',
+  borderRadius: '3px'
+};
+const legendSelectorContainer = {
+  position: 'absolute',
+  right: '12px',
+  bottom: '20px'
+};
+
+
+const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+
   const {t} = useTranslation();
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
 
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
+  const [yearFilter, setYearFilter] = useState();
 
   const applyColors = useApplyColors(symbolizeBy);
 
@@ -66,6 +84,16 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
     };
   }, [arrowTable, symbolizeBy]);
 
+
+  const years = data && data.year.filter(y => y !== 0);
+  const fullYearRange = useMemo(() => {
+    return data && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
+  }, [data]);
+
+  useEffect(() => {
+    if (fullYearRange?.length) setYearFilter(fullYearRange);
+  }, [fullYearRange]);
+
   const deckLayers = useMemo(() => ([
     new ScatterplotLayer({
       id: 'data',
@@ -78,7 +106,10 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
       getLineWidth: 1,
       lineWidthUnits: 'pixels',
       extensions: [new DataFilterExtension({filterSize: 4})],
-      getFilterValue: (_, {index, data}) => [
+      getFilterValue: (_, {
+        index,
+        data
+      }) => [
         data.year[index],
         data.institutioncode[index],
         data.basisofrecord[index],
@@ -93,10 +124,18 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
     })
   ]), [data, yearFilter, institutionFilter, basisOfRecordFilter]);
 
-  const translatedSyles = MAPSTYLES.map(style => ({...style, label: t('mapStyles.'+style.label) }));
+  const translatedSyles = MAPSTYLES.map(style => ({
+    ...style,
+    label: t('mapStyles.' + style.label)
+  }));
 
   return <>
-    <DeckGL layers={deckLayers} initialViewState={INITIAL_VIEWPORT} controller style={cssStyle} onResize={handleMapResize}>
+    <DeckGL
+      layers={deckLayers}
+      initialViewState={INITIAL_VIEWPORT}
+      controller style={cssStyle}
+      onResize={handleMapResize}
+    >
       <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef}/>
     </DeckGL>
     <BaseMapPicker
@@ -106,16 +145,27 @@ const MainContent = ({yearFilter, institutionFilter, basisOfRecordFilter, taxonF
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />
-    <Box sx={{position: 'absolute', right: '12px', bottom: '20px'}}>
+    <Box sx={rangeSliderContainer}>
+      {yearFilter &&
+        <YearSlider
+          yearRange={yearFilter}
+          minYear={fullYearRange ? fullYearRange[0] : 0}
+          maxYear={fullYearRange ? fullYearRange[1] : 0}
+          onYearRangeChange={setYearFilter}
+        />
+      }
+    </Box>
+    <Box sx={legendSelectorContainer}>
       <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}/>
     </Box>
   </>;
 };
 
 MainContent.propTypes = {
-  yearFilter: PropTypes.arrayOf(PropTypes.number),
   institutionFilter: PropTypes.number,
   basisOfRecordFilter: PropTypes.number,
+  yearFilter: PropTypes.arrayOf(PropTypes.number),
+  onYearFilterChange: PropTypes.func,
   taxonFilter: PropTypes.shape({
     level: PropTypes.oneOf(['domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'subspecies']).isRequired,
     id: PropTypes.number.isRequired
