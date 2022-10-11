@@ -28,21 +28,16 @@ const cssStyle = {
 
 
 
-const MainContent = ({yearFilter, onYearFilterChange, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
-
-  // TODO de donde saco estos años?
-  const years = [1990, 1991, 1992, 1993, 1994, 1995];
-
+const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
 
   const {t} = useTranslation();
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
 
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
+  const [selectedYearFilter, setYearFilter] = useState([1991, 1994]);
 
   const applyColors = useApplyColors(symbolizeBy);
-
-  console.log('Applied Filters:', JSON.stringify({yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter})); // TODO MCNB-62 Aplicar filtros a los datos del mapa
 
   const mapRef = useRef(null);
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
@@ -96,13 +91,13 @@ const MainContent = ({yearFilter, onYearFilterChange, institutionFilter, basisOf
         taxonFilter?.level === undefined ? 1 : data[taxonFilter.level][index]
       ],
       filterRange: [
-        yearFilter === undefined ? [0, 999999] : yearFilter,
+        selectedYearFilter === undefined ? [0, 999999] : selectedYearFilter,
         institutionFilter === undefined ? [0, 999999] : [institutionFilter, institutionFilter],
         basisOfRecordFilter === undefined ? [0, 999999] : [basisOfRecordFilter, basisOfRecordFilter],
         taxonFilter?.id === undefined ? [0, 999999] : [taxonFilter.id, taxonFilter.id]
       ]
     })
-  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter]);
+  ]), [data, selectedYearFilter, institutionFilter, basisOfRecordFilter]);
 
   const translatedSyles = MAPSTYLES.map(style => ({...style, label: t('mapStyles.'+style.label) }));
 
@@ -118,7 +113,7 @@ const MainContent = ({yearFilter, onYearFilterChange, institutionFilter, basisOf
       onStyleChange={setMapStyle}
     />
     <Box sx={{position: 'absolute', left: '12px', bottom: '20px', background: 'white', width: '400px', borderRadius: '3px'}}>
-      <YearSlider years={years} yearRange={yearFilter} onYearRangeChange={onYearFilterChange}/>
+      <YearSlider yearRange={selectedYearFilter} onYearRangeChange={setYearFilter}/>
     </Box>
     <Box sx={{position: 'absolute', right: '12px', bottom: '20px'}}>
       <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}/>

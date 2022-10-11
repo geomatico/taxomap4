@@ -85,3 +85,7 @@ export const INSTITUTION_LEGEND = [
 ];
 
 export const FILTER_BY = ['institutioncode', 'basisofrecord'];
+
+export const MIN_YEAR = 1990;
+export const MAX_YEAR = 1999;
+

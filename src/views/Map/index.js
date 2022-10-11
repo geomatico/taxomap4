@@ -8,7 +8,6 @@ const Index = () => {
 
   const [selectedInstitutionId, setInstitutionId] = useState();
   const [selectedBasisOfRecordId, setBasisOfRecordId] = useState();
-  const [selectedYearRange, setYearRange] = useState([1991, 1994]);
 
   const selectedTaxon = undefined; // TODO MCNB-55 Arbre taxonòmic navegable
 
@@ -20,8 +19,6 @@ const Index = () => {
   />;
 
   const mainContent = <MainContent
-    yearFilter={selectedYearRange}
-    onYearFilterChange={setYearRange}
     institutionFilter={selectedInstitutionId}
     basisOfRecordFilter={selectedBasisOfRecordId}
     taxonFilter={selectedTaxon}
