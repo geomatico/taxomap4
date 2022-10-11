@@ -9,7 +9,6 @@ const Index = () => {
   const [selectedInstitutionId, setInstitutionId] = useState();
   const [selectedBasisOfRecordId, setBasisOfRecordId] = useState();
 
-  const selectedYearRange = undefined; // TODO MCNB-58 Filtrado por Rango de Años
   const selectedTaxon = undefined; // TODO MCNB-55 Arbre taxonòmic navegable
 
   const sidePanelContent = <SidePanelContent
@@ -20,7 +19,6 @@ const Index = () => {
   />;
 
   const mainContent = <MainContent
-    yearFilter={selectedYearRange}
     institutionFilter={selectedInstitutionId}
     basisOfRecordFilter={selectedBasisOfRecordId}
     taxonFilter={selectedTaxon}
