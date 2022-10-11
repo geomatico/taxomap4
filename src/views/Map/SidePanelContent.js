@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 
 import FilterByForm from '../../components/FilterByForm';
+import TaxoTree from '../../components/TaxoTree';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -18,7 +19,6 @@ const ScrollableContent = styled(Box)({
 });
 
 const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange}) => {
-  const dictionaries = useDictionaries();
 
   return <Stack sx={{
     height: '100%',
@@ -31,9 +31,9 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         basisOfRecordFilter={basisOfRecordFilter}
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
+      <TaxoTree/>
 
-      {Object.entries(dictionaries).map(([key, values]) => <Typography
-        key={key}>{`${key}: ${values.length}`}</Typography>)}
+
     </ScrollableContent>
     <Geomatico/>
   </Stack>;
