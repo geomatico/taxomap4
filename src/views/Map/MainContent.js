@@ -11,11 +11,13 @@ import {tableFromIPC} from 'apache-arrow';
 
 import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
-import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
+import {DATA_PROPS, INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
+import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
 import YearSlider from '../../components/YearSlider';
+import {DataFilterExtension} from '@deck.gl/extensions';
 
 const cssStyle = {
   width: '100%',
@@ -23,19 +25,24 @@ const cssStyle = {
   overflow: 'hidden'
 };
 
-// TODO de donde saco estos años?
-const years = [1990, 1991, 1992, 1993, 1994, 1995];
 
-const MainContent = ({ institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+
+
+const MainContent = ({yearFilter, onYearFilterChange, institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+
+  // TODO de donde saco estos años?
+  const years = [1990, 1991, 1992, 1993, 1994, 1995];
+
+
+  const {t} = useTranslation();
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
 
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
-  const [yearRange, setYearRange] = useState([1992, 1994]);
 
   const applyColors = useApplyColors(symbolizeBy);
 
-  console.log('Applied Filters:', JSON.stringify({yearRange, institutionFilter, basisOfRecordFilter, taxonFilter})); // TODO MCNB-62 Aplicar filtros a los datos del mapa
+  console.log('Applied Filters:', JSON.stringify({yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter})); // TODO MCNB-62 Aplicar filtros a los datos del mapa
 
   const mapRef = useRef(null);
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
@@ -58,11 +65,15 @@ const MainContent = ({ institutionFilter, basisOfRecordFilter, taxonFilter}) => 
           value: arrowTable.getChild('geometry').getChildAt(0).data[0].values,
           size: 2
         },
-        getFillColor:  {
+        getFillColor: {
           value: applyColors(arrowTable.getChild(symbolizeBy[0]).data[0].values),
           size: 3
         }
-      }
+      },
+      ...Object.keys(DATA_PROPS).reduce((acc, field) => {
+        acc[field] = arrowTable.getChild(DATA_PROPS[field]).data[0].values;
+        return acc;
+      }, {})
     };
   }, [arrowTable, symbolizeBy]);
 
@@ -76,9 +87,24 @@ const MainContent = ({ institutionFilter, basisOfRecordFilter, taxonFilter}) => 
       stroked: true,
       getLineColor: [255, 255, 255],
       getLineWidth: 1,
-      lineWidthUnits: 'pixels'
+      lineWidthUnits: 'pixels',
+      extensions: [new DataFilterExtension({filterSize: 4})],
+      getFilterValue: (_, {index, data}) => [
+        data.year[index],
+        data.institutioncode[index],
+        data.basisofrecord[index],
+        taxonFilter?.level === undefined ? 1 : data[taxonFilter.level][index]
+      ],
+      filterRange: [
+        yearFilter === undefined ? [0, 999999] : yearFilter,
+        institutionFilter === undefined ? [0, 999999] : [institutionFilter, institutionFilter],
+        basisOfRecordFilter === undefined ? [0, 999999] : [basisOfRecordFilter, basisOfRecordFilter],
+        taxonFilter?.id === undefined ? [0, 999999] : [taxonFilter.id, taxonFilter.id]
+      ]
     })
-  ]), [data]);
+  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter]);
+
+  const translatedSyles = MAPSTYLES.map(style => ({...style, label: t('mapStyles.'+style.label) }));
 
   return <>
     <DeckGL layers={deckLayers} initialViewState={INITIAL_VIEWPORT} controller style={cssStyle} onResize={handleMapResize}>
@@ -87,12 +113,12 @@ const MainContent = ({ institutionFilter, basisOfRecordFilter, taxonFilter}) => 
     <BaseMapPicker
       position='top-right'
       direction='down'
-      styles={MAPSTYLES}
+      styles={translatedSyles}
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
     />
     <Box sx={{position: 'absolute', left: '12px', bottom: '20px', background: 'white', width: '400px', borderRadius: '3px'}}>
-      <YearSlider years={years} yearRange={yearRange} onYearRangeChange={setYearRange}/>
+      <YearSlider years={years} yearRange={yearFilter} onYearRangeChange={onYearFilterChange}/>
     </Box>
     <Box sx={{position: 'absolute', right: '12px', bottom: '20px'}}>
       <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}/>
@@ -103,6 +129,8 @@ const MainContent = ({ institutionFilter, basisOfRecordFilter, taxonFilter}) => 
 MainContent.propTypes = {
   institutionFilter: PropTypes.number,
   basisOfRecordFilter: PropTypes.number,
+  yearFilter: PropTypes.arrayOf(PropTypes.number),
+  onYearFilterChange: PropTypes.func,
   taxonFilter: PropTypes.shape({
     level: PropTypes.oneOf(['domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'subspecies']).isRequired,
     id: PropTypes.number.isRequired
