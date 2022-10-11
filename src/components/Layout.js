@@ -19,6 +19,7 @@ import {useTranslation} from 'react-i18next';
 
 import AboutModal from './About/AboutModal';
 import HelpModal from './HelpModal';
+import Breadcrumbs from './Breadcrumbs';
 
 
 const Main = styled(Box, {
@@ -59,7 +60,7 @@ const Layout = ({mainContent, sidePanelContent}) => {
 
   return <>
     <ResponsiveHeader
-      title=''
+      title={<Breadcrumbs tree={['Eukaryota', 'Animalia', 'Chordata', 'Aves', 'Passeriformes']}/>}
       logo={
         <Link href="https://taxomap.bioexplora.cat/" target="_blank">
           <Box sx={{my: 1.5, ml: 2}}>
