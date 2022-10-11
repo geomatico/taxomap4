@@ -3,10 +3,16 @@ import PropTypes from 'prop-types';
 
 import RangeSlider from '@geomatico/geocomponents/RangeSlider';
 
-
 export const YearSlider = ({years, yearRange, onYearRangeChange}) => {
 
-  return <RangeSlider onValueChange={onYearRangeChange} value={yearRange} min={years[0]} max={years[years.length -1]} animationInterval={0}/>;
+  return <RangeSlider
+    onValueChange={onYearRangeChange}
+    value={yearRange}
+    min={years[0]}
+    max={years[years.length -1]}
+    animationInterval={0}
+    sx={{'&.RangeSlider-root' : {padding: '10px 21px'}} }
+  />;
 };
 
 YearSlider.propTypes = {
