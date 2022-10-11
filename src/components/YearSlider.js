@@ -2,22 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import RangeSlider from '@geomatico/geocomponents/RangeSlider';
-import {MAX_YEAR, MIN_YEAR} from '../config';
 
-export const YearSlider = ({yearRange, onYearRangeChange}) => {
+export const YearSlider = ({yearRange, onYearRangeChange, minYear, maxYear}) => {
 
   return <RangeSlider
     onValueChange={onYearRangeChange}
     value={yearRange}
-    min={MIN_YEAR}
-    max={MAX_YEAR}
+    min={minYear}
+    max={maxYear}
     animationInterval={400}
-    sx={{'&.RangeSlider-root' : {padding: '10px 21px'}} }
+    sx={{'&.RangeSlider-root': {padding: '10px 21px'}}}
   />;
 };
 
 YearSlider.propTypes = {
   yearRange: PropTypes.arrayOf(PropTypes.number).isRequired,
+  minYear: PropTypes.number.isRequired,
+  maxYear: PropTypes.number.isRequired,
   onYearRangeChange: PropTypes.func.isRequired
 };
 
