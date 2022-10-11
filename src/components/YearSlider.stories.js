@@ -12,18 +12,17 @@ export default {
 const Template = (args) => <YearSlider {...args} />;
 
 // eslint-disable-next-line react/prop-types,no-unused-vars
-const ManagedTemplate = ({ yearRange, onYearRangeChange, years, ...args}) => {
+const ManagedTemplate = ({ yearRange, onYearRangeChange, ...args}) => {
 
   const [getSelectedYear, setSelectedYear] = useState(yearRange);
 
   const handleSetSelectedYear =(value)=> setSelectedYear(value);
-  return <YearSlider yearRange={getSelectedYear} onYearRangeChange={handleSetSelectedYear} years={years} {...args} />;
+  return <YearSlider yearRange={getSelectedYear} onYearRangeChange={handleSetSelectedYear} {...args} />;
 };
 
 export const Default = Template.bind({});
 
 Default.args = {
-  years: [1990, 1991, 1992, 1993, 1994, 1995],
   yearRange: [1994, 1995],
 };
 
