@@ -1,55 +1,45 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
-
+import React, {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-
 import useDictionaries from '../hooks/useDictionaries';
-import styled from '@mui/styles/styled';
 import {List, ListItem, ListItemButton, ListItemText} from '@mui/material';
+import {DATA_PROPS} from '../config';
 
 const TaxoTree = () => {
   const dictionaries = useDictionaries();
-  console.log(444, dictionaries)
+  const [selectedLevelIndex, setSelectedLevelIndex] = useState(1); // guarda el indice del nivel en el que estamos
+  const [selectedID, setSelectedID] = useState(1); // guarda el id del elemento seleccionado
 
-  const [selected, setSelected] = useState([]);
+  // TODO esto es solo para desarrollo, borrar al acabar
+  useEffect(() => {
+    console.log(getLevelName(selectedLevelIndex), 'Index: ', selectedLevelIndex);
+    console.log('selectedId', selectedID, dictionaries[getLevelName(selectedLevelIndex - 1)].find(el => el.id === selectedID));
+  }, [selectedLevelIndex, selectedID]);
 
+  const getLevelName = (level) => {
+    return Object.keys(DATA_PROPS)[level];
+  };
 
-  const handleOnClick =(e, key, values)=> {
-    console.log(111, e, key, values);
-    e.preventDefault();
-    setSelected(values);
+  const handleOnClick = (element) => {
+    setSelectedID(element.id);
+    // corto la navegacion en subespecies (7)
+    if (selectedLevelIndex < 7) setSelectedLevelIndex(selectedLevelIndex + 1);
+  };
 
-  }
-
+  const selectedTaxo = dictionaries[getLevelName(selectedLevelIndex)].filter(el => el[getLevelName(selectedLevelIndex - 1) + '_id'] === selectedID);
 
   return (
     <Box mb={1}>
-  <List>
-        {selected.map(([key, values]) => {
-          return <ListItem onClick={()=> handleOnClick(key, values)} key={key} disablePadding>
-            <ListItemButton component="a" href="#simple-list">
-              <ListItemText> {`${key}: ${values.length}`}</ListItemText>
-            </ListItemButton>
-          </ListItem>;
-        })}
-      </List>
-      ----------------------
       <List>
-        {Object.entries(dictionaries).map(([key, values]) => {
-          return <ListItem onClick={(e)=> handleOnClick(e, key, values)} key={key} disablePadding>
-            <ListItemButton component="a" href="#simple-list">
-              <ListItemText> {`${key}: ${values.length}`}</ListItemText>
+        {selectedTaxo.map((el) => {
+          return <ListItem onClick={() => handleOnClick(el)} key={el.name + el.id} disablePadding>
+            <ListItemButton component="a">
+              <ListItemText> {`${el.id}: ${el.name}`}</ListItemText>
             </ListItemButton>
           </ListItem>;
         })}
       </List>
-
-
     </Box>
   );
 };
-
-TaxoTree.propTypes = {};
 
 export default TaxoTree;

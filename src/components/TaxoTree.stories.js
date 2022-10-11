@@ -1,5 +1,5 @@
 import React from 'react';
-import TaxoTree from './SectionTitle';
+import TaxoTree from './TaxoTree';
 
 export default {
   title: 'Common/TaxoTree',
@@ -10,5 +10,4 @@ const Template = (args) => <TaxoTree {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  titleKey: 'baseMapStyle',
 };

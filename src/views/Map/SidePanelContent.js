@@ -6,8 +6,6 @@ import Stack from '@mui/material/Stack';
 import styled from '@mui/styles/styled';
 
 import Geomatico from '../../components/Geomatico';
-import useDictionaries from '../../hooks/useDictionaries';
-import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 
 import FilterByForm from '../../components/FilterByForm';
@@ -32,8 +30,6 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
       <TaxoTree/>
-
-
     </ScrollableContent>
     <Geomatico/>
   </Stack>;
