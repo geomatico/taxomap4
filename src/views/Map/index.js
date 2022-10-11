@@ -10,8 +10,6 @@ const Index = () => {
   const [selectedBasisOfRecordId, setBasisOfRecordId] = useState();
   const [selectedYearRange, setYearRange] = useState([1991, 1994]);
 
-
-  //const selectedYearRange = undefined; // TODO MCNB-58 Filtrado por Rango de Años
   const selectedTaxon = undefined; // TODO MCNB-55 Arbre taxonòmic navegable
 
   const sidePanelContent = <SidePanelContent
