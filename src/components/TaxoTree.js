@@ -41,31 +41,37 @@ const listItemTextStyle = {
 };
 
 // TODO numero maximo de niveles. Esto molaria sacarlo del config, pero están mezclados los 7 niveles y los 3 filtros.
+//  @oscar Los separamos?
+
 const MAX_LEVELS = 7;
 
 const TaxoTree = () => {
   const dictionaries = useDictionaries();
+
+  const getLevelName = (level) => Object.keys(DATA_PROPS)[level];
+
   const [breadCrumbs, setBreadCrumbs] = useState([1]);
 
-  const getName =(id)=> {
-    const x = dictionaries[getLevelName(breadCrumbs.length - 1)].find(el => el.id === id);
+  const actualLevelName = getLevelName(breadCrumbs.length);
+  const nextLevelName = getLevelName(breadCrumbs.length + 1);
+  const selectedLevelDictionary = dictionaries[actualLevelName];
+
+  // TODO cada subdivision de cada nivel... que nombre tendria? --> FIXME!! cambiar cosaID
+  const getCosaName = (cosaId) => {
+    const x = dictionaries[getLevelName(breadCrumbs.length - 1)].find(el => el.id === cosaId);
     return x ? x.name : '';
   };
 
-  const getLevelName = (level) => {
-    return Object.keys(DATA_PROPS)[level];
-  };
-
-  const hasSubLevels = (element) => {
-    return dictionaries[getLevelName(breadCrumbs.length + 1)]
-      .filter(x => x[getLevelName(breadCrumbs.length) + '_id'] === element.id)
-      .filter(y => y.name !== '')
-      .length > 0;
+  // saca los sublevels de cada level
+  const getSublevels = (cosaId) => {
+    return dictionaries[nextLevelName]
+      .filter(x => x[actualLevelName + '_id'] === cosaId)
+      .filter(y => y.name !== '');
   };
 
   const handleOnNextLevelClick = (element) => {
     // corto la navegacion en subespecies (nivel 7) o si no hay resultados por debajo de este nivel
-    if (breadCrumbs.length < MAX_LEVELS && hasSubLevels(element)) {
+    if (breadCrumbs.length < MAX_LEVELS && getSublevels(element) > 0) {
       const newBreadcrumb = Array.from(breadCrumbs).concat([element.id]);
       setBreadCrumbs(newBreadcrumb);
     }
@@ -73,20 +79,24 @@ const TaxoTree = () => {
 
   const handleOnPreviousLevelClick = () => {
     if (breadCrumbs.length > 1) {
-      const newBreadcrumb = Array.from(breadCrumbs).splice(0, breadCrumbs.length - 1);
+      const newBreadcrumb =breadCrumbs.splice(0, breadCrumbs.length - 1);
       setBreadCrumbs(newBreadcrumb);
     }
   };
 
-  const selectedTaxo = dictionaries[getLevelName(breadCrumbs.length)]
-    .filter(el => el[getLevelName(breadCrumbs.length - 1) + '_id'] === breadCrumbs[breadCrumbs.length - 1]);
+  const selectedTaxo = selectedLevelDictionary
+    .filter(el => el[getLevelName(breadCrumbs.length - 1) + '_id'] === breadCrumbs[breadCrumbs.length - 1])
+    .map(el => ({...el, quantity: getSublevels(el.id).length}));
 
   return <>
     <Box sx={contentTaxoStyle} onClick={handleOnPreviousLevelClick}>
       {
-        breadCrumbs.length > 1 && <KeyboardReturnIcon sx={iconTaxoStyle}/>
+        breadCrumbs.length > 1 &&
+        <KeyboardReturnIcon sx={iconTaxoStyle}/>
       }
-      <Typography sx={labelTaxoStyle}>{getName(breadCrumbs[breadCrumbs.length - 1])}</Typography>
+      <Typography sx={labelTaxoStyle}>{
+        getCosaName(breadCrumbs[breadCrumbs.length - 1])}
+      </Typography>
     </Box>
     <List dense sx={{ml: 2}}>
       {
@@ -95,7 +105,7 @@ const TaxoTree = () => {
             onClick={() => handleOnNextLevelClick(el)}
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText sx={listItemTextStyle}>{`${el.id} - ${el.name}`}</ListItemText>
+            <ListItemText sx={listItemTextStyle}>{`${el.name} (${el.quantity})`}</ListItemText>
           </ListItemButton>
         </ListItem>
         )}
