@@ -9,7 +9,6 @@ import Geomatico from '../../components/Geomatico';
 import PropTypes from 'prop-types';
 
 import FilterByForm from '../../components/FilterByForm';
-import TaxoTree from '../../components/TaxoTree';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -29,7 +28,6 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         basisOfRecordFilter={basisOfRecordFilter}
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
-      <TaxoTree/>
     </ScrollableContent>
     <Geomatico/>
   </Stack>;
