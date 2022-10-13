@@ -1,9 +1,44 @@
 import React, {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import useDictionaries from '../hooks/useDictionaries';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import Typography from '@mui/material/Typography';
+import {lighten} from '@mui/material/styles';
 import {List, ListItem, ListItemButton, ListItemText} from '@mui/material';
 import {DATA_PROPS} from '../config';
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+
+//STYLES
+const contentTaxoStyle = {
+  display: 'flex',
+  cursor: 'pointer',
+  bgcolor: 'secondary.main',
+  borderRadius: 0.5,
+  mt: 2,
+  py: 1,
+  px: 2
+};
+
+const labelTaxoStyle = {
+  display: 'flex',
+  color: 'text.contrastText',
+  fontWeight: 'bold',
+};
+
+const iconTaxoStyle = {
+  color: 'text.contrastText',
+  mr: 1
+};
+
+const listItemButtonStyle = {
+  borderRadius: 2,
+  '&:hover': {
+    backgroundColor: theme => lighten(theme.palette.secondary.main, 0.85),
+  }
+};
+
+const listItemTextStyle = {
+  color: theme => lighten(theme.palette.primary.main, 0.15),
+};
 
 const TaxoTree = () => {
   const dictionaries = useDictionaries();
@@ -48,33 +83,26 @@ const TaxoTree = () => {
   const selectedTaxo = dictionaries[getLevelName(selectedLevelIndex)]
     .filter(el => el[getLevelName(selectedLevelIndex - 1) + '_id'] === breadCrumbs[breadCrumbs.length - 1]);
 
-  return (
-    <Box mb={1}>
-      <Box sx={{
-        display: 'flex',
-        cursor: 'pointer',
-        background: 'lightBlue',
-        p: 2
-      }} onClick={handleOnPreviousLevelClick}>
-        {breadCrumbs.length > 1 &&
-          <KeyboardReturnIcon/>
-        }
-        <div>{getLevelName(selectedLevelIndex -1)}</div>
-      </Box>
-      <List>
-        {selectedTaxo.map((el) => {
-          return <ListItem
-            key={el.name + el.id}
-            disablePadding
-            sx={{border: '1px solid black'}}>
-            <ListItemButton onClick={() => handleOnNextLevelClick(el)} component="a">
-              <ListItemText> {`${el.id} - ${el.name}`}</ListItemText>
-            </ListItemButton>
-          </ListItem>;
-        })}
-      </List>
+  return <>
+    <Box sx={contentTaxoStyle} onClick={handleOnPreviousLevelClick}>
+      {
+        breadCrumbs.length > 1 && <KeyboardReturnIcon sx={iconTaxoStyle}/>
+      }
+      <Typography sx={labelTaxoStyle}>{getLevelName(selectedLevelIndex - 1)}</Typography>
     </Box>
-  );
+    <List dense sx={{ml: 2}}>
+      {
+        selectedTaxo.map((el) => <ListItem key={el.name + el.id} disablePadding>
+          <ListItemButton
+            onClick={() => handleOnNextLevelClick(el)}
+            sx={listItemButtonStyle}
+            component="a">
+            <ListItemText sx={listItemTextStyle}>{`${el.id} - ${el.name}`}</ListItemText>
+          </ListItemButton>
+        </ListItem>
+        )}
+    </List>
+  </>;
 };
 
 export default TaxoTree;
