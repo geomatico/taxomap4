@@ -52,7 +52,9 @@ const TaxoTree = () => {
     <Box mb={1}>
       <Box sx={{
         display: 'flex',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        background: 'lightBlue',
+        p: 2
       }} onClick={handleOnPreviousLevelClick}>
         {breadCrumbs.length > 1 &&
           <KeyboardReturnIcon/>
