@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import useDictionaries from '../hooks/useDictionaries';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
@@ -62,6 +62,11 @@ const TaxoTree = () => {
     return x ? x.name : '';
   };
 
+  //FIXME borrar al acabar
+  useEffect(() => {
+    console.log('BREADCRUMBS', breadCrumbs);
+  }, [breadCrumbs]);
+
   // saca los sublevels de cada level
   const getSublevels = (cosaId) => {
     return dictionaries[nextLevelName]
@@ -71,7 +76,7 @@ const TaxoTree = () => {
 
   const handleOnNextLevelClick = (element) => {
     // corto la navegacion en subespecies (nivel 7) o si no hay resultados por debajo de este nivel
-    if (breadCrumbs.length < MAX_LEVELS && getSublevels(element) > 0) {
+    if (breadCrumbs.length < MAX_LEVELS && getSublevels(element.id).length > 0) {
       const newBreadcrumb = Array.from(breadCrumbs).concat([element.id]);
       setBreadCrumbs(newBreadcrumb);
     }
