@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/main.js",
   "scripts": {
-    "test": "npm run lint",
+    "test": "npm run lint && karma start karma.config.js",
     "start": "webpack serve --env dev --host=0.0.0.0",
     "build": "npm test && webpack --env prod",
     "storybook": "start-storybook -s ./static -p 6006",
