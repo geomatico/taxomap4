@@ -6,8 +6,6 @@ import Stack from '@mui/material/Stack';
 import styled from '@mui/styles/styled';
 
 import Geomatico from '../../components/Geomatico';
-import useDictionaries from '../../hooks/useDictionaries';
-import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 
 import FilterByForm from '../../components/FilterByForm';
@@ -18,7 +16,6 @@ const ScrollableContent = styled(Box)({
 });
 
 const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange}) => {
-  const dictionaries = useDictionaries();
 
   return <Stack sx={{
     height: '100%',
@@ -31,9 +28,6 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         basisOfRecordFilter={basisOfRecordFilter}
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
-
-      {Object.entries(dictionaries).map(([key, values]) => <Typography
-        key={key}>{`${key}: ${values.length}`}</Typography>)}
     </ScrollableContent>
     <Geomatico/>
   </Stack>;

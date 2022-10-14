@@ -33,6 +33,7 @@
     "rain": "Rain",
     "temperature": "Temperature"
   },
+  "parentTaxon": "Parent taxon",
   "phylumLegend": {
     "1": "Other",
     "2": "Chordata",
