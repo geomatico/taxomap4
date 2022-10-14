@@ -120,9 +120,12 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
         institutionFilter === undefined ? [0, 999999] : [institutionFilter, institutionFilter],
         basisOfRecordFilter === undefined ? [0, 999999] : [basisOfRecordFilter, basisOfRecordFilter],
         taxonFilter?.id === undefined ? [0, 999999] : [taxonFilter.id, taxonFilter.id]
-      ]
+      ],
+      updateTriggers: {
+        getFilterValue: [taxonFilter?.level]
+      }
     })
-  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter]);
+  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,

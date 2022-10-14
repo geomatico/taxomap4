@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 
 import SelectInput from '@geomatico/geocomponents/SelectInput';
+import NumericIdSelectInput from '@geomatico/geocomponents/NumericIdSelectInput';
 
 import {FILTER_BY} from '../config';
 import useDictionaries from '../hooks/useDictionaries';
-import NumericIdSelectInput from './NumericIdSelectInput'; // TODO import from @geomatico/geocomponents instead when v.2.0.9 is published
+import Box from '@mui/material/Box';
 
 const menuSelectStyles = {
   '& .SelectInput-menuItem': {
@@ -60,7 +61,7 @@ export const FilterByForm = ({institutionFilter, onInstitutionFilterChange, basi
     label: t(`basisofrecordLegend.${id}`)
   }));
 
-  return <>
+  return <Box p={2}>
     <SelectInput
       options={fieldOptions}
       selectedOptionId={selectedField}
@@ -88,7 +89,7 @@ export const FilterByForm = ({institutionFilter, onInstitutionFilterChange, basi
       sx={selectStyles}
       menuSx={menuSelectStyles}
     />}
-  </>;
+  </Box>;
 };
 
 FilterByForm.propTypes = {

@@ -10,7 +10,7 @@ export const YearSlider = ({yearRange, onYearRangeChange, minYear, maxYear}) => 
     value={yearRange}
     min={minYear}
     max={maxYear}
-    animationInterval={400}
+    animationInterval={150}
     sx={{'&.RangeSlider-root': {padding: '10px 21px'}}}
   />;
 };

@@ -64,6 +64,11 @@ export const DATA_PROPS = {
 
 export const TAXONOMIC_LEVELS = ['domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'subspecies'];
 
+export const INITIAL_TAXON = {
+  level: 'kingdom',
+  id: 1
+};
+
 export const PHYLUM_LEGEND = [
   {id: 1, color: '#FABB5C', values: [6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21]}, // Other
   {id: 5, color: '#58A062', values: [5]}, // Tracheophyta
