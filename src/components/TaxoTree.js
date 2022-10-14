@@ -1,11 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import Box from '@mui/material/Box';
-import useDictionaries from '../hooks/useDictionaries';
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import Typography from '@mui/material/Typography';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import {lighten} from '@mui/material/styles';
-import {List, ListItem, ListItemButton, ListItemText} from '@mui/material';
-import {DATA_PROPS} from '../config';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+
+import {useTranslation} from 'react-i18next';
+
+import useDictionaries from '../hooks/useDictionaries';
+import {TAXONOMIC_LEVELS} from '../config';
 
 //STYLES
 const contentTaxoStyle = {
@@ -40,82 +49,62 @@ const listItemTextStyle = {
   color: theme => lighten(theme.palette.primary.main, 0.15),
 };
 
-// TODO numero maximo de niveles. Esto molaria sacarlo del config, pero están mezclados los 7 niveles y los 3 filtros.
-//  @oscar Los separamos?
-
-const MAX_LEVELS = 7;
-
-const TaxoTree = () => {
+const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
   const dictionaries = useDictionaries();
+  const {t} = useTranslation();
 
-  const getLevelName = (level) => Object.keys(DATA_PROPS)[level];
+  const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
+  const isRootLevel = actualLevelIndex === 0;
+  const isLeafLevel = actualLevelIndex === TAXONOMIC_LEVELS.length - 1;
 
-  const [breadCrumbs, setBreadCrumbs] = useState([1]);
+  const actualItem = dictionaries[selectedTaxon.level].find(item => item.id === selectedTaxon.id);
+  const childrenItems = isLeafLevel ? [] :
+    dictionaries[TAXONOMIC_LEVELS[actualLevelIndex + 1]]
+      .filter(item => item[`${selectedTaxon.level}_id`] === selectedTaxon.id)
+      .filter(item => item.name !== '')
+      .sort((a, b) => (a.name > b.name) ? 1 : -1);
 
-  const actualLevelName = getLevelName(breadCrumbs.length);
-  const nextLevelName = getLevelName(breadCrumbs.length + 1);
-  const selectedLevelDictionary = dictionaries[actualLevelName];
+  const handleOnChildClick = child => onTaxonChanged({
+    level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
+    id: child.id
+  });
 
-  // TODO cada subdivision de cada nivel... que nombre tendria? --> FIXME!! cambiar cosaID
-  const getCosaName = (cosaId) => {
-    const x = dictionaries[getLevelName(breadCrumbs.length - 1)].find(el => el.id === cosaId);
-    return x ? x.name : '';
+  const handleOnParentClick = () => {
+    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1];
+    onTaxonChanged({
+      level: parentLevel,
+      id: actualItem[`${parentLevel}_id`]
+    });
   };
 
-  //FIXME borrar al acabar
-  useEffect(() => {
-    console.log('BREADCRUMBS', breadCrumbs);
-  }, [breadCrumbs]);
-
-  // saca los sublevels de cada level
-  const getSublevels = (cosaId) => {
-    return dictionaries[nextLevelName]
-      .filter(x => x[actualLevelName + '_id'] === cosaId)
-      .filter(y => y.name !== '');
-  };
-
-  const handleOnNextLevelClick = (element) => {
-    // corto la navegacion en subespecies (nivel 7) o si no hay resultados por debajo de este nivel
-    if (breadCrumbs.length < MAX_LEVELS && getSublevels(element.id).length > 0) {
-      const newBreadcrumb = Array.from(breadCrumbs).concat([element.id]);
-      setBreadCrumbs(newBreadcrumb);
-    }
-  };
-
-  const handleOnPreviousLevelClick = () => {
-    if (breadCrumbs.length > 1) {
-      const newBreadcrumb =breadCrumbs.splice(0, breadCrumbs.length - 1);
-      setBreadCrumbs(newBreadcrumb);
-    }
-  };
-
-  const selectedTaxo = selectedLevelDictionary
-    .filter(el => el[getLevelName(breadCrumbs.length - 1) + '_id'] === breadCrumbs[breadCrumbs.length - 1])
-    .map(el => ({...el, quantity: getSublevels(el.id).length}));
-
-  return <>
-    <Box sx={contentTaxoStyle} onClick={handleOnPreviousLevelClick}>
-      {
-        breadCrumbs.length > 1 &&
-        <KeyboardReturnIcon sx={iconTaxoStyle}/>
-      }
-      <Typography sx={labelTaxoStyle}>{
-        getCosaName(breadCrumbs[breadCrumbs.length - 1])}
-      </Typography>
+  return actualItem ? <>
+    <Box sx={contentTaxoStyle}>
+      {!isRootLevel && <Tooltip title={t('parentTaxon')} arrow>
+        <KeyboardReturnIcon sx={iconTaxoStyle} onClick={handleOnParentClick}/>
+      </Tooltip>}
+      <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
     </Box>
     <List dense sx={{ml: 2}}>
-      {
-        selectedTaxo.map((el) => <ListItem key={el.name + el.id} disablePadding>
+      {childrenItems.map(child =>
+        <ListItem key={child.id} disablePadding>
           <ListItemButton
-            onClick={() => handleOnNextLevelClick(el)}
+            onClick={() => handleOnChildClick(child)}
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText sx={listItemTextStyle}>{`${el.name} (${el.quantity})`}</ListItemText>
+            <ListItemText sx={listItemTextStyle}>{child.name}</ListItemText>
           </ListItemButton>
         </ListItem>
-        )}
+      )}
     </List>
-  </>;
+  </> : null;
+};
+
+TaxoTree.propTypes = {
+  selectedTaxon: PropTypes.shape({
+    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
+    id: PropTypes.number.isRequired
+  }).isRequired,
+  onTaxonChanged: PropTypes.func.isRequired
 };
 
 export default TaxoTree;

@@ -23,9 +23,12 @@ const ManagedTemplate = ({ yearRange, onYearRangeChange, ...args}) => {
 export const Default = Template.bind({});
 
 Default.args = {
-  yearRange: [1994, 1995],
+  yearRange: [1990, 2000],
+  minYear: 1980,
+  maxYear: 2020
 };
 
 export const Managed = ManagedTemplate.bind({});
-Managed.args = {...Default.args};
-
+Managed.args = {
+  ...Default.args
+};

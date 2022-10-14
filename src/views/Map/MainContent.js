@@ -11,7 +11,7 @@ import {tableFromIPC} from 'apache-arrow';
 
 import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
-import {DATA_PROPS, INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
+import {DATA_PROPS, INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES, TAXONOMIC_LEVELS} from '../../config';
 import useApplyColors from '../../hooks/useApplyColors';
 import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
@@ -167,7 +167,7 @@ MainContent.propTypes = {
   yearFilter: PropTypes.arrayOf(PropTypes.number),
   onYearFilterChange: PropTypes.func,
   taxonFilter: PropTypes.shape({
-    level: PropTypes.oneOf(['domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'subspecies']).isRequired,
+    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired
   })
 };
