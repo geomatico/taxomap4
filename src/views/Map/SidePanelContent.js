@@ -9,13 +9,15 @@ import Geomatico from '../../components/Geomatico';
 import PropTypes from 'prop-types';
 
 import FilterByForm from '../../components/FilterByForm';
+import TaxoTree from '../../components/TaxoTree';
+import {TAXONOMIC_LEVELS} from '../../config';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
-  padding: '8px',
+  padding: 0,
 });
 
-const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange}) => {
+const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, selectedTaxon, onTaxonChange}) => {
 
   return <Stack sx={{
     height: '100%',
@@ -28,6 +30,7 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         basisOfRecordFilter={basisOfRecordFilter}
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
+      <TaxoTree selectedTaxon={selectedTaxon} onTaxonChanged={onTaxonChange}/>
     </ScrollableContent>
     <Geomatico/>
   </Stack>;
@@ -38,7 +41,11 @@ SidePanelContent.propTypes = {
   onInstitutionFilterChange: PropTypes.func.isRequired,
   basisOfRecordFilter: PropTypes.number,
   onBasisOfRecordChange: PropTypes.func.isRequired,
+  selectedTaxon: PropTypes.shape({
+    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
+    id: PropTypes.number.isRequired
+  }).isRequired,
+  onTaxonChange: PropTypes.func.isRequired
 };
 
 export default SidePanelContent;
-

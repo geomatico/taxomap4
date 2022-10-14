@@ -86,6 +86,7 @@ const Layout = ({mainContent, sidePanelContent}) => {
         widescreen={widescreen}
         sx={{
           '& .MuiPaper-root': {
+            padding: 0,
             top: OFFSET_TOP + 56,
             '@media (min-width: 0px) and (orientation: landscape)': {
               top: 48 + OFFSET_TOP

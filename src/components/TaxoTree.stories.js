@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import TaxoTree from './TaxoTree';
+import {INITIAL_TAXON} from '../config';
 
 export default {
   title: 'Common/TaxoTree',
@@ -16,10 +17,7 @@ const ManagedTemplate = ({selectedTaxon, onTaxonChanged, ...other}) => {
 
 export const Default = Template.bind({});
 Default.args = {
-  selectedTaxon: {
-    level: 'kingdom',
-    id: 1
-  }
+  selectedTaxon: INITIAL_TAXON
 };
 
 export const Managed = ManagedTemplate.bind({});
