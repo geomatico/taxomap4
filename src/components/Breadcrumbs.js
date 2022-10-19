@@ -14,7 +14,7 @@ const Breadcrumbs = ({tree}) => {
   return <Box sx={{display: 'flex', flexDirection: 'row'}}>
     {
       tree.map((item, index) => {
-        return <BreadcrumbItem key={item} name={item} last={isLastStyle(index)}/>;
+        return <BreadcrumbItem key={item.id+item.label} name={item.label} last={isLastStyle(index)}/>;
       }
       )
     }
@@ -22,7 +22,11 @@ const Breadcrumbs = ({tree}) => {
 };
 
 Breadcrumbs.propTypes = {
-  tree: PropTypes.arrayOf(PropTypes.string)
+  tree: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    id: PropTypes.number,
+    level: PropTypes.string,
+  }))
 };
 
 Breadcrumbs.defaultProps = {};
