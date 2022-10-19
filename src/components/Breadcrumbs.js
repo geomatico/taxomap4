@@ -10,13 +10,11 @@ import BreadcrumbItem from './BreadcrumItem';
 
 const Breadcrumbs = ({tree}) => {
   const treeLength = tree.length;
-  const isLastStyle = (index) => index === 0 ? false : index === treeLength - 1 ? true : false;
+  const isLastStyle = (index) => index === 0 ? false : index === treeLength - 1;
   return <Box sx={{display: 'flex', flexDirection: 'row'}}>
     {
-      tree.map((item, index) => {
-        return <BreadcrumbItem key={item.id+item.label} name={item.label} last={isLastStyle(index)}/>;
-      }
-      )
+      tree.map((item, index) =>
+        <BreadcrumbItem key={item.id+item.label} name={item.label} last={isLastStyle(index)}/> )
     }
   </Box>;
 };
