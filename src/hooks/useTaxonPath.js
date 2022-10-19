@@ -1,7 +1,25 @@
-const useTaxonPath = () => {
-  return [
-    {level: 'domain', id: 1, label: 'Eukaryota'}
-  ];
+import {TAXONOMIC_LEVELS} from '../config';
+
+const useTaxonPath = (selectedTaxon, dictionaries) => {
+
+  const index = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
+  const taxon = dictionaries[selectedTaxon.level].find(el => el.id === selectedTaxon.id);
+
+  const taxoPath = [];
+  if (taxon) {
+    taxoPath.push(taxon);
+    for (let step = index; step > 0; step--) {
+      const actualTaxon = taxoPath[0][TAXONOMIC_LEVELS[step - 1] + '_id'];
+      const previousTaxon = dictionaries[TAXONOMIC_LEVELS[step - 1]].find(el => el.id === actualTaxon);
+      taxoPath.unshift(previousTaxon);
+    }
+  }
+
+  return taxoPath.map((el, i) => ({
+    level: TAXONOMIC_LEVELS[i],
+    label: el.name,
+    id: el.id
+  }));
 };
 
 export default useTaxonPath;

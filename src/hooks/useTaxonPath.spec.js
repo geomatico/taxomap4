@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import useTaxonPath from './useTaxonPath';
+import dictionaries from '../../static/fixtures/dictionaries.json';
 
 describe('useTaxonPath', () => {
 
@@ -11,7 +12,7 @@ describe('useTaxonPath', () => {
     };
 
     // WHEN
-    const computedPath = useTaxonPath(selectedTaxon);
+    const computedPath = useTaxonPath(selectedTaxon, dictionaries);
 
     // THEN
     expect(computedPath).to.deep.equal([
@@ -27,7 +28,7 @@ describe('useTaxonPath', () => {
     };
 
     // WHEN
-    const computedPath = useTaxonPath(selectedTaxon);
+    const computedPath = useTaxonPath(selectedTaxon, dictionaries);
 
     // THEN
     expect(computedPath).to.deep.equal([
@@ -44,7 +45,7 @@ describe('useTaxonPath', () => {
     };
 
     // WHEN
-    const computedPath = useTaxonPath(selectedTaxon);
+    const computedPath = useTaxonPath(selectedTaxon, dictionaries);
 
     // THEN
     expect(computedPath).to.deep.equal([
