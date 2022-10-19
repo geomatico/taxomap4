@@ -77,9 +77,10 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
     });
   };
 
-  // para niveles indeterminados
+  // para niveles indeterminados ( el header del tree )
   if(actualItem?.name === '') {
-    const parent = dictionaries[TAXONOMIC_LEVELS[actualLevelIndex -1]].find(item => item.id === actualItem[TAXONOMIC_LEVELS[actualLevelIndex -1] + '_id']);
+    const parent = dictionaries[TAXONOMIC_LEVELS[actualLevelIndex -1]]
+      .find(item => item.id === actualItem[TAXONOMIC_LEVELS[actualLevelIndex -1] + '_id']);
     actualItem.name = `${parent.name} [indet]`;
   }
 

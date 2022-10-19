@@ -18,6 +18,7 @@ import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
 import YearSlider from '../../components/YearSlider';
 import {DataFilterExtension} from '@deck.gl/extensions';
+import useDictionaries from '../../hooks/useDictionaries';
 
 const cssStyle = {
   width: '100%',
@@ -94,6 +95,10 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
     if (fullYearRange?.length) setYearFilter(fullYearRange);
   }, [fullYearRange]);
 
+  // FIXME @oscar, en los niveles indeterminados existe resultado pero NO se pinta. Hay algun filtro que no vea?
+  const dictionaris = useDictionaries();
+  console.log(111, taxonFilter.id ,taxonFilter.level, dictionaris[taxonFilter.level].find(el => el.id === taxonFilter.id));
+
   const deckLayers = useMemo(() => ([
     new ScatterplotLayer({
       id: 'data',
@@ -131,6 +136,8 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
     ...style,
     label: t('mapStyles.' + style.label)
   }));
+
+  console.log('data', deckLayers);
 
   return <>
     <DeckGL
