@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 //STYLES
 const TAG_HEIGHT = 40;
 
-const BreadcrumbItem = ({name, last, onItemBack}) => {
+const BreadcrumbItem = ({taxo, last, onItemBack}) => {
   const tagStyle = {
     bgcolor: last? 'grey.50' : 'secondary.main',
     display: 'inline-grid',
@@ -31,18 +31,22 @@ const BreadcrumbItem = ({name, last, onItemBack}) => {
     left: -0.5
   };
 
-  return <Box sx={{display: 'flex', flexDirection: 'row', ml: 2}} onClick={() => onItemBack(name)}>
+  return <Box sx={{display: 'flex', flexDirection: 'row', ml: 2}} onClick={() => onItemBack(taxo)}>
     <Box sx={tagStyle}>
-      <Typography variant='body2' sx={textStyle}>{name}</Typography>
+      <Typography variant='body2' sx={textStyle}>{taxo.label}</Typography>
     </Box>
     {!last && <Box variant='body2' sx={triangleStyle}/>}
   </Box>;
 };
 
 BreadcrumbItem.propTypes = {
-  name: PropTypes.string,
+  taxo: PropTypes.shape({
+    label: PropTypes.string,
+    id: PropTypes.number,
+    level: PropTypes.string,
+  }).isRequired,
   last: PropTypes.bool,
-  onItemBack: PropTypes.func
+  onItemBack: PropTypes.func.isRequired
 };
 
 BreadcrumbItem.defaultProps = {

@@ -14,12 +14,14 @@ import SidePanel from '@geomatico/geocomponents/SidePanel';
 
 //UTILS
 import Logo from './icons/Logo';
-import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT} from '../config';
+import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT, TAXONOMIC_LEVELS} from '../config';
 import {useTranslation} from 'react-i18next';
 
 import AboutModal from './About/AboutModal';
 import HelpModal from './HelpModal';
 import Breadcrumbs from './Breadcrumbs';
+import useTaxonPath from '../hooks/useTaxonPath';
+import useDictionaries from '../hooks/useDictionaries';
 
 
 const Main = styled(Box, {
@@ -49,8 +51,10 @@ const helperTextStyle = {
   }
 };
 
-const Layout = ({mainContent, sidePanelContent}) => {
+const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) => {
   const {t} = useTranslation();
+  const dictionaries = useDictionaries();
+  const taxonPath = useTaxonPath(selectedTaxon, dictionaries);
   const widescreen = useMediaQuery(`@media (min-width:${SM_BREAKPOINT}px)`, {noSsr: true});
   const [isSidePanelOpen, setSidePanelOpen] = useState(true);
   const [isAboutModalOpen, setAboutModalOpen] = useState(false);
@@ -60,7 +64,7 @@ const Layout = ({mainContent, sidePanelContent}) => {
 
   return <>
     <ResponsiveHeader
-      title={<Breadcrumbs tree={['Eukaryota', 'Animalia', 'Chordata', 'Aves', 'Passeriformes']}/>}
+      title={<Breadcrumbs tree={taxonPath} onTaxonChange={onTaxonChange}/>}
       logo={
         <Link href="https://taxomap.bioexplora.cat/" target="_blank">
           <Box sx={{my: 1.5, ml: 2}}>
@@ -114,7 +118,12 @@ const Layout = ({mainContent, sidePanelContent}) => {
 
 Layout.propTypes = {
   sidePanelContent: PropTypes.element.isRequired,
-  mainContent: PropTypes.element.isRequired
+  mainContent: PropTypes.element.isRequired,
+  selectedTaxon: PropTypes.shape({
+    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
+    id: PropTypes.number.isRequired
+  }).isRequired,
+  onTaxonChange: PropTypes.func.isRequired,
 };
 
 export default Layout;
