@@ -29,6 +29,8 @@ const Index = () => {
   return <Layout
     sidePanelContent={sidePanelContent}
     mainContent={mainContent}
+    selectedTaxon={selectedTaxon}
+    onTaxonChange={setTaxon}
   />;
 };
 

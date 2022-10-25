@@ -61,7 +61,7 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
   const childrenItems = isLeafLevel ? [] :
     dictionaries[TAXONOMIC_LEVELS[actualLevelIndex + 1]]
       .filter(item => item[`${selectedTaxon.level}_id`] === selectedTaxon.id)
-      .filter(item => item.name !== '')
+      .map(item => ({...item, name: item.name === '' ? `${actualItem.name} [indet]` : item.name}))
       .sort((a, b) => (a.name > b.name) ? 1 : -1);
 
   const handleOnChildClick = child => onTaxonChanged({
@@ -76,6 +76,13 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
       id: actualItem[`${parentLevel}_id`]
     });
   };
+
+  // para niveles indeterminados ( el header del tree )
+  if(actualItem?.name === '') {
+    const parent = dictionaries[TAXONOMIC_LEVELS[actualLevelIndex -1]]
+      .find(item => item.id === actualItem[TAXONOMIC_LEVELS[actualLevelIndex -1] + '_id']);
+    actualItem.name = `${parent.name} [indet]`;
+  }
 
   return actualItem ? <>
     <Box sx={contentTaxoStyle}>

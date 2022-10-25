@@ -1,0 +1,46 @@
+{
+	"domain": [{
+		"id": 1,
+		"name": "Eukaryota"
+	}],
+	"kingdom": [{
+		"id": 2,
+		"domain_id": 1,
+		"name": "Plantae"
+	}],
+	"phylum": [{
+		"id": 5,
+		"kingdom_id": 2,
+		"name": "Tracheophyta"
+	}],
+	"class": [{
+		"id": 7,
+		"phylum_id": 5,
+		"name": "Magnoliopsida"
+	}],
+	"order": [{
+		"id": 39,
+		"class_id": 7,
+		"name": "Asparagales"
+	}],
+	"family": [{
+		"id": 99,
+		"order_id": 39,
+		"name": "Orchidaceae"
+	}],
+	"genus": [{
+		"id": 155,
+		"family_id": 99,
+		"name": "Orchis"
+	}],
+	"species": [{
+		"id": 13641,
+		"genus_id": 155,
+		"name": "Orchis laxiflora"
+	}],
+	"subspecies": [{
+		"id": 14800,
+		"species_id": 13641,
+		"name": "Orchis laxiflora palustris"
+	}]
+}
