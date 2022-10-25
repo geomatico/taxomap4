@@ -15,6 +15,7 @@ import {useTranslation} from 'react-i18next';
 
 import useDictionaries from '../hooks/useDictionaries';
 import {TAXONOMIC_LEVELS} from '../config';
+import useSubtaxonCount from '../hooks/useSubtaxonCount';
 
 //STYLES
 const contentTaxoStyle = {
@@ -49,8 +50,9 @@ const listItemTextStyle = {
   color: theme => lighten(theme.palette.primary.main, 0.15),
 };
 
-const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
+const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, onTaxonChanged}) => {
   const dictionaries = useDictionaries();
+  const subtaxonCount = useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon});
   const {t} = useTranslation();
 
   const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
@@ -62,7 +64,9 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
     dictionaries[TAXONOMIC_LEVELS[actualLevelIndex + 1]]
       .filter(item => item[`${selectedTaxon.level}_id`] === selectedTaxon.id)
       .map(item => ({...item, name: item.name === '' ? `${actualItem.name} [indet]` : item.name}))
-      .sort((a, b) => (a.name > b.name) ? 1 : -1);
+      .map(item => ({...item, count: subtaxonCount[item.id] || 0}))
+      .filter(item => item.count !== 0)
+      .sort((a, b) => (a.count < b.count) ? 1 : -1);
 
   const handleOnChildClick = child => onTaxonChanged({
     level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
@@ -98,7 +102,7 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
             onClick={() => handleOnChildClick(child)}
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText sx={listItemTextStyle}>{child.name}</ListItemText>
+            <ListItemText sx={listItemTextStyle}>{child.name} ({child.count})</ListItemText>
           </ListItemButton>
         </ListItem>
       )}
@@ -107,6 +111,9 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
 };
 
 TaxoTree.propTypes = {
+  institutionFilter: PropTypes.number,
+  basisOfRecordFilter: PropTypes.number,
+  yearFilter: PropTypes.arrayOf(PropTypes.number),
   selectedTaxon: PropTypes.shape({
     level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired

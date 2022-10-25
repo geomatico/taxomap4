@@ -17,7 +17,7 @@ const ScrollableContent = styled(Box)({
   padding: 0,
 });
 
-const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, selectedTaxon, onTaxonChange}) => {
+const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, yearFilter, selectedTaxon, onTaxonChange}) => {
 
   return <Stack sx={{
     height: '100%',
@@ -30,7 +30,13 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         basisOfRecordFilter={basisOfRecordFilter}
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
-      <TaxoTree selectedTaxon={selectedTaxon} onTaxonChanged={onTaxonChange}/>
+      <TaxoTree
+        institutionFilter={institutionFilter}
+        basisOfRecordFilter={basisOfRecordFilter}
+        yearFilter={yearFilter}
+        selectedTaxon={selectedTaxon}
+        onTaxonChanged={onTaxonChange}
+      />
     </ScrollableContent>
     <Geomatico/>
   </Stack>;
@@ -41,6 +47,7 @@ SidePanelContent.propTypes = {
   onInstitutionFilterChange: PropTypes.func.isRequired,
   basisOfRecordFilter: PropTypes.number,
   onBasisOfRecordChange: PropTypes.func.isRequired,
+  yearFilter: PropTypes.arrayOf(PropTypes.number),
   selectedTaxon: PropTypes.shape({
     level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired

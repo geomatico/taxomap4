@@ -10,12 +10,14 @@ const Index = () => {
   const [selectedInstitutionId, setInstitutionId] = useState();
   const [selectedBasisOfRecordId, setBasisOfRecordId] = useState();
   const [selectedTaxon, setTaxon] = useState(INITIAL_TAXON);
+  const [selectedYearRange, setYearRange] = useState();
 
   const sidePanelContent = <SidePanelContent
     institutionFilter={selectedInstitutionId}
     onInstitutionFilterChange={setInstitutionId}
     basisOfRecordFilter={selectedBasisOfRecordId}
     onBasisOfRecordChange={setBasisOfRecordId}
+    yearFilter={selectedYearRange}
     selectedTaxon={selectedTaxon}
     onTaxonChange={setTaxon}
   />;
@@ -23,6 +25,8 @@ const Index = () => {
   const mainContent = <MainContent
     institutionFilter={selectedInstitutionId}
     basisOfRecordFilter={selectedBasisOfRecordId}
+    yearFilter={selectedYearRange}
+    onYearFilterChange={setYearRange}
     taxonFilter={selectedTaxon}
   />;
 
