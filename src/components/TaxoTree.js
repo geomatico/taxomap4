@@ -68,10 +68,15 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
       .filter(item => item.count !== 0)
       .sort((a, b) => (a.count < b.count) ? 1 : -1);
 
-  const handleOnChildClick = child => onTaxonChanged({
-    level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
-    id: child.id
-  });
+  const handleOnChildClick = child => {
+    // TODO Corta la navegacion al nivel de species hasta que sepamos filtrar bien las subespecies indeterminadas
+    if (selectedTaxon.level !== 'species') {
+      onTaxonChanged({
+        level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
+        id: child.id
+      });
+    }
+  };
 
   const handleOnParentClick = () => {
     const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1];
