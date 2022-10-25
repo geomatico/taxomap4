@@ -65,8 +65,8 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
       .sort((a, b) => (a.name > b.name) ? 1 : -1);
 
   const handleOnChildClick = child => {
-    // FIXME para cortar la navegacion en el nivel de species
-    if(!child.genus_id) {
+    // TODO Corta la navegacion al nivel de species hasta que sepamos filtrar bien las subespecies indeterminadas
+    if (selectedTaxon.level !== 'species') {
       onTaxonChanged({
         level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
         id: child.id
