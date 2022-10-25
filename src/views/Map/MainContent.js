@@ -40,12 +40,11 @@ const legendSelectorContainer = {
 };
 
 
-const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
+const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter}) => {
 
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
 
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
-  const [yearFilter, setYearFilter] = useState();
 
   const {t} = useTranslation();
   const dictionaries = useDictionaries();
@@ -81,7 +80,7 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
   }, [data]);
 
   useEffect(() => {
-    if (fullYearRange?.length) setYearFilter(fullYearRange);
+    if (fullYearRange?.length) onYearFilterChange(fullYearRange);
   }, [fullYearRange]);
 
   const deckLayers = useMemo(() => ([
@@ -148,7 +147,7 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
           yearRange={yearFilter}
           minYear={fullYearRange ? fullYearRange[0] : 0}
           maxYear={fullYearRange ? fullYearRange[1] : 0}
-          onYearRangeChange={setYearFilter}
+          onYearRangeChange={onYearFilterChange}
         />
       }
     </Box>
