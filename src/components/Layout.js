@@ -21,6 +21,7 @@ import AboutModal from './About/AboutModal';
 import HelpModal from './HelpModal';
 import Breadcrumbs from './Breadcrumbs';
 import useTaxonPath from '../hooks/useTaxonPath';
+import useDictionaries from '../hooks/useDictionaries';
 
 
 const Main = styled(Box, {
@@ -52,7 +53,8 @@ const helperTextStyle = {
 
 const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) => {
   const {t} = useTranslation();
-  const taxonPath = useTaxonPath(selectedTaxon);
+  const dictionaries = useDictionaries();
+  const taxonPath = useTaxonPath(selectedTaxon, dictionaries);
   const widescreen = useMediaQuery(`@media (min-width:${SM_BREAKPOINT}px)`, {noSsr: true});
   const [isSidePanelOpen, setSidePanelOpen] = useState(true);
   const [isAboutModalOpen, setAboutModalOpen] = useState(false);

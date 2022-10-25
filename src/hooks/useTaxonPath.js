@@ -1,8 +1,7 @@
 import {TAXONOMIC_LEVELS} from '../config';
-import useDictionaries from './useDictionaries';
 
-const useTaxonPath = (selectedTaxon) => {
-  const dictionaries = useDictionaries();
+const useTaxonPath = (selectedTaxon, dictionaries) => {
+
   const index = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
   const taxon = dictionaries[selectedTaxon.level].find(el => el.id === selectedTaxon.id);
 
