@@ -43,17 +43,31 @@ const legendSelectorContainer = {
 
 const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
 
-  const {t} = useTranslation();
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
   const [arrowTable, setArrowTable] = useState();
-
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
   const [yearFilter, setYearFilter] = useState();
 
+  const {t} = useTranslation();
+  const dictionaries = useDictionaries();
+  const mapRef = useRef(null);
   const applyColors = useApplyColors(symbolizeBy);
 
-  const mapRef = useRef(null);
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
+
+  const getTooltip = info => {
+    if (!info || !info.picked) return;
+
+    const itemId = data.id[info.index];
+    const speciesId = data.species[info.index];
+    const species = dictionaries.species.find(el => el.id === speciesId);
+    const institutionId = data.institutioncode[info.index];
+    const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
+
+    return `${itemId}
+            ${species?.name}
+            ${institution?.name}`;
+  };
 
   useEffect(() => {
     document
@@ -81,7 +95,8 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
       ...Object.keys(DATA_PROPS).reduce((acc, field) => {
         acc[field] = arrowTable.getChild(DATA_PROPS[field]).data[0].values;
         return acc;
-      }, {})
+      }, {}),
+      id: arrowTable.getChild('id').toArray()
     };
   }, [arrowTable, symbolizeBy]);
 
@@ -94,10 +109,6 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
   useEffect(() => {
     if (fullYearRange?.length) setYearFilter(fullYearRange);
   }, [fullYearRange]);
-
-  // FIXME @oscar, en los niveles indeterminados existe resultado pero NO se pinta. Hay algun filtro que no vea?
-  const dictionaris = useDictionaries();
-  console.log(111, taxonFilter.id ,taxonFilter.level, dictionaris[taxonFilter.level].find(el => el.id === taxonFilter.id));
 
   const deckLayers = useMemo(() => ([
     new ScatterplotLayer({
@@ -128,16 +139,15 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
       ],
       updateTriggers: {
         getFilterValue: [taxonFilter?.level]
-      }
+      },
+      pickable: true
     })
-  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter]);
+  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter, dictionaries]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
     label: t('mapStyles.' + style.label)
   }));
-
-  console.log('data', deckLayers);
 
   return <>
     <DeckGL
@@ -145,8 +155,9 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
       initialViewState={INITIAL_VIEWPORT}
       controller style={cssStyle}
       onResize={handleMapResize}
+      getTooltip={getTooltip}
     >
-      <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef}/>
+      <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef} />
     </DeckGL>
     <BaseMapPicker
       position='top-right'
