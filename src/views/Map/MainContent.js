@@ -7,18 +7,17 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import DeckGL from '@deck.gl/react';
 import {ScatterplotLayer} from '@deck.gl/layers';
 
-import {tableFromIPC} from 'apache-arrow';
-
 import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
 
-import {DATA_PROPS, INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES, TAXONOMIC_LEVELS} from '../../config';
-import useApplyColors from '../../hooks/useApplyColors';
+import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES, TAXONOMIC_LEVELS} from '../../config';
+import useApplyColor from '../../hooks/useApplyColor';
 import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
 import YearSlider from '../../components/YearSlider';
 import {DataFilterExtension} from '@deck.gl/extensions';
 import useDictionaries from '../../hooks/useDictionaries';
+import useArrowData from '../../hooks/useArrowData';
 
 const cssStyle = {
   width: '100%',
@@ -44,14 +43,15 @@ const legendSelectorContainer = {
 const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
 
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
-  const [arrowTable, setArrowTable] = useState();
+
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
   const [yearFilter, setYearFilter] = useState();
 
   const {t} = useTranslation();
   const dictionaries = useDictionaries();
   const mapRef = useRef(null);
-  const applyColors = useApplyColors(symbolizeBy);
+  const applyColor = useApplyColor(symbolizeBy);
+  const data = useArrowData();
 
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
 
@@ -75,32 +75,6 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
       .addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
 
-  useEffect(() => {
-    tableFromIPC(fetch('data/taxomap_ultralite.arrow')).then(setArrowTable);
-  }, []);
-
-  const data = useMemo(() => {
-    return arrowTable && {
-      length: arrowTable.numRows,
-      attributes: {
-        getPosition: {
-          value: arrowTable.getChild('geometry').getChildAt(0).data[0].values,
-          size: 2
-        },
-        getFillColor: {
-          value: applyColors(arrowTable.getChild(symbolizeBy[0]).data[0].values),
-          size: 3
-        }
-      },
-      ...Object.keys(DATA_PROPS).reduce((acc, field) => {
-        acc[field] = arrowTable.getChild(DATA_PROPS[field]).data[0].values;
-        return acc;
-      }, {}),
-      id: arrowTable.getChild('id').toArray()
-    };
-  }, [arrowTable, symbolizeBy]);
-
-
   const years = data && data.year.filter(y => y !== 0);
   const fullYearRange = useMemo(() => {
     return data && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
@@ -121,6 +95,7 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
       getLineColor: [255, 255, 255],
       getLineWidth: 1,
       lineWidthUnits: 'pixels',
+      getFillColor: (_, {index, data, target}) => applyColor(data[symbolizeBy][index], target),
       extensions: [new DataFilterExtension({filterSize: 4})],
       getFilterValue: (_, {
         index,
@@ -138,11 +113,12 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, taxonFilter}) => {
         taxonFilter?.id === undefined ? [0, 999999] : [taxonFilter.id, taxonFilter.id]
       ],
       updateTriggers: {
+        getFillColor: [symbolizeBy],
         getFilterValue: [taxonFilter?.level]
       },
       pickable: true
     })
-  ]), [data, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter, dictionaries]);
+  ]), [data, symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter, dictionaries]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
