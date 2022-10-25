@@ -64,10 +64,15 @@ const TaxoTree = ({selectedTaxon, onTaxonChanged}) => {
       .map(item => ({...item, name: item.name === '' ? `${actualItem.name} [indet]` : item.name}))
       .sort((a, b) => (a.name > b.name) ? 1 : -1);
 
-  const handleOnChildClick = child => onTaxonChanged({
-    level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
-    id: child.id
-  });
+  const handleOnChildClick = child => {
+    // FIXME para cortar la navegacion en el nivel de species
+    if(!child.genus_id) {
+      onTaxonChanged({
+        level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
+        id: child.id
+      });
+    }
+  };
 
   const handleOnParentClick = () => {
     const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1];
