@@ -1,16 +1,15 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-
 import styled from '@mui/styles/styled';
-
 import Geomatico from '../../components/Geomatico';
 import PropTypes from 'prop-types';
-
 import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
 import {TAXONOMIC_LEVELS} from '../../config';
+import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
+import Divider from '@mui/material/Divider';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -19,10 +18,17 @@ const ScrollableContent = styled(Box)({
 
 const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, yearFilter, selectedTaxon, onTaxonChange}) => {
 
-  return <Stack sx={{
-    height: '100%',
-    overflow: 'hidden'
-  }}>
+  const [filteredTaxon, setFilteredTaxon] = useState(null);
+
+  useEffect(() => {
+    if (filteredTaxon) onTaxonChange(filteredTaxon);
+  }, [filteredTaxon]);
+
+  useEffect(() => {
+    if (selectedTaxon) onTaxonChange(selectedTaxon);
+  }, [selectedTaxon]);
+
+  return <Stack sx={{height: '100%', overflow: 'hidden'}}>
     <ScrollableContent>
       <FilterByForm
         institutionFilter={institutionFilter}
@@ -30,6 +36,10 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         basisOfRecordFilter={basisOfRecordFilter}
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
+      <Divider/>
+      <Box px={2} py={2}>
+        <AutocompleteVirtualized onFilteredTaxonChange={setFilteredTaxon}/>
+      </Box>
       <TaxoTree
         institutionFilter={institutionFilter}
         basisOfRecordFilter={basisOfRecordFilter}
