@@ -53,13 +53,13 @@ const OuterElementType = React.forwardRef((props, ref) => {
   return <div ref={ref} {...props} {...outerProps} />;
 });
 
-function useResetCache(data) {
+const useResetCache = (data) => {
   const ref = useRef(null);
   useEffect(() => {
     if (ref.current != null) ref.current.resetAfterIndex(0, true);
   }, [data]);
   return ref;
-}
+};
 
 const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) {
   const {children, ...other} = props;
