@@ -122,7 +122,7 @@ export const AutocompleteVirtualized = ({onFilteredTaxonChange}) => {
             });
         }).flat();
       //elimina resultados iguales, y luego filtra por labels iguales.
-      let uniqueOpts = [...new Set(opts)].filter((v,i,a)=>a.findIndex(v2=>(v2.label===v.label))===i);
+      let uniqueOpts = [...new Set(opts)].filter((v,i,a)=>a.findIndex(opt=>(opt.label===v.label))===i);
       setOptions(uniqueOpts);
     }
 
