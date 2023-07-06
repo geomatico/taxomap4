@@ -33,7 +33,7 @@ const autocompleteStyles = {
 
 const LISTBOX_PADDING = 8; // px
 
-function renderRow(props) {
+const renderRow = (props) => {
   const {data, index, style} = props;
   const dataSet = data[index];
   const inlineStyle = {...style, top: style.top + LISTBOX_PADDING};
@@ -43,7 +43,7 @@ function renderRow(props) {
       {`${dataSet[1].label}`}
     </Typography>
   );
-}
+};
 
 const OuterElementContext = createContext({});
 
@@ -109,6 +109,8 @@ export const AutocompleteVirtualized = ({onFilteredTaxonChange}) => {
   const dictionaries = useDictionaries();
   const [options, setOptions] = useState([]);
 
+
+
   useMemo(() => {
     if (dictionaries) {
       const opts = Object.keys(dictionaries)
@@ -119,7 +121,8 @@ export const AutocompleteVirtualized = ({onFilteredTaxonChange}) => {
               return {level: key, id: r.id, label: r.name};
             });
         }).flat();
-      let uniqueOpts = [...new Set(opts)];
+      //elimina resultados iguales, y luego filtra por labels iguales.
+      let uniqueOpts = [...new Set(opts)].filter((v,i,a)=>a.findIndex(v2=>(v2.label===v.label))===i);
       setOptions(uniqueOpts);
     }
 
