@@ -23,7 +23,6 @@ const contentTaxoStyle = {
   cursor: 'pointer',
   bgcolor: 'secondary.main',
   borderRadius: 0.5,
-  mt: 2,
   py: 1,
   px: 2
 };
