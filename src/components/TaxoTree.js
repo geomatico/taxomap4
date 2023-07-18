@@ -16,6 +16,7 @@ import useSubtaxonCount from '../hooks/useSubtaxonCount';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 //STYLES
 const contentTaxoStyle = {
   display: 'flex',
