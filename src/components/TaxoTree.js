@@ -102,7 +102,7 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
     actualItem.name = `${parent.name} [indet]`;
   }
 
-  const handleOnSubtaxonVisibility =(id)=> {
+  const handleOnSubtaxonVisibilityChange =(id)=> {
     const visib = {...childrenVisibility, ...{[id]: !childrenVisibility[id]}};
     onChildrenVisibilityChanged(visib);
   };
@@ -122,7 +122,7 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
             component="a">
             <ListItemText onClick={() => handleOnChildClick(child)} sx={listItemTextStyle}>{child.name} ({child.count})</ListItemText>
             {childrenVisibility &&
-              <ListItemIcon onClick={()=> handleOnSubtaxonVisibility(child.id)} sx={{minWidth: 33}}>
+              <ListItemIcon onClick={()=> handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
                 {childrenVisibility[child.id]
                   ? <VisibilityIcon id={child.id} sx={{fontSize: '1.2rem'}}/>
                   : <VisibilityOffIcon  sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
