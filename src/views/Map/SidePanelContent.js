@@ -16,7 +16,7 @@ const ScrollableContent = styled(Box)({
   padding: 0,
 });
 
-const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, yearFilter, selectedTaxon, onTaxonChange}) => {
+const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, yearFilter, selectedTaxon, onTaxonChange, childrenVisibility}) => {
 
   const [filteredTaxon, setFilteredTaxon] = useState(null);
 
@@ -46,6 +46,7 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         yearFilter={yearFilter}
         selectedTaxon={selectedTaxon}
         onTaxonChanged={onTaxonChange}
+        childrenVisibility={childrenVisibility}
       />
     </ScrollableContent>
     <Geomatico/>
@@ -62,7 +63,9 @@ SidePanelContent.propTypes = {
     level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired
   }).isRequired,
-  onTaxonChange: PropTypes.func.isRequired
+  onTaxonChange: PropTypes.func.isRequired,
+  childrenVisibility: PropTypes.objectOf(PropTypes.bool),
+  onChildrenVisibilityChanged: PropTypes.func,
 };
 
 export default SidePanelContent;
