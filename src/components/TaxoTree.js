@@ -13,8 +13,7 @@ import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
 import {TAXONOMIC_LEVELS} from '../config';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+
 //STYLES
 const contentTaxoStyle = {
   display: 'flex',
@@ -115,9 +114,6 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
             sx={listItemButtonStyle}
             component="a">
             <ListItemText onClick={() => handleOnChildClick(child)} sx={listItemTextStyle}>{child.name} ({child.count})</ListItemText>
-            <ListItemIcon sx={{minWidth: 33}}>
-              <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
-            </ListItemIcon>
           </ListItemButton>
         </ListItem>
       )}
