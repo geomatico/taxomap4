@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import {Map} from 'react-map-gl';
@@ -18,6 +18,7 @@ import YearSlider from '../../components/YearSlider';
 import {DataFilterExtension} from '@deck.gl/extensions';
 import useDictionaries from '../../hooks/useDictionaries';
 import useArrowData from '../../hooks/useArrowData';
+import {debounce} from 'throttle-debounce';
 
 const cssStyle = {
   width: '100%',
@@ -40,10 +41,9 @@ const legendSelectorContainer = {
 };
 
 
-const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter}) => {
-
+const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter, onBBOXChanged}) => {
+  const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
-
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
 
   const {t} = useTranslation();
@@ -51,6 +51,17 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
   const mapRef = useRef(null);
   const applyColor = useApplyColor(symbolizeBy);
   const data = useArrowData();
+
+  const notifyChanges = useCallback(debounce(30, map => {
+    onBBOXChanged(map.getBounds().toArray().flatMap(a => a));
+  }), []);
+
+  // On data or viewport change, recalculate data
+  useEffect(() => {
+    if (mapRef && mapRef.current) {
+      notifyChanges(mapRef.current);
+    }
+  }, [viewport, mapRef?.current]); // FIXME preguntar a oscar si esto cuadra mapRef?.current
 
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
 
@@ -127,7 +138,8 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
   return <>
     <DeckGL
       layers={deckLayers}
-      initialViewState={INITIAL_VIEWPORT}
+      initialViewState={viewport}
+      onViewStateChange={({viewState}) => setViewport(viewState)}
       controller style={cssStyle}
       onResize={handleMapResize}
       getTooltip={getTooltip}
@@ -165,7 +177,8 @@ MainContent.propTypes = {
   taxonFilter: PropTypes.shape({
     level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired
-  })
+  }),
+  onBBOXChanged: PropTypes.func,
 };
 
 export default MainContent;

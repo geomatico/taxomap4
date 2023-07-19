@@ -49,9 +49,10 @@ const listItemTextStyle = {
   color: theme => lighten(theme.palette.primary.main, 0.15),
 };
 
-const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, onTaxonChanged}) => {
+const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, onTaxonChanged, BBOX}) => {
   const dictionaries = useDictionaries();
   const subtaxonCount = useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon});
+  const subtaxonCountBBOX = useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX});
   const {t} = useTranslation();
 
   const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
@@ -106,7 +107,7 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
             onClick={() => handleOnChildClick(child)}
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText sx={listItemTextStyle}>{child.name} ({child.count})</ListItemText>
+            <ListItemText sx={listItemTextStyle}>{child.name} ({subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} {t('of')} {child.count})</ListItemText>
           </ListItemButton>
         </ListItem>
       )}
@@ -122,7 +123,8 @@ TaxoTree.propTypes = {
     level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired
   }).isRequired,
-  onTaxonChanged: PropTypes.func.isRequired
+  onTaxonChanged: PropTypes.func.isRequired,
+  BBOX: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default TaxoTree;
