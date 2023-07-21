@@ -13,6 +13,9 @@ import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
 import {TAXONOMIC_LEVELS} from '../config';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 //STYLES
 const contentTaxoStyle = {
@@ -46,7 +49,7 @@ const listItemTextStyle = {
   color: theme => lighten(theme.palette.primary.main, 0.15),
 };
 
-const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, onTaxonChanged}) => {
+const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, childrenVisibility, onChildrenVisibilityChanged, onTaxonChanged}) => {
   const dictionaries = useDictionaries();
   const subtaxonCount = useSubtaxonCount({
     institutionFilter,
@@ -100,6 +103,11 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
     actualItem.name = `${parent.name} [indet]`;
   }
 
+  const handleOnSubtaxonVisibilityChange =(id)=> {
+    const visib = {...childrenVisibility, ...{[id]: !childrenVisibility[id]}};
+    onChildrenVisibilityChanged(visib);
+  };
+
   return actualItem ? <>
     <Box sx={contentTaxoStyle}>
       {!isRootLevel && <Tooltip title={t('parentTaxon')} arrow>
@@ -114,6 +122,14 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
             sx={listItemButtonStyle}
             component="a">
             <ListItemText onClick={() => handleOnChildClick(child)} sx={listItemTextStyle}>{child.name} ({child.count})</ListItemText>
+            {childrenVisibility &&
+              <ListItemIcon onClick={()=> handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
+                {childrenVisibility[child.id]
+                  ? <VisibilityIcon id={child.id} sx={{fontSize: '1.2rem'}}/>
+                  : <VisibilityOffIcon  sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
+                }
+              </ListItemIcon>
+            }
           </ListItemButton>
         </ListItem>
       )}
@@ -129,7 +145,9 @@ TaxoTree.propTypes = {
     level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired
   }).isRequired,
-  onTaxonChanged: PropTypes.func.isRequired
+  onTaxonChanged: PropTypes.func.isRequired,
+  childrenVisibility: PropTypes.objectOf(PropTypes.bool), // solo valida el tipo de los values
+  onChildrenVisibilityChanged: PropTypes.func,
 };
 
 export default TaxoTree;
