@@ -40,8 +40,7 @@ const legendSelectorContainer = {
 };
 
 
-const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter, childrenVisibility}) => {
-  console.log(childrenVisibility);
+const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter}) => {
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
 
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');

@@ -16,7 +16,7 @@ const ScrollableContent = styled(Box)({
   padding: 0,
 });
 
-const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, yearFilter, selectedTaxon, onTaxonChange, childrenVisibility, onChildrenVisibilityChanged}) => {
+const SidePanelContent = ({childrenItems, institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, selectedTaxon, onTaxonChange, childrenVisibility, onChildrenVisibilityChanged}) => {
 
   const [filteredTaxon, setFilteredTaxon] = useState(null);
 
@@ -28,7 +28,10 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
     if (selectedTaxon) onTaxonChange(selectedTaxon);
   }, [selectedTaxon]);
 
-  return <Stack sx={{height: '100%', overflow: 'hidden'}}>
+  return <Stack sx={{
+    height: '100%',
+    overflow: 'hidden'
+  }}>
     <ScrollableContent>
       <FilterByForm
         institutionFilter={institutionFilter}
@@ -41,11 +44,9 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
         <AutocompleteVirtualized onFilteredTaxonChange={setFilteredTaxon}/>
       </Box>
       <TaxoTree
-        institutionFilter={institutionFilter}
-        basisOfRecordFilter={basisOfRecordFilter}
-        yearFilter={yearFilter}
         selectedTaxon={selectedTaxon}
         onTaxonChanged={onTaxonChange}
+        childrenItems={childrenItems}
         childrenVisibility={childrenVisibility}
         onChildrenVisibilityChanged={onChildrenVisibilityChanged}
       />
@@ -67,6 +68,12 @@ SidePanelContent.propTypes = {
   onTaxonChange: PropTypes.func.isRequired,
   childrenVisibility: PropTypes.objectOf(PropTypes.bool),
   onChildrenVisibilityChanged: PropTypes.func,
+  childrenItems: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    kingdom_id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+  })),
 };
 
 export default SidePanelContent;
