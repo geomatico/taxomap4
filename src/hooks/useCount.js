@@ -1,10 +1,6 @@
-import useArrowData from './useArrowData';
-import useDictionaries from './useDictionaries';
 import {TAXONOMIC_LEVELS} from '../config';
 
-const useCount = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, entity}) => {
-  const data = useArrowData();
-  const dictionaries = useDictionaries();
+const useCount = ({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, entity}) => {
 
   if (!data || !dictionaries) return {}; // No data available yet
 

@@ -3,18 +3,16 @@ import PropTypes from 'prop-types';
 import PieChart from './PieChart';
 import useCount from '../hooks/useCount';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, TAXONOMIC_LEVELS} from '../config';
+import useArrowData from '../hooks/useArrowData';
+import useDictionaries from '../hooks/useDictionaries';
 
 const calculatePercentage = (partialValue, total) => partialValue * 100 / total;
 
 const GraphicByLegend = ({institutionFilter, basisOfRecordFilter, yearFilter, taxonFilter, symbolizeBy}) => {
+  const data = useArrowData();
+  const dictionaries = useDictionaries();
 
-  const totals = useCount({
-    institutionFilter,
-    basisOfRecordFilter,
-    yearFilter,
-    selectedTaxon: taxonFilter,
-    entity: symbolizeBy
-  });
+  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, entity: symbolizeBy});
 
   const sumTotalresults = Object.keys(totals).length && Object.values(totals).reduce((a, b) => a + b);
 
