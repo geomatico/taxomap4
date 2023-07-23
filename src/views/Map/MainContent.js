@@ -18,6 +18,7 @@ import YearSlider from '../../components/YearSlider';
 import {DataFilterExtension} from '@deck.gl/extensions';
 import useDictionaries from '../../hooks/useDictionaries';
 import useArrowData from '../../hooks/useArrowData';
+import GraphicByLegend from '../../components/GraphicByLegend';
 
 const cssStyle = {
   width: '100%',
@@ -36,7 +37,11 @@ const rangeSliderContainer = {
 const legendSelectorContainer = {
   position: 'absolute',
   right: '12px',
-  bottom: '20px'
+  bottom: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column'
 };
 
 
@@ -44,7 +49,7 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
 
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
 
-  const [symbolizeBy, setSymbolizeBy] = useState('phylum');
+  const [symbolizeBy, setSymbolizeBy] = useState('institutioncode');
 
   const {t} = useTranslation();
   const dictionaries = useDictionaries();
@@ -94,7 +99,11 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
       getLineColor: [255, 255, 255],
       getLineWidth: 1,
       lineWidthUnits: 'pixels',
-      getFillColor: (_, {index, data, target}) => applyColor(data[symbolizeBy][index], target),
+      getFillColor: (_, {
+        index,
+        data,
+        target
+      }) => applyColor(data[symbolizeBy][index], target),
       extensions: [new DataFilterExtension({filterSize: 4})],
       getFilterValue: (_, {
         index,
@@ -132,7 +141,7 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
       onResize={handleMapResize}
       getTooltip={getTooltip}
     >
-      <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef} />
+      <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef}/>
     </DeckGL>
     <BaseMapPicker
       position='top-right'
@@ -152,7 +161,16 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
       }
     </Box>
     <Box sx={legendSelectorContainer}>
-      <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}/>
+
+      <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}>
+        <GraphicByLegend
+          institutionFilter={institutionFilter}
+          basisOfRecordFilter={basisOfRecordFilter}
+          yearFilter={yearFilter}
+          taxonFilter={taxonFilter}
+          symbolizeBy={symbolizeBy}
+        />
+      </LegendSelector>
     </Box>
   </>;
 };
