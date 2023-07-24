@@ -12,7 +12,6 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
 import {TAXONOMIC_LEVELS} from '../config';
-import useSubtaxonCount from '../hooks/useSubtaxonCount';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -49,34 +48,13 @@ const listItemTextStyle = {
   color: theme => lighten(theme.palette.primary.main, 0.15),
 };
 
-const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, childrenVisibility, onChildrenVisibilityChanged, onTaxonChanged}) => {
+const TaxoTree = ({selectedTaxon, childrenVisibility, onChildrenVisibilityChanged, onTaxonChanged, childrenItems}) => {
   const dictionaries = useDictionaries();
-  const subtaxonCount = useSubtaxonCount({
-    institutionFilter,
-    basisOfRecordFilter,
-    yearFilter,
-    selectedTaxon
-  });
   const {t} = useTranslation();
 
   const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
   const isRootLevel = actualLevelIndex === 0;
-  const isLeafLevel = actualLevelIndex === TAXONOMIC_LEVELS.length - 1;
-
   const actualItem = dictionaries[selectedTaxon.level].find(item => item.id === selectedTaxon.id);
-  const childrenItems = isLeafLevel ? [] :
-    dictionaries[TAXONOMIC_LEVELS[actualLevelIndex + 1]]
-      .filter(item => item[`${selectedTaxon.level}_id`] === selectedTaxon.id)
-      .map(item => ({
-        ...item,
-        name: item.name === '' ? `${actualItem.name} [indet]` : item.name
-      }))
-      .map(item => ({
-        ...item,
-        count: subtaxonCount[item.id] || 0
-      }))
-      .filter(item => item.count !== 0)
-      .sort((a, b) => (a.count < b.count) ? 1 : -1);
 
   const handleOnChildClick = child => {
     // TODO Corta la navegacion al nivel de species hasta que sepamos filtrar bien las subespecies indeterminadas
@@ -116,7 +94,7 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
       <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
     </Box>
     <List dense sx={{ml: 2}}>
-      {childrenItems.map(child =>
+      {childrenItems?.length && childrenVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
           <ListItemButton
             sx={listItemButtonStyle}
@@ -148,6 +126,12 @@ TaxoTree.propTypes = {
   onTaxonChanged: PropTypes.func.isRequired,
   childrenVisibility: PropTypes.objectOf(PropTypes.bool), // solo valida el tipo de los values
   onChildrenVisibilityChanged: PropTypes.func,
+  childrenItems: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    kingdom_id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+  })),
 };
 
 export default TaxoTree;

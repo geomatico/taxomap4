@@ -41,7 +41,6 @@ const legendSelectorContainer = {
 
 
 const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter}) => {
-
   const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
 
   const [symbolizeBy, setSymbolizeBy] = useState('phylum');
@@ -165,7 +164,8 @@ MainContent.propTypes = {
   taxonFilter: PropTypes.shape({
     level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
     id: PropTypes.number.isRequired
-  })
+  }),
+  childrenVisibility: PropTypes.objectOf(PropTypes.bool),
 };
 
 export default MainContent;
