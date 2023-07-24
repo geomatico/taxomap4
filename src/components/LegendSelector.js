@@ -16,6 +16,7 @@ const selectStyles = {
 };
 
 const Legend = styled(Box)(({theme}) => ({
+  width: '220px',
   backgroundColor: 'white',
   maxWidth: '220px',
   borderRadius: '3px',
@@ -36,7 +37,7 @@ const LegendIcon = ({color}) => <FiberManualRecordIcon sx={{
 }}/>;
 LegendIcon.propTypes = {color: PropTypes.string.isRequired};
 
-export const LegendSelector = ({symbolizeBy, onSymbolizeByChange}) => {
+export const LegendSelector = ({symbolizeBy, onSymbolizeByChange, children}) => {
   const {t} = useTranslation();
 
   const options = [
@@ -72,6 +73,7 @@ export const LegendSelector = ({symbolizeBy, onSymbolizeByChange}) => {
   const selectedLegend = options.find(option => option.id === symbolizeBy).legend;
 
   return <>
+    {children}
     <Legend>
       {selectedLegend.map(({id, color, label}) =>
         <LegendItem key={id}>
@@ -92,6 +94,7 @@ export const LegendSelector = ({symbolizeBy, onSymbolizeByChange}) => {
 LegendSelector.propTypes = {
   symbolizeBy: PropTypes.oneOf(['phylum', 'basisofrecord', 'institutioncode']).isRequired,
   onSymbolizeByChange: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
 export default LegendSelector;
