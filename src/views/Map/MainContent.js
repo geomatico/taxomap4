@@ -64,7 +64,7 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
     if (mapRef && mapRef.current) {
       notifyChanges(mapRef.current);
     }
-  }, [viewport, mapRef?.current]); // FIXME preguntar a oscar si esto cuadra mapRef?.current
+  }, [viewport, mapRef?.current]);
 
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
 
