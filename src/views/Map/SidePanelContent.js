@@ -16,8 +16,8 @@ const ScrollableContent = styled(Box)({
   padding: 0,
 });
 
-const SidePanelContent = ({childrenItems, institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, selectedTaxon, onTaxonChange, childrenVisibility, onChildrenVisibilityChanged}) => {
 
+const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, selectedTaxon, onTaxonChange, childrenVisibility, onChildrenVisibilityChanged, childrenItems, BBOX}) => {
   const [filteredTaxon, setFilteredTaxon] = useState(null);
 
   useEffect(() => {
@@ -46,6 +46,7 @@ const SidePanelContent = ({childrenItems, institutionFilter, onInstitutionFilter
       <TaxoTree
         selectedTaxon={selectedTaxon}
         onTaxonChanged={onTaxonChange}
+        BBOX={BBOX}
         childrenItems={childrenItems}
         childrenVisibility={childrenVisibility}
         onChildrenVisibilityChanged={onChildrenVisibilityChanged}
@@ -66,6 +67,7 @@ SidePanelContent.propTypes = {
     id: PropTypes.number.isRequired
   }).isRequired,
   onTaxonChange: PropTypes.func.isRequired,
+  BBOX: PropTypes.arrayOf(PropTypes.number),
   childrenVisibility: PropTypes.objectOf(PropTypes.bool),
   onChildrenVisibilityChanged: PropTypes.func,
   childrenItems: PropTypes.arrayOf(PropTypes.shape({

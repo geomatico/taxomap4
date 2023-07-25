@@ -16,6 +16,7 @@ const Index = () => {
   const [selectedBasisOfRecordId, setBasisOfRecordId] = useState();
   const [selectedTaxon, setTaxon] = useState(INITIAL_TAXON);
   const [selectedYearRange, setYearRange] = useState();
+  const [BBOX, setBBOX] = useState();
   const [childrenItems, setChildren] = useState();
   const [childrenVisibility, setChildrenVisibility] = useState();
 
@@ -26,7 +27,6 @@ const Index = () => {
     selectedTaxon
   });
   const children = useTaxonChildren(subtaxonCount, selectedTaxon, dictionaries);
-  console.log(111, subtaxonCount, selectedTaxon, dictionaries);
 
   useMemo(() => {
     if(children.length && JSON.stringify(childrenItems) !== JSON.stringify(children)) setChildren(children);
@@ -47,6 +47,7 @@ const Index = () => {
     onBasisOfRecordChange={setBasisOfRecordId}
     selectedTaxon={selectedTaxon}
     onTaxonChange={setTaxon}
+    BBOX={BBOX}
     childrenItems={childrenItems}
     childrenVisibility={childrenVisibility}
     onChildrenVisibilityChanged={setChildrenVisibility}
@@ -58,6 +59,8 @@ const Index = () => {
     yearFilter={selectedYearRange}
     onYearFilterChange={setYearRange}
     taxonFilter={selectedTaxon}
+    onBBOXChanged={setBBOX}
+    BBOX={BBOX}
     childrenVisibility={childrenVisibility}
   />;
 

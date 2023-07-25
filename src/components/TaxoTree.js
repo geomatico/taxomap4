@@ -15,6 +15,7 @@ import {TAXONOMIC_LEVELS} from '../config';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import useSubtaxonCount from '../hooks/useSubtaxonCount';
 
 //STYLES
 const contentTaxoStyle = {
@@ -48,7 +49,9 @@ const listItemTextStyle = {
   color: theme => lighten(theme.palette.primary.main, 0.15),
 };
 
-const TaxoTree = ({selectedTaxon, childrenVisibility, onChildrenVisibilityChanged, onTaxonChanged, childrenItems}) => {
+const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, childrenVisibility, BBOX, onChildrenVisibilityChanged, onTaxonChanged, childrenItems}) => {
+  const subtaxonCountBBOX = useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX});
+
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
 
@@ -99,7 +102,7 @@ const TaxoTree = ({selectedTaxon, childrenVisibility, onChildrenVisibilityChange
           <ListItemButton
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText onClick={() => handleOnChildClick(child)} sx={listItemTextStyle}>{child.name} ({child.count})</ListItemText>
+            <ListItemText onClick={() => handleOnChildClick(child)} sx={childrenVisibility[child.id] ? listItemTextStyle : {color: '#949090'}}>{child.name} ({subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} {t('of')} {child.count})</ListItemText>
             {childrenVisibility &&
               <ListItemIcon onClick={()=> handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
                 {childrenVisibility[child.id]
@@ -124,6 +127,7 @@ TaxoTree.propTypes = {
     id: PropTypes.number.isRequired
   }).isRequired,
   onTaxonChanged: PropTypes.func.isRequired,
+  BBOX: PropTypes.arrayOf(PropTypes.number),
   childrenVisibility: PropTypes.objectOf(PropTypes.bool), // solo valida el tipo de los values
   onChildrenVisibilityChanged: PropTypes.func,
   childrenItems: PropTypes.arrayOf(PropTypes.shape({
