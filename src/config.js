@@ -43,7 +43,7 @@ export const MAPSTYLES = [
   }
 ];
 
-export const INITIAL_MAPSTYLE_URL = MAPSTYLES[0].id;
+export const INITIAL_MAPSTYLE_URL = MAPSTYLES[1].id;
 
 export const DATA_PROPS = {
   // The 9 taxonomic levels
