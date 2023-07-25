@@ -7,9 +7,12 @@
   },
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:i18n-json/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -18,7 +21,8 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "@typescript-eslint"
   ],
   "rules": {
     "brace-style": ["error", "1tbs"],
@@ -28,8 +32,9 @@
     "i18n-json/valid-json": 2,
     "i18n-json/sorted-keys": 2,
     "i18n-json/identical-keys": [2, {
-      "filePath": "../../../../src/i18n/es.json"
-    }]
+      "filePath": "../../../../src/i18n/ca.json"
+    }],
+    "react/prop-types": 0
   },
   "settings": {
     "react": {

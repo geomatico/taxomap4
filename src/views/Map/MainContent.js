@@ -6,7 +6,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import DeckGL from '@deck.gl/react';
 import {ScatterplotLayer} from '@deck.gl/layers';
-import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
+import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
 import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES, TAXONOMIC_LEVELS} from '../../config';
 import useApplyColor from '../../hooks/useApplyColor';
 import {useTranslation} from 'react-i18next';

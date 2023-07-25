@@ -17,7 +17,7 @@ const subtaxonVisibility = {
 
 const Template = (args) => <TaxoTree {...args} />;
 
-// eslint-disable-next-line react/prop-types,no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ManagedTemplate = ({selectedTaxon, onTaxonChanged,childrenVisibility, onChildrenVisibilityChanged, ...other}) => {
   const [getTaxon, setTaxon] = useState(selectedTaxon);
   const [getChildrenVisibility, setChildrenVisibility] = useState(childrenVisibility);

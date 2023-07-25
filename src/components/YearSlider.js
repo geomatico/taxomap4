@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RangeSlider from '@geomatico/geocomponents/RangeSlider';
+import RangeSlider from '@geomatico/geocomponents/Forms/RangeSlider';
 
 export const YearSlider = ({yearRange, onYearRangeChange, minYear, maxYear}) => {
 

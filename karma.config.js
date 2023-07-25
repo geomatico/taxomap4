@@ -1,3 +1,4 @@
+const ExitOnErrorPlugin = require('exit-on-error-webpack-plugin');
 // eslint-disable-next-line no-undef
 const webpackConfig = require('./webpack.config')({
   test: true,
@@ -17,6 +18,7 @@ module.exports = (config) => {
       'karma-webpack',
       'karma-mocha',
       'karma-sourcemap-loader',
+      'karma-jsdom-launcher',
       'karma-chrome-launcher',
       'karma-mocha-reporter'
     ],
@@ -31,7 +33,13 @@ module.exports = (config) => {
     preprocessors: {
       'test.js': ['webpack', 'sourcemap'],
     },
-    webpack: webpackConfig,
+    webpack: {
+      ...webpackConfig,
+      plugins: [
+        ...webpackConfig.plugins,
+        new ExitOnErrorPlugin()
+      ]
+    },
     webpackServer: {
       noInfo: true,
     },
@@ -57,7 +65,7 @@ module.exports = (config) => {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['jsdom'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
