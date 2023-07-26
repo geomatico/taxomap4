@@ -39,6 +39,24 @@ export enum FilterBy {
   year = 'year'
 }
 
+export enum SymbolizeBy {
+  phylum = 'phylum',
+  basisofrecord = 'basisofrecord',
+  institutioncode = 'institutioncode'
+}
+
+export type HEXColor = `#${string}`;
+export type RGBArrayColor = [number, number, number];
+export type RGBAArrayColor = [number, number, number, number];
+
+export type LegendItem = {
+  id: number,
+  color: HEXColor,
+  values?: Array<number>
+};
+
+export type Legend = Array<LegendItem>;
+
 export type TaxomapData = {
   length: number,
   attributes: {
@@ -56,7 +74,6 @@ export type TaxomapData = {
 
 export type ChildCount = {
   id: TaxonId,
-  kingdom_id: TaxonId,
   name: string,
   count: number
 };
@@ -69,7 +86,16 @@ export type BBOX = [number, number, number, number];
 
 export type DictionaryEntry = {
   id: FilterId | TaxonId,
-  name: string
+  name: string,
+  domain_id?: number,
+  kingdom_id?: number,
+  phylum_id?: number,
+  class_id?: number,
+  order_id?: number,
+  family_id?: number,
+  genus_id?: number,
+  species_id?: number,
+  subspecies_id?: number
 }
 
 export type Dictionary = Array<DictionaryEntry>;
@@ -80,3 +106,5 @@ export type Dictionaries = {
   [FilterBy.institutioncode]: Dictionary,
   [FilterBy.basisofrecord]: Dictionary
 }
+
+export type SubtaxonCount = Record<TaxonId, number>;

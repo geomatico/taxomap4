@@ -1,13 +1,11 @@
 import {useEffect, useState} from 'react';
 import {singletonHook} from 'react-singleton-hook';
-import {Dictionaries, Dictionary, FilterBy, TaxonomicLevel} from '../types/common';
+import {Dictionaries, Dictionary, FilterBy, TaxonomicLevel} from '../commonTypes';
 
-// eslint-disable-next-line no-unused-vars
 const fields = [...Object.keys(TaxonomicLevel), ...Object.keys(FilterBy)].filter(k => k !== 'year'); // "year" is an exception, no dictionary available for it
-
 const emptyDictionaries: Dictionaries = fields.reduce((acc, field) => ({...acc, [field]: []}), {} as Dictionaries); // An empty array for each field
 
-const useDictionaries = () => {
+const useDictionaries = (): Dictionaries => {
   const [dictionaries, setDictionaries] = useState<Dictionaries>(emptyDictionaries);
 
   useEffect(() => {
@@ -25,4 +23,4 @@ const useDictionaries = () => {
   return dictionaries;
 };
 
-export default singletonHook(emptyDictionaries, useDictionaries);
+export default singletonHook<Dictionaries>(emptyDictionaries, useDictionaries);

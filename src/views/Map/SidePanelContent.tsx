@@ -8,7 +8,7 @@ import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
 import Divider from '@mui/material/Divider';
-import {BBOX, ChildCount, ChildrenVisibility, Taxon} from '../../types/common';
+import {BBOX, ChildCount, ChildrenVisibility, Taxon} from '../../commonTypes';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',

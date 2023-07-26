@@ -1,8 +1,6 @@
 // Stub Mapbox GL
 // https://github.com/mapbox/mapbox-gl-js/issues/3436
-window.URL.createObjectURL = function() {
-  return undefined;
-};
+window.URL.createObjectURL = () => '';
 
 // eslint-disable-next-line no-undef
 const testsContext = require.context('.', true, /.spec$/);

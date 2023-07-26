@@ -1,13 +1,14 @@
 import {expect} from 'chai';
 import useTaxonPath from './useTaxonPath';
 import dictionaries from './fixtures/dictionaries.json';
+import {TaxonomicLevel} from '../commonTypes';
 
 describe('useTaxonPath', () => {
 
   it('Calculates path for "Eukaryota" (base level)', () => {
     // GIVEN
     const selectedTaxon = {
-      level: 'domain',
+      level: TaxonomicLevel.domain,
       id: 1
     };
 
@@ -23,7 +24,7 @@ describe('useTaxonPath', () => {
   it('Calculates path for "Plantae" (2nd level)', () => {
     // GIVEN
     const selectedTaxon = {
-      level: 'kingdom',
+      level: TaxonomicLevel.kingdom,
       id: 2
     };
 
@@ -40,7 +41,7 @@ describe('useTaxonPath', () => {
   it('Calculates the path for "Orchis laxiflora palustris" (any level)', () => {
     // GIVEN
     const selectedTaxon = {
-      level: 'subspecies',
+      level: TaxonomicLevel.subspecies,
       id: 14800
     };
 

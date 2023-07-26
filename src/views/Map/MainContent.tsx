@@ -22,12 +22,13 @@ import {
   BBOX,
   ChildrenVisibility,
   Dictionaries,
-  FilterBy,
+  RGBAArrayColor,
+  SymbolizeBy,
   TaxomapData,
   Taxon,
   Viewport,
   YearRange
-} from '../../types/common';
+} from '../../commonTypes';
 
 const cssStyle = {
   width: '100%',
@@ -75,7 +76,7 @@ const MainContent: FC<MainContentProps> = ({
 }) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
-  const [symbolizeBy, setSymbolizeBy] = useState<FilterBy>(FilterBy.institutioncode);
+  const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
 
   const {t} = useTranslation();
   const dictionaries: Dictionaries = useDictionaries();
@@ -146,7 +147,7 @@ const MainContent: FC<MainContentProps> = ({
         index,
         data,
         target
-      }) => applyColor((data as TaxomapData)[symbolizeBy as FilterBy][index], target),
+      }) => applyColor((data as TaxomapData)[symbolizeBy][index], target as RGBAArrayColor),
       extensions: [new DataFilterExtension({filterSize: 4})],
       getFilterValue: (_, {
         index,

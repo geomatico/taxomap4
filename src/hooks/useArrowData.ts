@@ -1,18 +1,18 @@
 import {useEffect, useMemo, useState} from 'react';
 import {singletonHook} from 'react-singleton-hook';
 import {Table, tableFromIPC} from 'apache-arrow';
-import {TaxomapData} from '../types/common';
+import {TaxomapData} from '../commonTypes';
 import {ARROW_COLUMN_MAPPING} from '../config';
 
-const useArrowData = () => {
+const useArrowData = (): TaxomapData | undefined => {
   const [arrowTable, setArrowTable] = useState<Table>();
 
   useEffect(() => {
     (tableFromIPC(fetch('data/taxomap_ultralite.arrow')) as unknown as Promise<Table>).then(setArrowTable);
   }, []);
 
-  const data: TaxomapData | undefined = useMemo(() => {
-    return arrowTable && {
+  return useMemo(() => !arrowTable ? undefined : (
+    {
       length: arrowTable.numRows,
       attributes: {
         getPosition: {
@@ -27,10 +27,8 @@ const useArrowData = () => {
         })
       ),
       id: arrowTable.getChild('id')?.toArray()
-    } as TaxomapData;
-  }, [arrowTable]);
-
-  return data;
+    } as TaxomapData
+  ), [arrowTable]);
 };
 
-export default singletonHook(undefined, useArrowData);
+export default singletonHook<TaxomapData | undefined>(undefined, useArrowData);

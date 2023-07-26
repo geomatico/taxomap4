@@ -8,7 +8,7 @@ import {INITIAL_TAXON} from '../../config';
 import useDictionaries from '../../hooks/useDictionaries';
 import useTaxonChildren from '../../hooks/useTaxonChildren';
 import useSubtaxonCount from '../../hooks/useSubtaxonCount';
-import {BBOX, ChildCount, ChildrenVisibility, Taxon, YearRange} from '../../types/common';
+import {BBOX, ChildCount, ChildrenVisibility, Taxon, YearRange} from '../../commonTypes';
 
 const Index = () => {
   const dictionaries = useDictionaries();

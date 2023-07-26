@@ -1,4 +1,4 @@
-import {FilterBy, MapStyle, Taxon, TaxonomicLevel, Viewport} from './types/common';
+import {FilterBy, Legend, MapStyle, Taxon, TaxonomicLevel, Viewport} from './commonTypes';
 
 export const DRAWER_WIDTH = 300;
 export const SM_BREAKPOINT = 600;
@@ -75,7 +75,7 @@ export const INITIAL_TAXON: Taxon = {
   id: 1
 };
 
-export const PHYLUM_LEGEND = [
+export const PHYLUM_LEGEND: Legend = [
   {id: 1, color: '#FABB5C', values: [6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21]}, // Other
   {id: 5, color: '#58A062', values: [5]}, // Tracheophyta
   {id: 2, color: '#F07971', values: [1]}, // Chordata
@@ -83,12 +83,12 @@ export const PHYLUM_LEGEND = [
   {id: 4, color: '#666666', values: [3, 4, 12]} // Arthropoda
 ];
 
-export const BASIS_OF_RECORD_LEGEND = [
+export const BASIS_OF_RECORD_LEGEND: Legend = [
   {id: 2, color: '#58A062'}, // Non-fossil
   {id: 1, color: '#F07971'}  // Fossil
 ];
 
-export const INSTITUTION_LEGEND = [
+export const INSTITUTION_LEGEND: Legend = [
   {id: 4, color: '#58A062'}, // Institut Botànic de Barcelona
   {id: 1, color: '#F02921'}, // Institut Mediterrani d'Estudis Avançats
   {id: 3, color: '#343FCE'}, // Museu Valencià d'Història Natural
