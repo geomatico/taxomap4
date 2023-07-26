@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import {singletonHook} from 'react-singleton-hook';
 import {Table, tableFromIPC} from 'apache-arrow';
-import {FilterBy, TaxomapData, TaxonomicLevel} from '../types/common';
+import {TaxomapData} from '../types/common';
 import {ARROW_COLUMN_MAPPING} from '../config';
 
 const useArrowData = () => {
