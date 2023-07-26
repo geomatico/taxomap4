@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import styled from '@mui/styles/styled';
 import Geomatico from '../../components/Geomatico';
-import PropTypes from 'prop-types';
 import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
-import {TAXONOMIC_LEVELS} from '../../config';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
 import Divider from '@mui/material/Divider';
+import {BBOX, ChildCount, ChildrenVisibility, Taxon} from '../../commonTypes';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -17,7 +16,31 @@ const ScrollableContent = styled(Box)({
 });
 
 
-const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange, selectedTaxon, onTaxonChange, childrenVisibility, onChildrenVisibilityChanged, childrenItems, BBOX}) => {
+type SidePanelContentProps = {
+  institutionFilter?: number,
+  onInstitutionFilterChange: (id: number) => void,
+  basisOfRecordFilter?: number,
+  onBasisOfRecordChange: (id: number) => void,
+  selectedTaxon: Taxon,
+  onTaxonChange: (taxon: Taxon) => void,
+  BBOX?: BBOX,
+  childrenVisibility?: ChildrenVisibility,
+  onChildrenVisibilityChanged: (visibility: ChildrenVisibility) => void,
+  childrenItems: Array<ChildCount>
+}
+
+const SidePanelContent: FC<SidePanelContentProps> = ({
+  institutionFilter,
+  onInstitutionFilterChange,
+  basisOfRecordFilter,
+  onBasisOfRecordChange,
+  selectedTaxon,
+  onTaxonChange,
+  childrenVisibility,
+  onChildrenVisibilityChanged,
+  childrenItems,
+  BBOX
+}) => {
   const [filteredTaxon, setFilteredTaxon] = useState(null);
 
   useEffect(() => {
@@ -54,28 +77,6 @@ const SidePanelContent = ({institutionFilter, onInstitutionFilterChange, basisOf
     </ScrollableContent>
     <Geomatico/>
   </Stack>;
-};
-
-SidePanelContent.propTypes = {
-  institutionFilter: PropTypes.number,
-  onInstitutionFilterChange: PropTypes.func.isRequired,
-  basisOfRecordFilter: PropTypes.number,
-  onBasisOfRecordChange: PropTypes.func.isRequired,
-  yearFilter: PropTypes.arrayOf(PropTypes.number),
-  selectedTaxon: PropTypes.shape({
-    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
-    id: PropTypes.number.isRequired
-  }).isRequired,
-  onTaxonChange: PropTypes.func.isRequired,
-  BBOX: PropTypes.arrayOf(PropTypes.number),
-  childrenVisibility: PropTypes.objectOf(PropTypes.bool),
-  onChildrenVisibilityChanged: PropTypes.func,
-  childrenItems: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    kingdom_id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
-  })),
 };
 
 export default SidePanelContent;

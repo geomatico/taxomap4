@@ -12,7 +12,7 @@ const GraphicByLegend = ({institutionFilter, basisOfRecordFilter, yearFilter, ta
   const data = useArrowData();
   const dictionaries = useDictionaries();
 
-  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, entity: symbolizeBy});
+  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, symbolizeBy});
 
   const sumTotalresults = Object.keys(totals).length && Object.values(totals).reduce((a, b) => a + b);
 

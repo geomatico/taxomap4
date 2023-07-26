@@ -1,9 +1,10 @@
 import createTheme from '@mui/material/styles/createTheme';
 import {lighten} from '@mui/material';
+import {PaletteMode} from '@mui/material';
 
 const primaryColor = '#333333';
 
-const theme = mode => createTheme({
+const theme = (mode?: PaletteMode) => createTheme({
   palette: {
     mode: mode ? mode : 'light',
     primary: {
@@ -15,7 +16,6 @@ const theme = mode => createTheme({
     text: {
       primary: '#000000',
       secondary: '#746F81',
-      contrastText: '#fff',
     }
   },
   components: {

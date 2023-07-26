@@ -50,7 +50,8 @@ const listItemTextStyle = {
 };
 
 const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, childrenVisibility, BBOX, onChildrenVisibilityChanged, onTaxonChanged, childrenItems}) => {
-  const subtaxonCountBBOX = useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX});
+
+  const subtaxonCountBBOX= useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX});
 
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
@@ -132,7 +133,6 @@ TaxoTree.propTypes = {
   onChildrenVisibilityChanged: PropTypes.func,
   childrenItems: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
-    kingdom_id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
   })),

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import SelectInput from '@geomatico/geocomponents/SelectInput';
+import SelectInput from '@geomatico/geocomponents/Forms/SelectInput';
 import Box from '@mui/material/Box';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, PHYLUM_LEGEND} from '../config';

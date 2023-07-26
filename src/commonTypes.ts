@@ -1,0 +1,110 @@
+export type MapStyle = {
+  id: string,
+  label: string,
+  thumbnail: string
+}
+
+export type Viewport = {
+  latitude: number,
+  longitude: number,
+  zoom: number,
+  bearing: number,
+  pitch: number
+}
+
+export enum TaxonomicLevel {
+  domain = 'domain',
+  kingdom = 'kingdom',
+  phylum = 'phylum',
+  class = 'class',
+  order = 'order',
+  family = 'family',
+  genus = 'genus',
+  species = 'species',
+  subspecies = 'subspecies'
+}
+
+export type TaxonId = number;
+
+export type Taxon = {
+  level: TaxonomicLevel,
+  id: TaxonId
+};
+
+export type FilterId = number;
+
+export enum FilterBy {
+  basisofrecord = 'basisofrecord',
+  institutioncode = 'institutioncode',
+  year = 'year'
+}
+
+export enum SymbolizeBy {
+  phylum = 'phylum',
+  basisofrecord = 'basisofrecord',
+  institutioncode = 'institutioncode'
+}
+
+export type HEXColor = `#${string}`;
+export type RGBArrayColor = [number, number, number];
+export type RGBAArrayColor = [number, number, number, number];
+
+export type LegendItem = {
+  id: number,
+  color: HEXColor,
+  values?: Array<number>
+};
+
+export type Legend = Array<LegendItem>;
+
+export type TaxomapData = {
+  length: number,
+  attributes: {
+    getPosition: {
+      value: Float64Array,
+      size: 2
+    }
+  },
+  id: Array<string>
+} & {
+  [key in TaxonomicLevel]: Int32Array
+} & {
+  [key in FilterBy]: Int32Array
+}
+
+export type ChildCount = {
+  id: TaxonId,
+  name: string,
+  count: number
+};
+
+export type ChildrenVisibility = Record<TaxonId, boolean>;
+
+export type YearRange = [number, number];
+
+export type BBOX = [number, number, number, number];
+
+export type DictionaryEntry = {
+  id: FilterId | TaxonId,
+  name: string,
+  domain_id?: number,
+  kingdom_id?: number,
+  phylum_id?: number,
+  class_id?: number,
+  order_id?: number,
+  family_id?: number,
+  genus_id?: number,
+  species_id?: number,
+  subspecies_id?: number
+}
+
+export type Dictionary = Array<DictionaryEntry>;
+
+export type Dictionaries = {
+  [key in TaxonomicLevel]: Dictionary
+} & {
+  [FilterBy.institutioncode]: Dictionary,
+  [FilterBy.basisofrecord]: Dictionary
+}
+
+export type SubtaxonCount = Record<TaxonId, number>;

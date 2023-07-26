@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import {useTranslation} from 'react-i18next';
 
-import SelectInput from '@geomatico/geocomponents/SelectInput';
-import NumericIdSelectInput from '@geomatico/geocomponents/NumericIdSelectInput';
+import SelectInput from '@geomatico/geocomponents/Forms/SelectInput';
+import NumericIdSelectInput from '@geomatico/geocomponents/Forms/NumericIdSelectInput';
 
 import {FILTER_BY} from '../config';
 import useDictionaries from '../hooks/useDictionaries';

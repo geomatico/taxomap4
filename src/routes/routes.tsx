@@ -1,10 +1,9 @@
-import React from 'react';
-import {HashRouter, Route, Routes, useParams} from 'react-router-dom';
+import React, {FC} from 'react';
+import {HashRouter, Navigate, Outlet, Route, Routes, useParams} from 'react-router-dom';
 import i18n from 'i18next';
-import {Outlet, Navigate} from 'react-router-dom';
 import MapView from '../views/Map';
 
-const LangSetter = () => {
+const LangSetter: FC = () => {
   const {lang} = useParams();
   if (i18n.resolvedLanguage !== lang) {
     i18n.changeLanguage(lang);
@@ -12,12 +11,12 @@ const LangSetter = () => {
   return <Outlet/>;
 };
 
-const AppRoutes = () =>
+const AppRoutes: FC = () =>
   <HashRouter>
     <Routes>
       <Route path=":lang" element={<LangSetter/>}>
-        <Route exact path="" element={<Navigate to="map"/>}/>
-        <Route exact path="map" element={<MapView/>}/>
+        <Route path="" element={<Navigate to="map"/>}/>
+        <Route path="map" element={<MapView/>}/>
         {/*
          <Route exact path="detail" element={<Layout mainContent={<MapView/>} miniSidePanelSelectedActionId='detail'/>}/>
         */}
@@ -28,4 +27,3 @@ const AppRoutes = () =>
   </HashRouter>;
 
 export default AppRoutes;
-

@@ -20,7 +20,7 @@ Last.args = {
   last: true
 };
 
-// eslint-disable-next-line react/prop-types,no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ManagedTemplate = ({value, onChange, ...args}) => {
   const [getValue, setValue] = useState(value);
   return <BreadcrumItem onChange={setValue} value={getValue} {...args} />;

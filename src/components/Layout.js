@@ -9,8 +9,8 @@ import styled from '@mui/styles/styled';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 //GEOCOMPONENTS
-import ResponsiveHeader from '@geomatico/geocomponents/ResponsiveHeader';
-import SidePanel from '@geomatico/geocomponents/SidePanel';
+import ResponsiveHeader from '@geomatico/geocomponents/Layout/ResponsiveHeader';
+import SidePanel from '@geomatico/geocomponents/Layout/SidePanel';
 
 //UTILS
 import Logo from './icons/Logo';

@@ -1,23 +1,34 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import PropTypes from 'prop-types';
+import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
-import {Map} from 'react-map-gl';
+import {Map, MapRef} from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import DeckGL from '@deck.gl/react';
-import {ScatterplotLayer} from '@deck.gl/layers';
-import BaseMapPicker from '@geomatico/geocomponents/BaseMapPicker';
-import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES, TAXONOMIC_LEVELS} from '../../config';
+import DeckGL from '@deck.gl/react/typed';
+import {ScatterplotLayer} from '@deck.gl/layers/typed';
+import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
+import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColor from '../../hooks/useApplyColor';
 import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
 import LegendSelector from '../../components/LegendSelector';
 import YearSlider from '../../components/YearSlider';
-import {DataFilterExtension} from '@deck.gl/extensions';
+import {DataFilterExtension} from '@deck.gl/extensions/typed';
 import useDictionaries from '../../hooks/useDictionaries';
 import useArrowData from '../../hooks/useArrowData';
 import {debounce} from 'throttle-debounce';
 import GraphicByLegend from '../../components/GraphicByLegend';
+import {Accessor} from '@deck.gl/core/typed';
+import {
+  BBOX,
+  ChildrenVisibility,
+  Dictionaries,
+  RGBAArrayColor,
+  SymbolizeBy,
+  TaxomapData,
+  Taxon,
+  Viewport,
+  YearRange
+} from '../../commonTypes';
 
 const cssStyle = {
   width: '100%',
@@ -43,20 +54,39 @@ const legendSelectorContainer = {
   flexDirection: 'column'
 };
 
+type MainContentProps = {
+  institutionFilter?: number,
+  basisOfRecordFilter?: number,
+  yearFilter?: YearRange,
+  onYearFilterChange: (range: YearRange) => void,
+  taxonFilter: Taxon,
+  BBOX?: BBOX,
+  onBBOXChanged: (bbox: BBOX) => void,
+  childrenVisibility?: ChildrenVisibility
+};
 
-const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter, onBBOXChanged}) => {
-  const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
-  const [mapStyle, setMapStyle] = useState(INITIAL_MAPSTYLE_URL);
-  const [symbolizeBy, setSymbolizeBy] = useState('institutioncode');
+const MainContent: FC<MainContentProps> = ({
+  institutionFilter,
+  basisOfRecordFilter,
+  yearFilter,
+  onYearFilterChange,
+  taxonFilter,
+  //BBOX,
+  onBBOXChanged
+}) => {
+  const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
+  const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
+  const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
 
   const {t} = useTranslation();
-  const dictionaries = useDictionaries();
-  const mapRef = useRef(null);
+  const dictionaries: Dictionaries = useDictionaries();
+  const mapRef = useRef<MapRef>(null);
   const applyColor = useApplyColor(symbolizeBy);
-  const data = useArrowData();
+  const data: TaxomapData | undefined = useArrowData();
 
-  const notifyChanges = useCallback(debounce(30, map => {
-    onBBOXChanged(map.getBounds().toArray().flatMap(a => a));
+  const notifyChanges = useCallback(debounce(30, (map: MapRef) => {
+    const bounds = map.getBounds();
+    onBBOXChanged([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]);
   }), []);
 
   // On data or viewport change, recalculate data
@@ -68,8 +98,11 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
 
   const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
 
-  const getTooltip = info => {
-    if (!info || !info.picked) return;
+  const getTooltip = (info: {
+    index: number;
+    picked: boolean;
+  }) => {
+    if (!info || !info.picked || !data) return null;
 
     const itemId = data.id[info.index];
     const speciesId = data.species[info.index];
@@ -84,24 +117,26 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
 
   useEffect(() => {
     document
-      .getElementById('deckgl-wrapper')
-      .addEventListener('contextmenu', evt => evt.preventDefault());
+      ?.getElementById('deckgl-wrapper')
+      ?.addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
 
   const years = data && data.year.filter(y => y !== 0);
-  const fullYearRange = useMemo(() => {
-    return data && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
+  const fullYearRange: YearRange | undefined = useMemo(() => {
+    return data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
   }, [data]);
 
   useEffect(() => {
-    if (fullYearRange?.length) onYearFilterChange(fullYearRange);
+    if (fullYearRange) onYearFilterChange(fullYearRange);
   }, [fullYearRange]);
 
   const deckLayers = useMemo(() => ([
-    new ScatterplotLayer({
+    new ScatterplotLayer<TaxomapData, {
+      getFilterValue: Accessor<TaxomapData, number | number[]>,
+      filterRange: Array<number | number []>
+    }>({
       id: 'data',
       data: data,
-      antialias: false,
       getRadius: 4,
       radiusUnits: 'pixels',
       stroked: true,
@@ -112,16 +147,16 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
         index,
         data,
         target
-      }) => applyColor(data[symbolizeBy][index], target),
+      }) => applyColor((data as TaxomapData)[symbolizeBy][index], target as RGBAArrayColor),
       extensions: [new DataFilterExtension({filterSize: 4})],
       getFilterValue: (_, {
         index,
         data
       }) => [
-        data.year[index],
-        data.institutioncode[index],
-        data.basisofrecord[index],
-        taxonFilter?.level === undefined ? 1 : data[taxonFilter.level][index]
+        (data as TaxomapData).year[index],
+        (data as TaxomapData).institutioncode[index],
+        (data as TaxomapData).basisofrecord[index],
+        taxonFilter?.level === undefined ? 1 : (data as TaxomapData)[taxonFilter.level][index]
       ],
       filterRange: [
         yearFilter === undefined ? [0, 999999] : yearFilter,
@@ -146,7 +181,7 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
     <DeckGL
       layers={deckLayers}
       initialViewState={viewport}
-      onViewStateChange={({viewState}) => setViewport(viewState)}
+      onViewStateChange={({viewState}) => setViewport(viewState as Viewport)}
       controller style={cssStyle}
       onResize={handleMapResize}
       getTooltip={getTooltip}
@@ -183,19 +218,6 @@ const MainContent = ({institutionFilter, basisOfRecordFilter, yearFilter, onYear
       </LegendSelector>
     </Box>
   </>;
-};
-
-MainContent.propTypes = {
-  institutionFilter: PropTypes.number,
-  basisOfRecordFilter: PropTypes.number,
-  yearFilter: PropTypes.arrayOf(PropTypes.number),
-  onYearFilterChange: PropTypes.func,
-  taxonFilter: PropTypes.shape({
-    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
-    id: PropTypes.number.isRequired
-  }),
-  onBBOXChanged: PropTypes.func,
-  childrenVisibility: PropTypes.objectOf(PropTypes.bool),
 };
 
 export default MainContent;
