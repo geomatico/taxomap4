@@ -117,7 +117,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
       <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
     </Box>
     <List dense sx={{ml: 2}}>
-      {childrenItems?.length && childrenVisibility && childrenItems.map(child =>
+      {!!childrenItems?.length && childrenVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
           <ListItemButton
             sx={listItemButtonStyle}
