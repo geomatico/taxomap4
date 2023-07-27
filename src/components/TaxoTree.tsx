@@ -1,6 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {lighten} from '@mui/material/styles';
+import React, {FC} from 'react';
+import {lighten, Theme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -16,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
+import {BBOX, ChildCount, ChildrenVisibility, Taxon, TaxonId, TaxonomicLevel, YearRange} from '../commonTypes';
 
 //STYLES
 const contentTaxoStyle = {
@@ -41,15 +41,27 @@ const iconTaxoStyle = {
 const listItemButtonStyle = {
   borderRadius: 2,
   '&:hover': {
-    backgroundColor: theme => lighten(theme.palette.secondary.main, 0.85),
+    backgroundColor: (theme: Theme) => lighten(theme.palette.secondary.main, 0.85),
   }
 };
 
 const listItemTextStyle = {
-  color: theme => lighten(theme.palette.primary.main, 0.15),
+  color: (theme: Theme) => lighten(theme.palette.primary.main, 0.15),
 };
 
-const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, childrenVisibility, BBOX, onChildrenVisibilityChanged, onTaxonChanged, childrenItems}) => {
+type TaxoTreeProps = {
+  institutionFilter?: number,
+  basisOfRecordFilter?: number,
+  yearFilter?: YearRange,
+  selectedTaxon: Taxon,
+  onTaxonChanged: (taxon: Taxon) => void,
+  BBOX?: BBOX,
+  childrenVisibility?: ChildrenVisibility,
+  onChildrenVisibilityChanged: (visibility: ChildrenVisibility) => void,
+  childrenItems: Array<ChildCount>
+}
+
+const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, childrenVisibility, BBOX, onChildrenVisibilityChanged, onTaxonChanged, childrenItems}) => {
 
   const subtaxonCountBBOX= useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX});
 
@@ -60,34 +72,41 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
   const isRootLevel = actualLevelIndex === 0;
   const actualItem = dictionaries[selectedTaxon.level].find(item => item.id === selectedTaxon.id);
 
-  const handleOnChildClick = child => {
+  const handleOnChildClick = (child: TaxonId) => {
     // TODO Corta la navegacion al nivel de species hasta que sepamos filtrar bien las subespecies indeterminadas
     if (selectedTaxon.level !== 'species') {
       onTaxonChanged({
-        level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
-        id: child.id
+        level: TAXONOMIC_LEVELS[actualLevelIndex + 1] as TaxonomicLevel,
+        id: child
       });
     }
   };
 
   const handleOnParentClick = () => {
-    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1];
-    onTaxonChanged({
-      level: parentLevel,
-      id: actualItem[`${parentLevel}_id`]
-    });
+    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1] as TaxonomicLevel;
+    if (actualItem) {
+      onTaxonChanged({
+        level: parentLevel,
+        id: actualItem[`${parentLevel}_id`] ?? NaN
+      });
+    }
   };
 
   // para niveles indeterminados ( el header del tree )
   if (actualItem?.name === '') {
-    const parent = dictionaries[TAXONOMIC_LEVELS[actualLevelIndex - 1]]
-      .find(item => item.id === actualItem[TAXONOMIC_LEVELS[actualLevelIndex - 1] + '_id']);
-    actualItem.name = `${parent.name} [indet]`;
+    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1] as TaxonomicLevel;
+    const parent = dictionaries[parentLevel]
+      .find(item => item.id === actualItem[`${parentLevel}_id`]);
+    actualItem.name = `${parent?.name} [indet]`;
   }
 
-  const handleOnSubtaxonVisibilityChange =(id)=> {
-    const visib = {...childrenVisibility, ...{[id]: !childrenVisibility[id]}};
-    onChildrenVisibilityChanged(visib);
+  const handleOnSubtaxonVisibilityChange =(id: TaxonId)=> {
+    if (childrenVisibility) {
+      onChildrenVisibilityChanged({
+        ...childrenVisibility,
+        [id]: !childrenVisibility[id]
+      });
+    }
   };
 
   return actualItem ? <>
@@ -103,12 +122,12 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
           <ListItemButton
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText onClick={() => handleOnChildClick(child)} sx={childrenVisibility[child.id] ? listItemTextStyle : {color: '#949090'}}>{child.name} ({subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} {t('of')} {child.count})</ListItemText>
+            <ListItemText onClick={() => handleOnChildClick(child.id)} sx={childrenVisibility[child.id] ? listItemTextStyle : {color: '#949090'}}>{child.name} ({subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} {t('of')} {child.count})</ListItemText>
             {childrenVisibility &&
               <ListItemIcon onClick={()=> handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
                 {childrenVisibility[child.id]
-                  ? <VisibilityIcon id={child.id} sx={{fontSize: '1.2rem'}}/>
-                  : <VisibilityOffIcon  sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
+                  ? <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
+                  : <VisibilityOffIcon sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
                 }
               </ListItemIcon>
             }
@@ -117,25 +136,6 @@ const TaxoTree = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedT
       )}
     </List>
   </> : null;
-};
-
-TaxoTree.propTypes = {
-  institutionFilter: PropTypes.number,
-  basisOfRecordFilter: PropTypes.number,
-  yearFilter: PropTypes.arrayOf(PropTypes.number),
-  selectedTaxon: PropTypes.shape({
-    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
-    id: PropTypes.number.isRequired
-  }).isRequired,
-  onTaxonChanged: PropTypes.func.isRequired,
-  BBOX: PropTypes.arrayOf(PropTypes.number),
-  childrenVisibility: PropTypes.objectOf(PropTypes.bool), // solo valida el tipo de los values
-  onChildrenVisibilityChanged: PropTypes.func,
-  childrenItems: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
-  })),
 };
 
 export default TaxoTree;
