@@ -1,11 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {VegaLite} from 'react-vega';
+import React, {FC} from 'react';
+import {VegaLite, VisualizationSpec} from 'react-vega';
+import {HEXColor} from '../commonTypes';
 
-const PieChart = ({data}) => {
+type ChartItem = {
+  color: HEXColor,
+  label: string,
+  id: number,
+  percentage: number,
+}
 
+export type ChartData = Array<ChartItem>
 
-  const specArc = {
+export interface PieChartProps {
+  data: ChartData
+}
+
+const PieChart: FC<PieChartProps> = ({data}) => {
+
+  const specArc: VisualizationSpec = {
     '$schema': 'https://vega.github.io/schema/vega/v3.0.json',
     'width': 180,
     'height': 180,
@@ -146,14 +158,5 @@ const PieChart = ({data}) => {
 
   return <VegaLite spec={specArc} actions={false}/>;
 };
-
-PieChart.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    category: PropTypes.string,
-    value: PropTypes.number
-  }))
-};
-
-PieChart.defaultProps = {};
 
 export default PieChart;
