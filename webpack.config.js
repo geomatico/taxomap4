@@ -54,6 +54,13 @@ module.exports = (env) => ({
     ],
   },
   plugins: env.test ? [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'static',
+        },
+      ],
+    }),
     new DotenvWebpackPlugin({
       safe: true // load '.env.example' to verify the '.env' variables are all set
     })
