@@ -71,7 +71,7 @@ const MainContent: FC<MainContentProps> = ({
   yearFilter,
   onYearFilterChange,
   taxonFilter,
-  //BBOX,
+  BBOX,
   onBBOXChanged
 }) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
@@ -214,6 +214,7 @@ const MainContent: FC<MainContentProps> = ({
           yearFilter={yearFilter}
           taxonFilter={taxonFilter}
           symbolizeBy={symbolizeBy}
+          BBOX={BBOX}
         />
       </LegendSelector>
     </Box>
