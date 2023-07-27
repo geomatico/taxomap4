@@ -24,8 +24,8 @@ const Index = () => {
     institutionFilter: selectedInstitutionId,
     basisOfRecordFilter: selectedBasisOfRecordId,
     yearFilter: selectedYearRange,
-    selectedTaxon,
-    BBOX
+    selectedTaxon
+    //BBOX // TODO Los totales en TaxoTree van sin filtrar por BBOX. Tenemos que discutir si van filtrados por los demás criterios o no
   });
 
   const childrenItems: Array<ChildCount> = useTaxonChildren(subtaxonCount, selectedTaxon, dictionaries);
@@ -42,6 +42,7 @@ const Index = () => {
     institutionFilter={selectedInstitutionId}
     onInstitutionFilterChange={setInstitutionId}
     basisOfRecordFilter={selectedBasisOfRecordId}
+    yearFilter={selectedYearRange}
     onBasisOfRecordChange={setBasisOfRecordId}
     selectedTaxon={selectedTaxon}
     onTaxonChange={setTaxon}

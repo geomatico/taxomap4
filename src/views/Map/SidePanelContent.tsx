@@ -8,7 +8,7 @@ import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
 import Divider from '@mui/material/Divider';
-import {BBOX, ChildCount, ChildrenVisibility, Taxon} from '../../commonTypes';
+import {BBOX, ChildCount, ChildrenVisibility, Taxon, YearRange} from '../../commonTypes';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -20,6 +20,7 @@ type SidePanelContentProps = {
   institutionFilter?: number,
   onInstitutionFilterChange: (id: number) => void,
   basisOfRecordFilter?: number,
+  yearFilter?: YearRange,
   onBasisOfRecordChange: (id: number) => void,
   selectedTaxon: Taxon,
   onTaxonChange: (taxon: Taxon) => void,
@@ -33,6 +34,7 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
   institutionFilter,
   onInstitutionFilterChange,
   basisOfRecordFilter,
+  yearFilter,
   onBasisOfRecordChange,
   selectedTaxon,
   onTaxonChange,
@@ -73,6 +75,9 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
         childrenItems={childrenItems}
         childrenVisibility={childrenVisibility}
         onChildrenVisibilityChanged={onChildrenVisibilityChanged}
+        basisOfRecordFilter={basisOfRecordFilter}
+        institutionFilter={institutionFilter}
+        yearFilter={yearFilter}
       />
     </ScrollableContent>
     <Geomatico/>
