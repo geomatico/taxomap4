@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import PieChart from './PieChart';
+import PieChart, {ChartData} from './PieChart';
 import useCount from '../hooks/useCount';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND} from '../config';
 import useArrowData from '../hooks/useArrowData';
@@ -17,33 +17,39 @@ export interface GraphicByLegendProps {
   BBOX?: BBOX
 }
 
-const GraphicByLegend:FC<GraphicByLegendProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, taxonFilter, symbolizeBy, BBOX}) => {
+const GraphicByLegend: FC<GraphicByLegendProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, taxonFilter, symbolizeBy, BBOX}) => {
   const data: TaxomapData | undefined = useArrowData();
   const dictionaries = useDictionaries();
 
-  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, symbolizeBy, BBOX});
+  const totals = useCount({data, dictionaries, institutionFilter,basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, symbolizeBy, BBOX});
 
   const sumTotalresults = Object.keys(totals).length && Object.values(totals).reduce((a, b) => a + b);
 
-  const formattedForChart = Object.keys(totals).length && Object.entries(totals).map(([key, value]) => {
-    let elementConf: LegendItem |  undefined = {} as LegendItem;
+  const formattedForChart: ChartData = (Object.keys(totals).length
+    ? Object.entries(totals).map(([key, value]) => {
+      let elementConf: LegendItem | undefined = {} as LegendItem;
 
-    if (symbolizeBy === 'institutioncode') {
-      elementConf = INSTITUTION_LEGEND.find(el => el.id === parseInt(key));
-    } else if (symbolizeBy === 'basisofrecord') {
-      elementConf = BASIS_OF_RECORD_LEGEND.find(el => el.id === parseInt(key));
-    }
-    if(!elementConf) return undefined;
+      if (symbolizeBy === 'institutioncode') {
+        elementConf = INSTITUTION_LEGEND.find(el => el.id === parseInt(key));
+      } else if (symbolizeBy === 'basisofrecord') {
+        elementConf = BASIS_OF_RECORD_LEGEND.find(el => el.id === parseInt(key));
+      }
+      if (!elementConf) return undefined;
 
-    return {
-      color: elementConf.color,
-      label: elementConf.id,
-      id: elementConf.id,
-      percentage: calculatePercentage(value, sumTotalresults)
-    };
-  }).filter(el => el !== undefined);
+      return {
+        color: elementConf.color,
+        label: elementConf.id?.toString(),
+        id: elementConf.id,
+        percentage: calculatePercentage(value, sumTotalresults)
+      };
+    }).filter(el => el !== undefined)
+    : []) as ChartData;
 
-  return <> {formattedForChart && <PieChart data={formattedForChart}/>}</>;
+  return <>{
+    formattedForChart.length > 0
+      ? <PieChart data={formattedForChart}/>
+      : null
+  }</>;
 };
 
 GraphicByLegend.defaultProps = {};
