@@ -58,7 +58,7 @@ type MainContentProps = {
   institutionFilter?: number,
   basisOfRecordFilter?: number,
   yearFilter?: YearRange,
-  onYearFilterChange: (range: YearRange) => void,
+  onYearFilterChange: (range?: YearRange) => void,
   taxonFilter: Taxon,
   BBOX?: BBOX,
   onBBOXChanged: (bbox: BBOX) => void,
@@ -126,10 +126,6 @@ const MainContent: FC<MainContentProps> = ({
     return data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
   }, [data]);
 
-  useEffect(() => {
-    if (fullYearRange) onYearFilterChange(fullYearRange);
-  }, [fullYearRange]);
-
   const deckLayers = useMemo(() => ([
     new ScatterplotLayer<TaxomapData, {
       getFilterValue: Accessor<TaxomapData, number | number[]>,
@@ -196,13 +192,13 @@ const MainContent: FC<MainContentProps> = ({
       onStyleChange={setMapStyle}
     />
     <Box sx={rangeSliderContainer}>
-      {yearFilter &&
+      {fullYearRange ?
         <YearSlider
           yearRange={yearFilter}
           minYear={fullYearRange ? fullYearRange[0] : 0}
           maxYear={fullYearRange ? fullYearRange[1] : 0}
           onYearRangeChange={onYearFilterChange}
-        />
+        /> : null
       }
     </Box>
     <Box sx={legendSelectorContainer}>
