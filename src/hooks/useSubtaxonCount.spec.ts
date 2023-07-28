@@ -21,7 +21,9 @@ describe('useSubtaxonCount', () => {
 
     // WHEN
     const {result, waitForValueToChange} = renderHook(() => useSubtaxonCount(params));
-    await waitForValueToChange(() => Object.keys(result.current).length > 0);
+    if (Object.keys(result.current).length === 0) {
+      await waitForValueToChange(() => Object.keys(result.current).length > 0);
+    }
     const subtaxonCount = result.current;
 
     // THEN

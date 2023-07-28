@@ -2,7 +2,7 @@ import {
   BBOX,
   Dictionaries,
   SubtaxonVisibility,
-  SymbolizeBy,
+  GroupBy,
   TaxomapData,
   Taxon,
   TaxonomicLevel,
@@ -18,7 +18,7 @@ type UseCountParam = {
   yearFilter?: YearRange,
   selectedTaxon: Taxon,
   subtaxonVisibility?: SubtaxonVisibility,
-  symbolizeBy: SymbolizeBy,
+  groupBy: GroupBy,
   BBOX?: BBOX
 };
 
@@ -37,7 +37,7 @@ const useCount = ({
   yearFilter,
   selectedTaxon,
   subtaxonVisibility,
-  symbolizeBy,
+  groupBy,
   BBOX
 }: UseCountParam): Counts => {
   return useMemo(() => {
@@ -53,15 +53,14 @@ const useCount = ({
         (!basisOfRecordFilter || data.basisofrecord[i] === basisOfRecordFilter) &&
         (!yearFilter || (data.year[i] >= yearFilter[0] && data.year[i] <= yearFilter[1])) &&
         (data[selectedTaxon.level][i] === selectedTaxon.id) &&
-        (!subtaxonVisibility || subtaxonVisibility.isVisible[data[subtaxonVisibility.subtaxonLevel][i]]) &&
         (!BBOX || isInsideOfBBOX(BBOX, lon, lat))
       ) {
-        if (!counts[data[symbolizeBy][i]]) counts[data[symbolizeBy][i]] = 0;
-        counts[data[symbolizeBy][i]] += 1;
+        if (!counts[data[groupBy][i]]) counts[data[groupBy][i]] = 0;
+        counts[data[groupBy][i]] += 1;
       }
     }
     return counts;
-  }, [data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, symbolizeBy, BBOX, subtaxonVisibility]);
+  }, [data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, groupBy, BBOX, subtaxonVisibility]);
 };
 
 export default useCount;

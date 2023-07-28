@@ -45,6 +45,8 @@ export enum SymbolizeBy {
   institutioncode = 'institutioncode'
 }
 
+export type GroupBy = FilterBy | SymbolizeBy;
+
 export type HEXColor = `#${string}`;
 export type RGBArrayColor = [number, number, number];
 export type RGBAArrayColor = [number, number, number, number];
