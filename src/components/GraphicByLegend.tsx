@@ -4,12 +4,13 @@ import useCount from '../hooks/useCount';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND} from '../config';
 import useArrowData from '../hooks/useArrowData';
 import useDictionaries from '../hooks/useDictionaries';
-import {BBOX, LegendItem, SymbolizeBy, TaxomapData, Taxon, YearRange} from '../commonTypes';
+import {BBOX, LegendItem, SubtaxonVisibility, SymbolizeBy, TaxomapData, Taxon, YearRange} from '../commonTypes';
 
 const calculatePercentage = (partialValue: number, total: number) => partialValue * 100 / total;
 
 export interface GraphicByLegendProps {
   taxonFilter: Taxon,
+  subtaxonVisibility?: SubtaxonVisibility,
   symbolizeBy: SymbolizeBy,
   institutionFilter?: number,
   basisOfRecordFilter?: number,
@@ -17,11 +18,11 @@ export interface GraphicByLegendProps {
   BBOX?: BBOX
 }
 
-const GraphicByLegend: FC<GraphicByLegendProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, taxonFilter, symbolizeBy, BBOX}) => {
+const GraphicByLegend:FC<GraphicByLegendProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, taxonFilter, subtaxonVisibility, symbolizeBy, BBOX}) => {
   const data: TaxomapData | undefined = useArrowData();
   const dictionaries = useDictionaries();
 
-  const totals = useCount({data, dictionaries, institutionFilter,basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, symbolizeBy, BBOX});
+  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, subtaxonVisibility, symbolizeBy, BBOX});
 
   const sumTotalresults = Object.keys(totals).length && Object.values(totals).reduce((a, b) => a + b);
 

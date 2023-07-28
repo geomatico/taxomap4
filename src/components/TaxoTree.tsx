@@ -15,7 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
-import {BBOX, ChildCount, ChildrenVisibility, Taxon, TaxonId, TaxonomicLevel, YearRange} from '../commonTypes';
+import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, YearRange} from '../commonTypes';
 
 //STYLES
 const contentTaxoStyle = {
@@ -56,12 +56,12 @@ type TaxoTreeProps = {
   selectedTaxon: Taxon,
   onTaxonChanged: (taxon: Taxon) => void,
   BBOX?: BBOX,
-  childrenVisibility?: ChildrenVisibility,
-  onChildrenVisibilityChanged: (visibility: ChildrenVisibility) => void,
+  subtaxonVisibility?: SubtaxonVisibility,
+  onSubtaxonVisibilityChanged: (visibility: SubtaxonVisibility) => void,
   childrenItems: Array<ChildCount>
 }
 
-const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, childrenVisibility, BBOX, onChildrenVisibilityChanged, onTaxonChanged, childrenItems}) => {
+const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, subtaxonVisibility, BBOX, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
 
   const subtaxonCountBBOX= useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX});
 
@@ -100,11 +100,14 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
     actualItem.name = `${parent?.name} [indet]`;
   }
 
-  const handleOnSubtaxonVisibilityChange =(id: TaxonId)=> {
-    if (childrenVisibility) {
-      onChildrenVisibilityChanged({
-        ...childrenVisibility,
-        [id]: !childrenVisibility[id]
+  const handleOnSubtaxonVisibilityChange = (id: TaxonId)=> {
+    if (subtaxonVisibility) {
+      onSubtaxonVisibilityChanged({
+        ...subtaxonVisibility,
+        isVisible: {
+          ...subtaxonVisibility.isVisible,
+          [id]: !subtaxonVisibility.isVisible[id]
+        }
       });
     }
   };
@@ -117,15 +120,15 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
       <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
     </Box>
     <List dense sx={{ml: 2}}>
-      {!!childrenItems?.length && childrenVisibility && childrenItems.map(child =>
+      {!!childrenItems?.length && subtaxonVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
           <ListItemButton
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText onClick={() => handleOnChildClick(child.id)} sx={childrenVisibility[child.id] ? listItemTextStyle : {color: '#949090'}}>{child.name} ({subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} {t('of')} {child.count})</ListItemText>
-            {childrenVisibility &&
+            <ListItemText onClick={() => handleOnChildClick(child.id)} sx={subtaxonVisibility.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>{child.name} ({subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} {t('of')} {child.count})</ListItemText>
+            {subtaxonVisibility &&
               <ListItemIcon onClick={()=> handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
-                {childrenVisibility[child.id]
+                {subtaxonVisibility.isVisible[child.id]
                   ? <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
                   : <VisibilityOffIcon sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
                 }

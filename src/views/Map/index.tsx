@@ -3,12 +3,12 @@ import React, {useEffect, useState} from 'react';
 import Layout from '../../components/Layout';
 import SidePanelContent from './SidePanelContent';
 import MainContent from './MainContent';
-import {INITIAL_TAXON} from '../../config';
+import {INITIAL_TAXON, TAXONOMIC_LEVELS} from '../../config';
 
 import useDictionaries from '../../hooks/useDictionaries';
 import useTaxonChildren from '../../hooks/useTaxonChildren';
 import useSubtaxonCount from '../../hooks/useSubtaxonCount';
-import {BBOX, ChildCount, ChildrenVisibility, Taxon, YearRange} from '../../commonTypes';
+import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, YearRange} from '../../commonTypes';
 
 const Index = () => {
   const dictionaries = useDictionaries();
@@ -18,23 +18,32 @@ const Index = () => {
   const [selectedTaxon, setTaxon] = useState<Taxon>(INITIAL_TAXON);
   const [selectedYearRange, setYearRange] = useState<YearRange>();
   const [BBOX, setBBOX] = useState<BBOX>();
-  const [childrenVisibility, setChildrenVisibility] = useState<ChildrenVisibility>();
+  const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
 
   const subtaxonCount = useSubtaxonCount({
     institutionFilter: selectedInstitutionId,
     basisOfRecordFilter: selectedBasisOfRecordId,
     yearFilter: selectedYearRange,
     selectedTaxon
-    //BBOX // TODO Los totales en TaxoTree van sin filtrar por BBOX. Tenemos que discutir si van filtrados por los demás criterios o no
   });
 
   const childrenItems: Array<ChildCount> = useTaxonChildren(subtaxonCount, selectedTaxon, dictionaries);
 
   useEffect(() => {
     if (childrenItems?.length) {
-      const vis: Record<string, boolean> = {};
-      childrenItems.forEach((el) => vis[el.id] = true);
-      setChildrenVisibility(vis);
+      setSubtaxonVisibility((prevVisibility) => {
+        const prevSubtaxonLevel = prevVisibility?.subtaxonLevel;
+        const nextSubtaxonLevel = TAXONOMIC_LEVELS[TAXONOMIC_LEVELS.indexOf(selectedTaxon.level) + 1] as TaxonomicLevel;
+        const levelChanged = prevSubtaxonLevel !== nextSubtaxonLevel;
+
+        return {
+          subtaxonLevel: nextSubtaxonLevel,
+          isVisible: childrenItems.reduce((isVisible, count) => {
+            isVisible[count.id] = levelChanged ? true : prevVisibility?.isVisible[count.id] ?? true; // Keep visibility state if level didn't change
+            return isVisible;
+          }, {} as Record<TaxonId, boolean>)
+        };
+      });
     }
   }, [childrenItems]);
 
@@ -48,8 +57,8 @@ const Index = () => {
     onTaxonChange={setTaxon}
     BBOX={BBOX}
     childrenItems={childrenItems}
-    childrenVisibility={childrenVisibility}
-    onChildrenVisibilityChanged={setChildrenVisibility}
+    subtaxonVisibility={subtaxonVisibility}
+    onSubtaxonVisibilityChanged={setSubtaxonVisibility}
   />;
 
   const mainContent = <MainContent
@@ -60,7 +69,7 @@ const Index = () => {
     taxonFilter={selectedTaxon}
     onBBOXChanged={setBBOX}
     BBOX={BBOX}
-    childrenVisibility={childrenVisibility}
+    subtaxonVisibility={subtaxonVisibility}
   />;
 
   return <Layout

@@ -20,7 +20,7 @@ import GraphicByLegend from '../../components/GraphicByLegend';
 import {Accessor} from '@deck.gl/core/typed';
 import {
   BBOX,
-  ChildrenVisibility,
+  SubtaxonVisibility,
   Dictionaries,
   RGBAArrayColor,
   SymbolizeBy,
@@ -62,7 +62,7 @@ type MainContentProps = {
   taxonFilter: Taxon,
   BBOX?: BBOX,
   onBBOXChanged: (bbox: BBOX) => void,
-  childrenVisibility?: ChildrenVisibility
+  subtaxonVisibility?: SubtaxonVisibility
 };
 
 const MainContent: FC<MainContentProps> = ({
@@ -72,7 +72,8 @@ const MainContent: FC<MainContentProps> = ({
   onYearFilterChange,
   taxonFilter,
   BBOX,
-  onBBOXChanged
+  onBBOXChanged,
+  subtaxonVisibility
 }) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
@@ -152,21 +153,22 @@ const MainContent: FC<MainContentProps> = ({
         (data as TaxomapData).year[index],
         (data as TaxomapData).institutioncode[index],
         (data as TaxomapData).basisofrecord[index],
-        taxonFilter?.level === undefined ? 1 : (data as TaxomapData)[taxonFilter.level][index]
+        //taxonFilter?.level === undefined ? 1 : (data as TaxomapData)[taxonFilter.level][index]
+        !subtaxonVisibility || subtaxonVisibility.isVisible[(data as TaxomapData)[subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
       ],
       filterRange: [
         yearFilter === undefined ? [0, 999999] : yearFilter,
         institutionFilter === undefined ? [0, 999999] : [institutionFilter, institutionFilter],
         basisOfRecordFilter === undefined ? [0, 999999] : [basisOfRecordFilter, basisOfRecordFilter],
-        taxonFilter?.id === undefined ? [0, 999999] : [taxonFilter.id, taxonFilter.id]
+        [1, 1]
       ],
       updateTriggers: {
         getFillColor: [symbolizeBy],
-        getFilterValue: [taxonFilter?.level]
+        getFilterValue: [subtaxonVisibility]
       },
       pickable: true
     })
-  ]), [data, symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter, dictionaries]);
+  ]), [data, symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter, dictionaries, subtaxonVisibility]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
@@ -209,6 +211,7 @@ const MainContent: FC<MainContentProps> = ({
           basisOfRecordFilter={basisOfRecordFilter}
           yearFilter={yearFilter}
           taxonFilter={taxonFilter}
+          subtaxonVisibility={subtaxonVisibility}
           symbolizeBy={symbolizeBy}
           BBOX={BBOX}
         />

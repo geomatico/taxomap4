@@ -1,4 +1,13 @@
-import {BBOX, Dictionaries, SymbolizeBy, TaxomapData, Taxon, TaxonomicLevel, YearRange} from '../commonTypes';
+import {
+  BBOX,
+  Dictionaries,
+  SubtaxonVisibility,
+  SymbolizeBy,
+  TaxomapData,
+  Taxon,
+  TaxonomicLevel,
+  YearRange
+} from '../commonTypes';
 import {useMemo} from 'react';
 
 type UseCountParam = {
@@ -8,6 +17,7 @@ type UseCountParam = {
   basisOfRecordFilter?: number,
   yearFilter?: YearRange,
   selectedTaxon: Taxon,
+  subtaxonVisibility?: SubtaxonVisibility,
   symbolizeBy: SymbolizeBy,
   BBOX?: BBOX
 };
@@ -26,6 +36,7 @@ const useCount = ({
   basisOfRecordFilter,
   yearFilter,
   selectedTaxon,
+  subtaxonVisibility,
   symbolizeBy,
   BBOX
 }: UseCountParam): Counts => {
@@ -42,6 +53,7 @@ const useCount = ({
         (!basisOfRecordFilter || data.basisofrecord[i] === basisOfRecordFilter) &&
         (!yearFilter || (data.year[i] >= yearFilter[0] && data.year[i] <= yearFilter[1])) &&
         (data[selectedTaxon.level][i] === selectedTaxon.id) &&
+        (!subtaxonVisibility || subtaxonVisibility.isVisible[data[subtaxonVisibility.subtaxonLevel][i]]) &&
         (!BBOX || isInsideOfBBOX(BBOX, lon, lat))
       ) {
         if (!counts[data[symbolizeBy][i]]) counts[data[symbolizeBy][i]] = 0;
@@ -49,7 +61,7 @@ const useCount = ({
       }
     }
     return counts;
-  }, [data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, symbolizeBy, BBOX]);
+  }, [data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, symbolizeBy, BBOX, subtaxonVisibility]);
 };
 
 export default useCount;
