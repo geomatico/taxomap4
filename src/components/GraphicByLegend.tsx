@@ -21,7 +21,7 @@ const GraphicByLegend: FC<GraphicByLegendProps> = ({institutionFilter, basisOfRe
   const data: TaxomapData | undefined = useArrowData();
   const dictionaries = useDictionaries();
 
-  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, symbolizeBy, BBOX});
+  const totals = useCount({data, dictionaries, institutionFilter,basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, symbolizeBy, BBOX});
 
   const sumTotalresults = Object.keys(totals).length && Object.values(totals).reduce((a, b) => a + b);
 
@@ -45,7 +45,11 @@ const GraphicByLegend: FC<GraphicByLegendProps> = ({institutionFilter, basisOfRe
     }).filter(el => el !== undefined)
     : []) as ChartData;
 
-  return <> {!!formattedForChart.length && <PieChart data={formattedForChart}/>}</>;
+  return <>{
+    formattedForChart.length
+      ? <PieChart data={formattedForChart}/>
+      : null
+  }</>;
 };
 
 GraphicByLegend.defaultProps = {};
