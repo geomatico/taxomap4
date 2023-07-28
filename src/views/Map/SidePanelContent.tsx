@@ -8,7 +8,7 @@ import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
 import Divider from '@mui/material/Divider';
-import {BBOX, ChildCount, ChildrenVisibility, Taxon, YearRange} from '../../commonTypes';
+import {BBOX, ChildCount, SubtaxonVisibility, Taxon, YearRange} from '../../commonTypes';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -25,8 +25,8 @@ type SidePanelContentProps = {
   selectedTaxon: Taxon,
   onTaxonChange: (taxon: Taxon) => void,
   BBOX?: BBOX,
-  childrenVisibility?: ChildrenVisibility,
-  onChildrenVisibilityChanged: (visibility: ChildrenVisibility) => void,
+  subtaxonVisibility?: SubtaxonVisibility,
+  onSubtaxonVisibilityChanged: (visibility: SubtaxonVisibility) => void,
   childrenItems: Array<ChildCount>
 }
 
@@ -38,8 +38,8 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
   onBasisOfRecordChange,
   selectedTaxon,
   onTaxonChange,
-  childrenVisibility,
-  onChildrenVisibilityChanged,
+  subtaxonVisibility,
+  onSubtaxonVisibilityChanged,
   childrenItems,
   BBOX
 }) => {
@@ -73,8 +73,8 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
         onTaxonChanged={onTaxonChange}
         BBOX={BBOX}
         childrenItems={childrenItems}
-        childrenVisibility={childrenVisibility}
-        onChildrenVisibilityChanged={onChildrenVisibilityChanged}
+        subtaxonVisibility={subtaxonVisibility}
+        onSubtaxonVisibilityChanged={onSubtaxonVisibilityChanged}
         basisOfRecordFilter={basisOfRecordFilter}
         institutionFilter={institutionFilter}
         yearFilter={yearFilter}

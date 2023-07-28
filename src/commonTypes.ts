@@ -78,7 +78,10 @@ export type ChildCount = {
   count: number
 };
 
-export type ChildrenVisibility = Record<TaxonId, boolean>;
+export type SubtaxonVisibility = {
+  subtaxonLevel: TaxonomicLevel,
+  isVisible: Record<TaxonId, boolean>
+};
 
 export type YearRange = [number, number];
 
