@@ -46,7 +46,7 @@ const GraphicByLegend: FC<GraphicByLegendProps> = ({institutionFilter, basisOfRe
     : []) as ChartData;
 
   return <>{
-    formattedForChart.length
+    formattedForChart.length > 0
       ? <PieChart data={formattedForChart}/>
       : null
   }</>;
