@@ -22,7 +22,7 @@ const GraphicByLegend:FC<GraphicByLegendProps> = ({institutionFilter, basisOfRec
   const data: TaxomapData | undefined = useArrowData();
   const dictionaries = useDictionaries();
 
-  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, subtaxonVisibility, symbolizeBy, BBOX});
+  const totals = useCount({data, dictionaries, institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon: taxonFilter, subtaxonVisibility, groupBy: symbolizeBy, BBOX});
 
   const sumTotalresults = Object.keys(totals).length && Object.values(totals).reduce((a, b) => a + b);
 
