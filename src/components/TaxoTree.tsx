@@ -63,7 +63,7 @@ type TaxoTreeProps = {
 
 const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, subtaxonVisibility, BBOX, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
 
-  const subtaxonCountBBOX= useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX});
+  const subtaxonCountBBOX= useSubtaxonCount({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, BBOX, subtaxonVisibility});
 
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
@@ -125,7 +125,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
           <ListItemButton
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText onClick={() => handleOnChildClick(child.id)} sx={subtaxonVisibility.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>{child.name} ({subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} {t('of')} {child.count})</ListItemText>
+            <ListItemText onClick={() => handleOnChildClick(child.id)} sx={subtaxonVisibility.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}><span style={{fontWeight: 'bold'}}>{child.name}</span> - <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>{subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0 } </span> <span style={{fontSize: '10px'}}> / {child.count}</span> </ListItemText>
             {subtaxonVisibility &&
               <ListItemIcon onClick={()=> handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
                 {subtaxonVisibility.isVisible[child.id]

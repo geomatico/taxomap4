@@ -33,6 +33,7 @@
     "rain": "Lluvia",
     "temperature": "Temperatura"
   },
+  "of": "de",
   "parentTaxon": "Taxón superior",
   "phylumLegend": {
     "1": "Otros",

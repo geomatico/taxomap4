@@ -3,7 +3,7 @@ import useDictionaries from './useDictionaries';
 import {
   BBOX,
   Dictionaries,
-  SubtaxonCount,
+  SubtaxonCount, SubtaxonVisibility,
   TaxomapData,
   Taxon,
   TaxonomicLevel,
@@ -22,10 +22,11 @@ type UseSubtaxonCountParam = {
   institutionFilter?: number,
   basisOfRecordFilter?: number,
   yearFilter?: YearRange,
-  BBOX?: BBOX
+  BBOX?: BBOX,
+  subtaxonVisibility?: SubtaxonVisibility,
 };
 
-const useSubtaxonCount = ({selectedTaxon, institutionFilter, basisOfRecordFilter, yearFilter, BBOX}: UseSubtaxonCountParam) => {
+const useSubtaxonCount = ({selectedTaxon, institutionFilter, basisOfRecordFilter, yearFilter, BBOX, subtaxonVisibility}: UseSubtaxonCountParam) => {
   const data: TaxomapData | undefined = useArrowData();
   const dictionaries: Dictionaries = useDictionaries();
 
@@ -46,6 +47,7 @@ const useSubtaxonCount = ({selectedTaxon, institutionFilter, basisOfRecordFilter
         (!basisOfRecordFilter || data.basisofrecord[i] === basisOfRecordFilter) &&
         (!yearFilter || (data.year[i] >= yearFilter[0] && data.year[i] <= yearFilter[1])) &&
         (data[selectedTaxon.level][i] === selectedTaxon.id) &&
+        (!subtaxonVisibility || subtaxonVisibility.isVisible[data[subtaxonVisibility.subtaxonLevel][i]]) &&
         (!BBOX || isInsideOfBBOX(BBOX, lon, lat))
       ) {
         const childId = data[nextLevel][i];
@@ -53,7 +55,7 @@ const useSubtaxonCount = ({selectedTaxon, institutionFilter, basisOfRecordFilter
       }
     }
     return count;
-  }, [selectedTaxon, institutionFilter, basisOfRecordFilter, yearFilter, BBOX, data, dictionaries]);
+  }, [selectedTaxon, institutionFilter, basisOfRecordFilter, yearFilter, BBOX, data, dictionaries, subtaxonVisibility]);
 };
 
 export default useSubtaxonCount;
