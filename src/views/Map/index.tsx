@@ -9,9 +9,12 @@ import useDictionaries from '../../hooks/useDictionaries';
 import useTaxonChildren from '../../hooks/useTaxonChildren';
 import useSubtaxonCount from '../../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, YearRange} from '../../commonTypes';
+import {useNavigate, useParams} from 'react-router-dom';
 
 const Index = () => {
   const dictionaries = useDictionaries();
+  const navigate = useNavigate();
+  const {level, id} = useParams();
 
   const [selectedInstitutionId, setInstitutionId] = useState<number>();
   const [selectedBasisOfRecordId, setBasisOfRecordId] = useState<number>();
@@ -19,6 +22,23 @@ const Index = () => {
   const [selectedYearRange, setYearRange] = useState<YearRange>();
   const [BBOX, setBBOX] = useState<BBOX>();
   const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
+
+  useEffect(()=>{
+    // si la url no tiene taxon seleccionado
+    if(selectedTaxon && !level && !id){
+      navigate(`${selectedTaxon.level}/${selectedTaxon.id}`);
+    } else if(level && id && selectedTaxon.level !== level){
+      // si el level es diferente al initial Level ( cargo una url con un taxon seleccionado)
+      const newSelectedTaxon: Taxon = {level: level as TaxonomicLevel, id: parseInt(id)};
+      setTaxon(newSelectedTaxon);
+    }
+
+  },[]);
+
+  useEffect(()=>{
+    if(selectedTaxon) navigate(`../map/${selectedTaxon.level}/${selectedTaxon.id}`);
+  },[selectedTaxon]);
+
 
   const subtaxonCount = useSubtaxonCount({
     institutionFilter: selectedInstitutionId,

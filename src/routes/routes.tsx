@@ -17,6 +17,7 @@ const AppRoutes: FC = () =>
       <Route path=":lang" element={<LangSetter/>}>
         <Route path="" element={<Navigate to="map"/>}/>
         <Route path="map" element={<MapView/>}/>
+        <Route path="map/:level/:id" element={<MapView/>}/>
         {/*
          <Route exact path="detail" element={<Layout mainContent={<MapView/>} miniSidePanelSelectedActionId='detail'/>}/>
         */}

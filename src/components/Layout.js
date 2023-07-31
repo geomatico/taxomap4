@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 
 //MUI
@@ -34,7 +34,7 @@ const Main = styled(Box, {
   '@media (min-width: 0px) and (orientation: landscape)': {
     top: 48 + OFFSET_TOP
   },
-  ['@media (min-width: '+ SM_BREAKPOINT +'px)']: {
+  ['@media (min-width: ' + SM_BREAKPOINT + 'px)']: {
     top: 64 + OFFSET_TOP
   },
   bottom: 0,
@@ -55,6 +55,7 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
   const {t} = useTranslation();
   const dictionaries = useDictionaries();
   const taxonPath = useTaxonPath(selectedTaxon, dictionaries);
+
   const widescreen = useMediaQuery(`@media (min-width:${SM_BREAKPOINT}px)`, {noSsr: true});
   const [isSidePanelOpen, setSidePanelOpen] = useState(true);
   const [isAboutModalOpen, setAboutModalOpen] = useState(false);
@@ -67,14 +68,20 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
       title={<Breadcrumbs tree={taxonPath} onTaxonChange={onTaxonChange}/>}
       logo={
         <Link href="https://taxomap.bioexplora.cat/" target="_blank">
-          <Box sx={{my: 1.5, ml: 2}}>
+          <Box sx={{
+            my: 1.5,
+            ml: 2
+          }}>
             <Logo/>
           </Box>
         </Link>
       }
       onStartIconClick={widescreen ? undefined : handleClose}
       isStartIconCloseable={isSidePanelOpen}
-      sx={{'&.MuiAppBar-root': {zIndex: 1500}, top: OFFSET_TOP}}
+      sx={{
+        '&.MuiAppBar-root': {zIndex: 1500},
+        top: OFFSET_TOP
+      }}
     >
       <Button onClick={() => setAboutModalOpen(true)} sx={helperTextStyle}>{t('about')}</Button>
       <Button onClick={() => setHelpModalOpen(true)} sx={helperTextStyle}>{t('help')}</Button>
@@ -96,10 +103,11 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
             '@media (min-width: 0px) and (orientation: landscape)': {
               top: 48 + OFFSET_TOP
             },
-            ['@media (min-width: '+ SM_BREAKPOINT +'px)']: {
+            ['@media (min-width: ' + SM_BREAKPOINT + 'px)']: {
               top: 64 + OFFSET_TOP
             },
-          }}}
+          }
+        }}
       >
         {sidePanelContent}
       </SidePanel>
