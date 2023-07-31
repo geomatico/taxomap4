@@ -33,6 +33,7 @@
     "rain": "Rain",
     "temperature": "Temperature"
   },
+  "of": "of",
   "parentTaxon": "Parent taxon",
   "phylumLegend": {
     "1": "Other",

@@ -53,6 +53,7 @@ const useCount = ({
         (!basisOfRecordFilter || data.basisofrecord[i] === basisOfRecordFilter) &&
         (!yearFilter || (data.year[i] >= yearFilter[0] && data.year[i] <= yearFilter[1])) &&
         (data[selectedTaxon.level][i] === selectedTaxon.id) &&
+        (!subtaxonVisibility || subtaxonVisibility.isVisible[data[subtaxonVisibility.subtaxonLevel][i]]) &&
         (!BBOX || isInsideOfBBOX(BBOX, lon, lat))
       ) {
         if (!counts[data[groupBy][i]]) counts[data[groupBy][i]] = 0;
