@@ -68,20 +68,14 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
       title={<Breadcrumbs tree={taxonPath} onTaxonChange={onTaxonChange}/>}
       logo={
         <Link href="https://taxomap.bioexplora.cat/" target="_blank">
-          <Box sx={{
-            my: 1.5,
-            ml: 2
-          }}>
+          <Box sx={{my: 1.5, ml: 2}}>
             <Logo/>
           </Box>
         </Link>
       }
       onStartIconClick={widescreen ? undefined : handleClose}
       isStartIconCloseable={isSidePanelOpen}
-      sx={{
-        '&.MuiAppBar-root': {zIndex: 1500},
-        top: OFFSET_TOP
-      }}
+      sx={{'&.MuiAppBar-root': {zIndex: 1500}, top: OFFSET_TOP}}
     >
       <Button onClick={() => setAboutModalOpen(true)} sx={helperTextStyle}>{t('about')}</Button>
       <Button onClick={() => setHelpModalOpen(true)} sx={helperTextStyle}>{t('help')}</Button>
