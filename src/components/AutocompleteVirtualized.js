@@ -133,7 +133,7 @@ export const AutocompleteVirtualized = ({onFilteredTaxonChange}) => {
   };
 
   return <>
-    {options.length &&
+    {!!options.length &&
       <Autocomplete
         value={null}
         sx={autocompleteStyles}
