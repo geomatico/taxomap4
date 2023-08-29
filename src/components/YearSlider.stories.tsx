@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import YearSlider from './YearSlider';
+import YearSlider, {RangeSliderProps} from './YearSlider';
+import {Meta, Story} from '@storybook/react';
+import {YearRange} from '../commonTypes';
 
 export default {
   title: 'Common/YearSlider',
@@ -7,16 +9,16 @@ export default {
   decorators: [
     (Story) => <div style={{width: '300px', margin: '40px'}}><Story/></div>
   ]
-};
+}  as Meta;
 
-const Template = (args) => <YearSlider {...args} />;
+const Template: Story<RangeSliderProps>  = (args) => <YearSlider {...args} />;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ManagedTemplate = ({ yearRange, onYearRangeChange, ...args}) => {
+const ManagedTemplate: Story<RangeSliderProps> = ({ yearRange, onYearRangeChange, ...args}) => {
 
   const [getSelectedYear, setSelectedYear] = useState(yearRange);
 
-  const handleSetSelectedYear =(value)=> setSelectedYear(value);
+  const handleSetSelectedYear =(value: YearRange | undefined)=> setSelectedYear(value);
   return <YearSlider yearRange={getSelectedYear} onYearRangeChange={handleSetSelectedYear} {...args} />;
 };
 

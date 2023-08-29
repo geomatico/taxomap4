@@ -16,6 +16,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, YearRange} from '../commonTypes';
+import {CircularProgress} from '@mui/material';
 
 //STYLES
 const contentTaxoStyle = {
@@ -49,7 +50,7 @@ const listItemTextStyle = {
   color: (theme: Theme) => lighten(theme.palette.primary.main, 0.15),
 };
 
-type TaxoTreeProps = {
+export type TaxoTreeProps = {
   institutionFilter?: number,
   basisOfRecordFilter?: number,
   yearFilter?: YearRange,
@@ -120,6 +121,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
       <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
     </Box>
     <List dense sx={{ml: 2}}>
+      {!childrenItems?.length && <Box sx={{display: 'flex', justifyContent: 'center'}}><CircularProgress size={30}/></Box>}
       {!!childrenItems?.length && subtaxonVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
           <ListItemButton
