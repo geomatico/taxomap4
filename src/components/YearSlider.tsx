@@ -1,16 +1,17 @@
 import React, {FC} from 'react';
-import RangeSlider from '@geomatico/geocomponents/Forms/RangeSlider';
 import {YearRange} from '../commonTypes';
+import RangeHistogram from './Charts/RangeHistogram';
+import Box from '@mui/material/Box';
 
 export type RangeSliderProps = {
   minYear: number,
   maxYear: number,
   yearRange?: YearRange,
-  onYearRangeChange: (newRange?: YearRange) => void
+  onYearRangeChange: (newRange?: YearRange) => void,
+  data: Record<number, number>
 }
 
-export const YearSlider: FC<RangeSliderProps> = ({yearRange, onYearRangeChange, minYear, maxYear}) => {
-
+export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, onYearRangeChange, minYear, maxYear}) => {
   const handleValueChange = (newValue: number | number[]) => {
     if (Array.isArray(newValue) && newValue.length === 2) {
       if (newValue[0] === minYear && newValue[1] === maxYear) {
@@ -21,16 +22,13 @@ export const YearSlider: FC<RangeSliderProps> = ({yearRange, onYearRangeChange, 
     }
   };
 
-  const value = yearRange ?? [minYear, maxYear]; // undefined years => set full selection
+  delete data['0'];
 
-  return <RangeSlider
-    onValueChange={handleValueChange}
-    value={value}
-    min={minYear}
-    max={maxYear}
-    animationInterval={150}
-    sx={{'&.RangeSlider-root': {padding: '10px 21px'}}}
-  />;
+  return <Box sx={{p: 1, pb: 0, background: '#333333e0', borderRadius: '3px'}}>
+    {data && yearRange?.length &&
+      <RangeHistogram onRangeChange={handleValueChange} range={yearRange} max={maxYear} min={minYear} height={50} data={data}/>
+    }
+  </Box>;
 };
 
 export default YearSlider;

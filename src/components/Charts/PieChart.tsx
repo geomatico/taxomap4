@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {VegaLite, VisualizationSpec} from 'react-vega';
-import {HEXColor} from '../commonTypes';
+import {HEXColor} from '../../commonTypes';
 
 type ChartItem = {
   color: HEXColor,

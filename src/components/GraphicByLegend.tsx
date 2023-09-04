@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import PieChart, {ChartData} from './PieChart';
+import PieChart, {ChartData} from './Charts/PieChart';
 import useCount from '../hooks/useCount';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND} from '../config';
 import useArrowData from '../hooks/useArrowData';

@@ -27,21 +27,22 @@ import {
   TaxomapData,
   Taxon,
   Viewport,
-  YearRange
+  YearRange, FilterBy
 } from '../../commonTypes';
+import useCount from '../../hooks/useCount';
 
 const cssStyle = {
   width: '100%',
   height: '100%',
-  overflow: 'hidden'
+  overflow: 'hidden',
 };
 
 const rangeSliderContainer = {
   position: 'absolute',
   left: '12px',
   bottom: '20px',
-  background: 'white',
-  width: '400px',
+  background: 'transparent',
+  width: '600px',
   borderRadius: '3px'
 };
 const legendSelectorContainer = {
@@ -85,6 +86,13 @@ const MainContent: FC<MainContentProps> = ({
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
 
+  const countByYear = useCount(
+    {
+      data, dictionaries, institutionFilter,
+      basisOfRecordFilter, yearFilter,
+      subtaxonVisibility, groupBy: FilterBy.year, selectedTaxon: taxonFilter, BBOX
+    });
+
   const notifyChanges = useCallback(debounce(30, (map: MapRef) => {
     const bounds = map.getBounds();
     onBBOXChanged([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]);
@@ -124,7 +132,9 @@ const MainContent: FC<MainContentProps> = ({
 
   const years = data && data.year.filter(y => y !== 0);
   const fullYearRange: YearRange | undefined = useMemo(() => {
-    return data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
+    const x = data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
+    onYearFilterChange(x as YearRange);
+    return x as YearRange;
   }, [data]);
 
   const deckLayers = useMemo(() => ([
@@ -200,6 +210,7 @@ const MainContent: FC<MainContentProps> = ({
           minYear={fullYearRange ? fullYearRange[0] : 0}
           maxYear={fullYearRange ? fullYearRange[1] : 0}
           onYearRangeChange={onYearFilterChange}
+          data={countByYear}
         /> : null
       }
     </Box>

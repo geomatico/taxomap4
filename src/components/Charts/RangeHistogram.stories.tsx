@@ -1,0 +1,242 @@
+import React, {useState} from 'react';
+import RangeHistogram, {RangeHistogramProps} from './RangeHistogram';
+import {Meta, Story} from '@storybook/react';
+
+const data = {
+  1852: 2,
+  1855: 1,
+  1857: 1,
+  1861: 1,
+  1862: 2,
+  1863: 1,
+  1865: 1,
+  1867: 4,
+  1868: 6,
+  1869: 3,
+  1870: 4,
+  1871: 4,
+  1872: 1,
+  1873: 3,
+  1874: 2,
+  1875: 3,
+  1876: 1,
+  1877: 4,
+  1878: 5,
+  1879: 1,
+  1880: 10,
+  1881: 16,
+  1882: 2,
+  1883: 1,
+  1884: 3,
+  1885: 1,
+  1886: 3,
+  1887: 2,
+  1888: 6,
+  1889: 7,
+  1890: 6,
+  1891: 8,
+  1892: 1,
+  1893: 3,
+  1894: 20,
+  1895: 12,
+  1896: 17,
+  1897: 20,
+  1898: 19,
+  1899: 21,
+  1900: 61,
+  1901: 40,
+  1902: 33,
+  1903: 68,
+  1904: 9,
+  1905: 30,
+  1906: 25,
+  1907: 36,
+  1908: 78,
+  1909: 106,
+  1910: 125,
+  1911: 75,
+  1912: 90,
+  1913: 70,
+  1914: 132,
+  1915: 171,
+  1916: 231,
+  1917: 599,
+  1918: 992,
+  1919: 1604,
+  1920: 1105,
+  1921: 1217,
+  1922: 743,
+  1923: 626,
+  1924: 434,
+  1925: 570,
+  1926: 377,
+  1927: 237,
+  1928: 190,
+  1929: 449,
+  1930: 355,
+  1931: 157,
+  1932: 720,
+  1933: 366,
+  1934: 437,
+  1935: 402,
+  1936: 110,
+  1937: 62,
+  1938: 19,
+  1939: 293,
+  1940: 101,
+  1941: 240,
+  1942: 312,
+  1943: 103,
+  1944: 79,
+  1945: 134,
+  1946: 416,
+  1947: 318,
+  1948: 272,
+  1949: 182,
+  1950: 111,
+  1951: 154,
+  1952: 274,
+  1953: 82,
+  1954: 187,
+  1955: 105,
+  1956: 222,
+  1957: 257,
+  1958: 237,
+  1959: 335,
+  1960: 687,
+  1961: 391,
+  1962: 388,
+  1963: 456,
+  1964: 489,
+  1965: 367,
+  1966: 825,
+  1967: 1153,
+  1968: 707,
+  1969: 870,
+  1970: 581,
+  1971: 1620,
+  1972: 601,
+  1973: 1213,
+  1974: 1266,
+  1975: 833,
+  1976: 875,
+  1977: 781,
+  1978: 860,
+  1979: 1383,
+  1980: 1783,
+  1981: 2264,
+  1982: 1496,
+  1983: 1100,
+  1984: 1074,
+  1985: 1993,
+  1986: 2029,
+  1987: 1605,
+  1988: 1351,
+  1989: 7049,
+  1990: 3453,
+  1991: 3127,
+  1992: 2421,
+  1993: 6279,
+  1994: 2225,
+  1995: 2519,
+  1996: 8078,
+  1997: 6078,
+  1998: 1954,
+  1999: 1495,
+  2000: 3490,
+  2001: 1790,
+  2002: 1751,
+  2003: 2355,
+  2004: 1232,
+  2005: 1340,
+  2006: 1925,
+  2007: 1678,
+  2008: 1813,
+  2009: 2102,
+  2010: 5080,
+  2011: 2172,
+  2012: 3377,
+  2013: 2602,
+  2014: 2386,
+  2015: 2535,
+  2016: 2818,
+  2017: 3037,
+  2018: 1994,
+  2019: 1678
+};
+
+const data2 = {
+  1880: 10,
+  1881: 16,
+  1882: 2,
+  1883: 1,
+  1884: 3,
+  1885: 1,
+  1886: 3,
+  1887: 2,
+  1888: 6,
+  1889: 7,
+  1890: 6
+};
+
+export default {
+  title: 'Charts/RangeHistogram',
+  component: RangeHistogram,
+} as Meta;
+
+const Template: Story<RangeHistogramProps> = (args) => <RangeHistogram {...args} />;
+
+// eslint-disable-next-line react/prop-types,no-unused-vars,@typescript-eslint/no-unused-vars
+const ManagedTemplate: Story<RangeHistogramProps> = ({range, onRangeChange, ...args}) => {
+  const [getRange, setRange] = useState(range);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore FIXME
+  return <RangeHistogram {...args} onRangeChange={setRange} range={getRange}/>;
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  data: data,
+  min:  1852,
+  max: 2019,
+  range: [1882, 2000],
+};
+
+export const CustomStyles = Template.bind({});
+CustomStyles.args = {
+  data: data2,
+  range: [1882, 1886],
+  min:  1852,
+  max: 2019,
+  sx: {
+    p: 0,
+    '& .RangeSlider-root': {
+      p: 0,
+    },
+    '& .RangeHistogram-barContainer': {
+      padding: 0, // esto es importante que sea 0, los margenes y paddings se le tienen que poner por fuera
+      margin: 0, // esto es importante que sea 0, los margenes y paddings se le tienen que poner por fuera
+      border: '2px solid #973572',
+      borderRadius: '4px',
+      backgroundColor: 'rgba(145,8,82,0.07)'
+    },
+    '& .RangeHistogram-barWithinRange': {
+      backgroundColor: 'rgba(145,8,82,0.13)',
+      '&:hover': {
+        backgroundColor: '#973572'
+      },
+    },
+    '& .RangeHistogram-barOutOfRange': {
+      backgroundColor: 'white',
+      '&:hover': {
+        backgroundColor: undefined
+      },
+    },
+    '& .RangeHistogram-barGroupSelected': {
+      backgroundColor: 'transparent'
+    },
+  }
+};
+
+export const Managed = ManagedTemplate.bind({});
+Managed.args = Default.args;
