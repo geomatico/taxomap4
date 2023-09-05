@@ -86,10 +86,17 @@ const MainContent: FC<MainContentProps> = ({
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
 
+  const years = data && data.year.filter(y => y !== 0);
+  const fullYearRange: YearRange | undefined = useMemo(() => {
+    const x = data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
+    onYearFilterChange(x as YearRange);
+    return x as YearRange;
+  }, [data]);
+
   const countByYear = useCount(
     {
       data, dictionaries, institutionFilter,
-      basisOfRecordFilter, yearFilter,
+      basisOfRecordFilter, yearFilter: fullYearRange,
       subtaxonVisibility, groupBy: FilterBy.year, selectedTaxon: taxonFilter, BBOX
     });
 
@@ -130,12 +137,6 @@ const MainContent: FC<MainContentProps> = ({
       ?.addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
 
-  const years = data && data.year.filter(y => y !== 0);
-  const fullYearRange: YearRange | undefined = useMemo(() => {
-    const x = data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
-    onYearFilterChange(x as YearRange);
-    return x as YearRange;
-  }, [data]);
 
   const deckLayers = useMemo(() => ([
     new ScatterplotLayer<TaxomapData, {
