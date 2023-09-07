@@ -1,12 +1,9 @@
 import React, {FC} from 'react';
 import {Range} from '../commonTypes';
 import Box from '@mui/material/Box';
-//import RangeHistogram from './Charts/RangeHistogram';
 import RangeHistogram from '@geomatico/geocomponents/Charts/RangeHistogram';
 
 export interface RangeSliderProps {
-  //minYear: number,
-  //maxYear: number,
   yearRange?: Range,
   onYearRangeChange: (newRange?: Range) => void,
   data: Record<number, number>
