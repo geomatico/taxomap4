@@ -1,6 +1,8 @@
+/*
 import React, {useState} from 'react';
 import RangeHistogram, {RangeHistogramProps} from './RangeHistogram';
 import {Meta, Story} from '@storybook/react';
+import {Range} from '@geomatico/geocomponents/types/common';
 
 const data = {
   1852: 2,
@@ -187,35 +189,30 @@ export default {
 const Template: Story<RangeHistogramProps> = (args) => <RangeHistogram {...args} />;
 
 // eslint-disable-next-line react/prop-types,no-unused-vars,@typescript-eslint/no-unused-vars
-const ManagedTemplate: Story<RangeHistogramProps> = ({range, onRangeChange, ...args}) => {
-  const [getRange, setRange] = useState(range);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore FIXME
-  return <RangeHistogram {...args} onRangeChange={setRange} range={getRange}/>;
+const ManagedTemplate: Story<RangeHistogramProps> = ({value, onValueChange, ...args}) => {
+  const [getRange, setRange] = useState(value);
+
+  const handleOnRangeChange =(range: number | Range)=> {
+    setRange(range as Range);
+  };
+
+  return <RangeHistogram {...args} onValueChange={handleOnRangeChange} value={getRange}/>;
 };
 
 export const Default = Template.bind({});
 Default.args = {
   data: data,
-  min:  1852,
-  max: 2019,
-  range: [1882, 2000],
+  value: [1940, 1980],
 };
 
 export const CustomStyles = Template.bind({});
 CustomStyles.args = {
   data: data2,
-  range: [1882, 1886],
-  min:  1852,
-  max: 2019,
+  value: [1882, 1886],
   sx: {
-    p: 0,
-    '& .RangeSlider-root': {
-      p: 0,
-    },
     '& .RangeHistogram-barContainer': {
-      padding: 0, // esto es importante que sea 0, los margenes y paddings se le tienen que poner por fuera
-      margin: 0, // esto es importante que sea 0, los margenes y paddings se le tienen que poner por fuera
+      padding: '20px',
+      margin: '8px',
       border: '2px solid #973572',
       borderRadius: '4px',
       backgroundColor: 'rgba(145,8,82,0.07)'
@@ -240,3 +237,4 @@ CustomStyles.args = {
 
 export const Managed = ManagedTemplate.bind({});
 Managed.args = Default.args;
+*/

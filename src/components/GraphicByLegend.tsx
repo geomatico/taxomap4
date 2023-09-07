@@ -4,7 +4,7 @@ import useCount from '../hooks/useCount';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND} from '../config';
 import useArrowData from '../hooks/useArrowData';
 import useDictionaries from '../hooks/useDictionaries';
-import {BBOX, LegendItem, SubtaxonVisibility, SymbolizeBy, TaxomapData, Taxon, YearRange} from '../commonTypes';
+import {BBOX, LegendItem, SubtaxonVisibility, SymbolizeBy, TaxomapData, Taxon, Range} from '../commonTypes';
 
 const calculatePercentage = (partialValue: number, total: number) => partialValue * 100 / total;
 
@@ -14,7 +14,7 @@ export interface GraphicByLegendProps {
   symbolizeBy: SymbolizeBy,
   institutionFilter?: number,
   basisOfRecordFilter?: number,
-  yearFilter?: YearRange,
+  yearFilter?: Range,
   BBOX?: BBOX
 }
 

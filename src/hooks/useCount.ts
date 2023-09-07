@@ -6,7 +6,7 @@ import {
   TaxomapData,
   Taxon,
   TaxonomicLevel,
-  YearRange
+  Range
 } from '../commonTypes';
 import {useMemo} from 'react';
 
@@ -15,7 +15,7 @@ type UseCountParam = {
   dictionaries: Dictionaries,
   institutionFilter?: number,
   basisOfRecordFilter?: number,
-  yearFilter?: YearRange,
+  yearFilter?: Range,
   selectedTaxon: Taxon,
   subtaxonVisibility?: SubtaxonVisibility,
   groupBy: GroupBy,

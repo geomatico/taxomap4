@@ -85,7 +85,7 @@ export type SubtaxonVisibility = {
   isVisible: Record<TaxonId, boolean>
 };
 
-export type YearRange = [number, number];
+export type Range = [number, number];
 
 export type BBOX = [number, number, number, number];
 

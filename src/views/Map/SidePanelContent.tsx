@@ -8,7 +8,7 @@ import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
 import Divider from '@mui/material/Divider';
-import {BBOX, ChildCount, SubtaxonVisibility, Taxon, YearRange} from '../../commonTypes';
+import {BBOX, ChildCount, SubtaxonVisibility, Taxon, Range} from '../../commonTypes';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -20,7 +20,7 @@ type SidePanelContentProps = {
   institutionFilter?: number,
   onInstitutionFilterChange: (id: number) => void,
   basisOfRecordFilter?: number,
-  yearFilter?: YearRange,
+  yearFilter?: Range,
   onBasisOfRecordChange: (id: number) => void,
   selectedTaxon: Taxon,
   onTaxonChange: (taxon: Taxon) => void,

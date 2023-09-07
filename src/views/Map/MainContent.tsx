@@ -27,7 +27,7 @@ import {
   TaxomapData,
   Taxon,
   Viewport,
-  YearRange, FilterBy
+  Range, FilterBy
 } from '../../commonTypes';
 import useCount from '../../hooks/useCount';
 
@@ -58,8 +58,8 @@ const legendSelectorContainer = {
 type MainContentProps = {
   institutionFilter?: number,
   basisOfRecordFilter?: number,
-  yearFilter?: YearRange,
-  onYearFilterChange: (range?: YearRange) => void,
+  yearFilter?: Range,
+  onYearFilterChange: (range?: Range) => void,
   taxonFilter: Taxon,
   BBOX?: BBOX,
   onBBOXChanged: (bbox: BBOX) => void,
@@ -87,10 +87,11 @@ const MainContent: FC<MainContentProps> = ({
   const data: TaxomapData | undefined = useArrowData();
 
   const years = data && data.year.filter(y => y !== 0);
-  const fullYearRange: YearRange | undefined = useMemo(() => {
+
+  const fullYearRange: Range | undefined = useMemo(() => {
     const x = data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
-    onYearFilterChange(x as YearRange);
-    return x as YearRange;
+    onYearFilterChange(x as Range);
+    return x as Range;
   }, [data]);
 
   const countByYear = useCount(
@@ -208,8 +209,6 @@ const MainContent: FC<MainContentProps> = ({
       {fullYearRange ?
         <YearSlider
           yearRange={yearFilter}
-          minYear={fullYearRange ? fullYearRange[0] : 0}
-          maxYear={fullYearRange ? fullYearRange[1] : 0}
           onYearRangeChange={onYearFilterChange}
           data={countByYear}
         /> : null

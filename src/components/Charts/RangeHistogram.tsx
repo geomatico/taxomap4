@@ -1,12 +1,13 @@
-import React, {FC, useLayoutEffect, useRef, useState} from 'react';
+/*
+import React, {FC, SyntheticEvent, useLayoutEffect, useRef, useState} from 'react';
 import 'react-resizable/css/styles.css';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import RangeSlider from '@geomatico/geocomponents/Forms/RangeSlider';
 import {styled} from '@mui/material/styles';
 import {cyan} from '@mui/material/colors';
 import {SxProps} from '@mui/system';
-import {YearRange} from '../../commonTypes';
+import {Range} from '@geomatico/geocomponents/types/common';
+import RangeSlider from '@geomatico/geocomponents/Forms/RangeSlider';
 
 //STYLES
 const DEFAULT_HEIGHT = 200;
@@ -73,14 +74,11 @@ const Root = styled(
     p: '0 !important',
     color: '#3a8589',
     '& .MuiSlider-thumb': {
-      //transform: `translate(-50%, -${height - height / 4}px)`, // calcula el centro segun la altura de la gráfica
       transform: 'translate(-50%, -100%)',
       height: height,
       outline: 'unset',
       width: '4px',
-      //backgroundColor: '#973572',
       backgroundColor: 'transparent',
-      //border: '1px solid #973572', //FIXME
       padding: '8px',
       borderRadius: '4px',
       '&.Mui-focusVisible': {
@@ -115,13 +113,12 @@ const Root = styled(
 });
 
 export type RangeHistogramProps = {
-  onRangeChange: (_range: number | Array<number>) => void,
-  range: YearRange,
+  value: Range,
+  onValueChange: (range: number | Range) => void,
+  onChangeCommitted: (range: number | Range) => void,
   height: number,
   data: Record<number, number>,
-  sx?: SxProps,
-  max: number,
-  min: number,
+  sx?: SxProps
 }
 
 export type RangeHistogramBarProps = {
@@ -132,7 +129,7 @@ export type RangeHistogramBarProps = {
 }
 
 const HistogramBar: FC<RangeHistogramBarProps> = ({isSelected, value, year, heightBar = DEFAULT_HEIGHT}) => {
-  return <Tooltip title={'Any: ' + year + ' valor: ' + value} placement='top' arrow className={classes.tooltip}>
+  return <Tooltip title={'Any: ' + year + ' valor: ' + value || 0} placement='top' arrow className={classes.tooltip}>
     <Box
       className={`${classes.barRange} ${isSelected ? classes.barWithinRange : classes.barOutOfRange}`}
       style={{height: heightBar >= 1 ? `${heightBar}%` : '1px'}}
@@ -140,17 +137,18 @@ const HistogramBar: FC<RangeHistogramBarProps> = ({isSelected, value, year, heig
   </Tooltip>;
 };
 
-const RangeHistogram: FC<RangeHistogramProps> = ({data, max, min, range, height = DEFAULT_HEIGHT, onRangeChange, sx = {},}) => {
+const RangeHistogram: FC<RangeHistogramProps> = ({data, value, height = DEFAULT_HEIGHT, onValueChange, onChangeCommitted, sx = {},}) => {
 
   // AXIS X
-  const maxAxisX = max;
-  const minAxisX = min;
+  const axisXItems = Object.keys(data).map(el => parseInt(el));
+  const maxAxisX = Math.max(...axisXItems) +1;
+  const minAxisX = Math.min(...axisXItems);
 
-  //AXIS Y
+  //AXIS YminAxisX
   const maxAxisY = Math.max(...Object.values(data));
 
   const getHeight = (value: number) => (value / maxAxisY) * 100;
-  const isSelected = (value: number) => value >= range[0] && value <= range[1];
+  const isSelected = (v: number) => v >= value[0] && v <= value[1];
   const targetRef = useRef();
   const [barWidth, setDimensions] = useState(0);
 
@@ -180,13 +178,17 @@ const RangeHistogram: FC<RangeHistogramProps> = ({data, max, min, range, height 
     }
   };
 
+  const handleOnRangeChange =(range: number | Range)=> {
+    onValueChange(range);
+  };
+
   return <Root className={classes.root} sx={sx} height={height}>
     <Box className={classes.barContainer}>
       {
         allYears.map((year) =>
           <Box ref={targetRef} key={year} className={isSelected(year) ? classes.barGroupSelected : classes.barGroupNoSelected}>
             <HistogramBar value={data[year]} year={year} heightBar={getHeight(data[year])} isSelected={isSelected(year)}/>
-            {year === range[0] &&
+            {year === value[0] &&
               <Box sx={{
                 position: 'absolute',
                 bottom: height - 5,
@@ -197,7 +199,7 @@ const RangeHistogram: FC<RangeHistogramProps> = ({data, max, min, range, height 
                 borderRadius: 5
               }}/>
             }
-            {year === range[1] &&
+            {year === value[1] &&
               <Box sx={{
                 position: 'absolute',
                 bottom: height - 5,
@@ -212,8 +214,8 @@ const RangeHistogram: FC<RangeHistogramProps> = ({data, max, min, range, height 
         )
       }
     </Box>
-    <RangeSlider sx={rangeSliderStyles} value={range} min={minAxisX} max={maxAxisX} onValueChange={onRangeChange}/>
+    <RangeSlider sx={rangeSliderStyles} value={value} min={minAxisX} max={maxAxisX} onChangeCommitted={(event: Event | SyntheticEvent<Element, Event>, value: number | number[])=> onChangeCommitted(value as Range)} onValueChange={handleOnRangeChange}/>
   </Root>;
 };
 
-export default RangeHistogram;
+export default RangeHistogram;*/
