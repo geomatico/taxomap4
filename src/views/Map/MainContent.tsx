@@ -209,6 +209,7 @@ const MainContent: FC<MainContentProps> = ({
       {fullYearRange ?
         <YearSlider
           yearRange={yearFilter}
+          fullYearRange={fullYearRange}
           onYearRangeChange={onYearFilterChange}
           data={countByYear}
         /> : null

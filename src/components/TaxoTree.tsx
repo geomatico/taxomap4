@@ -16,7 +16,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range} from '../commonTypes';
-import {CircularProgress} from '@mui/material';
 import InfoIcon from './icons/InfoIcon';
 import TaxonInfoModal from './TaxonInfoModal';
 
@@ -141,8 +140,11 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
       <InfoIcon onClick={handleOnMoreInfoClick} style={{marginRight: '12px'}}/>
     </Box>
     <List dense sx={{ml: 2}}>
-      {!childrenItems?.length &&
-        <Box sx={{display: 'flex', justifyContent: 'center'}}><CircularProgress size={30}/></Box>}
+      {!childrenItems?.length && <Typography variant="caption" display="block" gutterBottom sx={{fontStyle: 'italic', ml: 2}}>
+        Sense dades
+      </Typography>
+
+      }
       {!!childrenItems?.length && subtaxonVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
           <ListItemButton
