@@ -115,7 +115,7 @@ const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, on
             <img alt="Encyclopedia Of Life Logo" title="Encyclopedia Of Life" src="images/logos/eol.png" style={{padding: '20px'}}/>
           </a>
           <a id="gbif" href={`https://www.gbif.org/species/search?q=${selectedTaxon}`} target="_blank" rel="noreferrer">
-            <img alt="GBIF Logo" title="GBIF" src="images/logos/gbif.jpg" style={{padding: '20px', height: '130px'}}/>
+            <img alt="GBIF Logo" title="GBIF" src="images/logos/gbif.svg" style={{padding: '20px', height: '90px'}}/>
           </a>
         </div>
       </TabPanel>
