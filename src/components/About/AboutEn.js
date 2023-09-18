@@ -44,13 +44,13 @@ const AboutEn = () => {
        are open source.
     </Typography>
     <Typography sx={styledParagraph}>
-      Supported browsers: Mozilla Firefox, Google Chrome. Last update: 31/05/2021
+      Supported browsers: Mozilla Firefox, Google Chrome. Last update: 15/09/2023
     </Typography>
 
     <Typography sx={styledTitle}>Contact related to the project</Typography>
-    <Typography sx={styledText}>Dacha Atienza Ariznavarreta</Typography>
+    <Typography sx={styledText}>Eulàlia Garcia Franquesa</Typography>
     <Typography sx={styledText}>Natural Science Museum of Barcelona</Typography>
-    <Typography sx={styledParagraph}>datienzaa@bcn.cat</Typography>
+    <Typography sx={styledParagraph}>egarciafr@bcn.cat</Typography>
 
     <Typography sx={styledParagraph}>Initial project manager: Francesc Uribe (MCNB)</Typography>
 

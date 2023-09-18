@@ -46,13 +46,13 @@ const AboutCa = () => {
        són de codi obert.
     </Typography>
     <Typography sx={styledParagraph}>
-      Navegadors suportats: Mozilla Firefox, Google Chrome. Última actualització: 31/05/2021
+      Navegadors suportats: Mozilla Firefox, Google Chrome. Última actualització: 15/09/2023
     </Typography>
 
-    <Typography sx={styledTitle}>Contacte amb relació al projecte</Typography>
-    <Typography sx={styledText}>Dacha Atienza Ariznavarreta</Typography>
+    <Typography sx={styledTitle}>Contacte en relació amb el projecte</Typography>
+    <Typography sx={styledText}>Eulàlia Garcia Franquesa</Typography>
     <Typography sx={styledText}>Museu de Ciències Naturals de Barcelona</Typography>
-    <Typography sx={styledParagraph}>datienzaa@bcn.cat</Typography>
+    <Typography sx={styledParagraph}>egarciafr@bcn.cat</Typography>
 
     <Typography sx={styledParagraph}>Responsable inicial del projecte: Francesc Uribe (MCNB)</Typography>
 

@@ -44,13 +44,13 @@ const AboutEs = () => {
        son de código abierto.
     </Typography>
     <Typography sx={styledParagraph}>
-      Navegadores soportados: Mozilla Firefox, Google Chrome. Última actualización: 31/05/2021
+      Navegadores soportados: Mozilla Firefox, Google Chrome. Última actualización: 15/09/2023
     </Typography>
 
-    <Typography sx={styledTitle}>Contacto respecto al proyecto</Typography>
-    <Typography sx={styledText}>Dacha Atienza Ariznavarreta</Typography>
+    <Typography sx={styledTitle}>Contacto en relación al proyecto</Typography>
+    <Typography sx={styledText}>Eulàlia Garcia Franquesa</Typography>
     <Typography sx={styledText}>Museo de Ciencias Naturales de Barcelona</Typography>
-    <Typography sx={styledParagraph}>datienzaa@bcn.cat</Typography>
+    <Typography sx={styledParagraph}>egarciafr@bcn.cat</Typography>
 
     <Typography sx={styledParagraph}>Responsable inicial del proyecto: Francesc Uribe (MCNB)</Typography>
 
