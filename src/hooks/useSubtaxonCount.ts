@@ -7,7 +7,7 @@ import {
   TaxomapData,
   Taxon,
   TaxonomicLevel,
-  YearRange
+  Range
 } from '../commonTypes';
 import {useMemo} from 'react';
 import {TAXONOMIC_LEVELS} from '../config';
@@ -21,7 +21,7 @@ type UseSubtaxonCountParam = {
   selectedTaxon: Taxon,
   institutionFilter?: number,
   basisOfRecordFilter?: number,
-  yearFilter?: YearRange,
+  yearFilter?: Range,
   BBOX?: BBOX,
   subtaxonVisibility?: SubtaxonVisibility,
 };

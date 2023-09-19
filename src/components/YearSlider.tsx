@@ -1,36 +1,52 @@
 import React, {FC} from 'react';
-import RangeSlider from '@geomatico/geocomponents/Forms/RangeSlider';
-import {YearRange} from '../commonTypes';
+import {Range} from '../commonTypes';
+import Box from '@mui/material/Box';
+import RangeHistogram from './Charts/RangeHistogram';
 
-export type RangeSliderProps = {
-  minYear: number,
-  maxYear: number,
-  yearRange?: YearRange,
-  onYearRangeChange: (newRange?: YearRange) => void
+export interface RangeSliderProps {
+  yearRange?: Range,
+  fullYearRange?: Range,
+  onYearRangeChange: (newRange?: Range) => void,
+  data: Record<number, number>
 }
 
-export const YearSlider: FC<RangeSliderProps> = ({yearRange, onYearRangeChange, minYear, maxYear}) => {
+export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, fullYearRange, onYearRangeChange}) => {
 
-  const handleValueChange = (newValue: number | number[]) => {
-    if (Array.isArray(newValue) && newValue.length === 2) {
-      if (newValue[0] === minYear && newValue[1] === maxYear) {
-        onYearRangeChange(undefined); // full selection => set undefined years
+  // AXIS X
+  const axisXItems = Object.keys(data).map(el => parseInt(el));
+  const max = Math.max(...axisXItems);
+  const min = Math.min(...axisXItems);
+
+  //Cuando despues de arrastrar se suelta el slider
+  const handleOnChangeCommitted = (newValue: number | number[]) => {
+    if (Array.isArray(newValue) && newValue.length === 2 && fullYearRange) {
+      if (newValue[0] === min && newValue[1] === max ) {
+        onYearRangeChange(fullYearRange); // full selection => fullYearRange
       } else {
-        onYearRangeChange(newValue as YearRange);
+        onYearRangeChange(newValue as Range);
       }
     }
   };
 
-  const value = yearRange ?? [minYear, maxYear]; // undefined years => set full selection
+  // todos los pasos que va dando
+  const handleOnRangeChange= (newValue: number | number[]) => {
+    if (Array.isArray(newValue) && newValue.length === 2 && fullYearRange) {
+      if (newValue[0] === min && newValue[1] === max ) {
+        onYearRangeChange(fullYearRange); // full selection => fullYearRange
+      } else {
+        onYearRangeChange(newValue as Range);
+      }
+    }
+  };
 
-  return <RangeSlider
-    onValueChange={handleValueChange}
-    value={value}
-    min={minYear}
-    max={maxYear}
-    animationInterval={150}
-    sx={{'&.RangeSlider-root': {padding: '10px 21px'}}}
-  />;
+  //borra el primer registro con el total
+  delete data['0'];
+
+  return <Box sx={{p: 1, pb: 0, background: '#333333e0', borderRadius: '3px'}}>
+    {data && yearRange?.length &&
+      <RangeHistogram onValueChange={handleOnRangeChange} onChangeCommitted={handleOnChangeCommitted} value={yearRange} minMax={fullYearRange} height={50} data={data}/>
+    }
+  </Box>;
 };
 
 export default YearSlider;

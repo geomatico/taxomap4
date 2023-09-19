@@ -8,7 +8,7 @@ import {INITIAL_TAXON, TAXONOMIC_LEVELS} from '../../config';
 import useDictionaries from '../../hooks/useDictionaries';
 import useTaxonChildren from '../../hooks/useTaxonChildren';
 import useSubtaxonCount from '../../hooks/useSubtaxonCount';
-import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, YearRange} from '../../commonTypes';
+import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range} from '../../commonTypes';
 import {useNavigate, useParams} from 'react-router-dom';
 
 const Index = () => {
@@ -19,7 +19,7 @@ const Index = () => {
   const [selectedInstitutionId, setInstitutionId] = useState<number>();
   const [selectedBasisOfRecordId, setBasisOfRecordId] = useState<number>();
   const [selectedTaxon, setTaxon] = useState<Taxon>(INITIAL_TAXON);
-  const [selectedYearRange, setYearRange] = useState<YearRange>();
+  const [selectedYearRange, setYearRange] = useState<Range>();
   const [BBOX, setBBOX] = useState<BBOX>();
   const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
 

@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {renderHook} from '@testing-library/react-hooks/dom';
 
 import useSubtaxonCount from './useSubtaxonCount';
-import {TaxonomicLevel, YearRange} from '../commonTypes';
+import {TaxonomicLevel, Range} from '../commonTypes';
 
 describe('useSubtaxonCount', () => {
 
@@ -15,7 +15,7 @@ describe('useSubtaxonCount', () => {
       },
       institutionFilter: undefined,
       basisOfRecordFilter: undefined,
-      yearFilter: [1852, 2019] as YearRange,
+      yearFilter: [1852, 2019] as Range,
       BBOX: undefined
     };
 

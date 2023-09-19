@@ -27,21 +27,22 @@ import {
   TaxomapData,
   Taxon,
   Viewport,
-  YearRange
+  Range, FilterBy
 } from '../../commonTypes';
+import useCount from '../../hooks/useCount';
 
 const cssStyle = {
   width: '100%',
   height: '100%',
-  overflow: 'hidden'
+  overflow: 'hidden',
 };
 
 const rangeSliderContainer = {
   position: 'absolute',
   left: '12px',
   bottom: '20px',
-  background: 'white',
-  width: '400px',
+  background: 'transparent',
+  width: '600px',
   borderRadius: '3px'
 };
 const legendSelectorContainer = {
@@ -57,8 +58,8 @@ const legendSelectorContainer = {
 type MainContentProps = {
   institutionFilter?: number,
   basisOfRecordFilter?: number,
-  yearFilter?: YearRange,
-  onYearFilterChange: (range?: YearRange) => void,
+  yearFilter?: Range,
+  onYearFilterChange: (range?: Range) => void,
   taxonFilter: Taxon,
   BBOX?: BBOX,
   onBBOXChanged: (bbox: BBOX) => void,
@@ -84,6 +85,21 @@ const MainContent: FC<MainContentProps> = ({
   const mapRef = useRef<MapRef>(null);
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
+
+  const years = data && data.year.filter(y => y !== 0);
+
+  const fullYearRange: Range | undefined = useMemo(() => {
+    const x = data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
+    onYearFilterChange(x as Range);
+    return x as Range;
+  }, [data]);
+
+  const countByYear = useCount(
+    {
+      data, dictionaries, institutionFilter,
+      basisOfRecordFilter, yearFilter: fullYearRange,
+      subtaxonVisibility, groupBy: FilterBy.year, selectedTaxon: taxonFilter, BBOX
+    });
 
   const notifyChanges = useCallback(debounce(30, (map: MapRef) => {
     const bounds = map.getBounds();
@@ -122,10 +138,6 @@ const MainContent: FC<MainContentProps> = ({
       ?.addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
 
-  const years = data && data.year.filter(y => y !== 0);
-  const fullYearRange: YearRange | undefined = useMemo(() => {
-    return data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
-  }, [data]);
 
   const deckLayers = useMemo(() => ([
     new ScatterplotLayer<TaxomapData, {
@@ -197,9 +209,9 @@ const MainContent: FC<MainContentProps> = ({
       {fullYearRange ?
         <YearSlider
           yearRange={yearFilter}
-          minYear={fullYearRange ? fullYearRange[0] : 0}
-          maxYear={fullYearRange ? fullYearRange[1] : 0}
+          fullYearRange={fullYearRange}
           onYearRangeChange={onYearFilterChange}
+          data={countByYear}
         /> : null
       }
     </Box>

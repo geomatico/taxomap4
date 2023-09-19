@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import YearSlider, {RangeSliderProps} from './YearSlider';
 import {Meta, Story} from '@storybook/react';
-import {YearRange} from '../commonTypes';
+import {Range} from '../commonTypes';
 
 export default {
   title: 'Common/YearSlider',
@@ -18,7 +18,7 @@ const ManagedTemplate: Story<RangeSliderProps> = ({ yearRange, onYearRangeChange
 
   const [getSelectedYear, setSelectedYear] = useState(yearRange);
 
-  const handleSetSelectedYear =(value: YearRange | undefined)=> setSelectedYear(value);
+  const handleSetSelectedYear =(value: Range | undefined)=> setSelectedYear(value);
   return <YearSlider yearRange={getSelectedYear} onYearRangeChange={handleSetSelectedYear} {...args} />;
 };
 
@@ -26,8 +26,6 @@ export const Default = Template.bind({});
 
 Default.args = {
   yearRange: [1990, 2000],
-  minYear: 1980,
-  maxYear: 2020
 };
 
 export const Managed = ManagedTemplate.bind({});
