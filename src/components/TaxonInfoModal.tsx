@@ -59,7 +59,7 @@ const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, on
 
   const {i18n} = useTranslation();
 
-  const url = `https://${i18n.resolvedLanguage}.wikipedia.org/w/api.php?action=parse&prop=text&section=0&format=json&page=${selectedTaxon}&contentformat=text%2Fx-wiki&redirects=&`;
+  const url = `https://${i18n.resolvedLanguage}.wikipedia.org/w/api.php?action=parse&prop=text&section=0&format=json&page=${selectedTaxon}&contentformat=text%2Fx-wiki&redirects=&origin=*`;
   const {data, isWaiting} = useFetch<{parse: {text: {'*': string}}}>(url);
   let htmlDoc: Document | undefined = undefined;
 
