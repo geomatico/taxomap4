@@ -91,6 +91,7 @@
     "react-i18next": "^11.14.2",
     "react-router-dom": "^6.0.2",
     "react-singleton-hook": "^3.4.0",
+    "react-tiny-popover": "^7.2.4",
     "react-vega": "^7.6.0",
     "react-window": "^1.8.9",
     "storybook": "^6.3.12",

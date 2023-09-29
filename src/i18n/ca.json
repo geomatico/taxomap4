@@ -4,6 +4,8 @@
     "1": "Fossil",
     "2": "No fossil"
   },
+  "csv": "Full de càlcul (csv)",
+  "download": "Descarregar selecció",
   "fieldLabel": {
     "basisofrecord": "Tipus de registre",
     "class": "Classe",
@@ -17,7 +19,9 @@
     "species": "Espècie",
     "subspecies": "Subespècie"
   },
+  "geojson": "Geometria (GeoJSON)",
   "help": "Ajuda",
+  "infoTaxon": "Fitxa de taxon",
   "institutionLegend": {
     "1": "Institut Mediterrani d'Estudis Avançats",
     "2": "Museu Ciències Naturals Barcelona",
