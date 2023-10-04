@@ -119,7 +119,7 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
     picked: boolean;
   }) => {
 
-    if (!info || !info.picked || !data) return null;
+    if (!info || !info.picked || !data || selectedFeature) return null;
 
     const itemId = data.id[info.index];
     const speciesId = data.species[info.index];
@@ -203,6 +203,7 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
   };
 
   const deckProps: Omit<DeckGLProps, 'style' | 'ref' | 'layers' | 'controller' | 'viewState' | 'onViewStateChange' | 'onWebGLInitialized' | 'glOptions' | 'onResize'> = useMemo(() => ({
+    controller: {doubleClickZoom: false},
     onClick: (info, e) => {
       if (e.target.className.includes && e.target.className.includes('mapboxgl-canvas')) {
         if (info.picked) {
@@ -219,7 +220,7 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
       }
     },
     getCursor: ({isDragging, isHovering}: { isDragging: boolean, isHovering: boolean }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab')),
-    getTooltip: (info) => !selectedFeature ? getTooltip(info) : null
+    getTooltip: getTooltip
   }), [selectedFeature, data]);
 
 
