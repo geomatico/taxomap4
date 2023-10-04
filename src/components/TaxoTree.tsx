@@ -16,9 +16,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range} from '../commonTypes';
-import InfoIcon from './icons/InfoIcon';
 import TaxonInfoModal from './TaxonInfoModal';
-
+import DownloadIcon from '@mui/icons-material/Download';
+import {ArrowContainer, Popover} from 'react-tiny-popover';
+import Link from '@mui/material/Link';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 //STYLES
 const contentTaxoStyle = {
   display: 'flex',
@@ -48,6 +50,10 @@ const listItemButtonStyle = {
   }
 };
 
+const availableDownloadFormats = {
+  csv: 'csv',
+  geojson: 'application/json'
+};
 
 const listItemTextStyle = {
   color: (theme: Theme) => lighten(theme.palette.primary.main, 0.15),
@@ -68,6 +74,8 @@ export type TaxoTreeProps = {
 const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, subtaxonVisibility, BBOX, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
 
   const subtaxonCountBBOX = useSubtaxonCount({
     institutionFilter,
@@ -77,7 +85,6 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
     BBOX,
     subtaxonVisibility
   });
-
 
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
@@ -129,21 +136,79 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
 
   const handleOnMoreInfoClick = () => setIsModalOpen(true);
 
+  const handleDownloadClick = (value: HTMLElement) => {
+    !anchorEl
+      ? setAnchorEl(value)
+      : setAnchorEl(null);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const downloadFile = (format: string) => {
+    const url = `https://taxomap.bioexplora.cat/geoserver/wfs?request=GetFeature&typeName=taxomap:mcnb_prod&version=1.0.0&outputFormat=${format}&maxFeatures=1`;
+    window.open(url, '_blank');
+    setAnchorEl(null);
+  };
+
   return actualItem ? <>
     <Box sx={contentTaxoStyle}>
-      <Box sx={{display:'flex'}}>
+      <Box sx={{display: 'flex', alignItems: 'center'}}>
         {!isRootLevel && <Tooltip title={t('parentTaxon')} arrow>
           <KeyboardReturnIcon sx={iconTaxoStyle} onClick={handleOnParentClick}/>
         </Tooltip>}
         <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
       </Box>
-      <InfoIcon onClick={handleOnMoreInfoClick} style={{marginRight: '12px'}}/>
+      <Box display='flex' alignItems='center'>
+        <Tooltip title={t('infoTaxon')} placement="top">
+          <InfoOutlinedIcon onClick={handleOnMoreInfoClick} sx={{mr: 1, fontSize: 16}}/>
+        </Tooltip>
+
+        <Popover
+          isOpen={open}
+          positions={['right']}
+          padding={30}
+          onClickOutside={handleClose}
+          content={({position, childRect, popoverRect}) => (
+            <ArrowContainer
+              position={position}
+              childRect={childRect}
+              popoverRect={popoverRect}
+              arrowColor={'white'}
+              arrowSize={10}
+              arrowStyle={{opacity: 0.9}}
+              className='popover-arrow-container'
+              arrowClassName='popover-arrow'
+            >
+              <div style={{backgroundColor: 'white', opacity: 0.9}}>
+                <Box sx={{display: 'flex', flexDirection: 'column'}}>
+                  {
+                    Object.keys(availableDownloadFormats).map((format: string) => {
+                      return <Link key={format} variant="body2" sx={{px: 2, py: 1, cursor: 'pointer', fontSize: 12}} onClick={() => downloadFile(availableDownloadFormats[format as keyof typeof availableDownloadFormats])}>
+                        {t(format)}
+                      </Link>;
+                    })
+                  }
+                </Box>
+              </div>
+            </ArrowContainer>
+          )}
+        >
+          <Box onClick={(event)=>handleDownloadClick(event.currentTarget)} style={{display: 'flex'}}>
+            <Tooltip title={t('download')} placement="top">
+              <DownloadIcon sx={{marginRight: '12px', fontSize: 16}}/>
+            </Tooltip>
+          </Box>
+        </Popover>
+      </Box>
+
     </Box>
     <List dense sx={{ml: 2}}>
-      {!childrenItems?.length && <Typography variant="caption" display="block" gutterBottom sx={{fontStyle: 'italic', ml: 2}}>
-        Sense dades
-      </Typography>
-
+      {!childrenItems?.length &&
+        <Typography variant="caption" display="block" gutterBottom sx={{fontStyle: 'italic', ml: 2}}>
+          Sense dades
+        </Typography>
       }
       {!!childrenItems?.length && subtaxonVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
@@ -151,9 +216,9 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
             sx={listItemButtonStyle}
             component="a">
             <ListItemText onClick={() => handleOnChildClick(child.id)} sx={subtaxonVisibility.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}><span
-              style={{fontWeight: 'bold'}}>{child.name}</span> - <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}} >
-              {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span>
-            <span style={{fontSize: '10px'}}> / {child.count}</span>
+              style={{fontWeight: 'bold'}}>{child.name}</span> - <span
+              style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
+              {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span><span style={{fontSize: '10px'}}> / {child.count}</span>
             </ListItemText>
             {subtaxonVisibility &&
               <ListItemIcon onClick={() => handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
