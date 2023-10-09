@@ -34,6 +34,7 @@ import {
 import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
 
 import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
+
 const PopupInfo = styled(Popup)({
   cursor: 'default',
   '& .mapboxgl-popup-content': {
@@ -72,7 +73,16 @@ type MainContentProps = {
   subtaxonVisibility?: SubtaxonVisibility
 };
 
-const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, onYearFilterChange, taxonFilter, BBOX, onBBOXChanged, subtaxonVisibility}) => {
+const MainContent: FC<MainContentProps> = ({
+  institutionFilter,
+  basisOfRecordFilter,
+  yearFilter,
+  onYearFilterChange,
+  taxonFilter,
+  BBOX,
+  onBBOXChanged,
+  subtaxonVisibility
+}) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
@@ -111,8 +121,6 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
       notifyChanges(mapRef.current);
     }
   }, [viewport, mapRef?.current]);
-
-  //const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
 
   const getTooltip = (info: {
     index: number;
@@ -177,7 +185,7 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
         getFillColor: [symbolizeBy],
         getFilterValue: [subtaxonVisibility]
       },
-      pickable: true,
+      pickable: true
     })
   ]), [data, symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter, dictionaries, subtaxonVisibility]);
 
@@ -193,13 +201,11 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
     const species = dictionaries.species.find(el => el.id === speciesId);
     const institutionId = data.institutioncode[index];
     const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
-    if(itemId && species && institution) {
-      return {
-        itemId: itemId,
-        species: species,
-        institution: institution
-      };
-    }
+    return {
+      itemId: itemId,
+      species: species,
+      institution: institution
+    };
   };
 
   const deckProps: Omit<DeckGLProps, 'style' | 'ref' | 'layers' | 'controller' | 'viewState' | 'onViewStateChange' | 'onWebGLInitialized' | 'glOptions' | 'onResize'> = useMemo(() => ({
@@ -219,7 +225,10 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
         }
       }
     },
-    getCursor: ({isDragging, isHovering}: { isDragging: boolean, isHovering: boolean }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab')),
+    getCursor: ({isDragging, isHovering}: {
+      isDragging: boolean,
+      isHovering: boolean
+    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab')),
     getTooltip: getTooltip
   }), [selectedFeature, data]);
 
@@ -247,8 +256,8 @@ const MainContent: FC<MainContentProps> = ({institutionFilter, basisOfRecordFilt
     </DeckGLMap>
 
     <BaseMapPicker
-      position='top-right'
-      direction='down'
+      position="top-right"
+      direction="down"
       styles={translatedSyles}
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}
