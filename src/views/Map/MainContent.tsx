@@ -1,9 +1,6 @@
 import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
-
-import {Map, MapRef} from 'react-map-gl';
-import maplibregl from 'maplibre-gl';
+import {MapRef} from 'react-map-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import DeckGL from '@deck.gl/react/typed';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
 import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
 import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
@@ -18,6 +15,10 @@ import useArrowData from '../../hooks/useArrowData';
 import {debounce} from 'throttle-debounce';
 import GraphicByLegend from '../../components/GraphicByLegend';
 import {Accessor} from '@deck.gl/core/typed';
+import {DeckGLProps} from '@deck.gl/react/typed';
+import {Popup} from 'react-map-gl';
+import styled from '@mui/styles/styled';
+
 import {
   BBOX,
   SubtaxonVisibility,
@@ -27,15 +28,21 @@ import {
   TaxomapData,
   Taxon,
   Viewport,
-  Range, FilterBy
+  FilterBy, Range
 } from '../../commonTypes';
-import useCount from '../../hooks/useCount';
 
-const cssStyle = {
-  width: '100%',
-  height: '100%',
-  overflow: 'hidden',
-};
+import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
+
+import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
+
+const PopupInfo = styled(Popup)({
+  cursor: 'default',
+  '& .mapboxgl-popup-content': {
+    padding: 0
+  }
+});
+
+import useCount from '../../hooks/useCount';
 
 const rangeSliderContainer = {
   position: 'absolute',
@@ -79,6 +86,8 @@ const MainContent: FC<MainContentProps> = ({
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
+  const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
+
 
   const {t} = useTranslation();
   const dictionaries: Dictionaries = useDictionaries();
@@ -113,23 +122,21 @@ const MainContent: FC<MainContentProps> = ({
     }
   }, [viewport, mapRef?.current]);
 
-  const handleMapResize = () => window.setTimeout(() => mapRef?.current?.resize(), 0);
-
   const getTooltip = (info: {
     index: number;
     picked: boolean;
   }) => {
-    if (!info || !info.picked || !data) return null;
+
+    if (!info || !info.picked || !data || selectedFeature) return null;
 
     const itemId = data.id[info.index];
     const speciesId = data.species[info.index];
     const species = dictionaries.species.find(el => el.id === speciesId);
     const institutionId = data.institutioncode[info.index];
     const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
-
     return `${itemId}
-            ${species?.name}
-            ${institution?.name}`;
+            ${!species?.name ? '' : species?.name}
+            ${institution?.name || ''}`;
   };
 
   useEffect(() => {
@@ -187,20 +194,70 @@ const MainContent: FC<MainContentProps> = ({
     label: t('mapStyles.' + style.label)
   }));
 
+  const getElementData = (index: number) => {
+    if (!data) return null;
+    const itemId = data.id[index];
+    const speciesId = data.species[index];
+    const species = dictionaries.species.find(el => el.id === speciesId);
+    const institutionId = data.institutioncode[index];
+    const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
+    return {
+      itemId: itemId,
+      species: species,
+      institution: institution
+    };
+  };
+
+  const deckProps: Omit<DeckGLProps, 'style' | 'ref' | 'layers' | 'controller' | 'viewState' | 'onViewStateChange' | 'onWebGLInitialized' | 'glOptions' | 'onResize'> = useMemo(() => ({
+    controller: {doubleClickZoom: false},
+    onClick: (info, e) => {
+      if (e.target.className.includes && e.target.className.includes('mapboxgl-canvas')) {
+        if (info.picked) {
+          const elementData = getElementData(info.index);
+          const newFeature: SelectedFeature = {
+            institution: elementData?.institution,
+            itemId: elementData?.itemId,
+            species: elementData?.species,
+            lat: info.coordinate ? info.coordinate[1] : undefined,
+            lon: info.coordinate ? info.coordinate[0] : undefined
+          };
+          setSelectedFeature(newFeature);
+        }
+      }
+    },
+    getCursor: ({isDragging, isHovering}: {
+      isDragging: boolean,
+      isHovering: boolean
+    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab')),
+    getTooltip: getTooltip
+  }), [selectedFeature, data]);
+
+
   return <>
-    <DeckGL
-      layers={deckLayers}
-      initialViewState={viewport}
-      onViewStateChange={({viewState}) => setViewport(viewState as Viewport)}
-      controller style={cssStyle}
-      onResize={handleMapResize}
-      getTooltip={getTooltip}
+    <DeckGLMap
+      mapStyle={mapStyle}
+      deckLayers={deckLayers}
+      viewport={viewport}
+      onViewportChange={setViewport}
+      deckProps={deckProps}
     >
-      <Map reuseMaps mapStyle={mapStyle} styleDiffing={false} mapLib={maplibregl} ref={mapRef}/>
-    </DeckGL>
+      {selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
+        <PopupInfo
+          latitude={selectedFeature?.lat}
+          longitude={selectedFeature?.lon}
+          maxWidth="500"
+          closeOnClick={false}
+          anchor="top"
+          onClose={() => setSelectedFeature(undefined)}
+        >
+          <PopUpContent selectedFeature={selectedFeature}/>
+        </PopupInfo>
+      }
+    </DeckGLMap>
+
     <BaseMapPicker
-      position='top-right'
-      direction='down'
+      position="top-right"
+      direction="down"
       styles={translatedSyles}
       selectedStyleId={mapStyle}
       onStyleChange={setMapStyle}

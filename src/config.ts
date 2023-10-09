@@ -96,4 +96,6 @@ export const INSTITUTION_LEGEND: Legend = [
   {id: 2, color: '#FABB5C'}  // Museu Ciències Naturals Barcelona
 ];
 
+export const MUSEU_ID = 2; // TODO sacar esto dinámicamente
+
 export const FILTER_BY = ['institutioncode', 'basisofrecord'];
