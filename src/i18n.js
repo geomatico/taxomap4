@@ -11,7 +11,7 @@ i18n
   .use(initReactI18next)
   .init({
     detection: {
-      order: ['querystring', 'navigator'],
+      order: ['querystring', 'localStorage', 'navigator'],
       lookupQuerystring: 'lang',
       checkWhitelist: true
     },
@@ -34,5 +34,5 @@ i18n
       escapeValue: false,
       formatSeparator: ','
     },
-    useSuspense: true,
+    useSuspense: true
   });
