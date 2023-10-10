@@ -10,11 +10,13 @@ function hexToRgb(hex: HEXColor): RGBArrayColor {
   ] : [0, 0, 0];
 }
 
+const otherPhylumColor = hexToRgb(PHYLUM_LEGEND.find(({id}) => id === 0)?.color || '#000000');
+
 const getPalette = (field: SymbolizeBy) => {
   switch (field) {
   case SymbolizeBy.phylum:
-    return PHYLUM_LEGEND.reduce((acc, {color, values}) => {
-      values?.map(value => acc[value] = color);
+    return PHYLUM_LEGEND.reduce((acc, {id, color}) => {
+      acc[id] = color;
       return acc;
     }, [] as Array<HEXColor>).map(hexToRgb);
   case SymbolizeBy.basisofrecord:
@@ -33,7 +35,7 @@ const getPalette = (field: SymbolizeBy) => {
 const useApplyColor = (field: SymbolizeBy) => {
   const palette = getPalette(field);
   return (value: number, target: RGBAArrayColor) => {
-    const color: RGBArrayColor = palette[value] || [0, 0, 0];
+    const color: RGBArrayColor = palette[value] || (field === SymbolizeBy.phylum ? otherPhylumColor : [0, 0, 0]);
     target[0] = color[0];
     target[1] = color[1];
     target[2] = color[2];

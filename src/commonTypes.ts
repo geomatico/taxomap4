@@ -53,8 +53,8 @@ export type RGBAArrayColor = [number, number, number, number];
 
 export type LegendItem = {
   id: number,
-  color: HEXColor,
-  values?: Array<number>
+  labelKey: string,
+  color: HEXColor
 };
 
 export type Legend = Array<LegendItem>;

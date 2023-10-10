@@ -1,5 +1,10 @@
 import {FilterBy, Legend, MapStyle, Taxon, TaxonomicLevel, Viewport} from './commonTypes';
 
+import basisofrecord from '../static/data/dictionaries/basisofrecord.json';
+import institutioncode from '../static/data/dictionaries/institutioncode.json';
+import kingdom from '../static/data/dictionaries/kingdom.json';
+import phylum from '../static/data/dictionaries/phylum.json';
+
 export const DRAWER_WIDTH = 300;
 export const SM_BREAKPOINT = 600;
 export const OFFSET_TOP = 83;
@@ -70,32 +75,83 @@ export const ARROW_COLUMN_MAPPING: {
 
 export const TAXONOMIC_LEVELS = Object.keys(TaxonomicLevel);
 
+const idByName = (dictionary: Array<{id: number, name: string}>) => (name: string) => dictionary.find(r => r.name === name)?.id ?? 0;
+
 export const INITIAL_TAXON: Taxon = {
   level: TaxonomicLevel.kingdom,
-  id: 1
+  id: idByName(kingdom)('Animalia')
 };
 
+
 export const PHYLUM_LEGEND: Legend = [
-  {id: 1, color: '#FABB5C', values: [6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21]}, // Other
-  {id: 5, color: '#58A062', values: [5]}, // Tracheophyta
-  {id: 2, color: '#F07971', values: [1]}, // Chordata
-  {id: 3, color: '#54BFDE', values: [2, 14]}, // Mollusca
-  {id: 4, color: '#666666', values: [3, 4, 12]} // Arthropoda
+  {
+    id: idByName(phylum)('Tracheophyta'),
+    labelKey: 'tracheophyta',
+    color: '#58A062'
+  },
+  {
+    id: idByName(phylum)('Chordata'),
+    labelKey: 'chordata',
+    color: '#F07971'
+  },
+  {
+    id: idByName(phylum)('Mollusca'),
+    labelKey: 'mollusca',
+    color: '#54BFDE'
+  },
+  {
+    id: idByName(phylum)('Arthropoda'),
+    labelKey: 'arthropoda',
+    color: '#666666'
+  },
+  {
+    id: 0,
+    labelKey:  'other',
+    color: '#FABB5C'
+  }
 ];
 
 export const BASIS_OF_RECORD_LEGEND: Legend = [
-  {id: 2, color: '#58A062'}, // Non-fossil
-  {id: 1, color: '#F07971'}  // Fossil
+  {
+    id: idByName(basisofrecord)('Non-fossil/No fòssil/No fósil'),
+    labelKey: 'nonFossil',
+    color: '#58A062'
+  },
+  {
+    id: idByName(basisofrecord)('Fossil/Fòssil/Fósil'),
+    labelKey: 'fossil',
+    color: '#F07971'
+  }
 ];
 
 export const INSTITUTION_LEGEND: Legend = [
-  {id: 4, color: '#58A062'}, // Institut Botànic de Barcelona
-  {id: 1, color: '#F02921'}, // Institut Mediterrani d'Estudis Avançats
-  {id: 3, color: '#343FCE'}, // Museu Valencià d'Història Natural
-  {id: 5, color: '#5A9DDA'}, // Universitat de Barcelona
-  {id: 2, color: '#FABB5C'}  // Museu Ciències Naturals Barcelona
+  {
+    id: idByName(institutioncode)('Institut Botànic de Barcelona'),
+    labelKey: 'botanic',
+    color: '#58A062'
+  },
+  {
+    id: idByName(institutioncode)('Institut Mediterrani d\'Estudis Avançats'),
+    labelKey: 'imea',
+    color: '#F02921'
+  },
+  {
+    id: idByName(institutioncode)('Museu Valencià d\'Història Natural'),
+    labelKey: 'valencia',
+    color: '#343FCE'
+  },
+  {
+    id: idByName(institutioncode)('Universitat de Barcelona'),
+    labelKey: 'ub',
+    color: '#5A9DDA'
+  },
+  {
+    id: idByName(institutioncode)('Museu Ciències Naturals Barcelona'),
+    labelKey: 'mcnb',
+    color: '#FABB5C'
+  }
 ];
 
-export const MUSEU_ID = 2; // TODO sacar esto dinámicamente
+export const MUSEU_ID = idByName(institutioncode)('Museu Ciències Naturals Barcelona');
 
 export const FILTER_BY = ['institutioncode', 'basisofrecord'];

@@ -44,28 +44,28 @@ export const LegendSelector = ({symbolizeBy, onSymbolizeByChange, children}) => 
     {
       id: 'basisofrecord',
       label: t('fieldLabel.basisofrecord'),
-      legend: BASIS_OF_RECORD_LEGEND.map(({id, color}) => ({
+      legend: BASIS_OF_RECORD_LEGEND.map(({id, color, labelKey}) => ({
         id,
         color,
-        label: t(`basisofrecordLegend.${id}`)
+        label: t(`basisofrecordLegend.${labelKey}`)
       }))
     },
     {
       id: 'phylum',
       label: t('fieldLabel.phylum'),
-      legend: PHYLUM_LEGEND.map(({id, color}) => ({
+      legend: PHYLUM_LEGEND.map(({id, color, labelKey}) => ({
         id,
         color,
-        label: t(`phylumLegend.${id}`)
+        label: t(`phylumLegend.${labelKey}`)
       }))
     },
     {
       id: 'institutioncode',
       label: t('fieldLabel.institutioncode'),
-      legend: INSTITUTION_LEGEND.map(({id, color}) => ({
+      legend: INSTITUTION_LEGEND.map(({id, color, labelKey}) => ({
         id,
         color,
-        label: t(`institutionLegend.${id}`)
+        label: t(`institutionLegend.${labelKey}`)
       }))
     }
   ];

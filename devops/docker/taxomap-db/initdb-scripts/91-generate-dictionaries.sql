@@ -1,7 +1,7 @@
 \c taxomap
 
 CREATE TABLE taxomap AS
-    SELECT geom, catalognumber, domain, kingdom, phylum, class, _order as "order", family, genus, species, subspecies, basisofrecord, institutioncode
+    SELECT catalognumber, domain, kingdom, phylum, class, _order as "order", family, genus, species, subspecies, basisofrecord, institutioncode, year, geom
     FROM mcnb_prod;
 
 -- Recreate "id" so it is a real PK (unique, non-nullable)
