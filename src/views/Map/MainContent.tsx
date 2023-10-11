@@ -129,12 +129,12 @@ const MainContent: FC<MainContentProps> = ({
 
     if (!info || !info.picked || !data || selectedFeature) return null;
 
-    const itemId = data.id[info.index];
+    const catalognumber = data.catalognumber[info.index];
     const speciesId = data.species[info.index];
     const species = dictionaries.species.find(el => el.id === speciesId);
     const institutionId = data.institutioncode[info.index];
     const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
-    return `${itemId}
+    return `${catalognumber}
             ${!species?.name ? '' : species?.name}
             ${institution?.name || ''}`;
   };
@@ -196,15 +196,17 @@ const MainContent: FC<MainContentProps> = ({
 
   const getElementData = (index: number) => {
     if (!data) return null;
-    const itemId = data.id[index];
+    const id = data.id[index];
+    const catalognumber = data.catalognumber[index];
     const speciesId = data.species[index];
     const species = dictionaries.species.find(el => el.id === speciesId);
-    const institutionId = data.institutioncode[index];
-    const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
+    const institutioncodeId = data.institutioncode[index];
+    const institutioncode = dictionaries.institutioncode.find(el => el.id === institutioncodeId);
     return {
-      itemId: itemId,
-      species: species,
-      institution: institution
+      id,
+      catalognumber,
+      species,
+      institutioncode
     };
   };
 
@@ -215,9 +217,7 @@ const MainContent: FC<MainContentProps> = ({
         if (info.picked) {
           const elementData = getElementData(info.index);
           const newFeature: SelectedFeature = {
-            institution: elementData?.institution,
-            itemId: elementData?.itemId,
-            species: elementData?.species,
+            ...elementData,
             lat: info.coordinate ? info.coordinate[1] : undefined,
             lon: info.coordinate ? info.coordinate[0] : undefined
           };

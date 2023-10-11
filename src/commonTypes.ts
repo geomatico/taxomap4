@@ -53,8 +53,8 @@ export type RGBAArrayColor = [number, number, number, number];
 
 export type LegendItem = {
   id: number,
-  color: HEXColor,
-  values?: Array<number>
+  labelKey: string,
+  color: HEXColor
 };
 
 export type Legend = Array<LegendItem>;
@@ -67,7 +67,8 @@ export type TaxomapData = {
       size: 2
     }
   },
-  id: Array<string>
+  id: Int32Array,
+  catalognumber: Array<string>
 } & {
   [key in TaxonomicLevel]: Int32Array
 } & {

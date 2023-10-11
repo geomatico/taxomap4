@@ -6,8 +6,7 @@ import {useTranslation} from 'react-i18next';
 import SelectInput from '@geomatico/geocomponents/Forms/SelectInput';
 import NumericIdSelectInput from '@geomatico/geocomponents/Forms/NumericIdSelectInput';
 
-import {FILTER_BY} from '../config';
-import useDictionaries from '../hooks/useDictionaries';
+import {BASIS_OF_RECORD_LEGEND, FILTER_BY, INSTITUTION_LEGEND} from '../config';
 import Box from '@mui/material/Box';
 
 const menuSelectStyles = {
@@ -36,7 +35,6 @@ const selectStyles = {
 };
 
 export const FilterByForm = ({institutionFilter, onInstitutionFilterChange, basisOfRecordFilter, onBasisOfRecordChange}) => {
-  const dictionaries = useDictionaries();
   const {t} = useTranslation();
 
   const [selectedField, setSelectedField] = useState('');
@@ -51,14 +49,14 @@ export const FilterByForm = ({institutionFilter, onInstitutionFilterChange, basi
     label: t(`fieldLabel.${field}`)
   }));
 
-  const institutionOptions = dictionaries.institutioncode.map(({id}) => ({
+  const institutionOptions = INSTITUTION_LEGEND.map(({id, labelKey}) => ({
     id,
-    label: t(`institutionLegend.${id}`)
+    label: t(`institutionLegend.${labelKey}`)
   }));
 
-  const basisOfRecordOptions = dictionaries.basisofrecord.map(({id}) => ({
+  const basisOfRecordOptions = BASIS_OF_RECORD_LEGEND.map(({id, labelKey}) => ({
     id,
-    label: t(`basisofrecordLegend.${id}`)
+    label: t(`basisofrecordLegend.${labelKey}`)
   }));
 
   return <Box p={2}>

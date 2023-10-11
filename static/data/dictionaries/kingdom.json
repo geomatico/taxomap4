@@ -1,4 +1,2 @@
-[
-{"id":1,"domain_id":1,"name":"Animalia"},
-{"id":2,"domain_id":1,"name":"Plantae"}
-]
+[{"id":1,"domain_id":1,"name":"Plantae"}, 
+ {"id":2,"domain_id":1,"name":"Animalia"}]

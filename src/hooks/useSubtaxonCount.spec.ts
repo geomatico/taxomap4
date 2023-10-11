@@ -3,6 +3,7 @@ import {renderHook} from '@testing-library/react-hooks/dom';
 
 import useSubtaxonCount from './useSubtaxonCount';
 import {TaxonomicLevel, Range} from '../commonTypes';
+import phylum from '../../static/data/dictionaries/phylum.json';
 
 describe('useSubtaxonCount', () => {
 
@@ -11,7 +12,7 @@ describe('useSubtaxonCount', () => {
     const params = {
       selectedTaxon: {
         level: TaxonomicLevel.phylum,
-        id: 2 // mollusca
+        id: phylum.find(({name}) => name === 'Mollusca')?.id || 0
       },
       institutionFilter: undefined,
       basisOfRecordFilter: undefined,
@@ -28,12 +29,12 @@ describe('useSubtaxonCount', () => {
 
     // THEN
     expect(subtaxonCount).to.deep.equal({
-      0: 6, // null
-      2: 19308, // Gastropoda
-      3: 1640, // Bivalvia
-      14: 27, // Polyplacophora
-      22: 12, // Cephalopoda
-      38: 39 // Scaphopoda
+      '26': 19314,
+      '48': 1640,
+      '42': 39,
+      '53': 27,
+      '34': 12,
+      '79': 6
     });
   });
 });

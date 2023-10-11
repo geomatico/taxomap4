@@ -1,8 +1,8 @@
 {
   "about": "Què és?",
   "basisofrecordLegend": {
-    "1": "Fossil",
-    "2": "No fossil"
+    "fossil": "Fossil",
+    "nonFossil": "No fossil"
   },
   "csv": "Full de càlcul (csv)",
   "download": "Descarregar selecció",
@@ -23,11 +23,11 @@
   "help": "Ajuda",
   "infoTaxon": "Fitxa de taxon",
   "institutionLegend": {
-    "1": "Institut Mediterrani d'Estudis Avançats",
-    "2": "Museu Ciències Naturals Barcelona",
-    "3": "Museu Valencià d'Història Natural",
-    "4": "Institut Botànic de Barcelona",
-    "5": "Universitat de Barcelona"
+    "botanic": "Institut Botànic de Barcelona",
+    "imea": "Institut Mediterrani d'Estudis Avançats",
+    "mcnb": "Museu Ciències Naturals Barcelona",
+    "ub": "Universitat de Barcelona",
+    "valencia": "Museu Valencià d'Història Natural"
   },
   "mapStyles": {
     "bright": "Clar",
@@ -41,11 +41,11 @@
   "of": "de",
   "parentTaxon": "Tàxon superior",
   "phylumLegend": {
-    "1": "Altres",
-    "2": "Chordata",
-    "3": "Mollusca",
-    "4": "Arthropoda",
-    "5": "Tracheophyta"
+    "arthropoda": "Arthropoda",
+    "chordata": "Chordata",
+    "mollusca": "Mollusca",
+    "other": "Altres",
+    "tracheophyta": "Tracheophyta"
   },
   "search": "Cerca de taxon",
   "selectFilter": "Selecciona filtre"
