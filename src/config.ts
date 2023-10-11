@@ -1,4 +1,4 @@
-import {FilterBy, Legend, MapStyle, Taxon, TaxonomicLevel, Viewport} from './commonTypes';
+import {Legend, MapStyle, Taxon, TaxonomicLevel, Viewport} from './commonTypes';
 
 import basisofrecord from '../static/data/dictionaries/basisofrecord.json';
 import institutioncode from '../static/data/dictionaries/institutioncode.json';
