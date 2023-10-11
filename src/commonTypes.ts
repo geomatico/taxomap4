@@ -67,7 +67,8 @@ export type TaxomapData = {
       size: 2
     }
   },
-  id: Array<string>
+  id: Int32Array,
+  catalognumber: Array<string>
 } & {
   [key in TaxonomicLevel]: Int32Array
 } & {

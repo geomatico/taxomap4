@@ -52,26 +52,7 @@ export const MAPSTYLES: Array<MapStyle> = [
 
 export const INITIAL_MAPSTYLE_URL = MAPSTYLES[1].id;
 
-export const ARROW_COLUMN_MAPPING: {
-    [key in TaxonomicLevel]: string
-  } & {
-    [key in FilterBy]: string
-  } = {
-    // The 9 taxonomic levels
-    domain: 'd',
-    kingdom: 'k',
-    phylum: 'p',
-    class: 'c',
-    order: 'o',
-    family: 'f',
-    genus: 'g',
-    species: 's',
-    subspecies: 'z',
-    // Other filters
-    basisofrecord: 'b',
-    institutioncode: 'i',
-    year: 'y'
-  };
+export const ARROW_FIELDS = ['id', 'catalognumber', 'domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'subspecies', 'basisofrecord', 'institutioncode', 'year'];
 
 export const TAXONOMIC_LEVELS = Object.keys(TaxonomicLevel);
 
