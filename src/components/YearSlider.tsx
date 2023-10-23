@@ -18,6 +18,7 @@ export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, fullYearRange
   const min = Math.min(...axisXItems);
 
   //Cuando despues de arrastrar se suelta el slider
+  // TODO quitar este handler cuando se use Geocomponents > 3.0.4 (FRONT-71)
   const handleOnChangeCommitted = (newValue: number | number[]) => {
     if (Array.isArray(newValue) && newValue.length === 2 && fullYearRange) {
       if (newValue[0] === min && newValue[1] === max ) {
