@@ -136,3 +136,5 @@ export const INSTITUTION_LEGEND: Legend = [
 export const MUSEU_ID = idByName(institutioncode)('Museu Ciències Naturals Barcelona');
 
 export const FILTER_BY = ['institutioncode', 'basisofrecord'];
+
+export const GEOSERVER_BASE_URL = process.env.GEOSERVER_BASE_URL;

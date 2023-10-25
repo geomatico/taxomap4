@@ -22,6 +22,8 @@ export type SelectedFeature = {
 const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
   const {t} = useTranslation();
 
+  // TODO TAX-36 fetch other details (date, place) from WFS
+
   const getMoreInfoUrl = (selectedFeature: SelectedFeature) => {
     const split = selectedFeature?.catalognumber?.split(' ');
     return split ? `https://www.bioexplora.cat/ca/colleccions-obertes/${split[0]}/${split[0]}_${split[1]}` : '';
