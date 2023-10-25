@@ -18,3 +18,28 @@ services:
       interval: 2s
       timeout: 2s
       retries: 20
+  taxomap-geoserver:
+    build:
+      dockerfile: devops/docker/taxomap-geoserver/Dockerfile
+      context: ../../
+    image: geomatico/taxomap-geoserver:${TAG:-latest}
+    container_name: taxomap-geoserver
+    depends_on:
+      taxomap-db:
+        condition: service_healthy
+    environment:
+      CUSTOM_UID: 1000
+      CUSTOM_GID: 1000
+      TAXOMAP_PASSWORD: taxomap
+      PROXY_BASE_URL: http://localhost:8080/geoserver
+    ports:
+      - 8080:8080
+    volumes:
+      - taxomap_geoserver_data_dir:/var/local/geoserver
+volumes:
+  taxomap_geoserver_data_dir:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ../../geoserver_data_dir

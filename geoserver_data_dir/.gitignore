@@ -1,0 +1,7 @@
+geoserver-environment.properties
+logs/*.log
+
+# Cache
+gwc/*.bak
+gwc/tmp/
+gwc/diskquota_page_store_h2/
