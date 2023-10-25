@@ -1,5 +1,14 @@
 version: '3.9'
 services:
+  taxomap-proxy:
+    build: taxomap-proxy
+    image: geomatico/taxomap-proxy:${TAG:-latest}
+    container_name: taxomap-proxy
+    ports:
+      - 80:80
+    depends_on:
+      - taxomap-db
+      - taxomap-geoserver
   taxomap-db:
     build: taxomap-db
     image: geomatico/taxomap-db:${TAG:-latest}
@@ -31,9 +40,7 @@ services:
       CUSTOM_UID: 1000
       CUSTOM_GID: 1000
       TAXOMAP_PASSWORD: taxomap
-      PROXY_BASE_URL: http://localhost:8080/geoserver
-    ports:
-      - 8080:8080
+      PROXY_BASE_URL: http://localhost/geoserver
     volumes:
       - taxomap_geoserver_data_dir:/var/local/geoserver
 volumes:
