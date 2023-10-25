@@ -1,10 +1,13 @@
 \c taxomap
 
 CREATE TABLE taxomap AS
-    SELECT catalognumber, domain, kingdom, phylum, class, _order as "order", family, genus, species, subspecies, basisofrecord, institutioncode, year, geom
+    SELECT *
     FROM mcnb_prod;
 
+ALTER TABLE taxomap RENAME COLUMN _order TO "order";
+
 -- Recreate "id" so it is a real PK (unique, non-nullable)
+ALTER TABLE taxomap DROP COLUMN id;
 ALTER TABLE taxomap ADD COLUMN id SERIAL PRIMARY KEY;
 
 -- Don't allow nulls, replace by empty strings (as in other fields)

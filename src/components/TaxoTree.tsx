@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
-import {TAXONOMIC_LEVELS} from '../config';
+import {GEOSERVER_BASE_URL, TAXONOMIC_LEVELS} from '../config';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -147,7 +147,8 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
   };
 
   const downloadFile = (format: string) => {
-    const url = `https://taxomap.bioexplora.cat/geoserver/wfs?request=GetFeature&typeName=taxomap:mcnb_prod&version=1.0.0&outputFormat=${format}&maxFeatures=1`;
+    // TODO TAX-40 add filters as CQL (institution, basisofrecord, taxon, time)
+    const url = `${GEOSERVER_BASE_URL}/wfs?version=1.0.0&request=GetFeature&typeName=taxomap:taxomap&outputFormat=${format}&maxFeatures=1`;
     window.open(url, '_blank');
     setAnchorEl(null);
   };

@@ -67,7 +67,7 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
     <ResponsiveHeader
       title={<Breadcrumbs tree={taxonPath} onTaxonChange={onTaxonChange}/>}
       logo={
-        <Link href="https://taxomap.bioexplora.cat/" target="_blank">
+        <Link href="/" target="_blank">
           <Box sx={{my: 1.5, ml: 2}}>
             <Logo/>
           </Box>
