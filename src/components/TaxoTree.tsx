@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
-import {GEOSERVER_BASE_URL, TAXONOMIC_LEVELS} from '../config';
+import {TAXONOMIC_LEVELS} from '../config';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -21,6 +21,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import {ArrowContainer, Popover} from 'react-tiny-popover';
 import Link from '@mui/material/Link';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import {getWfsDownloadUrl} from '../wfs/wfs';
 //STYLES
 const contentTaxoStyle = {
   display: 'flex',
@@ -147,8 +148,8 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
   };
 
   const downloadFile = (format: string) => {
-    // TODO TAX-40 add filters as CQL (institution, basisofrecord, taxon, time)
-    const url = `${GEOSERVER_BASE_URL}/wfs?version=1.0.0&request=GetFeature&typeName=taxomap:taxomap&outputFormat=${format}&maxFeatures=1`;
+    const url = getWfsDownloadUrl(format, yearFilter, institutionFilter, basisOfRecordFilter,
+      selectedTaxon, subtaxonVisibility, BBOX);
     window.open(url, '_blank');
     setAnchorEl(null);
   };
