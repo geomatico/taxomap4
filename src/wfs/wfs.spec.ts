@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import cut from './wfs';
-import {Taxon, TaxonomicLevel, Range} from '../commonTypes';
+import {Taxon, TaxonomicLevel, Range, BBOX} from '../commonTypes';
 import {GEOSERVER_BASE_URL} from '../config';
 
 describe('wfs', () => {
@@ -38,13 +38,17 @@ describe('wfs', () => {
         3: true
       }
     };
+    const bbox: BBOX = [0.5, 42.7, 0.6, 42.8];
 
     // WHEN
-    const urlString = cut.getWfsDownloadUrl(format, yearRange, institutionId, basisOfRecordId, taxon, subtaxonVisibility, undefined);
+    const urlString = cut.getWfsDownloadUrl(format, yearRange, institutionId, basisOfRecordId, taxon, subtaxonVisibility, bbox);
 
     // THEN
     const params = validateUrlAndGetParams(format, urlString);
-    expect(params.get('cql_filter')).to.equal('family_id = 1 AND institutioncode_id = 2 AND basisofrecord_id = 3 AND genus IN (1,3) AND year >= 1920 AND year <= 2010');
+    expect(params.get('cql_filter')).to.equal('family_id = 1 ' +
+      'AND institutioncode_id = 2 AND basisofrecord_id = 3 AND genus IN (1,3) ' +
+      'AND year >= 1920 AND year <= 2010 ' +
+      'AND BBOX(geom,0.5,42.7,0.6,42.8)');
   });
 
   it('Returns WFS with all subtaxa not visible"', async () => {
@@ -93,6 +97,7 @@ describe('wfs', () => {
     expect(params.get('request')).to.equal('GetFeature');
     expect(params.get('typeName')).to.equal('taxomap:taxomap');
     expect(params.get('outputFormat')).to.equal(expectedFormat);
+    expect(params.size).to.equal(5); // cql_filter to be validated separately for each test
     return params;
   }
 });

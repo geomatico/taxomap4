@@ -152,7 +152,8 @@ export const GEOSERVER = {
     properties: {
       institutionCodeId: 'institutioncode_id',
       basisOfRecordId: 'basisofrecord_id',
-      year: 'year'
+      year: 'year',
+      geometry: 'geom'
     }
   }
 };

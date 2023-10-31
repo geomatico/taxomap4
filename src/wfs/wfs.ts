@@ -49,6 +49,11 @@ function cqlAndYearBetween(cql: string, yearRange: Range | undefined) {
     ` AND ${GEOSERVER.wfs.properties.year} <= ${yearRange[1]}`;
 }
 
+function cqlAndBbox(cql: string, bbox: BBOX | undefined): string {
+  if (!bbox) return cql;
+  return `${cql} AND BBOX(${GEOSERVER.wfs.properties.geometry},${bbox.join(',')})`;
+}
+
 /**
  * @param format Download format; anything that WFS `outputFormat` supports.
  * @param yearRange Range filter for the year; undefined means no filter (the only way to access features with null year).
@@ -78,7 +83,8 @@ export const getWfsDownloadUrl = (
   cqlFilter = cqlAndPropertyEquals(cqlFilter, GEOSERVER.wfs.properties.basisOfRecordId, basisOfRecordId);
   cqlFilter = cqlAndTaxonIn(cqlFilter, subtaxonVisibility);
   cqlFilter = cqlAndYearBetween(cqlFilter, yearRange);
-  // TODO TAX-48 consider bbox?
+  // cql_filter and BBOX query params are mutually exclusive, BBOX needs to be introduced as part of the cql_filter
+  cqlFilter = cqlAndBbox(cqlFilter, bbox);
 
   if (cqlFilter) url.searchParams.append('cql_filter', cqlFilter);
   return url.toString();
