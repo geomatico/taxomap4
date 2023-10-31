@@ -47,6 +47,30 @@ describe('wfs', () => {
     expect(params.get('cql_filter')).to.equal('family_id = 1 AND institutioncode_id = 2 AND basisofrecord_id = 3 AND genus IN (1,3) AND year >= 1920 AND year <= 2010');
   });
 
+  it('Returns WFS with all subtaxa not visible"', async () => {
+    // GIVEN
+    const format = 'application/json';
+    const taxon: Taxon = {
+      level: TaxonomicLevel.family,
+      id: 1
+    };
+    const subtaxonVisibility = {
+      subtaxonLevel: TaxonomicLevel.genus,
+      isVisible: {
+        1: false,
+        2: false,
+        3: false
+      }
+    };
+
+    // WHEN
+    const urlString = cut.getWfsDownloadUrl(format, undefined, undefined, undefined, taxon, subtaxonVisibility, undefined);
+
+    // THEN
+    const params = validateUrlAndGetParams(format, urlString);
+    expect(params.get('cql_filter')).to.equal('family_id = 1 AND 1=0');
+  });
+
   it('Returns WFS property names for taxonomy levels', async () => {
     // WHEN / THEN
     // ensure TaxonomicLevel type is (in theory) decoupled from WFS property names

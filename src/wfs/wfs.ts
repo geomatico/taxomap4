@@ -38,7 +38,8 @@ function cqlAndTaxonIn(cql: string, subtaxonVisibility: SubtaxonVisibility | und
     .map(([id]) => id)
     .join(',');
   if (subtaxa) return `${cql} AND ${propertyName} IN (${subtaxa})`;
-  else return cql;
+  // no subtaxa visible, return empty response
+  else return `${cql} AND 1=0`;
 }
 
 function cqlAndYearBetween(cql: string, yearRange: Range | undefined) {
