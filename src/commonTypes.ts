@@ -86,8 +86,14 @@ export type SubtaxonVisibility = {
   isVisible: Record<TaxonId, boolean>
 };
 
+/**
+ * Min/max are inclusive (?)
+ */
 export type Range = [number, number];
 
+/**
+ * CRS is EPSG:4326. [west, south, east, north] or [x0, y0, x1, y1].
+ */
 export type BBOX = [number, number, number, number];
 
 export type DictionaryEntry = {

@@ -56,7 +56,10 @@ export const ARROW_FIELDS = ['id', 'catalognumber', 'domain', 'kingdom', 'phylum
 
 export const TAXONOMIC_LEVELS = Object.keys(TaxonomicLevel);
 
-const idByName = (dictionary: Array<{id: number, name: string}>) => (name: string) => dictionary.find(r => r.name === name)?.id ?? 0;
+const idByName = (dictionary: Array<{
+  id: number,
+  name: string
+}>) => (name: string) => dictionary.find(r => r.name === name)?.id ?? 0;
 
 export const INITIAL_TAXON: Taxon = {
   level: TaxonomicLevel.kingdom,
@@ -87,7 +90,7 @@ export const PHYLUM_LEGEND: Legend = [
   },
   {
     id: 0,
-    labelKey:  'other',
+    labelKey: 'other',
     color: '#FABB5C'
   }
 ];
@@ -138,3 +141,18 @@ export const MUSEU_ID = idByName(institutioncode)('Museu Ciències Naturals Barc
 export const FILTER_BY = ['institutioncode', 'basisofrecord'];
 
 export const GEOSERVER_BASE_URL = process.env.GEOSERVER_BASE_URL;
+
+export const GEOSERVER = {
+  baseUrl: GEOSERVER_BASE_URL,
+  wfs: {
+    typename: 'taxomap:taxomap',
+    /**
+     * These depend on how the database is generated. Make sure they always match whatever is done in `91-generate-dictionaries.sql`.
+     */
+    properties: {
+      institutionCodeId: 'institutioncode_id',
+      basisOfRecordId: 'basisofrecord_id',
+      year: 'year'
+    }
+  }
+};
