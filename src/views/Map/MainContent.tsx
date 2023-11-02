@@ -122,23 +122,6 @@ const MainContent: FC<MainContentProps> = ({
     }
   }, [viewport, mapRef?.current]);
 
-  const getTooltip = (info: {
-    index: number;
-    picked: boolean;
-  }) => {
-
-    if (!info || !info.picked || !data || selectedFeature) return null;
-
-    const catalognumber = data.catalognumber[info.index];
-    const speciesId = data.species[info.index];
-    const species = dictionaries.species.find(el => el.id === speciesId);
-    const institutionId = data.institutioncode[info.index];
-    const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
-    return `${catalognumber}
-            ${!species?.name ? '' : species?.name}
-            ${institution?.name || ''}`;
-  };
-
   useEffect(() => {
     document
       ?.getElementById('deckgl-wrapper')
@@ -228,8 +211,7 @@ const MainContent: FC<MainContentProps> = ({
     getCursor: ({isDragging, isHovering}: {
       isDragging: boolean,
       isHovering: boolean
-    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab')),
-    getTooltip: getTooltip
+    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'))
   }), [selectedFeature, data]);
 
 
