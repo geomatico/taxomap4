@@ -37,11 +37,11 @@ const cqlTaxonIn = (subtaxonVisibility: SubtaxonVisibility | undefined) => {
     .filter(([, visible]) => visible)
     .map(([id]) => id);
 
-  // do not filter if all are visible
   if (visibleIds.length == numSubtaxa) {
-    // no subtaxa visible, return empty response
+    // do not filter if all are visible
     return undefined;
   } else if (visibleIds.length === 0) {
+    // no subtaxa visible, return empty response
     return '1=0';
   } else {
     return `${propertyName} IN (${visibleIds.join(',')})`;
