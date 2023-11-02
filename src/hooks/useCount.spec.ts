@@ -19,9 +19,11 @@ describe('useCount', () => {
     const params = {
       data: dataHook.current,
       dictionaries: dictHook.current,
-      selectedTaxon: {
-        level: TaxonomicLevel.domain,
-        id: 1 // Eukaryota
+      filters: {
+        taxon: {
+          level: TaxonomicLevel.domain,
+          id: 1 // Eukaryota
+        }
       },
       groupBy: FilterBy.year
     };

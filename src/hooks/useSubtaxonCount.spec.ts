@@ -2,26 +2,23 @@ import {expect} from 'chai';
 import {renderHook} from '@testing-library/react-hooks/dom';
 
 import useSubtaxonCount from './useSubtaxonCount';
-import {TaxonomicLevel, Range} from '../commonTypes';
+import {Filters, TaxonomicLevel} from '../commonTypes';
 import phylum from '../../static/data/dictionaries/phylum.json';
 
 describe('useSubtaxonCount', () => {
 
   it('Calculates subtaxons for "Mollusca"', async () => {
     // GIVEN
-    const params = {
-      selectedTaxon: {
+    const filters: Filters = {
+      taxon: {
         level: TaxonomicLevel.phylum,
         id: phylum.find(({name}) => name === 'Mollusca')?.id || 0
       },
-      institutionFilter: undefined,
-      basisOfRecordFilter: undefined,
-      yearFilter: [1852, 2019] as Range,
-      BBOX: undefined
+      yearRange: [1852, 2019]
     };
 
     // WHEN
-    const {result, waitForValueToChange} = renderHook(() => useSubtaxonCount(params));
+    const {result, waitForValueToChange} = renderHook(() => useSubtaxonCount(filters));
     if (Object.keys(result.current).length === 0) {
       await waitForValueToChange(() => Object.keys(result.current).length > 0);
     }

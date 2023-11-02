@@ -37,16 +37,20 @@ const subtaxonVisibility: SubtaxonVisibility = {
 const Template: Story<TaxoTreeProps> = (args) => <TaxoTree {...args} />;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ManagedTemplate: Story<TaxoTreeProps> = ({selectedTaxon, onTaxonChanged, subtaxonVisibility, onSubtaxonVisibilityChanged, ...other}) => {
-  const [getTaxon, setTaxon] = useState(selectedTaxon);
-  const [getChildrenVisibility, setChildrenVisibility] = useState(subtaxonVisibility);
-  return <TaxoTree selectedTaxon={getTaxon} onTaxonChanged={setTaxon} subtaxonVisibility={getChildrenVisibility} onSubtaxonVisibilityChanged={setChildrenVisibility} {...other} />;
+const ManagedTemplate: Story<TaxoTreeProps> = ({filters, onTaxonChanged, onSubtaxonVisibilityChanged, ...other}) => {
+  const [selectedTaxon, setTaxon] = useState(filters.taxon);
+  const [subtaxonVisibility, setSubtaxonVisibility] = useState(filters.subtaxonVisibility);
+  return <TaxoTree filters={({taxon: selectedTaxon, subtaxonVisibility})}
+    onTaxonChanged={setTaxon}
+    onSubtaxonVisibilityChanged={setSubtaxonVisibility} {...other} />;
 };
 
 export const Default = Template.bind({});
 Default.args = {
-  selectedTaxon: INITIAL_TAXON,
-  subtaxonVisibility: subtaxonVisibility
+  filters: {
+    taxon: INITIAL_TAXON,
+    subtaxonVisibility
+  }
 };
 
 export const Managed = ManagedTemplate.bind({});
@@ -56,6 +60,8 @@ Managed.args = {
 
 export const ManagedWithoutVisibility = ManagedTemplate.bind({});
 ManagedWithoutVisibility.args = {
-  selectedTaxon: INITIAL_TAXON,
-  subtaxonVisibility: undefined
+  filters: {
+    taxon: INITIAL_TAXON,
+    subtaxonVisibility: undefined
+  }
 };

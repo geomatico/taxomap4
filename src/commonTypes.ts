@@ -87,7 +87,7 @@ export type SubtaxonVisibility = {
 };
 
 /**
- * Min/max are inclusive (?)
+ * Min/max are inclusive
  */
 export type Range = [number, number];
 
@@ -120,3 +120,15 @@ export type Dictionaries = {
 }
 
 export type SubtaxonCount = Record<TaxonId, number>;
+
+export type Filters = {
+  taxon: Taxon,
+  // undefined means no filter (the only way to access features with null year).
+  yearRange?: Range,
+  // See `static/dictionaries/institutioncode.json`.
+  institutionId?: number,
+  // See `static/dictionaries/basisofrecord.json`.
+  basisOfRecordId?: number,
+  subtaxonVisibility?: SubtaxonVisibility,
+  bbox?: BBOX
+}

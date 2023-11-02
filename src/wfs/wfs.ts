@@ -1,5 +1,18 @@
-import {BBOX, Range, SubtaxonVisibility, Taxon, TaxonomicLevel} from '../commonTypes';
-import {GEOSERVER, GEOSERVER_BASE_URL} from '../config';
+import {BBOX, Filters, Range, SubtaxonVisibility, TaxonomicLevel} from '../commonTypes';
+import {GEOSERVER_BASE_URL} from '../config';
+
+export const WFS_CONFIG = {
+  typename: 'taxomap:taxomap',
+  /**
+   * These depend on how the database is generated. Make sure they always match whatever is done in `91-generate-dictionaries.sql`.
+   */
+  properties: {
+    institutionCodeId: 'institutioncode_id',
+    basisOfRecordId: 'basisofrecord_id',
+    year: 'year',
+    geometry: 'geom'
+  }
+};
 
 /**
  * Returns the property name with the ID associated to the given taxonomic level.
@@ -8,89 +21,65 @@ import {GEOSERVER, GEOSERVER_BASE_URL} from '../config';
  *
  * @param taxonomicLevel Taxonomic level
  */
-export function getPropertyName(taxonomicLevel: TaxonomicLevel) {
-  switch (taxonomicLevel) {
-  case TaxonomicLevel.domain:
-  case TaxonomicLevel.kingdom:
-  case TaxonomicLevel.phylum:
-  case TaxonomicLevel.class:
-  case TaxonomicLevel.order:
-  case TaxonomicLevel.family:
-  case TaxonomicLevel.genus:
-  case TaxonomicLevel.species:
-  case TaxonomicLevel.subspecies:
-    // for now there's just a convention of _id suffix
-    return taxonomicLevel + '_id';
-  }
-}
+// for now there's just a convention of _id suffix
+export const getPropertyName = (taxonomicLevel: TaxonomicLevel): string => taxonomicLevel + '_id';
 
-function cqlAndPropertyEquals(cql: string, propertyName: string | number, propertyValue: string | number | undefined): string {
-  if (!propertyValue || !propertyName) return cql;
-  else return `${cql} AND ${propertyName} = ${propertyValue}`;
-}
+const cqlPropertyEquals = (propertyName: string | number, propertyValue: string | number | undefined) =>
+  propertyValue && propertyName ? `${propertyName} = ${propertyValue}` : undefined;
 
-function cqlAndTaxonIn(cql: string, subtaxonVisibility: SubtaxonVisibility | undefined): string {
-  if (!subtaxonVisibility) return cql;
+const cqlTaxonIn = (subtaxonVisibility: SubtaxonVisibility | undefined) => {
+  if (!subtaxonVisibility) return undefined;
+
+  const numSubtaxa = Object.keys(subtaxonVisibility.isVisible).length;
 
   const propertyName = subtaxonVisibility.subtaxonLevel;
-  const subtaxa = Object.entries(subtaxonVisibility.isVisible)
-    .filter(([id, visible]) => visible)
-    .map(([id]) => id)
-    .join(',');
-  if (subtaxa) return `${cql} AND ${propertyName} IN (${subtaxa})`;
-  // no subtaxa visible, return empty response
-  else return `${cql} AND 1=0`;
-}
+  const visibleIds = Object.entries(subtaxonVisibility.isVisible)
+    .filter(([, visible]) => visible)
+    .map(([id]) => id);
 
-function cqlAndYearBetween(cql: string, yearRange: Range | undefined) {
-  if (!yearRange) return cql;
-  else return cql +
-    ` AND ${GEOSERVER.wfs.properties.year} >= ${yearRange[0]}` +
-    ` AND ${GEOSERVER.wfs.properties.year} <= ${yearRange[1]}`;
-}
+  // do not filter if all are visible
+  if (visibleIds.length == numSubtaxa) {
+    // no subtaxa visible, return empty response
+    return undefined;
+  } else if (visibleIds.length === 0) {
+    return '1=0';
+  } else {
+    return `${propertyName} IN (${visibleIds.join(',')})`;
+  }
+};
 
-function cqlAndBbox(cql: string, bbox: BBOX | undefined): string {
-  if (!bbox) return cql;
-  return `${cql} AND BBOX(${GEOSERVER.wfs.properties.geometry},${bbox.join(',')})`;
-}
+const cqlYearBetween = (yearRange: Range | undefined) => yearRange
+  ? `${WFS_CONFIG.properties.year} >= ${yearRange[0]} AND ${WFS_CONFIG.properties.year} <= ${yearRange[1]}`
+  : undefined;
+
+const cqlBbox = (bbox: BBOX | undefined) =>
+  bbox ? `BBOX(${WFS_CONFIG.properties.geometry},${bbox.join(',')})` : undefined;
 
 /**
  * @param format Download format; anything that WFS `outputFormat` supports.
- * @param yearRange Range filter for the year; undefined means no filter (the only way to access features with null year).
- * @param institutionId Filter for institution ID. See `static/dictionaries/institutioncode.json`.
- * @param basisOfRecordId Filter for basis of record ID.  See `static/dictionaries/basisofrecord.json`.
- * @param taxon Taxon filter.
- * @param subtaxonVisibility Subtaxon visibility. Only visible subtaxa will be taken into account.
- * @param bbox Bounding box filter for downloading.
+ * @param filters Filters to apply for the download.
+ * @return WFS URL that can be used directly to download features.
  */
 export const getWfsDownloadUrl = (
   format: string,
-  yearRange: Range | undefined,
-  institutionId: number | undefined,
-  basisOfRecordId: number | undefined,
-  taxon: Taxon,
-  subtaxonVisibility: SubtaxonVisibility | undefined,
-  bbox: BBOX | undefined
+  {taxon, institutionId, basisOfRecordId, subtaxonVisibility, yearRange, bbox}: Filters
 ): string => {
   const url = new URL(GEOSERVER_BASE_URL + '/wfs?');
   url.searchParams.append('version', '1.0.0');
   url.searchParams.append('request', 'GetFeature');
-  url.searchParams.append('typeName', GEOSERVER.wfs.typename);
+  url.searchParams.append('typeName', WFS_CONFIG.typename);
   url.searchParams.append('outputFormat', format);
 
-  let cqlFilter = `${getPropertyName(taxon.level)} = ${taxon.id}`;
-  cqlFilter = cqlAndPropertyEquals(cqlFilter, GEOSERVER.wfs.properties.institutionCodeId, institutionId);
-  cqlFilter = cqlAndPropertyEquals(cqlFilter, GEOSERVER.wfs.properties.basisOfRecordId, basisOfRecordId);
-  cqlFilter = cqlAndTaxonIn(cqlFilter, subtaxonVisibility);
-  cqlFilter = cqlAndYearBetween(cqlFilter, yearRange);
-  // cql_filter and BBOX query params are mutually exclusive, BBOX needs to be introduced as part of the cql_filter
-  cqlFilter = cqlAndBbox(cqlFilter, bbox);
+  const cqlFilters = [
+    cqlPropertyEquals(getPropertyName(taxon.level), taxon.id),
+    cqlPropertyEquals(WFS_CONFIG.properties.institutionCodeId, institutionId),
+    cqlPropertyEquals(WFS_CONFIG.properties.basisOfRecordId, basisOfRecordId),
+    cqlTaxonIn(subtaxonVisibility),
+    cqlYearBetween(yearRange),
+    // cql_filter and BBOX query params are mutually exclusive, BBOX needs to be introduced as part of the cql_filter
+    cqlBbox(bbox)
+  ];
+  url.searchParams.append('cql_filter', cqlFilters.filter(Boolean).join(' AND '));
 
-  if (cqlFilter) url.searchParams.append('cql_filter', cqlFilter);
   return url.toString();
-};
-
-export default {
-  getWfsDownloadUrl,
-  getPropertyName
 };
