@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {MapRef} from 'react-map-gl';
+import {MapRef, Popup} from 'react-map-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
 import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
@@ -16,24 +16,25 @@ import {debounce} from 'throttle-debounce';
 import GraphicByLegend from '../../components/GraphicByLegend';
 import {Accessor} from '@deck.gl/core/typed';
 import {DeckGLProps} from '@deck.gl/react/typed';
-import {Popup} from 'react-map-gl';
 import styled from '@mui/styles/styled';
 
 import {
   BBOX,
-  SubtaxonVisibility,
   Dictionaries,
+  FilterBy,
+  Range,
   RGBAArrayColor,
+  SubtaxonVisibility,
   SymbolizeBy,
   TaxomapData,
   Taxon,
-  Viewport,
-  FilterBy, Range
+  Viewport
 } from '../../commonTypes';
 
 import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
 
 import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
+import useCount from '../../hooks/useCount';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -41,8 +42,6 @@ const PopupInfo = styled(Popup)({
     padding: 0
   }
 });
-
-import useCount from '../../hooks/useCount';
 
 const rangeSliderContainer = {
   position: 'absolute',
@@ -95,13 +94,11 @@ const MainContent: FC<MainContentProps> = ({
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
 
-  const years = data && data.year.filter(y => y !== 0);
-
-  const fullYearRange: Range | undefined = useMemo(() => {
-    const x = data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
-    onYearFilterChange(x as Range);
-    return x as Range;
-  }, [data]);
+  const years = data && data.year.filter(year => year > 0);
+  const fullYearRange = useMemo(() => data && years && [
+    years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY),
+    years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)
+  ] as Range, [data]);
 
   const countByYear = useCount(
     {
