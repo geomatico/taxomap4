@@ -1,5 +1,5 @@
-import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {MapRef} from 'react-map-gl';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import {Popup} from 'react-map-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
 import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
@@ -14,26 +14,27 @@ import useDictionaries from '../../hooks/useDictionaries';
 import useArrowData from '../../hooks/useArrowData';
 import {debounce} from 'throttle-debounce';
 import GraphicByLegend from '../../components/GraphicByLegend';
-import {Accessor} from '@deck.gl/core/typed';
+import {Accessor, WebMercatorViewport} from '@deck.gl/core/typed';
 import {DeckGLProps} from '@deck.gl/react/typed';
-import {Popup} from 'react-map-gl';
 import styled from '@mui/styles/styled';
 
 import {
   BBOX,
-  SubtaxonVisibility,
   Dictionaries,
+  FilterBy,
+  Range,
   RGBAArrayColor,
+  SubtaxonVisibility,
   SymbolizeBy,
   TaxomapData,
   Taxon,
-  Viewport,
-  FilterBy, Range
+  Viewport
 } from '../../commonTypes';
 
 import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
 
 import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
+import useCount from '../../hooks/useCount';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -41,8 +42,6 @@ const PopupInfo = styled(Popup)({
     padding: 0
   }
 });
-
-import useCount from '../../hooks/useCount';
 
 const rangeSliderContainer = {
   position: 'absolute',
@@ -88,10 +87,8 @@ const MainContent: FC<MainContentProps> = ({
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
 
-
   const {t} = useTranslation();
   const dictionaries: Dictionaries = useDictionaries();
-  const mapRef = useRef<MapRef>(null);
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
 
@@ -110,17 +107,9 @@ const MainContent: FC<MainContentProps> = ({
       subtaxonVisibility, groupBy: FilterBy.year, selectedTaxon: taxonFilter, BBOX
     });
 
-  const notifyChanges = useCallback(debounce(30, (map: MapRef) => {
-    const bounds = map.getBounds();
-    onBBOXChanged([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]);
-  }), []);
-
-  // On data or viewport change, recalculate data
-  useEffect(() => {
-    if (mapRef && mapRef.current) {
-      notifyChanges(mapRef.current);
-    }
-  }, [viewport, mapRef?.current]);
+  const handleViewportChange = (viewport : Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
+  const notifyChanges = useCallback(debounce(200, handleViewportChange), []);
+  useEffect(() => notifyChanges(viewport), [viewport]);
 
   const getTooltip = (info: {
     index: number;
