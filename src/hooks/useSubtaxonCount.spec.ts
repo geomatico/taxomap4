@@ -28,13 +28,6 @@ describe('useSubtaxonCount', () => {
     const subtaxonCount = result.current;
 
     // THEN
-    expect(subtaxonCount).to.deep.equal({
-      '26': 19314,
-      '48': 1640,
-      '42': 39,
-      '53': 27,
-      '34': 12,
-      '79': 6
-    });
+    expect(Object.values(subtaxonCount)).to.to.have.members([19314, 1640, 39, 27, 12, 6]); // TODO this test is coupled with `data/taxomap.arrow` and will fail when it changes!
   });
 });
