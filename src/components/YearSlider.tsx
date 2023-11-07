@@ -10,24 +10,22 @@ export interface RangeSliderProps {
   data: Record<number, number>
 }
 
-const equals = (a: Range | undefined, b: Range | undefined): boolean =>
-  (a && b && a[0] === b[0] && a[1] === b[1]) || false;
-
 export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, fullYearRange, onYearRangeChange}) => {
-  const handleYearRangeChanged = (range: Range | undefined) => {
-    if (equals(range, fullYearRange)) {
-      onYearRangeChange(undefined);
-    } else {
-      onYearRangeChange(range);
-    }
-  };
+  const isFullYearRange = (range?: Range) => range !== undefined && fullYearRange !== undefined && range[0] === fullYearRange[0] && range[1] === fullYearRange[1];
+
+  // Full range sets year filter to undefined so records with year == null are also taken into account
+  const handleYearRangeChanged = (range?: Range) => onYearRangeChange(isFullYearRange(range) ? undefined : range);
 
   return <Box sx={{p: 1, pb: 0, background: '#333333e0', borderRadius: '3px'}}>
     {data && fullYearRange &&
-      <RangeHistogram onValueChange={handleYearRangeChanged}
-        // TODO quitar este handler cuando se use Geocomponents > 3.0.4 (FRONT-71)
-        onChangeCommitted={handleYearRangeChanged}
-        value={(yearRange || fullYearRange)} minMax={fullYearRange} height={50} data={data}/>
+      <RangeHistogram
+        onValueChange={handleYearRangeChanged}
+        onChangeCommitted={handleYearRangeChanged} // TODO quitar este handler cuando se use Geocomponents > 3.0.4 (FRONT-71)
+        value={(yearRange || fullYearRange)}
+        minMax={fullYearRange}
+        height={50}
+        data={data}
+      />
     }
   </Box>;
 };
