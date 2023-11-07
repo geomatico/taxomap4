@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
-import {MapRef, Popup} from 'react-map-gl';
+import {Popup} from 'react-map-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
 import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
