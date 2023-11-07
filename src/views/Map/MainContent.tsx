@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {MapRef, Popup} from 'react-map-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
@@ -14,7 +14,7 @@ import useDictionaries from '../../hooks/useDictionaries';
 import useArrowData from '../../hooks/useArrowData';
 import {debounce} from 'throttle-debounce';
 import GraphicByLegend from '../../components/GraphicByLegend';
-import {Accessor} from '@deck.gl/core/typed';
+import {Accessor, WebMercatorViewport} from '@deck.gl/core/typed';
 import {DeckGLProps} from '@deck.gl/react/typed';
 import styled from '@mui/styles/styled';
 
@@ -87,10 +87,8 @@ const MainContent: FC<MainContentProps> = ({
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
 
-
   const {t} = useTranslation();
   const dictionaries: Dictionaries = useDictionaries();
-  const mapRef = useRef<MapRef>(null);
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
 
@@ -106,34 +104,9 @@ const MainContent: FC<MainContentProps> = ({
       subtaxonVisibility, groupBy: FilterBy.year, selectedTaxon: taxonFilter, BBOX
     });
 
-  const notifyChanges = useCallback(debounce(30, (map: MapRef) => {
-    const bounds = map.getBounds();
-    onBBOXChanged([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]);
-  }), []);
-
-  // On data or viewport change, recalculate data
-  useEffect(() => {
-    if (mapRef && mapRef.current) {
-      notifyChanges(mapRef.current);
-    }
-  }, [viewport, mapRef?.current]);
-
-  const getTooltip = (info: {
-    index: number;
-    picked: boolean;
-  }) => {
-
-    if (!info || !info.picked || !data || selectedFeature) return null;
-
-    const catalognumber = data.catalognumber[info.index];
-    const speciesId = data.species[info.index];
-    const species = dictionaries.species.find(el => el.id === speciesId);
-    const institutionId = data.institutioncode[info.index];
-    const institution = dictionaries.institutioncode.find(el => el.id === institutionId);
-    return `${catalognumber}
-            ${!species?.name ? '' : species?.name}
-            ${institution?.name || ''}`;
-  };
+  const handleViewportChange = (viewport : Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
+  const notifyChanges = useCallback(debounce(200, handleViewportChange), []);
+  useEffect(() => notifyChanges(viewport), [viewport]);
 
   useEffect(() => {
     document
@@ -224,8 +197,7 @@ const MainContent: FC<MainContentProps> = ({
     getCursor: ({isDragging, isHovering}: {
       isDragging: boolean,
       isHovering: boolean
-    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab')),
-    getTooltip: getTooltip
+    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'))
   }), [selectedFeature, data]);
 
 

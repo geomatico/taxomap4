@@ -1,45 +1,31 @@
 # TAXOMAP
 
-Template for a simple viewer, to use it, go to https://github.com/geomatico/plantilla-visor-react and click on 'Use this template', a new repository will be created based on this template.
-If you want to add functionalities, you can see more components here: https://labs.geomatico.es/geocomponents/
+## Cómo actualizar la BDD
 
-## First steps
+1. En el directorio `devops/db_normalizer/initdb-scripts`, borrar el dump anterior y copiar el dump nuevo, que:
+   * Debe estar en formato `.sql.gz` (texto plano comprimido, no vale el formato binario  de pg_dump, ni tar).
+   * El nombre debe empezar por un número entre 2 y 8, para que se ejecute después del script `10-create-user-and-db` pero antes del `90-generate-dictionaries`.
 
-Rename project in the following files:
+2. Cambiar al directorio db_normalizer y ejecutar el script de normalización:
+    ```bash
+   cd devops/db_normalizer
+    ./normalize_db.sh
+    ```
+   
+Esto actualizará los siguientes assets:
 
-- package.json:
-    - name
-    - repository.url
-    - bugs.url
-    - homepage
-- package-lock.json:
-    - name
-- template.html:
-    - Etiqueta `<title>`
+* BDD normalizada, que se expondrá a través de GeoServer: `docker/taxomap-db/initdb-scripts/dump/20-taxomap-normalized.sql.gz`
+* Fichero geoarrow para frontend: `static/data/taxomap.arrow`.
+* Diccionarios para frontend: `static/data/dictionares/*.json`.
 
-## i18n
+Habrá que commitear estos cambios al repo.
 
-We use **i18next** framework to localize our components:
 
-- Web: [https://www.i18next.com/](https://www.i18next.com/)
-- React integration: [https://react.i18next.com/](https://react.i18next.com/)
+Al cambiar la BDD en el entorno de desarrollo, se debe hacer rebuild de ese entorno para que refleje los cambios:
 
-Usage example on functional component:
-
-```js
-import { useTranslation } from 'react-i18next';
-
-const FunctionalComponent = () => {
-  const { t } = useTranslation();
-  return <h1>{t('welcome')}</h1>
-}
+```bash
+cd devops/docker
+docker compose build
 ```
 
-The applied language will be determined by:
-
-1. The `lang` query string. For instance, use [http://localhost:8080/?lang=es](http://localhost:8080/?lang=es).
-2. The browser language preferences.
-3. If detection fails, will default to `es`.
-
-There are other detection strategies available, see
-[https://github.com/i18next/i18next-browser-languageDetector](https://github.com/i18next/i18next-browser-languageDetector).
+Lo mismo aplica a frontend, donde habrá que parar y arrancar el dev server (comando `npm start`) para que vuelva a leer los ficheros estáticos.
