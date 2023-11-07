@@ -68,7 +68,6 @@ export type TaxoTreeProps = {
 }
 
 const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
@@ -82,15 +81,10 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
   const isRootLevel = actualLevelIndex === 0;
   const actualItem = dictionaries[filters.taxon.level].find(item => item.id === filters.taxon.id);
 
-  const handleOnChildClick = (child: TaxonId) => {
-    // TODO Corta la navegacion al nivel de species hasta que sepamos filtrar bien las subespecies indeterminadas
-    if (filters.taxon.level !== 'species') {
-      onTaxonChanged({
-        level: TAXONOMIC_LEVELS[actualLevelIndex + 1] as TaxonomicLevel,
-        id: child
-      });
-    }
-  };
+  const handleOnChildClick = (child: TaxonId) => onTaxonChanged({
+    level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
+    id: child
+  });
 
   const handleOnParentClick = () => {
     const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1] as TaxonomicLevel;
@@ -101,15 +95,6 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
       });
     }
   };
-
-  // para niveles indeterminados ( el header del tree )
-  if (actualItem?.name === '') {
-    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1] as TaxonomicLevel;
-
-    const parent = dictionaries[parentLevel]
-      .find(item => item.id === actualItem[`${parentLevel}_id`]);
-    actualItem.name = `${parent?.name} [indet]`;
-  }
 
   const handleOnSubtaxonVisibilityChange = (id: TaxonId) => {
     if (filters.subtaxonVisibility) {
@@ -196,32 +181,34 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
     <List dense sx={{ml: 2}}>
       {!childrenItems?.length &&
         <Typography variant="caption" display="block" gutterBottom sx={{fontStyle: 'italic', ml: 2}}>
-          Sense dades
+          Carregant...
         </Typography>
       }
-      {!!childrenItems?.length && filters.subtaxonVisibility && childrenItems.map(child =>
-        <ListItem key={child.id} disablePadding>
-          <ListItemButton
-            sx={listItemButtonStyle}
-            component="a">
-            <ListItemText onClick={() => handleOnChildClick(child.id)}
+      {!!childrenItems?.length && filters.subtaxonVisibility && childrenItems.map(child => {
+        const subchildrenDictionary = dictionaries[TAXONOMIC_LEVELS[actualLevelIndex + 2]];
+        const childLevel = TAXONOMIC_LEVELS[actualLevelIndex + 1];
+        const buttonEnabled = child.name &&
+            subchildrenDictionary?.find(subchild => subchild[`${childLevel}_id`] === child.id);
+        return <ListItem key={child.id} disablePadding>
+          <ListItemButton disabled={!buttonEnabled} sx={listItemButtonStyle} component="a">
+            <ListItemText onClick={() => buttonEnabled && handleOnChildClick(child.id)}
               sx={filters.subtaxonVisibility?.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>
-              <span style={{fontWeight: 'bold'}}>{child.name}</span> -
+              <span style={{fontWeight: 'bold'}}>{child.name || '[indet]'}</span> -
               <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
-                {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0}
-              </span>
+                {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span>
               <span style={{fontSize: '10px'}}> / {child.count}</span>
             </ListItemText>
-            {filters.subtaxonVisibility &&
+          </ListItemButton>
+          {filters.subtaxonVisibility &&
               <ListItemIcon onClick={() => handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
                 {filters.subtaxonVisibility.isVisible[child.id]
-                  ? <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
-                  : <VisibilityOffIcon sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
+                  ? <VisibilityIcon sx={{ml: 1, cursor: 'pointer', fontSize: '1.2rem'}}/>
+                  : <VisibilityOffIcon sx={{ml: 1, cursor: 'pointer', fontSize: '1.2rem', color: 'lightgrey'}}/>
                 }
               </ListItemIcon>
-            }
-          </ListItemButton>
-        </ListItem>
+          }
+        </ListItem>;
+      }
       )}
     </List>
 

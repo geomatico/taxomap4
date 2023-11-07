@@ -54,7 +54,7 @@ export const INITIAL_MAPSTYLE_URL = MAPSTYLES[1].id;
 
 export const ARROW_FIELDS = ['id', 'catalognumber', 'domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'subspecies', 'basisofrecord', 'institutioncode', 'year'];
 
-export const TAXONOMIC_LEVELS = Object.keys(TaxonomicLevel);
+export const TAXONOMIC_LEVELS = Object.keys(TaxonomicLevel).map(level => level as TaxonomicLevel);
 
 const idByName = (dictionary: Array<{
   id: number,

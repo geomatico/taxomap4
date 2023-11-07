@@ -25,7 +25,7 @@ const useTaxonPath = (selectedTaxon: Taxon, dictionaries: Dictionaries): Array<N
 
   return taxoPath.map((el, i) => ({
     level: TAXONOMIC_LEVELS[i] as TaxonomicLevel,
-    label: el.name === '' ? taxoPath[i -1].name + '[indet]': el.name,
+    label: el.name,
     id: el.id
   }));
 };
