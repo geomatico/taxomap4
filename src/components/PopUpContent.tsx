@@ -77,14 +77,14 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
       <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
         {selectedFeature.catalognumber}
       </Typography>
-      <Typography variant="h5" component="div">
+      <Typography variant="subtitle1" sx={{textTransform: 'uppercase'}} component="div">
         {selectedFeature.species?.name}
       </Typography>
       <Typography sx={{fontSize: 14}} color="text.secondary">
         {selectedFeature.institutioncode?.name}
       </Typography>
-      {placeLabel && <Typography sx={{fontSize: 14}} color="text.secondary">{placeLabel}</Typography>}
-      {dateLabel && <Typography sx={{fontSize: 14}} color="text.secondary">{dateLabel}</Typography>}
+      {placeLabel && <Typography variant="caption" sx={{marginTop:1, display: 'block'}} color="text.secondary">{placeLabel}</Typography>}
+      {dateLabel && <Typography variant="caption" color="text.secondary">{dateLabel}</Typography>}
     </CardContent>
     {
       selectedFeature.institutioncode?.id === MUSEU_ID &&
