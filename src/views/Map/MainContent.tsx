@@ -92,12 +92,9 @@ const MainContent: FC<MainContentProps> = ({
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
 
-  const years = data && data.year.filter(y => y !== 0);
-
   const fullYearRange: Range | undefined = useMemo(() => {
-    const x = data && years && [years.reduce((n, m) => Math.min(n, m), Number.POSITIVE_INFINITY), years.reduce((n, m) => Math.max(n, m), -Number.POSITIVE_INFINITY)];
-    onYearFilterChange(x as Range);
-    return x as Range;
+    const years = data?.year.filter(year => year > 0).sort();
+    return years ? [years[0], years[years.length - 1]] : undefined;
   }, [data]);
 
   const countByYear = useCount(

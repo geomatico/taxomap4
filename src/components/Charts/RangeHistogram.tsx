@@ -113,8 +113,8 @@ const Root = styled(
 
 export type RangeHistogramProps = {
   value: Range,
-  onValueChange: (range: number | Range) => void,
-  onChangeCommitted: (range: number | Range) => void,
+  onValueChange: (range: Range) => void,
+  onChangeCommitted: (range: Range) => void,
   height: number,
   data: Record<number, number>,
   minMax?: Range,
@@ -178,10 +178,6 @@ const RangeHistogram: FC<RangeHistogramProps> = ({data, value, minMax, height = 
     }
   };
 
-  const handleOnRangeChange =(range: number | Range)=> {
-    onValueChange(range);
-  };
-
   return <Root className={classes.root} sx={sx} height={height}>
     <Box className={classes.barContainer}>
       {
@@ -214,7 +210,7 @@ const RangeHistogram: FC<RangeHistogramProps> = ({data, value, minMax, height = 
         )
       }
     </Box>
-    <RangeSlider sx={rangeSliderStyles} value={value} min={minAxisX} max={maxAxisX} onChangeCommitted={(event: Event | SyntheticEvent<Element, Event>, value: number | number[])=> onChangeCommitted(value as Range)} onValueChange={handleOnRangeChange}/>
+    <RangeSlider sx={rangeSliderStyles} value={value} min={minAxisX} max={maxAxisX} onChangeCommitted={(event: Event | SyntheticEvent<Element, Event>, value: number | number[])=> onChangeCommitted(value as Range)} onValueChange={onValueChange}/>
   </Root>;
 };
 
