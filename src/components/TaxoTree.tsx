@@ -136,7 +136,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
         {!isRootTaxonomicLevel(filters.taxon.level) && <Tooltip title={t('parentTaxon')} arrow>
           <KeyboardReturnIcon sx={iconTaxoStyle} onClick={handleOnParentClick}/>
         </Tooltip>}
-        <Typography sx={labelTaxoStyle}>{currentDictionaryEntry.name}</Typography>
+        <Typography sx={labelTaxoStyle}>{currentDictionaryEntry.name || t('[indet]')}</Typography>
       </Box>
       <Box display='flex' alignItems='center'>
         <Tooltip title={t('infoTaxon')} placement="top">
@@ -183,36 +183,32 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
 
     </Box>
     <List dense sx={{ml: 2}}>
-      {!childrenItems?.length &&
+      {(!childrenItems?.length || !currentDictionaryEntry.name) &&
         <Typography variant="caption" display="block" gutterBottom sx={{fontStyle: 'italic', ml: 2}}>
-          Carregant...
+          {t('no_subtaxa')}
         </Typography>
       }
-      {!!childrenItems?.length && filters.subtaxonVisibility && childrenItems.map(child => {
-        const childLevel = nextTaxonomicLevel(filters.taxon.level);
-        const subchildrenDictionary = dictionaries[nextTaxonomicLevel(childLevel)];
-        const buttonEnabled = child.name &&
-            subchildrenDictionary?.find(subchild => subchild[`${childLevel}_id`] === child.id);
-        return <ListItem key={child.id} disablePadding>
-          <ListItemButton disabled={!buttonEnabled} sx={listItemButtonStyle} component="a">
-            <ListItemText onClick={() => buttonEnabled && handleOnChildClick(child.id)}
+      {!!childrenItems?.length && currentDictionaryEntry.name && filters.subtaxonVisibility && childrenItems.map(child =>
+        <ListItem key={child.id} disablePadding>
+          <ListItemButton sx={listItemButtonStyle} component="a">
+            <ListItemText onClick={() => handleOnChildClick(child.id)}
               sx={filters.subtaxonVisibility?.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>
-              <span style={{fontWeight: 'bold'}}>{child.name || '[indet]'}</span> -
+              <span style={{fontWeight: 'bold'}}>{child.name || t('[indet]')}</span> -
               <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
                 {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span>
               <span style={{fontSize: '10px'}}> / {child.count}</span>
             </ListItemText>
-          </ListItemButton>
-          {filters.subtaxonVisibility &&
+
+            {filters.subtaxonVisibility &&
               <ListItemIcon onClick={() => handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
-                {filters.subtaxonVisibility.isVisible[child.id]
-                  ? <VisibilityIcon sx={{ml: 1, cursor: 'pointer', fontSize: '1.2rem'}}/>
-                  : <VisibilityOffIcon sx={{ml: 1, cursor: 'pointer', fontSize: '1.2rem', color: 'lightgrey'}}/>
+                {filters.subtaxonVisibility?.isVisible[child.id]
+                  ? <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
+                  : <VisibilityOffIcon sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
                 }
               </ListItemIcon>
-          }
-        </ListItem>;
-      }
+            }
+          </ListItemButton>
+        </ListItem>
       )}
     </List>
 

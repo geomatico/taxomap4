@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 //MUI
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import {useTranslation} from 'react-i18next';
 
 //STYLES
 const TAG_HEIGHT = 40;
@@ -30,10 +31,10 @@ const BreadcrumbItem = ({taxo, last, onItemBack}) => {
     position: 'relative',
     left: -0.5
   };
-
+  const {t} = useTranslation();
   return <Box sx={{display: 'flex', flexDirection: 'row', ml: 2}} onClick={() => onItemBack(taxo)}>
     <Box sx={tagStyle}>
-      <Typography variant='body2' sx={textStyle}>{taxo.label}</Typography>
+      <Typography variant='body2' sx={textStyle}>{taxo.label || t('[indet]')}</Typography>
     </Box>
     {!last && <Box variant='body2' sx={triangleStyle}/>}
   </Box>;

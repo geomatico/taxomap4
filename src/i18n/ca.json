@@ -38,6 +38,7 @@
     "temperature": "Temperatura"
   },
   "moreInfo": "Més informació",
+  "no_subtaxa": "Sense subtaxons",
   "of": "de",
   "parentTaxon": "Tàxon superior",
   "phylumLegend": {
@@ -48,5 +49,6 @@
     "tracheophyta": "Tracheophyta"
   },
   "search": "Cerca de taxon",
-  "selectFilter": "Selecciona filtre"
+  "selectFilter": "Selecciona filtre",
+  "[indet]": "[Indeterminat]"
 }
