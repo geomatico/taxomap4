@@ -69,6 +69,7 @@ export const getWfsDownloadUrl = (
   url.searchParams.append('request', 'GetFeature');
   url.searchParams.append('typeName', WFS_CONFIG.typename);
   url.searchParams.append('outputFormat', format);
+  url.searchParams.append('content-disposition', 'attachment');
 
   const cqlFilters = [
     cqlPropertyEquals(getPropertyName(taxon.level), taxon.id),

@@ -131,7 +131,8 @@ describe('wfs', () => {
     expect(params.get('request')).to.equal('GetFeature');
     expect(params.get('typeName')).to.equal('taxomap:taxomap');
     expect(params.get('outputFormat')).to.equal(expectedFormat);
-    expect(params.size).to.equal(5); // cql_filter to be validated separately for each test
+    expect(params.get('content-disposition')).to.equal('attachment');
+    expect(params.size).to.equal(6); // cql_filter to be validated separately for each test
     return params;
   };
 });
