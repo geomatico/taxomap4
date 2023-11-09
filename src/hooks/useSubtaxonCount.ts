@@ -2,7 +2,7 @@ import useArrowData from './useArrowData';
 import useDictionaries from './useDictionaries';
 import {BBOX, Dictionaries, Filters, SubtaxonCount, TaxomapData, TaxonomicLevel} from '../commonTypes';
 import {useMemo} from 'react';
-import {TAXONOMIC_LEVELS} from '../config';
+import {nextTaxonomicLevel} from '../taxonomicLevelUtils';
 
 const isInsideOfBBOX = (BBOX: BBOX, x: number, y: number): boolean => {
   const [xMin, yMin, xMax, yMax] = BBOX;
@@ -18,8 +18,7 @@ const useSubtaxonCount = ({taxon, institutionId, basisOfRecordId, yearRange, bbo
 
     if (!data || !dictionaries || isLeaf) return {}; // No data available yet, or is last level and has no children
 
-    const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(taxon.level);
-    const nextLevel: TaxonomicLevel = TAXONOMIC_LEVELS[actualLevelIndex + 1] as TaxonomicLevel;
+    const nextLevel = nextTaxonomicLevel(taxon.level);
 
     const count: SubtaxonCount = {};
     for (let i = 0; i < data.length; i++) {

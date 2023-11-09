@@ -14,7 +14,7 @@ import SidePanel from '@geomatico/geocomponents/Layout/SidePanel';
 
 //UTILS
 import Logo from './icons/Logo';
-import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT, TAXONOMIC_LEVELS} from '../config';
+import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT} from '../config';
 import {useTranslation} from 'react-i18next';
 
 import AboutModal from './About/AboutModal';
@@ -22,6 +22,7 @@ import HelpModal from './HelpModal';
 import Breadcrumbs from './Breadcrumbs';
 import useTaxonPath from '../hooks/useTaxonPath';
 import useDictionaries from '../hooks/useDictionaries';
+import {TaxonomicLevel} from '../commonTypes';
 
 
 const Main = styled(Box, {
@@ -122,7 +123,7 @@ Layout.propTypes = {
   sidePanelContent: PropTypes.element.isRequired,
   mainContent: PropTypes.element.isRequired,
   selectedTaxon: PropTypes.shape({
-    level: PropTypes.oneOf(TAXONOMIC_LEVELS).isRequired,
+    level: PropTypes.oneOf(TaxonomicLevel).isRequired,
     id: PropTypes.number.isRequired
   }).isRequired,
   onTaxonChange: PropTypes.func.isRequired,

@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
-import {TAXONOMIC_LEVELS} from '../config';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -22,6 +21,13 @@ import {ArrowContainer, Popover} from 'react-tiny-popover';
 import Link from '@mui/material/Link';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {getWfsDownloadUrl} from '../wfs/wfs';
+import {
+  findDictionaryEntry,
+  isRootTaxonomicLevel,
+  nextTaxonomicLevel,
+  previousTaxonomicLevel
+} from '../taxonomicLevelUtils';
+
 //STYLES
 const contentTaxoStyle = {
   display: 'flex',
@@ -77,21 +83,19 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
 
-  const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(filters.taxon.level);
-  const isRootLevel = actualLevelIndex === 0;
-  const actualItem = dictionaries[filters.taxon.level].find(item => item.id === filters.taxon.id);
+  const currentDictionaryEntry = findDictionaryEntry(filters.taxon.level, filters.taxon.id, dictionaries);
 
   const handleOnChildClick = (child: TaxonId) => onTaxonChanged({
-    level: TAXONOMIC_LEVELS[actualLevelIndex + 1],
+    level: nextTaxonomicLevel(filters.taxon.level),
     id: child
   });
 
   const handleOnParentClick = () => {
-    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1] as TaxonomicLevel;
-    if (actualItem) {
+    const parentLevel = previousTaxonomicLevel(filters.taxon.level);
+    if (currentDictionaryEntry) {
       onTaxonChanged({
         level: parentLevel,
-        id: actualItem[`${parentLevel}_id`] ?? NaN
+        id: currentDictionaryEntry[`${parentLevel}_id`] ?? NaN
       });
     }
   };
@@ -126,13 +130,13 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
     setAnchorEl(null);
   };
 
-  return actualItem ? <>
+  return currentDictionaryEntry ? <>
     <Box sx={contentTaxoStyle}>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
-        {!isRootLevel && <Tooltip title={t('parentTaxon')} arrow>
+        {!isRootTaxonomicLevel(filters.taxon.level) && <Tooltip title={t('parentTaxon')} arrow>
           <KeyboardReturnIcon sx={iconTaxoStyle} onClick={handleOnParentClick}/>
         </Tooltip>}
-        <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
+        <Typography sx={labelTaxoStyle}>{currentDictionaryEntry.name}</Typography>
       </Box>
       <Box display='flex' alignItems='center'>
         <Tooltip title={t('infoTaxon')} placement="top">
@@ -185,8 +189,8 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
         </Typography>
       }
       {!!childrenItems?.length && filters.subtaxonVisibility && childrenItems.map(child => {
-        const subchildrenDictionary = dictionaries[TAXONOMIC_LEVELS[actualLevelIndex + 2]];
-        const childLevel = TAXONOMIC_LEVELS[actualLevelIndex + 1];
+        const childLevel = nextTaxonomicLevel(filters.taxon.level);
+        const subchildrenDictionary = dictionaries[nextTaxonomicLevel(childLevel)];
         const buttonEnabled = child.name &&
             subchildrenDictionary?.find(subchild => subchild[`${childLevel}_id`] === child.id);
         return <ListItem key={child.id} disablePadding>
@@ -212,7 +216,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
       )}
     </List>
 
-    {isModalOpen && <TaxonInfoModal isModalOpen={isModalOpen} selectedTaxon={actualItem?.name as TaxonomicLevel} onModalOpenChange={setIsModalOpen}/>}
+    {isModalOpen && <TaxonInfoModal isModalOpen={isModalOpen} selectedTaxon={currentDictionaryEntry?.name as TaxonomicLevel} onModalOpenChange={setIsModalOpen}/>}
 
   </> : null;
 };

@@ -1,33 +1,28 @@
-import {TAXONOMIC_LEVELS} from '../config';
-import {Dictionaries, DictionaryEntry, Taxon, TaxonomicLevel} from '../commonTypes';
+import {Dictionaries, Taxon} from '../commonTypes';
+import {findDictionaryEntry, previousTaxonomicLevel} from '../taxonomicLevelUtils';
 
 type NamedTaxon = Taxon & {
   label: string
 };
 
 const useTaxonPath = (selectedTaxon: Taxon, dictionaries: Dictionaries): Array<NamedTaxon> => {
+  const taxoPath: Array<NamedTaxon> = [];
+  let level = selectedTaxon.level;
+  let id: number | undefined = selectedTaxon.id;
+  while (level && id) {
+    const taxonEntry = findDictionaryEntry(level, id, dictionaries);
+    if (!taxonEntry) break;
 
-  const levelIndex = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
-  const taxon = dictionaries[selectedTaxon.level].find(el => el.id === selectedTaxon.id);
-
-  const taxoPath: Array<DictionaryEntry> = [];
-  if (taxon) {
-    taxoPath.push(taxon);
-    for (let step = levelIndex; step > 0; step--) {
-      const parentLevel = TAXONOMIC_LEVELS[step - 1] as TaxonomicLevel;
-      const currentTaxonId: number | undefined = taxoPath[0][`${parentLevel}_id`];
-      const parentDictionaryEntry: DictionaryEntry | undefined = dictionaries[TAXONOMIC_LEVELS[step - 1] as TaxonomicLevel].find(el => el.id === currentTaxonId);
-      if (parentDictionaryEntry) {
-        taxoPath.unshift(parentDictionaryEntry);
-      }
-    }
+    taxoPath.unshift({
+      level: level,
+      label: taxonEntry.name,
+      id: taxonEntry.id
+    });
+    level = previousTaxonomicLevel(level);
+    id = taxonEntry[`${level}_id`];
   }
 
-  return taxoPath.map((el, i) => ({
-    level: TAXONOMIC_LEVELS[i] as TaxonomicLevel,
-    label: el.name,
-    id: el.id
-  }));
+  return taxoPath || undefined;
 };
 
 export default useTaxonPath;
