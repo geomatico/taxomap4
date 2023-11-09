@@ -1,4 +1,5 @@
 {
+  "[indet]": "[Indeterminat]",
   "about": "Què és?",
   "basisofrecordLegend": {
     "fossil": "Fossil",
@@ -49,6 +50,5 @@
     "tracheophyta": "Tracheophyta"
   },
   "search": "Cerca de taxon",
-  "selectFilter": "Selecciona filtre",
-  "[indet]": "[Indeterminat]"
+  "selectFilter": "Selecciona filtre"
 }
