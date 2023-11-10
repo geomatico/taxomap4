@@ -22,12 +22,11 @@ import {
   BBOX,
   Dictionaries,
   FilterBy,
+  Filters,
   Range,
   RGBAArrayColor,
-  SubtaxonVisibility,
   SymbolizeBy,
   TaxomapData,
-  Taxon,
   Viewport
 } from '../../commonTypes';
 
@@ -62,26 +61,12 @@ const legendSelectorContainer = {
 };
 
 type MainContentProps = {
-  institutionFilter?: number,
-  basisOfRecordFilter?: number,
-  yearFilter?: Range,
+  filters : Filters,
   onYearFilterChange: (range?: Range) => void,
-  taxonFilter: Taxon,
-  BBOX?: BBOX,
   onBBOXChanged: (bbox: BBOX) => void,
-  subtaxonVisibility?: SubtaxonVisibility
 };
 
-const MainContent: FC<MainContentProps> = ({
-  institutionFilter,
-  basisOfRecordFilter,
-  yearFilter,
-  onYearFilterChange,
-  taxonFilter,
-  BBOX,
-  onBBOXChanged,
-  subtaxonVisibility
-}) => {
+const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXChanged }) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
@@ -97,12 +82,12 @@ const MainContent: FC<MainContentProps> = ({
     return years ? [years[0], years[years.length - 1]] : undefined;
   }, [data]);
 
-  const countByYear = useCount(
-    {
-      data, dictionaries, institutionFilter,
-      basisOfRecordFilter, yearFilter: fullYearRange,
-      subtaxonVisibility, groupBy: FilterBy.year, selectedTaxon: taxonFilter, BBOX
-    });
+  const countByYear = useCount({
+    data,
+    dictionaries,
+    filters: Object.assign(filters, {yearRange: fullYearRange}),
+    groupBy: FilterBy.year
+  });
 
   const handleViewportChange = (viewport : Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
   const notifyChanges = useCallback(debounce(200, handleViewportChange), []);
@@ -142,21 +127,21 @@ const MainContent: FC<MainContentProps> = ({
         (data as TaxomapData).institutioncode[index],
         (data as TaxomapData).basisofrecord[index],
         //taxonFilter?.level === undefined ? 1 : (data as TaxomapData)[taxonFilter.level][index]
-        !subtaxonVisibility || subtaxonVisibility.isVisible[(data as TaxomapData)[subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
+        !filters.subtaxonVisibility || filters.subtaxonVisibility.isVisible[(data as TaxomapData)[filters.subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
       ],
       filterRange: [
-        yearFilter === undefined ? [0, 999999] : yearFilter,
-        institutionFilter === undefined ? [0, 999999] : [institutionFilter, institutionFilter],
-        basisOfRecordFilter === undefined ? [0, 999999] : [basisOfRecordFilter, basisOfRecordFilter],
+        filters.yearRange === undefined ? [0, 999999] : filters.yearRange,
+        filters.institutionId === undefined ? [0, 999999] : [filters.institutionId, filters.institutionId],
+        filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
         [1, 1]
       ],
       updateTriggers: {
         getFillColor: [symbolizeBy],
-        getFilterValue: [subtaxonVisibility]
+        getFilterValue: [filters.subtaxonVisibility]
       },
       pickable: true
     })
-  ]), [data, symbolizeBy, yearFilter, institutionFilter, basisOfRecordFilter, taxonFilter, dictionaries, subtaxonVisibility]);
+  ]), [data, symbolizeBy, filters, dictionaries]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
@@ -233,7 +218,7 @@ const MainContent: FC<MainContentProps> = ({
     <Box sx={rangeSliderContainer}>
       {fullYearRange ?
         <YearSlider
-          yearRange={yearFilter}
+          yearRange={filters.yearRange}
           fullYearRange={fullYearRange}
           onYearRangeChange={onYearFilterChange}
           data={countByYear}
@@ -243,15 +228,7 @@ const MainContent: FC<MainContentProps> = ({
     <Box sx={legendSelectorContainer}>
 
       <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}>
-        <GraphicByLegend
-          institutionFilter={institutionFilter}
-          basisOfRecordFilter={basisOfRecordFilter}
-          yearFilter={yearFilter}
-          taxonFilter={taxonFilter}
-          subtaxonVisibility={subtaxonVisibility}
-          symbolizeBy={symbolizeBy}
-          BBOX={BBOX}
-        />
+        <GraphicByLegend filters={filters} symbolizeBy={symbolizeBy}/>
       </LegendSelector>
     </Box>
   </>;

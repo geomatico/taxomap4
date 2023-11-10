@@ -56,7 +56,10 @@ export const ARROW_FIELDS = ['id', 'catalognumber', 'domain', 'kingdom', 'phylum
 
 export const TAXONOMIC_LEVELS = Object.keys(TaxonomicLevel);
 
-const idByName = (dictionary: Array<{id: number, name: string}>) => (name: string) => dictionary.find(r => r.name === name)?.id ?? 0;
+const idByName = (dictionary: Array<{
+  id: number,
+  name: string
+}>) => (name: string) => dictionary.find(r => r.name === name)?.id ?? 0;
 
 export const INITIAL_TAXON: Taxon = {
   level: TaxonomicLevel.kingdom,
@@ -87,7 +90,7 @@ export const PHYLUM_LEGEND: Legend = [
   },
   {
     id: 0,
-    labelKey:  'other',
+    labelKey: 'other',
     color: '#FABB5C'
   }
 ];

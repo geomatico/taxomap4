@@ -10,17 +10,18 @@ import Typography from '@mui/material/Typography';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
-import {GEOSERVER_BASE_URL, TAXONOMIC_LEVELS} from '../config';
+import {TAXONOMIC_LEVELS} from '../config';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
-import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range} from '../commonTypes';
+import {ChildCount, Filters, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel} from '../commonTypes';
 import TaxonInfoModal from './TaxonInfoModal';
 import DownloadIcon from '@mui/icons-material/Download';
 import {ArrowContainer, Popover} from 'react-tiny-popover';
 import Link from '@mui/material/Link';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import {getWfsDownloadUrl} from '../wfs/wfs';
 //STYLES
 const contentTaxoStyle = {
   display: 'flex',
@@ -60,42 +61,30 @@ const listItemTextStyle = {
 };
 
 export type TaxoTreeProps = {
-  institutionFilter?: number,
-  basisOfRecordFilter?: number,
-  yearFilter?: Range,
-  selectedTaxon: Taxon,
+  filters : Filters,
   onTaxonChanged: (taxon: Taxon) => void,
-  BBOX?: BBOX,
-  subtaxonVisibility?: SubtaxonVisibility,
   onSubtaxonVisibilityChanged: (visibility: SubtaxonVisibility) => void,
   childrenItems: Array<ChildCount>
 }
 
-const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, yearFilter, selectedTaxon, subtaxonVisibility, BBOX, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
+const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
 
-  const subtaxonCountBBOX = useSubtaxonCount({
-    institutionFilter,
-    basisOfRecordFilter,
-    yearFilter,
-    selectedTaxon,
-    BBOX,
-    subtaxonVisibility
-  });
+  const subtaxonCountBBOX = useSubtaxonCount(filters);
 
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
 
-  const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(selectedTaxon.level);
+  const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(filters.taxon.level);
   const isRootLevel = actualLevelIndex === 0;
-  const actualItem = dictionaries[selectedTaxon.level].find(item => item.id === selectedTaxon.id);
+  const actualItem = dictionaries[filters.taxon.level].find(item => item.id === filters.taxon.id);
 
   const handleOnChildClick = (child: TaxonId) => {
     // TODO Corta la navegacion al nivel de species hasta que sepamos filtrar bien las subespecies indeterminadas
-    if (selectedTaxon.level !== 'species') {
+    if (filters.taxon.level !== 'species') {
       onTaxonChanged({
         level: TAXONOMIC_LEVELS[actualLevelIndex + 1] as TaxonomicLevel,
         id: child
@@ -123,12 +112,12 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
   }
 
   const handleOnSubtaxonVisibilityChange = (id: TaxonId) => {
-    if (subtaxonVisibility) {
+    if (filters.subtaxonVisibility) {
       onSubtaxonVisibilityChanged({
-        ...subtaxonVisibility,
+        ...filters.subtaxonVisibility,
         isVisible: {
-          ...subtaxonVisibility.isVisible,
-          [id]: !subtaxonVisibility.isVisible[id]
+          ...filters.subtaxonVisibility.isVisible,
+          [id]: !filters.subtaxonVisibility.isVisible[id]
         }
       });
     }
@@ -147,8 +136,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
   };
 
   const downloadFile = (format: string) => {
-    // TODO TAX-40 add filters as CQL (institution, basisofrecord, taxon, time)
-    const url = `${GEOSERVER_BASE_URL}/wfs?version=1.0.0&request=GetFeature&typeName=taxomap:taxomap&outputFormat=${format}&maxFeatures=1`;
+    const url = getWfsDownloadUrl(format, filters);
     window.open(url, '_blank');
     setAnchorEl(null);
   };
@@ -211,19 +199,22 @@ const TaxoTree: FC<TaxoTreeProps> = ({institutionFilter, basisOfRecordFilter, ye
           Sense dades
         </Typography>
       }
-      {!!childrenItems?.length && subtaxonVisibility && childrenItems.map(child =>
+      {!!childrenItems?.length && filters.subtaxonVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
           <ListItemButton
             sx={listItemButtonStyle}
             component="a">
-            <ListItemText onClick={() => handleOnChildClick(child.id)} sx={subtaxonVisibility.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}><span
-              style={{fontWeight: 'bold'}}>{child.name}</span> - <span
-              style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
-              {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span><span style={{fontSize: '10px'}}> / {child.count}</span>
+            <ListItemText onClick={() => handleOnChildClick(child.id)}
+              sx={filters.subtaxonVisibility?.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>
+              <span style={{fontWeight: 'bold'}}>{child.name}</span> -
+              <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
+                {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0}
+              </span>
+              <span style={{fontSize: '10px'}}> / {child.count}</span>
             </ListItemText>
-            {subtaxonVisibility &&
+            {filters.subtaxonVisibility &&
               <ListItemIcon onClick={() => handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
-                {subtaxonVisibility.isVisible[child.id]
+                {filters.subtaxonVisibility.isVisible[child.id]
                   ? <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
                   : <VisibilityOffIcon sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
                 }

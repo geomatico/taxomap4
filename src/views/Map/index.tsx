@@ -8,7 +8,7 @@ import {INITIAL_TAXON, TAXONOMIC_LEVELS} from '../../config';
 import useDictionaries from '../../hooks/useDictionaries';
 import useTaxonChildren from '../../hooks/useTaxonChildren';
 import useSubtaxonCount from '../../hooks/useSubtaxonCount';
-import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range} from '../../commonTypes';
+import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range, Filters} from '../../commonTypes';
 import {useNavigate, useParams} from 'react-router-dom';
 
 const Index = () => {
@@ -22,6 +22,15 @@ const Index = () => {
   const [selectedYearRange, setYearRange] = useState<Range>();
   const [BBOX, setBBOX] = useState<BBOX>();
   const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
+
+  const filters: Filters = {
+    taxon: selectedTaxon,
+    institutionId: selectedInstitutionId,
+    basisOfRecordId: selectedBasisOfRecordId,
+    subtaxonVisibility: subtaxonVisibility,
+    yearRange: selectedYearRange,
+    bbox: BBOX
+  };
 
   useEffect(()=>{
     // si la url no tiene taxon seleccionado
@@ -41,10 +50,10 @@ const Index = () => {
 
 
   const subtaxonCount = useSubtaxonCount({
-    institutionFilter: selectedInstitutionId,
-    basisOfRecordFilter: selectedBasisOfRecordId,
-    yearFilter: selectedYearRange,
-    selectedTaxon
+    institutionId: filters.institutionId,
+    basisOfRecordId: filters.basisOfRecordId,
+    yearRange: filters.yearRange,
+    taxon : filters.taxon
   });
 
   const childrenItems: Array<ChildCount> = useTaxonChildren(subtaxonCount, selectedTaxon, dictionaries);
@@ -68,28 +77,18 @@ const Index = () => {
   }, [childrenItems]);
 
   const sidePanelContent = <SidePanelContent
-    institutionFilter={selectedInstitutionId}
+    filters={filters}
     onInstitutionFilterChange={setInstitutionId}
-    basisOfRecordFilter={selectedBasisOfRecordId}
-    yearFilter={selectedYearRange}
     onBasisOfRecordChange={setBasisOfRecordId}
-    selectedTaxon={selectedTaxon}
     onTaxonChange={setTaxon}
-    BBOX={BBOX}
     childrenItems={childrenItems}
-    subtaxonVisibility={subtaxonVisibility}
     onSubtaxonVisibilityChanged={setSubtaxonVisibility}
   />;
 
   const mainContent = <MainContent
-    institutionFilter={selectedInstitutionId}
-    basisOfRecordFilter={selectedBasisOfRecordId}
-    yearFilter={selectedYearRange}
+    filters={filters}
     onYearFilterChange={setYearRange}
-    taxonFilter={selectedTaxon}
     onBBOXChanged={setBBOX}
-    BBOX={BBOX}
-    subtaxonVisibility={subtaxonVisibility}
   />;
 
   return <Layout

@@ -86,8 +86,14 @@ export type SubtaxonVisibility = {
   isVisible: Record<TaxonId, boolean>
 };
 
+/**
+ * Min/max are inclusive
+ */
 export type Range = [number, number];
 
+/**
+ * CRS is EPSG:4326. [west, south, east, north] or [x0, y0, x1, y1].
+ */
 export type BBOX = [number, number, number, number];
 
 export type DictionaryEntry = {
@@ -114,3 +120,15 @@ export type Dictionaries = {
 }
 
 export type SubtaxonCount = Record<TaxonId, number>;
+
+export type Filters = {
+  taxon: Taxon,
+  // undefined means no filter (the only way to access features with null year).
+  yearRange?: Range,
+  // See `static/dictionaries/institutioncode.json`.
+  institutionId?: number,
+  // See `static/dictionaries/basisofrecord.json`.
+  basisOfRecordId?: number,
+  subtaxonVisibility?: SubtaxonVisibility,
+  bbox?: BBOX
+}

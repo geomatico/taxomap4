@@ -8,40 +8,29 @@ import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
 import Divider from '@mui/material/Divider';
-import {BBOX, ChildCount, SubtaxonVisibility, Taxon, Range} from '../../commonTypes';
+import {ChildCount, Filters, SubtaxonVisibility, Taxon} from '../../commonTypes';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
   padding: 0,
 });
 
-
 type SidePanelContentProps = {
-  institutionFilter?: number,
+  filters : Filters,
   onInstitutionFilterChange: (id: number) => void,
-  basisOfRecordFilter?: number,
-  yearFilter?: Range,
   onBasisOfRecordChange: (id: number) => void,
-  selectedTaxon: Taxon,
   onTaxonChange: (taxon: Taxon) => void,
-  BBOX?: BBOX,
-  subtaxonVisibility?: SubtaxonVisibility,
   onSubtaxonVisibilityChanged: (visibility: SubtaxonVisibility) => void,
   childrenItems: Array<ChildCount>
 }
 
 const SidePanelContent: FC<SidePanelContentProps> = ({
-  institutionFilter,
+  filters,
   onInstitutionFilterChange,
-  basisOfRecordFilter,
-  yearFilter,
   onBasisOfRecordChange,
-  selectedTaxon,
   onTaxonChange,
-  subtaxonVisibility,
   onSubtaxonVisibilityChanged,
-  childrenItems,
-  BBOX
+  childrenItems
 }) => {
   const [filteredTaxon, setFilteredTaxon] = useState(null);
 
@@ -50,8 +39,8 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
   }, [filteredTaxon]);
 
   useEffect(() => {
-    if (selectedTaxon) onTaxonChange(selectedTaxon);
-  }, [selectedTaxon]);
+    if (filters.taxon) onTaxonChange(filters.taxon);
+  }, [filters.taxon]);
 
   return <Stack sx={{
     height: '100%',
@@ -59,9 +48,9 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
   }}>
     <ScrollableContent>
       <FilterByForm
-        institutionFilter={institutionFilter}
+        institutionFilter={filters.institutionId}
         onInstitutionFilterChange={onInstitutionFilterChange}
-        basisOfRecordFilter={basisOfRecordFilter}
+        basisOfRecordFilter={filters.basisOfRecordId}
         onBasisOfRecordChange={onBasisOfRecordChange}
       />
       <Divider/>
@@ -69,15 +58,10 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
         <AutocompleteVirtualized onFilteredTaxonChange={setFilteredTaxon}/>
       </Box>
       <TaxoTree
-        selectedTaxon={selectedTaxon}
+        filters={filters}
         onTaxonChanged={onTaxonChange}
-        BBOX={BBOX}
         childrenItems={childrenItems}
-        subtaxonVisibility={subtaxonVisibility}
         onSubtaxonVisibilityChanged={onSubtaxonVisibilityChanged}
-        basisOfRecordFilter={basisOfRecordFilter}
-        institutionFilter={institutionFilter}
-        yearFilter={yearFilter}
       />
     </ScrollableContent>
     <Geomatico/>

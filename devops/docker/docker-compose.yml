@@ -40,6 +40,7 @@ services:
       CUSTOM_UID: 1000
       CUSTOM_GID: 1000
       TAXOMAP_PASSWORD: taxomap
+      GEOSERVER_ADMIN_PASSWORD: plain:taxomap
       PROXY_BASE_URL: http://localhost/geoserver
     volumes:
       - taxomap_geoserver_data_dir:/var/local/geoserver
