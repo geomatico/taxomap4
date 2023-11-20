@@ -20,3 +20,6 @@ export const isLeafTaxonomicLevel = (level: TaxonomicLevel): boolean => level ==
 
 export const findDictionaryEntry = (level: TaxonomicLevel, id: number | undefined, dictionaries: Dictionaries): DictionaryEntry | undefined =>
   level && dictionaries[level].find(el => el.id === id);
+
+export const getTaxonLabel = (name: string | undefined, parentName: string | undefined): string | undefined =>
+  name || parentName && parentName + ' [indet]';

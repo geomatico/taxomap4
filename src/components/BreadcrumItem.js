@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 //MUI
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import {useTranslation} from 'react-i18next';
 
 //STYLES
 const TAG_HEIGHT = 40;
 
-const BreadcrumbItem = ({taxo, last, onItemBack}) => {
+const BreadcrumbItem = ({label, last, onItemBack}) => {
   const tagStyle = {
-    bgcolor: last? 'grey.50' : 'secondary.main',
+    bgcolor: last ? 'grey.50' : 'secondary.main',
     display: 'inline-grid',
     placeItems: 'center',
     height: TAG_HEIGHT
@@ -19,7 +18,7 @@ const BreadcrumbItem = ({taxo, last, onItemBack}) => {
   const textStyle = {
     fontWeight: 'bold',
     px: 2,
-    color: last? 'secondary.main' : 'text.contrastText',
+    color: last ? 'secondary.main' : 'text.contrastText',
     cursor: 'pointer',
     display: 'inline',
   };
@@ -31,21 +30,16 @@ const BreadcrumbItem = ({taxo, last, onItemBack}) => {
     position: 'relative',
     left: -0.5
   };
-  const {t} = useTranslation();
-  return <Box sx={{display: 'flex', flexDirection: 'row', ml: 2}} onClick={() => onItemBack(taxo)}>
+  return <Box sx={{display: 'flex', flexDirection: 'row', ml: 2}} onClick={onItemBack}>
     <Box sx={tagStyle}>
-      <Typography variant='body2' sx={textStyle}>{taxo.label || t('[indet]')}</Typography>
+      <Typography variant='body2' sx={textStyle}>{label}</Typography>
     </Box>
     {!last && <Box variant='body2' sx={triangleStyle}/>}
   </Box>;
 };
 
 BreadcrumbItem.propTypes = {
-  taxo: PropTypes.shape({
-    label: PropTypes.string,
-    id: PropTypes.number,
-    level: PropTypes.string,
-  }).isRequired,
+  label: PropTypes.string.isRequired,
   last: PropTypes.bool,
   onItemBack: PropTypes.func.isRequired
 };

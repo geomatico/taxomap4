@@ -14,19 +14,20 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
-import {ChildCount, Filters, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel} from '../commonTypes';
+import {ChildCount, Filters, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel,} from '../commonTypes';
 import TaxonInfoModal from './TaxonInfoModal';
 import DownloadIcon from '@mui/icons-material/Download';
 import {ArrowContainer, Popover} from 'react-tiny-popover';
 import Link from '@mui/material/Link';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import {getWfsDownloadUrl} from '../wfs/wfs';
 import {
   findDictionaryEntry,
+  getTaxonLabel,
   isRootTaxonomicLevel,
   nextTaxonomicLevel,
   previousTaxonomicLevel
 } from '../taxonomicLevelUtils';
+import {getWfsDownloadUrl} from '../wfs/wfs';
 
 //STYLES
 const contentTaxoStyle = {
@@ -90,6 +91,15 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
     id: child
   });
 
+  const getLabel = (): string | undefined => {
+    if (!currentDictionaryEntry) return;
+
+    const parentLevel = previousTaxonomicLevel(filters.taxon.level);
+    const parentId = currentDictionaryEntry[`${parentLevel}_id`] ?? NaN;
+    const parentEntry = findDictionaryEntry(parentLevel, parentId, dictionaries);
+    return getTaxonLabel(currentDictionaryEntry.name, parentEntry?.name);
+  };
+
   const handleOnParentClick = () => {
     const parentLevel = previousTaxonomicLevel(filters.taxon.level);
     if (currentDictionaryEntry) {
@@ -136,7 +146,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
         {!isRootTaxonomicLevel(filters.taxon.level) && <Tooltip title={t('parentTaxon')} arrow>
           <KeyboardReturnIcon sx={iconTaxoStyle} onClick={handleOnParentClick}/>
         </Tooltip>}
-        <Typography sx={labelTaxoStyle}>{currentDictionaryEntry.name || t('[indet]')}</Typography>
+        <Typography sx={labelTaxoStyle}>{getLabel()}</Typography>
       </Box>
       <Box display='flex' alignItems='center'>
         <Tooltip title={t('infoTaxon')} placement="top">
@@ -193,7 +203,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
           <ListItemButton sx={listItemButtonStyle} component="a">
             <ListItemText onClick={() => handleOnChildClick(child.id)}
               sx={filters.subtaxonVisibility?.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>
-              <span style={{fontWeight: 'bold'}}>{child.name || t('[indet]')}</span> -
+              <span style={{fontWeight: 'bold'}}>{getTaxonLabel(child.name, currentDictionaryEntry?.name)}</span> -
               <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
                 {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span>
               <span style={{fontSize: '10px'}}> / {child.count}</span>
