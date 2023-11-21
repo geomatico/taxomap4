@@ -14,7 +14,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useSubtaxonCount from '../hooks/useSubtaxonCount';
-import {ChildCount, Filters, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel,} from '../commonTypes';
+import {ChildCount, Filters, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel} from '../commonTypes';
 import TaxonInfoModal from './TaxonInfoModal';
 import DownloadIcon from '@mui/icons-material/Download';
 import {ArrowContainer, Popover} from 'react-tiny-popover';
