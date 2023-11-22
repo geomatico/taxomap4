@@ -70,6 +70,7 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "exit-on-error-webpack-plugin": "^0.0.2",
+    "fetch-mock": "^9.11.0",
     "gh-pages": "^3.2.3",
     "html-loader": "^3.0.1",
     "html-react-parser": "^4.2.1",

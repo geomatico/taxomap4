@@ -1,10 +1,14 @@
 import {expect} from 'chai';
-import {getPropertyName, getWfsDownloadUrl} from './wfs';
+import {getPropertyName, getWfsDownloadUrl, getWfsFeatureProperties, WfsProperties} from './wfs';
 import {Filters, TaxonomicLevel} from '../commonTypes';
 import {GEOSERVER_BASE_URL} from '../config';
+import fetchMock, {MockResponse} from 'fetch-mock';
 
 describe('wfs', () => {
-  it('Returns WFS without optional filters"', async () => {
+  beforeEach(() => fetchMock.restore());
+  afterEach(() => fetchMock.restore());
+
+  it('getWfsDownloadUrl returns URL without optional filters"', async () => {
     // GIVEN
     const format = 'application/json';
     const filters = {
@@ -22,7 +26,7 @@ describe('wfs', () => {
     expect(params.get('cql_filter')).to.equal('family_id = 1');
   });
 
-  it('Returns WFS with all optional filters"', async () => {
+  it('getWfsDownloadUrl returns URL with all optional filters"', async () => {
     // GIVEN
     const format = 'application/json';
     const filters: Filters = {
@@ -55,7 +59,7 @@ describe('wfs', () => {
       'AND BBOX(geom,0.5,42.7,0.6,42.8)');
   });
 
-  it('Returns WFS with all subtaxa visible"', async () => {
+  it('getWfsDownloadUrl returns URL with all subtaxa visible"', async () => {
     // GIVEN
     const format = 'application/json';
     const filters = {
@@ -82,7 +86,7 @@ describe('wfs', () => {
     ).to.equal('family_id = 1');
   });
 
-  it('Returns WFS with all subtaxa not visible"', async () => {
+  it('getWfsDownloadUrl returns URL with all subtaxa not visible"', async () => {
     // GIVEN
     const format = 'application/json';
     const filters = {
@@ -109,7 +113,7 @@ describe('wfs', () => {
     ).to.equal('family_id = 1 AND 1=0');
   });
 
-  it('Returns WFS property names for taxonomy levels', async () => {
+  it('getPropertyName returns names for taxonomy levels', async () => {
     // WHEN / THEN
     // ensure TaxonomicLevel type is (in theory) decoupled from WFS property names
     expect(getPropertyName(TaxonomicLevel.domain)).to.equal('domain_id');
@@ -123,6 +127,70 @@ describe('wfs', () => {
     expect(getPropertyName(TaxonomicLevel.subspecies)).to.equal('subspecies_id');
   });
 
+  it('getWfsFeatureProperties returns undefined if ID undefined', async () => {
+    // WHEN
+    const properties = await getWfsFeatureProperties(undefined, [WfsProperties.county]);
+    // THEN
+    expect(properties).to.equal(undefined);
+  });
+
+  it('getWfsFeatureProperties returns undefined if error response', async () => {
+    // GIVEN
+    const featureId = 42;
+    const propertyNames = [WfsProperties.county];
+    mockGetFeatureProperties(featureId, propertyNames, 500);
+
+    // WHEN
+    const properties = await getWfsFeatureProperties(featureId, propertyNames);
+
+    // THEN
+    expect(properties).to.equal(undefined);
+  });
+
+  it('getWfsFeatureProperties returns undefined if unrecognized response', async () => {
+    // GIVEN
+    const featureId = 42;
+    const propertyNames = [WfsProperties.county];
+    mockGetFeatureProperties(featureId, propertyNames, {someWeirdProperty: 42});
+
+    // WHEN
+    const properties = await getWfsFeatureProperties(featureId, propertyNames);
+
+    // THEN
+    expect(properties).to.equal(undefined);
+  });
+
+  it('getWfsFeatureProperties returns requested properties', async () => {
+    // GIVEN
+    const featureId = 42;
+    const propertyNames = [
+      WfsProperties.year, WfsProperties.month, WfsProperties.day,
+      WfsProperties.municipality, WfsProperties.county, WfsProperties.stateProvince
+    ];
+    const response = {
+      features: [{
+        properties: {
+          year: 2023,
+          month: 11,
+          county: 'Burjassot',
+          stateprovince: 'Valencia'
+        }
+      }]
+    };
+    mockGetFeatureProperties(featureId, propertyNames, response);
+
+    // WHEN
+    const properties = await getWfsFeatureProperties(featureId, propertyNames);
+
+    // THEN
+    expect(properties?.year).to.equal(response.features[0].properties.year);
+    expect(properties?.month).to.equal(response.features[0].properties.month);
+    expect(properties?.day).to.equal(undefined);
+    expect(properties?.municipality).to.equal(undefined);
+    expect(properties?.county).to.equal(response.features[0].properties.county);
+    expect(properties?.stateProvince).to.equal(response.features[0].properties.stateprovince);
+  });
+
   const validateUrlAndGetParams = (expectedFormat: string, urlString: string): URLSearchParams => {
     const url = new URL(urlString);
     expect(urlString.startsWith(GEOSERVER_BASE_URL + '/wfs')).to.be.true;
@@ -134,5 +202,19 @@ describe('wfs', () => {
     expect(params.get('content-disposition')).to.equal('attachment');
     expect(params.size).to.equal(6); // cql_filter to be validated separately for each test
     return params;
+  };
+
+  const mockGetFeatureProperties = (featureId: number, propertyNames: WfsProperties[], response: MockResponse): void => {
+    fetchMock.get(`${GEOSERVER_BASE_URL}/wfs`, response, {
+      query: {
+        service: 'wfs',
+        version: '2.0.0',
+        request: 'GetFeature',
+        typeName: 'taxomap:taxomap',
+        outputFormat: 'application/json',
+        featureID: featureId,
+        propertyName: propertyNames.join(',')
+      }
+    });
   };
 });
