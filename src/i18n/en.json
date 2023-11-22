@@ -38,6 +38,7 @@
     "temperature": "Temperature"
   },
   "moreInfo": "More information",
+  "no_subtaxa": "No subtaxa",
   "of": "of",
   "parentTaxon": "Parent taxon",
   "phylumLegend": {

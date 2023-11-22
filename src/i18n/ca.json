@@ -38,6 +38,7 @@
     "temperature": "Temperatura"
   },
   "moreInfo": "Més informació",
+  "no_subtaxa": "Sense subtaxons",
   "of": "de",
   "parentTaxon": "Tàxon superior",
   "phylumLegend": {

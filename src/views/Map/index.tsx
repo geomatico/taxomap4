@@ -3,13 +3,14 @@ import React, {useEffect, useState} from 'react';
 import Layout from '../../components/Layout';
 import SidePanelContent from './SidePanelContent';
 import MainContent from './MainContent';
-import {INITIAL_TAXON, TAXONOMIC_LEVELS} from '../../config';
+import {INITIAL_TAXON} from '../../config';
 
 import useDictionaries from '../../hooks/useDictionaries';
 import useTaxonChildren from '../../hooks/useTaxonChildren';
 import useSubtaxonCount from '../../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range, Filters} from '../../commonTypes';
 import {useNavigate, useParams} from 'react-router-dom';
+import {nextTaxonomicLevel} from '../../taxonomicLevelUtils';
 
 const Index = () => {
   const dictionaries = useDictionaries();
@@ -62,7 +63,7 @@ const Index = () => {
     if (childrenItems?.length) {
       setSubtaxonVisibility((prevVisibility) => {
         const prevSubtaxonLevel = prevVisibility?.subtaxonLevel;
-        const nextSubtaxonLevel = TAXONOMIC_LEVELS[TAXONOMIC_LEVELS.indexOf(selectedTaxon.level) + 1] as TaxonomicLevel;
+        const nextSubtaxonLevel = nextTaxonomicLevel(selectedTaxon.level);
         const levelChanged = prevSubtaxonLevel !== nextSubtaxonLevel;
 
         return {

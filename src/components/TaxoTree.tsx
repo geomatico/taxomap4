@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import {useTranslation} from 'react-i18next';
 import useDictionaries from '../hooks/useDictionaries';
-import {TAXONOMIC_LEVELS} from '../config';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -21,7 +20,15 @@ import DownloadIcon from '@mui/icons-material/Download';
 import {ArrowContainer, Popover} from 'react-tiny-popover';
 import Link from '@mui/material/Link';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import {
+  findDictionaryEntry,
+  getTaxonLabel,
+  isRootTaxonomicLevel,
+  nextTaxonomicLevel,
+  previousTaxonomicLevel
+} from '../taxonomicLevelUtils';
 import {getWfsDownloadUrl} from '../wfs/wfs';
+
 //STYLES
 const contentTaxoStyle = {
   display: 'flex',
@@ -68,7 +75,6 @@ export type TaxoTreeProps = {
 }
 
 const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
@@ -78,38 +84,31 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
   const dictionaries = useDictionaries();
   const {t} = useTranslation();
 
-  const actualLevelIndex = TAXONOMIC_LEVELS.indexOf(filters.taxon.level);
-  const isRootLevel = actualLevelIndex === 0;
-  const actualItem = dictionaries[filters.taxon.level].find(item => item.id === filters.taxon.id);
+  const currentDictionaryEntry = findDictionaryEntry(filters.taxon.level, filters.taxon.id, dictionaries);
 
-  const handleOnChildClick = (child: TaxonId) => {
-    // TODO Corta la navegacion al nivel de species hasta que sepamos filtrar bien las subespecies indeterminadas
-    if (filters.taxon.level !== 'species') {
-      onTaxonChanged({
-        level: TAXONOMIC_LEVELS[actualLevelIndex + 1] as TaxonomicLevel,
-        id: child
-      });
-    }
+  const handleOnChildClick = (child: TaxonId) => onTaxonChanged({
+    level: nextTaxonomicLevel(filters.taxon.level),
+    id: child
+  });
+
+  const getLabel = (): string | undefined => {
+    if (!currentDictionaryEntry) return;
+
+    const parentLevel = previousTaxonomicLevel(filters.taxon.level);
+    const parentId = currentDictionaryEntry[`${parentLevel}_id`] ?? NaN;
+    const parentEntry = findDictionaryEntry(parentLevel, parentId, dictionaries);
+    return getTaxonLabel(currentDictionaryEntry.name, parentEntry?.name);
   };
 
   const handleOnParentClick = () => {
-    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1] as TaxonomicLevel;
-    if (actualItem) {
+    const parentLevel = previousTaxonomicLevel(filters.taxon.level);
+    if (currentDictionaryEntry) {
       onTaxonChanged({
         level: parentLevel,
-        id: actualItem[`${parentLevel}_id`] ?? NaN
+        id: currentDictionaryEntry[`${parentLevel}_id`] ?? NaN
       });
     }
   };
-
-  // para niveles indeterminados ( el header del tree )
-  if (actualItem?.name === '') {
-    const parentLevel = TAXONOMIC_LEVELS[actualLevelIndex - 1] as TaxonomicLevel;
-
-    const parent = dictionaries[parentLevel]
-      .find(item => item.id === actualItem[`${parentLevel}_id`]);
-    actualItem.name = `${parent?.name} [indet]`;
-  }
 
   const handleOnSubtaxonVisibilityChange = (id: TaxonId) => {
     if (filters.subtaxonVisibility) {
@@ -141,13 +140,13 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
     setAnchorEl(null);
   };
 
-  return actualItem ? <>
+  return currentDictionaryEntry ? <>
     <Box sx={contentTaxoStyle}>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
-        {!isRootLevel && <Tooltip title={t('parentTaxon')} arrow>
+        {!isRootTaxonomicLevel(filters.taxon.level) && <Tooltip title={t('parentTaxon')} arrow>
           <KeyboardReturnIcon sx={iconTaxoStyle} onClick={handleOnParentClick}/>
         </Tooltip>}
-        <Typography sx={labelTaxoStyle}>{actualItem.name}</Typography>
+        <Typography sx={labelTaxoStyle}>{getLabel()}</Typography>
       </Box>
       <Box display='flex' alignItems='center'>
         <Tooltip title={t('infoTaxon')} placement="top">
@@ -194,27 +193,25 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
 
     </Box>
     <List dense sx={{ml: 2}}>
-      {!childrenItems?.length &&
+      {(!childrenItems?.length || !currentDictionaryEntry.name) &&
         <Typography variant="caption" display="block" gutterBottom sx={{fontStyle: 'italic', ml: 2}}>
-          Sense dades
+          {t('no_subtaxa')}
         </Typography>
       }
-      {!!childrenItems?.length && filters.subtaxonVisibility && childrenItems.map(child =>
+      {!!childrenItems?.length && currentDictionaryEntry.name && filters.subtaxonVisibility && childrenItems.map(child =>
         <ListItem key={child.id} disablePadding>
-          <ListItemButton
-            sx={listItemButtonStyle}
-            component="a">
+          <ListItemButton sx={listItemButtonStyle} component="a">
             <ListItemText onClick={() => handleOnChildClick(child.id)}
               sx={filters.subtaxonVisibility?.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>
-              <span style={{fontWeight: 'bold'}}>{child.name}</span> -
+              <span style={{fontWeight: 'bold'}}>{getTaxonLabel(child.name, currentDictionaryEntry?.name)}</span> -
               <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
-                {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0}
-              </span>
+                {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span>
               <span style={{fontSize: '10px'}}> / {child.count}</span>
             </ListItemText>
+
             {filters.subtaxonVisibility &&
               <ListItemIcon onClick={() => handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
-                {filters.subtaxonVisibility.isVisible[child.id]
+                {filters.subtaxonVisibility?.isVisible[child.id]
                   ? <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
                   : <VisibilityOffIcon sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
                 }
@@ -225,7 +222,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
       )}
     </List>
 
-    {isModalOpen && <TaxonInfoModal isModalOpen={isModalOpen} selectedTaxon={actualItem?.name as TaxonomicLevel} onModalOpenChange={setIsModalOpen}/>}
+    {isModalOpen && <TaxonInfoModal isModalOpen={isModalOpen} selectedTaxon={currentDictionaryEntry?.name as TaxonomicLevel} onModalOpenChange={setIsModalOpen}/>}
 
   </> : null;
 };
