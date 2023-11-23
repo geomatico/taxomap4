@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "",
   "main": "./dist/main.js",
+  "engines": {
+    "npm": ">=10.0.0 <11.0.0",
+    "node": ">=20.0.0 <21.0.0"
+  },
   "scripts": {
     "test": "npm run lint && karma start karma.config.js",
     "docker-start": "cd devops/docker && docker compose up && cd -",
