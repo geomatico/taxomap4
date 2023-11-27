@@ -85,7 +85,7 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
   const countByYear = useCount({
     data,
     dictionaries,
-    filters: Object.assign(filters, {yearRange: fullYearRange}),
+    filters: {...filters, yearRange: fullYearRange},
     groupBy: FilterBy.year
   });
 
