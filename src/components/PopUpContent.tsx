@@ -6,7 +6,7 @@ import {MUSEU_ID} from '../config';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import {DictionaryEntry} from '../commonTypes';
-import {FeatureProperties, getWfsFeatureProperties, WfsProperties} from '../wfs/wfs';
+import {WfsProperties, getWfsFeatureProperties, WFS_PROPERTY} from '../wfs/wfs';
 
 type PopUpContentProps = {
   selectedFeature: SelectedFeature,
@@ -25,11 +25,12 @@ export type SelectedFeature = {
  * Required WFS properties to fill the popup.
  */
 const PROPERTIES = [
-  WfsProperties.year, WfsProperties.month, WfsProperties.day,
-  WfsProperties.municipality, WfsProperties.county, WfsProperties.stateProvince
+  WFS_PROPERTY.year, WFS_PROPERTY.month, WFS_PROPERTY.day,
+  WFS_PROPERTY.municipality, WFS_PROPERTY.county, WFS_PROPERTY.stateProvince,
+  WFS_PROPERTY.scientificName
 ];
 
-export const getPlaceLabel = (properties: FeatureProperties): string | undefined => {
+export const getPlaceLabel = (properties: WfsProperties): string | undefined => {
   const parts = [properties.municipality, properties.county, properties.stateProvince].filter(Boolean);
   if (parts.length === 0) {
     return undefined;
@@ -40,7 +41,7 @@ export const getPlaceLabel = (properties: FeatureProperties): string | undefined
   return `${parts.join(', ')} (${last})`;
 };
 
-export const getDateLabel = (properties: FeatureProperties): string | undefined => {
+export const getDateLabel = (properties: WfsProperties): string | undefined => {
   if (properties.year === undefined) {
     return;
   } else if (!properties.month) {
@@ -54,7 +55,7 @@ export const getDateLabel = (properties: FeatureProperties): string | undefined 
 
 const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
   const {t} = useTranslation();
-  const [featureProperties, setFeatureProperties] = useState<FeatureProperties>();
+  const [wfsProperties, setWfsProperties] = useState<WfsProperties>();
 
   const getMoreInfoUrl = (selectedFeature: SelectedFeature) => {
     const split = selectedFeature?.catalognumber?.split(' ');
@@ -65,12 +66,13 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
     await getWfsFeatureProperties(selectedFeature?.id, PROPERTIES), [selectedFeature]);
   useEffect(() => {
     getWfsProperties()
-      .then(setFeatureProperties)
+      .then(setWfsProperties)
       .catch(console.log);
   }, [getWfsProperties]);
 
-  const placeLabel = featureProperties && getPlaceLabel(featureProperties);
-  const dateLabel = featureProperties && getDateLabel(featureProperties);
+  const scientificNameLabel = wfsProperties?.scientificName || selectedFeature.species?.name;
+  const placeLabel = wfsProperties && getPlaceLabel(wfsProperties);
+  const dateLabel = wfsProperties && getDateLabel(wfsProperties);
 
   return <Card variant="outlined">
     <CardContent>
@@ -78,7 +80,7 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
         {selectedFeature.catalognumber}
       </Typography>
       <Typography variant="subtitle1" sx={{textTransform: 'uppercase'}} component="div">
-        {selectedFeature.species?.name}
+        {scientificNameLabel}
       </Typography>
       <Typography sx={{fontSize: 14}} color="text.secondary">
         {selectedFeature.institutioncode?.name}
