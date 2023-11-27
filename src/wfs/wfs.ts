@@ -7,7 +7,7 @@ export const WFS_TYPENAME = 'taxomap:taxomap';
 /**
  * These depend on how the database is generated. Make sure they always match whatever is done in `91-generate-dictionaries.sql`.
  */
-export enum WfsProperties {
+export enum WFS_PROPERTY {
   institutionCodeId = 'institutioncode_id',
   basisOfRecordId = 'basisofrecord_id',
   year = 'year',
@@ -16,10 +16,11 @@ export enum WfsProperties {
   municipality = 'municipality',
   county = 'county',
   stateProvince = 'stateprovince',
-  geometry = 'geom'
+  geometry = 'geom',
+  scientificName = 'scientificname'
 }
 
-export type FeatureProperties = { [key in (keyof typeof WfsProperties)]?: number | string | undefined }
+export type WfsProperties = { [key in (keyof typeof WFS_PROPERTY)]?: number | string | undefined }
 
 /**
  * Returns the property name with the ID associated to the given taxonomic level.
@@ -56,11 +57,11 @@ const cqlTaxonIn = (subtaxonVisibility: SubtaxonVisibility | undefined) => {
 };
 
 const cqlYearBetween = (yearRange: Range | undefined) => yearRange
-  ? `${WfsProperties.year} >= ${yearRange[0]} AND ${WfsProperties.year} <= ${yearRange[1]}`
+  ? `${WFS_PROPERTY.year} >= ${yearRange[0]} AND ${WFS_PROPERTY.year} <= ${yearRange[1]}`
   : undefined;
 
 const cqlBbox = (bbox: BBOX | undefined) =>
-  bbox ? `BBOX(${WfsProperties.geometry},${bbox.join(',')})` : undefined;
+  bbox ? `BBOX(${WFS_PROPERTY.geometry},${bbox.join(',')})` : undefined;
 
 /**
  * @param format Download format; anything that WFS `outputFormat` supports.
@@ -80,8 +81,8 @@ export const getWfsDownloadUrl = (
 
   const cqlFilters = [
     cqlPropertyEquals(getPropertyName(taxon.level), taxon.id),
-    cqlPropertyEquals(WfsProperties.institutionCodeId, institutionId),
-    cqlPropertyEquals(WfsProperties.basisOfRecordId, basisOfRecordId),
+    cqlPropertyEquals(WFS_PROPERTY.institutionCodeId, institutionId),
+    cqlPropertyEquals(WFS_PROPERTY.basisOfRecordId, basisOfRecordId),
     cqlTaxonIn(subtaxonVisibility),
     cqlYearBetween(yearRange),
     // cql_filter and BBOX query params are mutually exclusive, BBOX needs to be introduced as part of the cql_filter
@@ -101,8 +102,8 @@ export const getWfsDownloadUrl = (
  */
 export const getWfsFeatureProperties = async (
   id: number | undefined,
-  propertyNames: WfsProperties[]
-): Promise<FeatureProperties | undefined> => {
+  propertyNames: WFS_PROPERTY[]
+): Promise<WfsProperties | undefined> => {
   if (id === undefined) return undefined;
 
   const url = new URL(GEOSERVER_BASE_URL + '/wfs');
@@ -122,11 +123,12 @@ export const getWfsFeatureProperties = async (
 
   const properties = featureCollection.features[0].properties;
   return properties && {
-    year: properties[WfsProperties.year],
-    month: properties[WfsProperties.month],
-    day: properties[WfsProperties.day],
-    stateProvince: properties[WfsProperties.stateProvince],
-    municipality: properties[WfsProperties.municipality],
-    county: properties[WfsProperties.county]
+    year: properties[WFS_PROPERTY.year],
+    month: properties[WFS_PROPERTY.month],
+    day: properties[WFS_PROPERTY.day],
+    stateProvince: properties[WFS_PROPERTY.stateProvince],
+    municipality: properties[WFS_PROPERTY.municipality],
+    county: properties[WFS_PROPERTY.county],
+    scientificName: properties[WFS_PROPERTY.scientificName]
   };
 };

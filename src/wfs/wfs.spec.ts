@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getPropertyName, getWfsDownloadUrl, getWfsFeatureProperties, WfsProperties} from './wfs';
+import {getPropertyName, getWfsDownloadUrl, getWfsFeatureProperties, WFS_PROPERTY} from './wfs';
 import {Filters, TaxonomicLevel} from '../commonTypes';
 import {GEOSERVER_BASE_URL} from '../config';
 import fetchMock, {MockResponse} from 'fetch-mock';
@@ -129,7 +129,7 @@ describe('wfs', () => {
 
   it('getWfsFeatureProperties returns undefined if ID undefined', async () => {
     // WHEN
-    const properties = await getWfsFeatureProperties(undefined, [WfsProperties.county]);
+    const properties = await getWfsFeatureProperties(undefined, [WFS_PROPERTY.county]);
     // THEN
     expect(properties).to.equal(undefined);
   });
@@ -137,7 +137,7 @@ describe('wfs', () => {
   it('getWfsFeatureProperties returns undefined if error response', async () => {
     // GIVEN
     const featureId = 42;
-    const propertyNames = [WfsProperties.county];
+    const propertyNames = [WFS_PROPERTY.county];
     mockGetFeatureProperties(featureId, propertyNames, 500);
 
     // WHEN
@@ -150,7 +150,7 @@ describe('wfs', () => {
   it('getWfsFeatureProperties returns undefined if unrecognized response', async () => {
     // GIVEN
     const featureId = 42;
-    const propertyNames = [WfsProperties.county];
+    const propertyNames = [WFS_PROPERTY.county];
     mockGetFeatureProperties(featureId, propertyNames, {someWeirdProperty: 42});
 
     // WHEN
@@ -164,8 +164,9 @@ describe('wfs', () => {
     // GIVEN
     const featureId = 42;
     const propertyNames = [
-      WfsProperties.year, WfsProperties.month, WfsProperties.day,
-      WfsProperties.municipality, WfsProperties.county, WfsProperties.stateProvince
+      WFS_PROPERTY.year, WFS_PROPERTY.month, WFS_PROPERTY.day,
+      WFS_PROPERTY.municipality, WFS_PROPERTY.county, WFS_PROPERTY.stateProvince,
+      WFS_PROPERTY.scientificName
     ];
     const response = {
       features: [{
@@ -173,7 +174,8 @@ describe('wfs', () => {
           year: 2023,
           month: 11,
           county: 'Burjassot',
-          stateprovince: 'Valencia'
+          stateprovince: 'Valencia',
+          scientificname: 'Ornithorhynchus anatinus'
         }
       }]
     };
@@ -189,6 +191,7 @@ describe('wfs', () => {
     expect(properties?.municipality).to.equal(undefined);
     expect(properties?.county).to.equal(response.features[0].properties.county);
     expect(properties?.stateProvince).to.equal(response.features[0].properties.stateprovince);
+    expect(properties?.scientificName).to.equal(response.features[0].properties.scientificname);
   });
 
   const validateUrlAndGetParams = (expectedFormat: string, urlString: string): URLSearchParams => {
@@ -204,7 +207,7 @@ describe('wfs', () => {
     return params;
   };
 
-  const mockGetFeatureProperties = (featureId: number, propertyNames: WfsProperties[], response: MockResponse): void => {
+  const mockGetFeatureProperties = (featureId: number, propertyNames: WFS_PROPERTY[], response: MockResponse): void => {
     fetchMock.get(`${GEOSERVER_BASE_URL}/wfs`, response, {
       query: {
         service: 'wfs',
