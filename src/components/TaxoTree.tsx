@@ -203,7 +203,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
           <ListItemButton sx={listItemButtonStyle} component="a">
             <ListItemText onClick={() => handleOnChildClick(child.id)}
               sx={filters.subtaxonVisibility?.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>
-              <span style={{fontWeight: 'bold'}}>{getTaxonLabel(child.name, currentDictionaryEntry?.name)}</span> -
+              <span style={{fontWeight: 'bold'}}>{getTaxonLabel(child.name, currentDictionaryEntry?.name)}</span> &nbsp;
               <span style={{fontSize: '10px', color: 'grey', fontWeight: 'bold'}}>
                 {subtaxonCountBBOX[child.id] ? subtaxonCountBBOX[child.id] : 0} </span>
               <span style={{fontSize: '10px'}}> / {child.count}</span>
