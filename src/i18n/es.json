@@ -38,6 +38,39 @@
     "temperature": "Temperatura"
   },
   "moreInfo": "Más información",
+  "navbar": {
+    "collections": {
+      "title": "Collecciones",
+      "omnimus": "Omnimus",
+      "open_collections": "Colecciones abiertas",
+      "open_collections_url": "colecciones-abiertas",
+      "taxo_map": "Taxo&Map",
+      "taxo_map_url": "taxoymap",
+      "guide_to_collections": "Guia de fondos y colecciones"
+    },
+    "projects": {
+      "title": "Proyectos",
+      "type_specimens": "Especímenes tipo",
+      "protagonists": "Protagonistas",
+      "geocoding": "Georeferenciación",
+      "geocoding_url": "georeferenciacion",
+      "3d_atlas": "Catálogo 3D",
+      "3d_atlas_url": "modelos3d"
+    },
+    "scientific_journals": {
+      "title": "Publicaciones Científicas",
+      "animal_biodiversity": "Biodiversidad y conservación animal",
+      "archives": "Archivos de miscelánea zoológica",
+      "monographs": "Monografías del MCNB",
+      "works": "Trabajos del museo de Geología de Barcelona",
+      "publications": "Publicaciones anteriores"
+    },
+    "resources": {
+      "title": "Recursos",
+      "panoramic": "Panorámicas",
+      "panoramic_url": "panoramicos"
+    }
+  },
   "no_subtaxa": "Sin subtaxones",
   "of": "de",
   "parentTaxon": "Taxón superior",
@@ -49,5 +82,6 @@
     "tracheophyta": "Tracheophyta"
   },
   "search": "Búsqueda de taxon",
-  "selectFilter": "Selecciona filtro"
+  "selectFilter": "Selecciona filtro",
+  "slogan": "Explora la naturaleza, explora el museo"
 }

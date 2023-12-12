@@ -23,6 +23,7 @@ import Breadcrumbs from './Breadcrumbs';
 import useTaxonPath from '../hooks/useTaxonPath';
 import useDictionaries from '../hooks/useDictionaries';
 import {TaxonomicLevel} from '../commonTypes';
+import MainHeader from './MainHeader';
 
 
 const Main = styled(Box, {
@@ -65,6 +66,7 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
   const handleClose = () => setSidePanelOpen(!isSidePanelOpen);
 
   return <>
+    <MainHeader/>
     <ResponsiveHeader
       title={<Breadcrumbs tree={taxonPath} onTaxonChange={onTaxonChange}/>}
       logo={

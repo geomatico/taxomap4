@@ -29,7 +29,7 @@ i18n
     load: 'languageOnly',
     whitelist: ['ca', 'es', 'en'],
     fallbackLng: 'ca',
-    debug: false,
+    debug: true,
     interpolation: {
       escapeValue: false,
       formatSeparator: ','
