@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router-dom';
 
 const MainHeader: FC = () => {
   const {t, i18n} = useTranslation();
   const lang = i18n.resolvedLanguage;
-  const navigate = useNavigate();
 
-  const handleLanguageClick = (language: string) => navigate(`?lang=${language}`);
+  const handleLanguageClick = (language: string) => {
+    i18n.changeLanguage(language);
+  };
 
   return <>
     <div className='personlalize-header personlalize-header-white  noprint'>
