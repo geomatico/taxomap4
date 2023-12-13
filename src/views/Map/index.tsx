@@ -11,7 +11,6 @@ import useSubtaxonCount from '../../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range, Filters} from '../../commonTypes';
 import {useNavigate, useParams} from 'react-router-dom';
 import {nextTaxonomicLevel} from '../../taxonomicLevelUtils';
-import {useTranslation} from 'react-i18next';
 
 const Index = () => {
   const dictionaries = useDictionaries();
@@ -24,8 +23,6 @@ const Index = () => {
   const [selectedYearRange, setYearRange] = useState<Range>();
   const [BBOX, setBBOX] = useState<BBOX>();
   const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
-
-  const {i18n} = useTranslation();
 
   const filters: Filters = {
     taxon: selectedTaxon,

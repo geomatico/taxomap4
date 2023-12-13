@@ -18,6 +18,20 @@ const theme = (mode?: PaletteMode) => createTheme({
       secondary: '#746F81',
     }
   },
+  typography: {
+    body1: {
+      fontSize: '14px'
+    },
+    body2: {
+      fontSize: '12px'
+    },
+    caption: {
+      fontSize: '10px'
+    },
+    button: {
+      fontSize: '14px'
+    }
+  },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
