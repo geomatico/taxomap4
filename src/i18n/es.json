@@ -40,35 +40,35 @@
   "moreInfo": "Más información",
   "navbar": {
     "collections": {
-      "title": "Collecciones",
+      "guide_to_collections": "Guia de fondos y colecciones",
       "omnimus": "Omnimus",
       "open_collections": "Colecciones abiertas",
       "open_collections_url": "colecciones-abiertas",
       "taxo_map": "Taxo&Map",
       "taxo_map_url": "taxoymap",
-      "guide_to_collections": "Guia de fondos y colecciones"
+      "title": "Collecciones"
     },
     "projects": {
-      "title": "Proyectos",
-      "type_specimens": "Especímenes tipo",
-      "protagonists": "Protagonistas",
+      "3d_atlas": "Catálogo 3D",
+      "3d_atlas_url": "modelos3d",
       "geocoding": "Georeferenciación",
       "geocoding_url": "georeferenciacion",
-      "3d_atlas": "Catálogo 3D",
-      "3d_atlas_url": "modelos3d"
+      "protagonists": "Protagonistas",
+      "title": "Proyectos",
+      "type_specimens": "Especímenes tipo"
+    },
+    "resources": {
+      "panoramic": "Panorámicas",
+      "panoramic_url": "panoramicos",
+      "title": "Recursos"
     },
     "scientific_journals": {
-      "title": "Publicaciones Científicas",
       "animal_biodiversity": "Biodiversidad y conservación animal",
       "archives": "Archivos de miscelánea zoológica",
       "monographs": "Monografías del MCNB",
-      "works": "Trabajos del museo de Geología de Barcelona",
-      "publications": "Publicaciones anteriores"
-    },
-    "resources": {
-      "title": "Recursos",
-      "panoramic": "Panorámicas",
-      "panoramic_url": "panoramicos"
+      "publications": "Publicaciones anteriores",
+      "title": "Publicaciones Científicas",
+      "works": "Trabajos del museo de Geología de Barcelona"
     }
   },
   "no_subtaxa": "Sin subtaxones",
