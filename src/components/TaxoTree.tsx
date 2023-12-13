@@ -212,8 +212,8 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
             {filters.subtaxonVisibility &&
               <ListItemIcon onClick={() => handleOnSubtaxonVisibilityChange(child.id)} sx={{minWidth: 33}}>
                 {filters.subtaxonVisibility?.isVisible[child.id]
-                  ? <VisibilityIcon sx={{fontSize: '1.2rem'}}/>
-                  : <VisibilityOffIcon sx={{fontSize: '1.2rem', color: 'lightgrey'}}/>
+                  ? <VisibilityIcon sx={{fontSize: '16px'}}/>
+                  : <VisibilityOffIcon sx={{fontSize: '16px', color: 'lightgrey'}}/>
                 }
               </ListItemIcon>
             }

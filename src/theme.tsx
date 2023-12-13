@@ -20,13 +20,13 @@ const theme = (mode?: PaletteMode) => createTheme({
   },
   typography: {
     body1: {
-      fontSize: '14px'
+      fontSize: '16px'
     },
     body2: {
-      fontSize: '12px'
+      fontSize: '14px'
     },
     caption: {
-      fontSize: '10px'
+      fontSize: '12px'
     },
     button: {
       fontSize: '14px'
