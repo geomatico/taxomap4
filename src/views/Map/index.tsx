@@ -11,7 +11,6 @@ import useSubtaxonCount from '../../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range, Filters} from '../../commonTypes';
 import {useNavigate, useParams} from 'react-router-dom';
 import {nextTaxonomicLevel} from '../../taxonomicLevelUtils';
-import {useTranslation} from 'react-i18next';
 import i18n from 'i18next';
 
 const Index = () => {
