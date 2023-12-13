@@ -6,19 +6,33 @@ import Box from '@mui/material/Box';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, PHYLUM_LEGEND} from '../config';
 import styled from '@mui/styles/styled';
+import Typography from '@mui/material/Typography';
+
+const LEGEND_WIDTH = '260px';
 
 const selectStyles = {
   '& .SelectInput-select': {
     bgcolor: 'white',
-    fontSize: '14px',
-    width: '220px'
+    fontSize: '15px',
+    width: LEGEND_WIDTH
+  }
+};
+
+const menuSelectStyles = {
+  '& .SelectInput-menuItem': {
+    'fontSize': '12px',
+    'color': 'black',
+  },
+  '& .SelectInput-placeholder': {
+    'fontStyle': 'italic',
+    'fontSize': '12px',
   }
 };
 
 const Legend = styled(Box)(({theme}) => ({
-  width: '220px',
+  width: LEGEND_WIDTH,
   backgroundColor: 'white',
-  maxWidth: '220px',
+  maxWidth: LEGEND_WIDTH,
   borderRadius: '3px',
   padding: theme.spacing(1),
   marginBottom: theme.spacing(1)
@@ -27,7 +41,7 @@ const Legend = styled(Box)(({theme}) => ({
 const LegendItem = styled(Box)({
   display: 'flex',
   alignItems: 'center',
-  fontSize: '10px'
+  fontSize: '12px'
 });
 
 const LegendIcon = ({color}) => <FiberManualRecordIcon sx={{
@@ -78,7 +92,7 @@ export const LegendSelector = ({symbolizeBy, onSymbolizeByChange, children}) => 
       {selectedLegend.map(({id, color, label}) =>
         <LegendItem key={id}>
           <LegendIcon color={color}/>
-          {label}
+          <Typography sx={{fontSize: '12px'}}>{label}</Typography>
         </LegendItem>
       )}
     </Legend>
@@ -87,6 +101,7 @@ export const LegendSelector = ({symbolizeBy, onSymbolizeByChange, children}) => 
       selectedOptionId={symbolizeBy}
       onOptionChange={onSymbolizeByChange}
       sx={selectStyles}
+      menuSx={menuSelectStyles}
     />
   </>;
 };
