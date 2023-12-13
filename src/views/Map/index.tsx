@@ -11,7 +11,7 @@ import useSubtaxonCount from '../../hooks/useSubtaxonCount';
 import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Range, Filters} from '../../commonTypes';
 import {useNavigate, useParams} from 'react-router-dom';
 import {nextTaxonomicLevel} from '../../taxonomicLevelUtils';
-import i18n from 'i18next';
+import {useTranslation} from 'react-i18next';
 
 const Index = () => {
   const dictionaries = useDictionaries();
@@ -25,7 +25,7 @@ const Index = () => {
   const [BBOX, setBBOX] = useState<BBOX>();
   const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
 
-  const lang = i18n.resolvedLanguage;
+  const {i18n} = useTranslation();
 
   const filters: Filters = {
     taxon: selectedTaxon,
@@ -39,7 +39,7 @@ const Index = () => {
   useEffect(()=>{
     // si la url no tiene taxon seleccionado
     if(selectedTaxon && !level && !id){
-      navigate(`${selectedTaxon.level}/${selectedTaxon.id}?lang=${lang}`);
+      navigate(`${selectedTaxon.level}/${selectedTaxon.id}`);
     } else if(level && id && selectedTaxon.level !== level){
       // si el level es diferente al initial Level ( cargo una url con un taxon seleccionado)
       const newSelectedTaxon: Taxon = {level: level as TaxonomicLevel, id: parseInt(id)};
@@ -49,7 +49,7 @@ const Index = () => {
   },[]);
 
   useEffect(()=>{
-    if(selectedTaxon) navigate(`../map/${selectedTaxon.level}/${selectedTaxon.id}/?lang=${lang}`);
+    if(selectedTaxon) navigate(`../map/${selectedTaxon.level}/${selectedTaxon.id}`);
   },[selectedTaxon]);
 
 
