@@ -30,6 +30,7 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
           ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
         run: |
+          mkdir -p docker-cache
           sudo cp -a docker-cache /var/lib/docker/buildkit
           ansible-playbook -i inventories/prod-geomatico.yml upload_images.yml
           cp -a /var/lib/docker/buildkit apt-archives
