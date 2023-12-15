@@ -38,8 +38,8 @@ services:
       taxomap-db:
         condition: service_healthy
     environment:
-      CUSTOM_UID: 1000
-      CUSTOM_GID: 1000
+      CUSTOM_UID: 1001
+      CUSTOM_GID: 1001
       TAXOMAP_PASSWORD: {{ postgres_taxomap_pass }}
       GEOSERVER_ADMIN_PASSWORD: {{ geoserver_admin_pass }}
       PROXY_BASE_URL: {{ geoserver_url }}
