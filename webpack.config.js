@@ -33,6 +33,7 @@ module.exports = (env) => ({
       },
       {
         test: /\.html$/,
+        exclude: /template.html/,
         use: [
           {
             loader: 'html-loader',
