@@ -35,7 +35,7 @@ jobs:
 
       - name: create ansible vault file
         run: |
-          echo ${{ secrets.ANSIBLE_STAGING_VAULT }} > ~/.vaultfile
+          echo ${{ secrets.ANSIBLE_VAULT }} > ~/.vaultfile
 
       - uses: webfactory/ssh-agent@v0.5.4
         with:
@@ -58,7 +58,7 @@ jobs:
 
       - name: create ansible vault file
         run: |
-          echo ${{ secrets.ANSIBLE_STAGING_VAULT }} > ~/.vaultfile
+          echo ${{ secrets.ANSIBLE_VAULT }} > ~/.vaultfile
 
       - uses: webfactory/ssh-agent@v0.5.4
         with:
