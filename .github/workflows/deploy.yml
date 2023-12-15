@@ -47,7 +47,7 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
           ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
         run: |
-          ansible-playbook -i inventories/staging.yml deploy.yml
+          ansible-playbook -i inventories/prod-geomatico.yml deploy.yml
 
   prune_images:
     name: Prune Images
@@ -70,4 +70,4 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
           ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
         run: |
-          ansible-playbook -i inventories/staging.yml prune_images.yml
+          ansible-playbook -i inventories/prod-geomatico.yml prune_images.yml
