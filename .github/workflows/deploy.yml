@@ -18,10 +18,10 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
 
-      - name: Cache Primes
-        uses: actions/cache@v3
+      - name: Restore Cache
+        uses: actions/cache/restore@v3
         with:
-          path: /var/lib/docker
+          path: docker-cache
           key: ${{ runner.os }}-docker-cache
 
       - name: run deploy playbook
@@ -30,7 +30,15 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
           ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
         run: |
+          sudo cp -a docker-cache /var/lib/docker/buildkit
           ansible-playbook -i inventories/prod-geomatico.yml upload_images.yml
+          cp -a /var/lib/docker/buildkit apt-archives
+
+      - name: Save Cache
+        uses: actions/cache/save@v3
+        with:
+          path: docker-cache
+          key: ${{ runner.os }}-docker-cache
 
   deploy:
     name: Deploy Taxomap Services
