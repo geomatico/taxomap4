@@ -1,8 +1,8 @@
 name: Deploy to stage
 on:
   push:
-    #branches:
-    #  - main
+    branches:
+      - main
 jobs:
   upload:
     name: Build and Upload Images to server
