@@ -9,6 +9,7 @@ services:
     depends_on:
       - taxomap-db
       - taxomap-geoserver
+      - taxomap-frontend
   taxomap-db:
     build: taxomap-db
     image: geomatico/taxomap-db:${TAG:-latest}
@@ -44,6 +45,15 @@ services:
       PROXY_BASE_URL: http://localhost/geoserver
     volumes:
       - taxomap_geoserver_data_dir:/var/local/geoserver
+  taxomap-frontend:
+    build:
+      dockerfile: devops/docker/taxomap-frontend/Dockerfile
+      context: ../../
+    image: geomatico/taxomap-frontend:${TAG:-latest}
+    container_name: taxomap-frontend
+    depends_on:
+      - taxomap-db
+      - taxomap-geoserver
 volumes:
   taxomap_geoserver_data_dir:
     driver: local

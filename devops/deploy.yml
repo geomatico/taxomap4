@@ -1,0 +1,41 @@
+- hosts: all
+  remote_user: '{{ deploy_user }}'
+  tasks:
+    - name: Get commit hash
+      local_action: shell git rev-parse --short HEAD
+      register: git_hash
+
+    - name: Create Services Folder
+      file:
+        path: "{{ compose_path }}"
+        state: directory
+        mode: 0755
+        owner: '{{ deploy_user }}'
+
+    - name: Copy geoserver datadir
+      ansible.posix.synchronize:
+        src: "../geoserver_data_dir"
+        dest: "{{ compose_path }}/"
+        recursive: yes
+
+    - name: Copy compose file
+      template:
+        src: "templates/docker-compose.yml"
+        dest: "{{ compose_path }}/docker-compose.yml.next"
+      vars:
+        TAG: "{{ git_hash.stdout }}"
+
+    - name: Check if compose file exists
+      stat:
+        path: "{{ compose_path }}/docker-compose.yml"
+      register: compose_file
+
+    - name: Stop compose and remove volumes
+      command: docker compose -f {{ compose_path }}/docker-compose.yml down -v
+      when: compose_file.stat.exists
+
+    - name: Replace older compose file with new one
+      command: mv -f {{ compose_path }}/docker-compose.yml.next {{ compose_path }}/docker-compose.yml
+
+    - name: Start compose
+      command: docker compose -f {{ compose_path }}/docker-compose.yml up -d
