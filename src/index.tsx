@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 
-import './fonts.css';
 import Routes from './routes/routes';
 
 import ThemeProvider from '@mui/material/styles/ThemeProvider';

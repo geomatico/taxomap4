@@ -33,6 +33,7 @@ module.exports = (env) => ({
       },
       {
         test: /\.html$/,
+        exclude: /template.html/,
         use: [
           {
             loader: 'html-loader',
@@ -70,6 +71,7 @@ module.exports = (env) => ({
       template: './src/template.html',
       filename: './index.html',
       chunks: ['main'],
+      excludeAssets: [/fonts.css/]
     }),
     new CopyWebpackPlugin({
       patterns: [
