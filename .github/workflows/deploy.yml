@@ -33,7 +33,7 @@ jobs:
           mkdir -p docker-cache
           sudo cp -a docker-cache /var/lib/docker/buildkit
           ansible-playbook -i inventories/prod-geomatico.yml upload_images.yml
-          cp -a /var/lib/docker/buildkit apt-archives
+          cp -a /var/lib/docker/buildkit docker-cache
 
       - name: Save Cache
         uses: actions/cache/save@v3
