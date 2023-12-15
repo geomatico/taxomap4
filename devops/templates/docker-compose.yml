@@ -1,0 +1,63 @@
+version: '3.9'
+services:
+  taxomap-proxy:
+    image: geomatico/taxomap-proxy:{{TAG}}
+    container_name: taxomap-proxy
+    environment:
+      - VIRTUAL_HOST={{ domain }}
+      - LETSENCRYPT_HOST={{ domain }}
+      - LETSENCRYPT_EMAIL={{ letsencrypt_mail }}
+    depends_on:
+      - taxomap-db
+      - taxomap-geoserver
+      - taxomap-frontend
+    networks:
+      - base-proxy
+      - internal
+  taxomap-db:
+    image: geomatico/taxomap-db:{{TAG}}
+    container_name: taxomap-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "{{ postgres_pass }}"
+      TAXOMAP_DB: taxomap
+      TAXOMAP_USER: "{{ postgres_taxomap_user }}"
+      TAXOMAP_PASSWORD: "{{ postgres_taxomap_pass }}"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 --dbname taxomap --username taxomap" ]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    networks:
+      - internal
+  taxomap-geoserver:
+    image: geomatico/taxomap-geoserver:{{TAG}}
+    container_name: taxomap-geoserver
+    depends_on:
+      taxomap-db:
+        condition: service_healthy
+    environment:
+      CUSTOM_UID: 1000
+      CUSTOM_GID: 1000
+      TAXOMAP_PASSWORD: {{ postgres_taxomap_pass }}
+      GEOSERVER_ADMIN_PASSWORD: {{ geoserver_admin_pass }}
+      PROXY_BASE_URL: {{ geoserver_url }}
+    volumes:
+      - {{ compose_path }}/geoserver_data_dir:/var/local/geoserver
+    networks:
+      - internal
+  taxomap-frontend:
+    image: geomatico/taxomap-frontend:{{TAG}}
+    container_name: taxomap-frontend
+    depends_on:
+      - taxomap-db
+      - taxomap-geoserver
+    networks:
+      - internal
+networks:
+  base-proxy:
+    external: true
+    name: base-proxy
+  internal:
+    name: "{{ name }}"

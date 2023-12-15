@@ -29,3 +29,8 @@ docker compose build
 ```
 
 Lo mismo aplica a frontend, donde habrá que parar y arrancar el dev server (comando `npm start`) para que vuelva a leer los ficheros estáticos.
+
+
+# Cómo desplegar en producción
+
+Mezclando en `main` y las actions de github harán su magia.
