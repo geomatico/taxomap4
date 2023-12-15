@@ -71,7 +71,6 @@ module.exports = (env) => ({
       template: './src/template.html',
       filename: './index.html',
       chunks: ['main'],
-      excludeAssets: [/fonts.css/]
     }),
     new CopyWebpackPlugin({
       patterns: [
