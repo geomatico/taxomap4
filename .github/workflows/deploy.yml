@@ -18,6 +18,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
 
+      - name: Cache Primes
+        uses: actions/cache@v3
+        with:
+          path: /var/lib/docker
+          key: ${{ runner.os }}-docker-cache
+
       - name: run deploy playbook
         working-directory: ./devops
         env:
@@ -26,8 +32,8 @@ jobs:
         run: |
           ansible-playbook -i inventories/prod-geomatico.yml upload_images.yml
 
-  odm:
-    name: Deploy Odm Services
+  deploy:
+    name: Deploy Taxomap Services
     needs: upload
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +57,7 @@ jobs:
 
   prune_images:
     name: Prune Images
-    needs: [odm]
+    needs: [deploy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
