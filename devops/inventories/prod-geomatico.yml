@@ -1,7 +1,7 @@
 all:
   vars:
     name: taxomap
-    domain: taxomap.geomatico.es
+    domain: taxomap.bioexplora.cat
     compose_path: /srv/services/taxomap
     deploy_user: geomatico
     letsencrypt_mail: francisco.perez@geomatico.es
