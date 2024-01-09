@@ -5,7 +5,7 @@ all:
     compose_path: /srv/services/taxomap
     deploy_user: geomatico
     letsencrypt_mail: francisco.perez@geomatico.es
-    geoserver_url: https://taxomap.geomatico.es/geoserver
+    geoserver_url: https://taxomap.bioexplora.cat/geoserver
     postgres_pass: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       63323638313731636638333532303430353066653730646631363762366236313965316235396565
