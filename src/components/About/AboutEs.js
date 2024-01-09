@@ -44,7 +44,7 @@ const AboutEs = () => {
        son de código abierto.
     </Typography>
     <Typography sx={styledParagraph}>
-      Navegadores soportados: Mozilla Firefox, Google Chrome. Última actualización: 15/09/2023
+      Navegadores soportados: Mozilla Firefox, Google Chrome. Última actualización: 09/01/2024
     </Typography>
 
     <Typography sx={styledTitle}>Contacto en relación al proyecto</Typography>
