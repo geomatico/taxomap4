@@ -46,7 +46,7 @@ const AboutCa = () => {
        són de codi obert.
     </Typography>
     <Typography sx={styledParagraph}>
-      Navegadors suportats: Mozilla Firefox, Google Chrome. Última actualització: 15/09/2023
+      Navegadors suportats: Mozilla Firefox, Google Chrome. Última actualització: 09/01/2024
     </Typography>
 
     <Typography sx={styledTitle}>Contacte en relació amb el projecte</Typography>

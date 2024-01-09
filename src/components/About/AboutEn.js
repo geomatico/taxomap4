@@ -44,7 +44,7 @@ const AboutEn = () => {
        are open source.
     </Typography>
     <Typography sx={styledParagraph}>
-      Supported browsers: Mozilla Firefox, Google Chrome. Last update: 15/09/2023
+      Supported browsers: Mozilla Firefox, Google Chrome. Last update: 2024/01/09
     </Typography>
 
     <Typography sx={styledTitle}>Contact related to the project</Typography>
