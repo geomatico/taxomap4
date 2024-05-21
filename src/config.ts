@@ -19,19 +19,19 @@ export const INITIAL_VIEWPORT: Viewport = {
 
 export const MAPSTYLES: Array<MapStyle> = [
   {
-    id: 'https://geoserveis.icgc.cat/contextmaps/hibrid.json',
+    id: 'https://geoserveis.icgc.cat/contextmaps/icgc_orto_hibrida.json',
     label: 'ortophoto',
-    thumbnail: 'https://openicgc.github.io/img/orto.png'
+    thumbnail: 'https://visors.icgc.cat/contextmaps/imatges_estil/icgc_orto_hibrida.png'
   },
   {
-    id: 'https://geoserveis.icgc.cat/contextmaps/positron.json',
+    id: 'https://geoserveis.icgc.cat/contextmaps/icgc_mapa_base_gris.json',
     label: 'gray',
-    thumbnail: 'https://openicgc.github.io/img/positron.png'
+    thumbnail: 'https://visors.icgc.cat/contextmaps/imatges_estil/icgc_mapa_base_gris.png'
   },
   {
-    id: 'https://geoserveis.icgc.cat/contextmaps/osm-bright.json',
+    id: 'https://geoserveis.icgc.cat/contextmaps/icgc_delimitacio_estandard.json',
     label: 'bright',
-    thumbnail: 'https://openicgc.github.io/img/osm-bright.png'
+    thumbnail: 'https://visors.icgc.cat/contextmaps/imatges_estil/icgc_delimitacio_estandard.png'
   },
   {
     id: 'mapstyles/landcover.json',
