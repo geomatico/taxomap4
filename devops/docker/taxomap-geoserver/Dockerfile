@@ -1,4 +1,4 @@
-FROM oscarfonts/geoserver:2.24.0
+FROM oscarfonts/geoserver:2.24.4
 
 WORKDIR /usr/local/tomcat/webapps/
 
