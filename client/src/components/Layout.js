@@ -53,7 +53,7 @@ const helperTextStyle = {
   }
 };
 
-const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) => {
+const Layout = ({isAggregatedData, mainContent, sidePanelContent, selectedTaxon, onTaxonChange, onAggregationChange}) => {
   const {t} = useTranslation();
   const dictionaries = useDictionaries();
   const taxonPath = useTaxonPath(selectedTaxon, dictionaries);
@@ -109,7 +109,6 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
         {sidePanelContent}
       </SidePanel>
     }
-
     {/*
       El toString de widescreen y de isleftdraweropen soluciona el warning que da en la consola que dice:
       Received `true` for a non-boolean attribute `isleftdraweropen | widescreen`. If you want to write it
@@ -118,10 +117,12 @@ const Layout = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) =
     <Main widescreen={widescreen.toString()} isleftdraweropen={(sidePanelContent && isSidePanelOpen).toString()}>
       {mainContent}
     </Main>
+    <Button variant='contained' onClick={() => onAggregationChange(!isAggregatedData)} sx={{position: 'absolute', bottom: '22px', right: '12px', mt: 1, width: '260px', opacity: 0.8}}>{isAggregatedData ? t('data.discreteData') : t('data.aggregatedData')}</Button>
   </>;
 };
 
 Layout.propTypes = {
+  isAggregatedData: PropTypes.bool.isRequired,
   sidePanelContent: PropTypes.element.isRequired,
   mainContent: PropTypes.element.isRequired,
   selectedTaxon: PropTypes.shape({

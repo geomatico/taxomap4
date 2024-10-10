@@ -92,7 +92,7 @@ export const LegendSelector = ({symbolizeBy, onSymbolizeByChange, children}) => 
       {selectedLegend.map(({id, color, label}) =>
         <LegendItem key={id}>
           <LegendIcon color={color}/>
-          <Typography sx={{fontSize: '12px'}}>{label}</Typography>
+          <Typography variant='caption'>{label}</Typography>
         </LegendItem>
       )}
     </Legend>

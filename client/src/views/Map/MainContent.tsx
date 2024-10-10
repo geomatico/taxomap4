@@ -16,6 +16,7 @@ import {debounce} from 'throttle-debounce';
 import GraphicByLegend from '../../components/GraphicByLegend';
 import {Accessor, WebMercatorViewport} from '@deck.gl/core/typed';
 import {DeckGLProps} from '@deck.gl/react/typed';
+
 import styled from '@mui/styles/styled';
 
 import {
@@ -34,6 +35,8 @@ import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
 
 import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
 import useCount from '../../hooks/useCount';
+import {HexagonLayer} from '@deck.gl/aggregation-layers/typed';
+
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -53,7 +56,7 @@ const rangeSliderContainer = {
 const legendSelectorContainer = {
   position: 'absolute',
   right: '12px',
-  bottom: '20px',
+  bottom: '64px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -63,10 +66,11 @@ const legendSelectorContainer = {
 type MainContentProps = {
   filters : Filters,
   onYearFilterChange: (range?: Range) => void,
-  onBBOXChanged: (bbox: BBOX) => void,
+  isAggregateData: boolean
+  onBBOXChanged: (bbox: BBOX) => void
 };
 
-const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXChanged }) => {
+const MainContent: FC<MainContentProps> = ({filters, isAggregateData, onYearFilterChange, onBBOXChanged }) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
@@ -98,9 +102,63 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
       ?.getElementById('deckgl-wrapper')
       ?.addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
-
-
-  const deckLayers = useMemo(() => ([
+  
+  const deckLayers = useMemo(() => {
+    if (isAggregateData) {
+      return [
+        new HexagonLayer({
+          id: 'data-aggregate',
+          data: data,
+          getPosition: d => [d.attributes.getPosition[0], d.attributes.getPosition[1]],
+          radius: 100,
+          extruded: true,
+          elevationScale: 25,
+          colorRange: [[255, 255, 204], [161, 218, 180], [65, 182, 196], [34, 94, 168]],
+          elevationRange: [0, 100],
+          coverage: 1,
+          opacity: 0.5,
+          pickable: true,
+          autoHighlight: true,
+        })
+      ];
+    } else {
+      return [
+        new ScatterplotLayer<TaxomapData, {
+        getFilterValue: Accessor<TaxomapData, number | number[]>,
+        filterRange: Array<number | number[]>
+      }>({
+        id: 'data',
+        data: data,
+        getRadius: 4,
+        radiusUnits: 'pixels',
+        stroked: true,
+        getLineColor: [255, 255, 255],
+        getLineWidth: 1,
+        lineWidthUnits: 'pixels',
+        getFillColor: (_, { index, data, target }) => applyColor((data as TaxomapData)[symbolizeBy][index], target as RGBAArrayColor),
+        extensions: [new DataFilterExtension({ filterSize: 4 })],
+        getFilterValue: (_, { index, data }) => [
+          (data as TaxomapData).year[index],
+          (data as TaxomapData).institutioncode[index],
+          (data as TaxomapData).basisofrecord[index],
+          !filters.subtaxonVisibility || filters.subtaxonVisibility.isVisible[(data as TaxomapData)[filters.subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
+        ],
+        filterRange: [
+          filters.yearRange === undefined ? [0, 999999] : filters.yearRange,
+          filters.institutionId === undefined ? [0, 999999] : [filters.institutionId, filters.institutionId],
+          filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
+          [1, 1]
+        ],
+        updateTriggers: {
+          getFillColor: [symbolizeBy],
+          getFilterValue: [filters.subtaxonVisibility]
+        },
+        pickable: true
+      })
+      ];
+    }
+  }, [isAggregateData, data, symbolizeBy, filters, dictionaries]);
+  /*const deckLayers = useMemo(() => ([
     new ScatterplotLayer<TaxomapData, {
       getFilterValue: Accessor<TaxomapData, number | number[]>,
       filterRange: Array<number | number []>
@@ -141,8 +199,8 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
       },
       pickable: true
     })
-  ]), [data, symbolizeBy, filters, dictionaries]);
-
+  ]), [data, symbolizeBy, filters, dictionaries, isAggregateData]);*/
+  console.log('deckLayers', deckLayers);
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
     label: t('mapStyles.' + style.label)
@@ -226,7 +284,6 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
       }
     </Box>
     <Box sx={legendSelectorContainer}>
-
       <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}>
         <GraphicByLegend filters={filters} symbolizeBy={symbolizeBy}/>
       </LegendSelector>

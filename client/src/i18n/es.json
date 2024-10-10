@@ -5,6 +5,10 @@
     "nonFossil": "No fosil"
   },
   "csv": "Hoja de cálculo (CSV)",
+  "data": {
+    "aggregatedData": "Ver datos agregados",
+    "discreteData": "Ver datos discretos"
+  },
   "download": "Descargar selección",
   "fieldLabel": {
     "basisofrecord": "Tipo de registro",
