@@ -14,7 +14,7 @@
 
     - name: Copy geoserver datadir
       ansible.posix.synchronize:
-        src: "../geoserver_data_dir"
+        src: "geoserver_data_dir"
         dest: "{{ compose_path }}/"
         recursive: yes
 

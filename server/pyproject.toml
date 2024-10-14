@@ -1,0 +1,22 @@
+# code quality tools
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests", "e2e"]
+DJANGO_SETTINGS_MODULE = "project.settings.local"
+log_level = "INFO"
+log_cli = true
+
+[tool.isort]
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = "True"
+skip_glob = "*/settings/*"
+
+[tool.flake8]
+max-line-length = 120
+exclude = "*/settings/*"
+
+[tool.autoflake]
+exclude = ["project/settings", "api/migrations"]
+
+[tool.autopep8]
+max-line-length = 120
