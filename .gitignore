@@ -9,4 +9,8 @@ stats.json
 .project
 .idea/
 
+# server
 __pycache__
+
+# devops
+devops/docker-compose.yml

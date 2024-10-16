@@ -1,0 +1,10 @@
+- name: Render templates
+  import_playbook: render-templates.yml
+
+- hosts: all
+  remote_user: '{{ deploy_user }}'
+  tasks:
+    - name: Build images
+      local_action:
+        module: ansible.builtin.shell
+        cmd: export TAG=`git rev-parse --short HEAD` && docker compose build

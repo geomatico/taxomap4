@@ -74,13 +74,13 @@
 
     - name: Create proxy ssl conf directory
       file:
-        path: "{{ compose_path }}"
+        path: "{{ service_path }}"
         state: directory
         mode: 0755
 
     - name: Set directory owner
       file:
-        path: "{{ compose_path }}"
+        path: "{{ service_path }}"
         state: directory
         mode: 0755
         owner: '{{ deploy_user }}'
@@ -88,12 +88,12 @@
     - name: Proxy ssl Docker-compose file
       template:
         src: "files/docker-compose.yml"
-        dest: "{{ compose_path }}/docker-compose.yml"
+        dest: "{{ service_path }}/docker-compose.yml"
 
     - name: Copy proxy docker service
       copy:
         src: "files/proxy"
-        dest: "{{ compose_path }}"
+        dest: "{{ service_path }}"
 
     - name: Create services directory
       file:
@@ -103,5 +103,5 @@
         owner: "{{ deploy_user }}"
 
     - name: Start Docker Compose
-      command: docker compose -f {{ compose_path }}/docker-compose.yml up -d
+      command: docker compose -f {{ service_path }}/docker-compose.yml up -d
       register: output

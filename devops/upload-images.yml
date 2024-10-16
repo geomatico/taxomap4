@@ -1,0 +1,15 @@
+- name: Build
+  ansible.builtin.import_playbook: build.yml
+
+- hosts: all
+  remote_user: '{{ deploy_user }}'
+  tasks:
+    - name: Upload images
+      local_action:
+        module: ansible.builtin.shell
+        cmd: export TAG=`git rev-parse --short HEAD` && docker save {{ item }}:${TAG} | bzip2 | ssh {{ deploy_user }}@{{ inventory_hostname }} docker load
+      loop:
+        - geomatico/{{ name }}-proxy
+        - geomatico/{{ name }}-frontend
+        - geomatico/{{ name }}-backend
+        - geomatico/{{ name }}-database

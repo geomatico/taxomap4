@@ -1,0 +1,30 @@
+- hosts: all
+  remote_user: '{{ deploy_user }}'
+  tasks:
+    - name: Get commit hash
+      local_action: shell git rev-parse --short HEAD
+      register: git_hash
+
+    - name: Check docker-compose template
+      local_action: stat path=templates/docker-compose.yml.j2
+      register: docker_compose_stat
+
+    - name: Generate docker-compose.yml from template
+      local_action:
+        module: ansible.builtin.template
+        src: "templates/docker-compose.yml.j2"
+        dest: "docker-compose.yml"
+      vars:
+        TAG: "{{ docker.image_tag | default(git_hash.stdout) }}"
+      when: docker_compose_stat.stat.exists
+
+    - name: Check .env template
+      local_action: stat path=templates/frontend_dotenv.j2
+      register: dotenv_stat
+
+    - name: Generate .env from template
+      local_action:
+        module: ansible.builtin.template
+        src: "templates/frontend_dotenv.j2"
+        dest: "../client/.env"
+      when: dotenv_stat.stat.exists and geoserver.url is defined
