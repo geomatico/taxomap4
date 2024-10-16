@@ -1,0 +1,156 @@
+services:
+{% if use_proxy is not defined or use_proxy %}
+  {{ name }}-proxy:
+    image: geomatico/{{ name }}-proxy:{{TAG}}
+{% if build_needed is not defined or build_needed %}
+    build: docker/proxy
+{% endif %}
+    container_name: {{ name }}-proxy
+    restart: {{ docker.restart_containers | default('always') }}
+    environment:
+      - VIRTUAL_HOST={{ domain }}
+      - LETSENCRYPT_HOST={{ domain }}
+      - LETSENCRYPT_EMAIL={{ letsencrypt_mail | default('not_used') }}
+    volumes:
+      - "{{ service_path }}/static:/static"
+      - "{{ service_path }}/media:/media"
+    depends_on:
+      - {{ name }}-database
+      - {{ name }}-frontend
+      - {{ name }}-backend
+{% if domain == 'localhost' %}
+    ports:
+      - "80:80"
+    networks:
+      - internal
+{% else %}
+    networks:
+      - base-proxy
+      - internal
+{% endif %}
+{% endif %}
+
+  {{ name }}-database:
+{% if build_needed is not defined or build_needed %}
+    build: docker/database
+{% endif %}
+    image: geomatico/{{ name }}-database:{{TAG}}
+    container_name: {{ name }}-database
+    restart: {{ docker.restart_containers | default('always') }}
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "{{ database.postgres_password }}"
+      TAXOMAP_DB: taxomap
+      TAXOMAP_USER: "{{ database.taxomap_user }}"
+      TAXOMAP_PASSWORD: "{{ database.taxomap_password }}"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 --dbname {{ database.name }} --username {{ database.taxomap_user }}" ]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    networks:
+      - internal
+{% if 'extra_volumes' in database %}
+    volumes:
+{% for volume in database.extra_volumes %}
+      - "{{ volume }}"
+{% endfor %}
+{% endif %}
+{% if 'extra_ports' in database %}
+    ports:
+{% for port in database.extra_ports %}
+      - "{{ port }}"
+{% endfor %}
+{% endif %}
+
+  {{ name }}-backend:
+    image: geomatico/{{ name }}-backend:{{TAG}}
+{% if build_needed is not defined or build_needed %}
+    build:
+      dockerfile: devops/docker/backend/Dockerfile
+      context: ../
+{% endif %}
+    depends_on:
+      {{ name }}-database:
+        condition: service_healthy
+    container_name: {{ name }}-backend
+    restart: {{ docker.restart_containers | default('always') }}
+    command: {{ backend.command }}
+    volumes:
+      - "{{ service_path }}/static:/static"
+      - "{{ service_path }}/media:/media"
+{% if 'extra_volumes' in backend %}
+{% for volume in backend.extra_volumes %}
+      - "{{ volume }}"
+{% endfor %}
+{% endif %}
+{% if 'extra_ports' in backend %}
+    ports:
+{% for port in backend.extra_ports %}
+      - "{{ port }}"
+{% endfor %}
+{% endif %}
+    environment:
+      DJANGO_SETTINGS_MODULE: {{ backend.settings }}
+      DATABASE_URL: postgis://{{ database.taxomap_user }}:{{ database.taxomap_password }}@{{ name }}-database:5432/{{ database.name }}
+      DOMAIN: {{ domain }}
+      DJANGO_ALLOWED_HOSTS: "{{ backend.allowed_hosts | default() }}"
+      SECRET_KEY: {{ backend.secret_key | default() }}
+    networks:
+      - internal
+
+{% if use_frontend is not defined or use_frontend %}
+  {{ name }}-frontend:
+    image: geomatico/{{ name }}-frontend:{{TAG}}
+{% if build_needed is not defined or build_needed %}
+    build:
+      dockerfile: devops/docker/frontend/Dockerfile
+      context: ../
+{% endif %}
+    container_name: {{ name }}-frontend
+    restart: {{ docker.restart_containers | default('always') }}
+    depends_on:
+      - {{ name }}-database
+      - {{ name }}-geoserver
+    networks:
+      - internal
+{% endif %}
+
+{% if use_geoserver is not defined or use_geoserver %}
+  {{ name }}-geoserver:
+    image: geomatico/{{ name }}-geoserver:{{TAG}}
+{% if build_needed is not defined or build_needed %}
+    build: docker/geoserver
+{% endif %}
+    container_name:  {{ name }}-geoserver
+    restart: {{ docker.restart_containers | default('always') }}
+    depends_on:
+      {{ name }}-database:
+        condition: service_healthy
+    environment:
+      CUSTOM_UID: 1001
+      CUSTOM_GID: 1001
+      TAXOMAP_PASSWORD: {{ database.taxomap_password }}
+      GEOSERVER_ADMIN_PASSWORD: {{ geoserver.admin_password }}
+      PROXY_BASE_URL: {{ geoserver.url }}
+    volumes:
+      - {{ geoserver.data_dir }}:/var/local/geoserver
+{% if 'extra_ports' in geoserver %}
+    ports:
+{% for port in geoserver.extra_ports %}
+      - "{{ port }}"
+{% endfor %}
+{% endif %}
+    networks:
+      - internal
+{% endif %}
+
+networks:
+{% if use_proxy is not defined or use_proxy %}
+  base-proxy:
+    external: true
+    name: base-proxy
+{% endif %}
+  internal:
+    name: {{ name }}-internal

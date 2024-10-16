@@ -1,0 +1,32 @@
+all:
+  vars:
+    ansible_connection: local
+
+    name: taxomap
+    domain: localhost
+    deploy_user: "{{ lookup('env','USER') }}"
+    service_path: /tmp/taxomap
+
+    use_frontend: false
+    use_proxy: false
+    use_geoserver: false
+
+    docker:
+      image_tag: latest
+      restart_containers: "no"
+
+    database:
+      name: taxomap
+      postgres_password: postgres
+      taxomap_user: taxomap
+      taxomap_password: taxomap
+      extra_ports:
+        - "{{ lookup('env', 'TAXOMAP_DB_PORT') | default(5432, true) }}:5432"
+
+    backend:
+      settings: project.settings.local
+      command: [ "mango", "verify" ]
+      extra_volumes:
+        - ../pipeline/mango:/usr/local/bin/mango
+  hosts:
+    localhost:
