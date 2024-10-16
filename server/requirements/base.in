@@ -1,0 +1,3 @@
+--extra-index-url https://labs.geomatico.es/django-commons/
+service-commons==0.2.5
+markdown

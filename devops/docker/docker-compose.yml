@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   taxomap-proxy:
     build: taxomap-proxy
@@ -29,9 +28,7 @@ services:
       timeout: 2s
       retries: 20
   taxomap-geoserver:
-    build:
-      dockerfile: devops/docker/taxomap-geoserver/Dockerfile
-      context: ../../
+    build: taxomap-geoserver
     image: geomatico/taxomap-geoserver:${TAG:-latest}
     container_name: taxomap-geoserver
     depends_on:
@@ -44,7 +41,7 @@ services:
       GEOSERVER_ADMIN_PASSWORD: plain:taxomap
       PROXY_BASE_URL: http://localhost/geoserver
     volumes:
-      - taxomap_geoserver_data_dir:/var/local/geoserver
+      - data_dir:/var/local/geoserver
   taxomap-frontend:
     build:
       dockerfile: devops/docker/taxomap-frontend/Dockerfile
@@ -55,9 +52,9 @@ services:
       - taxomap-db
       - taxomap-geoserver
 volumes:
-  taxomap_geoserver_data_dir:
+  data_dir:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: ../../geoserver_data_dir
+      device: ../geoserver_data_dir

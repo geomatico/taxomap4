@@ -9,9 +9,9 @@
   },
   "scripts": {
     "test": "npm run lint && karma start karma.config.js",
-    "docker-start": "cd devops/docker && docker compose up && cd -",
-    "docker-clean": "cd devops/docker && docker compose down && cd -",
-    "update-data": "cd static/data && rm -rf * && ../../devops/extract_data_from_db.sh && cd -",
+    "docker-start": "cd ../devops/docker && docker compose up && cd -",
+    "docker-clean": "cd ../devops/docker && docker compose down && cd -",
+    "update-data": "cd static/data && rm -rf * && ../../../devops/extract_data_from_db.sh && cd -",
     "start": "webpack serve --env dev",
     "build": "npm test && webpack --env prod",
     "stats": "webpack --env prod --json > stats.json",

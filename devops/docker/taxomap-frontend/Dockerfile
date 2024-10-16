@@ -4,7 +4,7 @@ FROM base as deps
 
 WORKDIR /srv
 
-COPY package.json package-lock.json ./
+COPY client/package.json client/package-lock.json ./
 
 RUN npm ci
 
@@ -18,7 +18,7 @@ ENV CHROME_BIN=/usr/bin/chromium-browser \
     CHROME_PATH=/usr/lib/chromium/
 
 COPY --from=deps /srv/node_modules ./node_modules
-COPY . .
+COPY client .
 
 RUN npm run build
 

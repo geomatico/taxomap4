@@ -1,0 +1,8 @@
+--extra-index-url https://labs.geomatico.es/django-commons/
+service-commons-test==0.2.5
+pre-commit
+isort
+autopep8
+autoflake
+flake8
+flake8-pyproject

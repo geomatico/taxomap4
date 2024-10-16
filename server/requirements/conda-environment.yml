@@ -1,0 +1,9 @@
+name: taxomap4
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip-tools
+  - psycopg2
+prefix: /home/vicgonco/bin/miniconda3/envs/taxomap4
