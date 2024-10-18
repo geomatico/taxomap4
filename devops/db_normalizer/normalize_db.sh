@@ -12,22 +12,22 @@ docker compose exec taxomap-old-db \
   pg_dump -U postgres -d taxomap --format=p --encoding=UTF-8 -t taxomap | gzip > ../docker/taxomap-db/initdb-scripts/dump/20-taxomap-normalized.sql.gz
 
 # Converts postgis table to geoarrow (needs GDAL 3.5+, using docker)
-echo "Creating ../../static/data/taxomap.arrow"
+echo "Creating ../../client/static/data/taxomap.arrow"
 docker compose exec taxomap-gdal \
   ogr2ogr -lco COMPRESSION=NONE -lco BATCH_SIZE=999999 \
   -sql "SELECT id, catalognumber, domain_id as domain, kingdom_id as kingdom, phylum_id as phylum, class_id as class, order_id as \"order\", family_id as family, genus_id as genus, species_id as species, subspecies_id as subspecies, basisofrecord_id as basisofrecord, institutioncode_id as institutioncode, year, geom from taxomap" \
   -dialect OGRSQL \
-  /home/static/data/taxomap.arrow \
+  /home/client/static/data/taxomap.arrow \
   PG:"host='taxomap-old-db' user='taxomap' password='taxomap' dbname='taxomap' tables='taxomap'"
 
 # Extracts static dictionaries as json
-echo "Extracting dictionaries to ../../static/data/dictionaries/*.json"
+echo "Extracting dictionaries to ../../client/static/data/dictionaries/*.json"
 TABLES="domain kingdom phylum class order family genus species subspecies basisofrecord institutioncode"
 for table in $TABLES
 do
   echo "  > Generating dictionary for \"${table}\""
   docker compose exec taxomap-old-db \
-    psql -U postgres -d taxomap -qAtX -c "select json_agg(t) FROM \"${table}\" t;" > ../../static/data/dictionaries/${table}.json
+    psql -U postgres -d taxomap -qAtX -c "select json_agg(t) FROM \"${table}\" t;" > ../../client/static/data/dictionaries/${table}.json
 done
 
 echo "Shutting down services"
