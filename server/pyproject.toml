@@ -2,7 +2,7 @@
 [tool.pytest.ini_options]
 pythonpath = ["src", "tests", "e2e"]
 DJANGO_SETTINGS_MODULE = "project.settings.local"
-log_level = "INFO"
+log_level = "ERROR"
 log_cli = true
 
 [tool.isort]
