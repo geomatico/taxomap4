@@ -89,19 +89,18 @@ const Index = () => {
   />;
 
   const mainContent = <MainContent
-    isAggregateData={isAggregatedData}
+    isAggregatedData={isAggregatedData}
     filters={filters}
     onYearFilterChange={setYearRange}
     onBBOXChanged={setBBOX}
+    onAggregatedDataChange={() => setAggreatedData(!isAggregatedData)}
   />;
 
   return <Layout
-    isAggregatedData={isAggregatedData}
     sidePanelContent={sidePanelContent}
     mainContent={mainContent}
     selectedTaxon={selectedTaxon}
     onTaxonChange={setTaxon}
-    onAggregationChange={setAggreatedData}
   />;
 };
 

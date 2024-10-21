@@ -7,13 +7,11 @@ import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import useApplyColor from '../../hooks/useApplyColor';
 import {useTranslation} from 'react-i18next';
 import Box from '@mui/material/Box';
-import LegendSelector from '../../components/LegendSelector';
 import YearSlider from '../../components/YearSlider';
 import {DataFilterExtension} from '@deck.gl/extensions/typed';
 import useDictionaries from '../../hooks/useDictionaries';
 import useArrowData from '../../hooks/useArrowData';
 import {debounce} from 'throttle-debounce';
-import GraphicByLegend from '../../components/GraphicByLegend';
 import {Accessor, WebMercatorViewport} from '@deck.gl/core/typed';
 import {DeckGLProps} from '@deck.gl/react/typed';
 
@@ -36,6 +34,8 @@ import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
 import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
 import useCount from '../../hooks/useCount';
 import {HexagonLayer} from '@deck.gl/aggregation-layers/typed';
+import Legend from '../../components/Legend';
+import Button from '@mui/material/Button';
 
 
 const PopupInfo = styled(Popup)({
@@ -56,21 +56,27 @@ const rangeSliderContainer = {
 const legendSelectorContainer = {
   position: 'absolute',
   right: '12px',
-  bottom: '64px',
+  bottom: '32px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  flexDirection: 'column'
+  flexDirection: 'column',
+};
+const aggregationButton = {
+  width: '100%',
+  bgcolor: 'white',
+  '&:hover': { bgcolor: 'grey.100'}
 };
 
 type MainContentProps = {
   filters : Filters,
   onYearFilterChange: (range?: Range) => void,
-  isAggregateData: boolean
-  onBBOXChanged: (bbox: BBOX) => void
+  isAggregatedData: boolean
+  onBBOXChanged: (bbox: BBOX) => void,
+  onAggregatedDataChange: () => void
 };
 
-const MainContent: FC<MainContentProps> = ({filters, isAggregateData, onYearFilterChange, onBBOXChanged }) => {
+const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFilterChange, onBBOXChanged, onAggregatedDataChange }) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
@@ -104,7 +110,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregateData, onYearFilt
   }, []);
   
   const deckLayers = useMemo(() => {
-    if (isAggregateData) {
+    if (isAggregatedData) {
       return [
         new HexagonLayer({
           id: 'data-aggregate',
@@ -157,50 +163,8 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregateData, onYearFilt
       })
       ];
     }
-  }, [isAggregateData, data, symbolizeBy, filters, dictionaries]);
-  /*const deckLayers = useMemo(() => ([
-    new ScatterplotLayer<TaxomapData, {
-      getFilterValue: Accessor<TaxomapData, number | number[]>,
-      filterRange: Array<number | number []>
-    }>({
-      id: 'data',
-      data: data,
-      getRadius: 4,
-      radiusUnits: 'pixels',
-      stroked: true,
-      getLineColor: [255, 255, 255],
-      getLineWidth: 1,
-      lineWidthUnits: 'pixels',
-      getFillColor: (_, {
-        index,
-        data,
-        target
-      }) => applyColor((data as TaxomapData)[symbolizeBy][index], target as RGBAArrayColor),
-      extensions: [new DataFilterExtension({filterSize: 4})],
-      getFilterValue: (_, {
-        index,
-        data
-      }) => [
-        (data as TaxomapData).year[index],
-        (data as TaxomapData).institutioncode[index],
-        (data as TaxomapData).basisofrecord[index],
-        //taxonFilter?.level === undefined ? 1 : (data as TaxomapData)[taxonFilter.level][index]
-        !filters.subtaxonVisibility || filters.subtaxonVisibility.isVisible[(data as TaxomapData)[filters.subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
-      ],
-      filterRange: [
-        filters.yearRange === undefined ? [0, 999999] : filters.yearRange,
-        filters.institutionId === undefined ? [0, 999999] : [filters.institutionId, filters.institutionId],
-        filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
-        [1, 1]
-      ],
-      updateTriggers: {
-        getFillColor: [symbolizeBy],
-        getFilterValue: [filters.subtaxonVisibility]
-      },
-      pickable: true
-    })
-  ]), [data, symbolizeBy, filters, dictionaries, isAggregateData]);*/
-  console.log('deckLayers', deckLayers);
+  }, [isAggregatedData, data, symbolizeBy, filters, dictionaries]);
+
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
     label: t('mapStyles.' + style.label)
@@ -284,9 +248,8 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregateData, onYearFilt
       }
     </Box>
     <Box sx={legendSelectorContainer}>
-      <LegendSelector symbolizeBy={symbolizeBy} onSymbolizeByChange={setSymbolizeBy}>
-        <GraphicByLegend filters={filters} symbolizeBy={symbolizeBy}/>
-      </LegendSelector>
+      <Legend isAggregatedData={isAggregatedData} symbolizeBy={symbolizeBy} filters={filters} onSymbolizeByChange={setSymbolizeBy}/>
+      <Button sx={aggregationButton} variant='outlined' onClick={onAggregatedDataChange}>{isAggregatedData? 'DATOS DISCRETOS' : 'DATOS AGREGADOS'}</Button>
     </Box>
   </>;
 };

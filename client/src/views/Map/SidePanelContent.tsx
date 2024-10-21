@@ -13,6 +13,8 @@ import {ChildCount, Filters, SubtaxonVisibility, Taxon} from '../../commonTypes'
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
   padding: 0,
+  //
+  // +arginBottom: 30,
 });
 
 type SidePanelContentProps = {
@@ -42,21 +44,18 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
     if (filters.taxon) onTaxonChange(filters.taxon);
   }, [filters.taxon]);
 
-  return <Stack sx={{
-    height: '100%',
-    overflow: 'hidden'
-  }}>
+  return <Stack sx={{ height: '100%', overflow: 'auto', mb: 10 }}>
+    <FilterByForm
+      institutionFilter={filters.institutionId}
+      onInstitutionFilterChange={onInstitutionFilterChange}
+      basisOfRecordFilter={filters.basisOfRecordId}
+      onBasisOfRecordChange={onBasisOfRecordChange}
+    />
+    <Divider/>
+    <Box px={2} py={2}>
+      <AutocompleteVirtualized onFilteredTaxonChange={setFilteredTaxon}/>
+    </Box>
     <ScrollableContent>
-      <FilterByForm
-        institutionFilter={filters.institutionId}
-        onInstitutionFilterChange={onInstitutionFilterChange}
-        basisOfRecordFilter={filters.basisOfRecordId}
-        onBasisOfRecordChange={onBasisOfRecordChange}
-      />
-      <Divider/>
-      <Box px={2} py={2}>
-        <AutocompleteVirtualized onFilteredTaxonChange={setFilteredTaxon}/>
-      </Box>
       <TaxoTree
         filters={filters}
         onTaxonChanged={onTaxonChange}

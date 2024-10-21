@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
+import React, {FC, ReactElement, useState} from 'react';
 
 //MUI
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-import styled from '@mui/styles/styled';
+import {styled} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 //GEOCOMPONENTS
@@ -22,27 +21,31 @@ import HelpModal from './HelpModal';
 import Breadcrumbs from './Breadcrumbs';
 import useTaxonPath from '../hooks/useTaxonPath';
 import useDictionaries from '../hooks/useDictionaries';
-import {TaxonomicLevel} from '../commonTypes';
+import {Taxon, TaxonomicLevel} from '../commonTypes';
 import MainHeader from './MainHeader';
 
+export type MainProps = {
+  widescreen: boolean,
+  isleftdraweropen: boolean
+}
 
-const Main = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'widescreen' && prop !== 'isleftdraweropen'
-})(({widescreen, isleftdraweropen}) => ({
-  flexGrow: 1,
-  padding: 0,
-  position: 'absolute',
-  top: 56 + OFFSET_TOP,
-  '@media (min-width: 0px) and (orientation: landscape)': {
-    top: 48 + OFFSET_TOP
-  },
-  ['@media (min-width: ' + SM_BREAKPOINT + 'px)']: {
-    top: 64 + OFFSET_TOP
-  },
-  bottom: 0,
-  right: 0,
-  left: widescreen ? (isleftdraweropen && DRAWER_WIDTH) : 0
-}));
+const Main = styled(Box,
+  {shouldForwardProp: (prop) => prop !== 'widescreen' && prop !== 'isleftdraweropen'
+  })<MainProps>(({widescreen, isleftdraweropen}) => ({
+    flexGrow: 1,
+    padding: 0,
+    position: 'absolute',
+    top: 56 + OFFSET_TOP,
+    '@media (min-width: 0px) and (orientation: landscape)': {
+      top: 48 + OFFSET_TOP
+    },
+    ['@media (min-width: '+ SM_BREAKPOINT +'px)']: {
+      top: 64 + OFFSET_TOP,
+    },
+    bottom: 0,
+    right: 0,
+    left: widescreen ? +(isleftdraweropen && DRAWER_WIDTH) : 0
+  }));
 
 const helperTextStyle = {
   mx: 1,
@@ -53,7 +56,30 @@ const helperTextStyle = {
   }
 };
 
-const Layout = ({isAggregatedData, mainContent, sidePanelContent, selectedTaxon, onTaxonChange, onAggregationChange}) => {
+const sidePanelSx = {
+  '& .MuiPaper-root': {
+    padding: 0,
+    top: OFFSET_TOP + 56,
+    '@media (min-width: 0px) and (orientation: landscape)': {
+      top: 48 + OFFSET_TOP
+    },
+    ['@media (min-width: ' + SM_BREAKPOINT + 'px)']: {
+      top: 64 + OFFSET_TOP
+    },
+  }
+};
+
+export type LayoutProps = {
+  sidePanelContent: ReactElement,
+  mainContent:  ReactElement,
+  selectedTaxon: {
+    level: TaxonomicLevel,
+    id: number
+  },
+  onTaxonChange: (taxon: Taxon) => void
+}
+
+const Layout: FC<LayoutProps> = ({mainContent, sidePanelContent, selectedTaxon, onTaxonChange}) => {
   const {t} = useTranslation();
   const dictionaries = useDictionaries();
   const taxonPath = useTaxonPath(selectedTaxon, dictionaries);
@@ -93,43 +119,15 @@ const Layout = ({isAggregatedData, mainContent, sidePanelContent, selectedTaxon,
         isOpen={isSidePanelOpen}
         onClose={handleClose}
         widescreen={widescreen}
-        sx={{
-          '& .MuiPaper-root': {
-            padding: 0,
-            top: OFFSET_TOP + 56,
-            '@media (min-width: 0px) and (orientation: landscape)': {
-              top: 48 + OFFSET_TOP
-            },
-            ['@media (min-width: ' + SM_BREAKPOINT + 'px)']: {
-              top: 64 + OFFSET_TOP
-            },
-          }
-        }}
+        sx={sidePanelSx}
       >
         {sidePanelContent}
       </SidePanel>
     }
-    {/*
-      El toString de widescreen y de isleftdraweropen soluciona el warning que da en la consola que dice:
-      Received `true` for a non-boolean attribute `isleftdraweropen | widescreen`. If you want to write it
-      to the DOM, pass a string instead: isleftdraweropen="true" or isleftdraweropen={value.toString()}.
-     */}
-    <Main widescreen={widescreen.toString()} isleftdraweropen={(sidePanelContent && isSidePanelOpen).toString()}>
+    <Main widescreen={widescreen} isleftdraweropen={(sidePanelContent && isSidePanelOpen)}>
       {mainContent}
     </Main>
-    <Button variant='contained' onClick={() => onAggregationChange(!isAggregatedData)} sx={{position: 'absolute', bottom: '22px', right: '12px', mt: 1, width: '260px', opacity: 0.8}}>{isAggregatedData ? t('data.discreteData') : t('data.aggregatedData')}</Button>
   </>;
-};
-
-Layout.propTypes = {
-  isAggregatedData: PropTypes.bool.isRequired,
-  sidePanelContent: PropTypes.element.isRequired,
-  mainContent: PropTypes.element.isRequired,
-  selectedTaxon: PropTypes.shape({
-    level: PropTypes.oneOf(TaxonomicLevel).isRequired,
-    id: PropTypes.number.isRequired
-  }).isRequired,
-  onTaxonChange: PropTypes.func.isRequired,
 };
 
 export default Layout;

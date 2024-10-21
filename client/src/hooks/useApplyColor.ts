@@ -35,7 +35,7 @@ const getPalette = (field: SymbolizeBy) => {
 const useApplyColor = (field: SymbolizeBy) => {
   const palette = getPalette(field);
   return (value: number, target: RGBAArrayColor) => {
-    const color: RGBArrayColor = palette[value] || (field === SymbolizeBy.phylum ? otherPhylumColor : [0, 0, 0]);
+    const color: RGBArrayColor = palette && palette[value] || (field === SymbolizeBy.phylum ? otherPhylumColor : [0, 0, 0]);
     target[0] = color[0];
     target[1] = color[1];
     target[2] = color[2];
