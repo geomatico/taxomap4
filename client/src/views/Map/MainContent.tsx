@@ -99,32 +99,47 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
     groupBy: FilterBy.year
   });
 
+  /*const getAggregatedPosition = (lat: number, lon: number, target: Position) => {
+    console.log('lat', lat);
+    console.log('lon', lon);
+    target[0]=0;
+    target[1]=0;
+    /!*target[0]=Number(lat);
+    target[1]=Number(lon);*!/
+    //return target;
+  };*/
+
   const handleViewportChange = (viewport : Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
   const notifyChanges = useCallback(debounce(200, handleViewportChange), []);
   useEffect(() => notifyChanges(viewport), [viewport]);
-
+  
   useEffect(() => {
     document
       ?.getElementById('deckgl-wrapper')
       ?.addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
   
+  
   const deckLayers = useMemo(() => {
     if (isAggregatedData) {
       return [
         new HexagonLayer({
           id: 'data-aggregate',
-          data: data,
-          getPosition: d => [d.attributes.getPosition[0], d.attributes.getPosition[1]],
-          radius: 100,
+          data,
+          //data: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-bike-parking.json',
           extruded: true,
+          getPosition: () => [42, 3],
+          /*getPosition: (_, {index, data, target}) => getAggregatedPosition(
+            (data as TaxomapData).attributes.getPosition.value[index*2],
+            (data as TaxomapData).attributes.getPosition.value[(index*2)+1],
+            target as Position),*/
+          /* getPosition: (_, {index, data}) => [
+            Number((data as TaxomapData).attributes.getPosition.value[index*2]),
+            Number((data as TaxomapData).attributes.getPosition.value[(index*2)+1]),
+          ],*/
           elevationScale: 25,
-          colorRange: [[255, 255, 204], [161, 218, 180], [65, 182, 196], [34, 94, 168]],
-          elevationRange: [0, 100],
-          coverage: 1,
-          opacity: 0.5,
+          radius: 100,
           pickable: true,
-          autoHighlight: true,
         })
       ];
     } else {
@@ -134,7 +149,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
         filterRange: Array<number | number[]>
       }>({
         id: 'data',
-        data: data,
+        data,
         getRadius: 4,
         radiusUnits: 'pixels',
         stroked: true,
@@ -214,7 +229,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
       deckLayers={deckLayers}
       viewport={viewport}
       onViewportChange={setViewport}
-      deckProps={deckProps}
+      deckProps={isAggregatedData ? undefined: deckProps}
     >
       {selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
         <PopupInfo
