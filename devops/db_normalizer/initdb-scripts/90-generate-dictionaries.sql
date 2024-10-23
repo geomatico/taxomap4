@@ -4,6 +4,13 @@ CREATE TABLE taxomap AS
     SELECT *
     FROM mcnb_prod;
 
+DELETE
+FROM taxomap
+WHERE ST_X(geom) > 180
+   OR ST_Y(geom) > 90
+   OR ST_X(geom) < -180
+   OR ST_Y(geom) < -90;
+
 ALTER TABLE taxomap RENAME COLUMN _order TO "order";
 
 -- Recreate "id" so it is a real PK (unique, non-nullable)

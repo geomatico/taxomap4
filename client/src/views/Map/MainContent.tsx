@@ -112,33 +112,22 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
   const handleViewportChange = (viewport : Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
   const notifyChanges = useCallback(debounce(200, handleViewportChange), []);
   useEffect(() => notifyChanges(viewport), [viewport]);
-  
+
   useEffect(() => {
     document
       ?.getElementById('deckgl-wrapper')
       ?.addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
-  
-  
+
   const deckLayers = useMemo(() => {
     if (isAggregatedData) {
       return [
-        new HexagonLayer({
-          id: 'data-aggregate',
+        new HexagonLayer<TaxomapData>({
+          //id: 'data-aggregate' as string,
           data,
-          //data: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-bike-parking.json',
           extruded: true,
-          getPosition: () => [42, 3],
-          /*getPosition: (_, {index, data, target}) => getAggregatedPosition(
-            (data as TaxomapData).attributes.getPosition.value[index*2],
-            (data as TaxomapData).attributes.getPosition.value[(index*2)+1],
-            target as Position),*/
-          /* getPosition: (_, {index, data}) => [
-            Number((data as TaxomapData).attributes.getPosition.value[index*2]),
-            Number((data as TaxomapData).attributes.getPosition.value[(index*2)+1]),
-          ],*/
-          elevationScale: 25,
-          radius: 100,
+          elevationScale: 1,
+          radius: 100000,
           pickable: true,
         })
       ];

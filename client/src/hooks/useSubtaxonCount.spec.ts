@@ -25,6 +25,6 @@ describe('useSubtaxonCount', () => {
     const subtaxonCount = result.current;
 
     // THEN
-    expect(Object.values(subtaxonCount)).to.to.have.members([19314, 1640, 39, 27, 12, 6]); // TODO this test is coupled with `data/taxomap.arrow` and will fail when it changes!
+    expect(Object.values(subtaxonCount)).to.to.have.members([1640, 12, 27, 39, 19308, 6]); // TODO this test is coupled with `data/taxomap.arrow` and will fail when it changes!
   });
 });
