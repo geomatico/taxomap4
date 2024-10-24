@@ -5,7 +5,7 @@
       local_action:
         module: ansible.builtin.template
         src: "templates/frontend_dotenv.j2"
-        dest: "../.env"
+        dest: "../client/.env"
 
     - name: build images
       local_action:

@@ -1,8 +1,10 @@
 name: Deploy to stage
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+# TODO TAX-67 enable when prod/staging are different envs
+#  push:
+#    branches:
+#      - main
 jobs:
   upload:
     name: Build and Upload Images to server
