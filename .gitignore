@@ -15,3 +15,5 @@ __pycache__
 # devops
 devops/docker-compose.yml
 devops/geoserver_data_dir/security/usergroup/default/users.xml
+devops/prepare-db/data
+devops/prepare-db/gbif-backbone.txt

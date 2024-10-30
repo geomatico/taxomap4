@@ -1,0 +1,22 @@
+services:
+  taxomap-prepare-db:
+    build:
+      context: ../docker/taxomap-db
+    image: geomatico/taxomap-prepare-db
+    container_name: taxomap-prepare-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TAXOMAP_DB: taxomap
+      TAXOMAP_USER: taxomap
+      TAXOMAP_PASSWORD: taxomap
+    ports:
+      - "54321:5432"
+    volumes:
+      - "./data:/var/lib/postgresql/data"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 --dbname taxomap --username taxomap" ]
+      interval: 2s
+      timeout: 2s
+      retries: 60
