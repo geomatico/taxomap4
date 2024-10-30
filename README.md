@@ -31,6 +31,25 @@ docker compose build
 Lo mismo aplica a frontend, donde habrá que parar y arrancar el dev server (comando `npm start`) para que vuelva a leer los ficheros estáticos.
 
 
-# Cómo desplegar en producción
+## Backoffice
 
-Mezclando en `main` y las actions de github harán su magia.
+Se pueden gestionar usuarios a través de la API ([Djoser](https://djoser.readthedocs.io/en/latest/base_endpoints.html)).
+
+Únicamente administradores (`is_staff` para Django) pueden gestionar usuarios.
+El resto solo pueden actualizar sus datos (nombre, apellidos, ...), restablecer su contraseña y hacer login.
+Esto implica que el despliegue en cualquier entorno implica crear un superusuario:
+
+```bash
+./manage.py createsuperuser
+```
+
+y luego crear los usuarios normales necesarios manualmente mediante `POST /auth/users`.
+
+```bash
+export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "superuser@geomatico.es", "password": "superuser"}' -H 'content-type: application/json' | jq -r .access)
+curl http://localhost:8000/api/v1/auth/users/ --data '{"firstName": "Regular", "lastName": "User", "email": "regular.user@geomatico.es", "password": "regu"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
+curl http://localhost:8000/api/v1/auth/users/activation/ --data '{"uid": "<from_email_in_backend_logs>", "token": "<from_email_in_backend_logs>"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
+```
+
+Todos los endpoints del backoffice están abiertos para cualquier usuario autenticado.
+Todos los endpoints del backoffice están cerrados para cualquier usuario no autenticado.

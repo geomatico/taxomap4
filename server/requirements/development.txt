@@ -56,7 +56,7 @@ drf-yasg==1.21.7
     # via service-commons
 factory-boy==3.3.1
     # via service-commons-test
-faker==30.3.0
+faker==30.6.0
     # via factory-boy
 filelock==3.16.1
     # via virtualenv
@@ -91,7 +91,7 @@ pluggy==1.5.0
     # via pytest
 pre-commit==4.0.1
     # via -r requirements/development.in
-psycopg2==2.9.9
+psycopg2==2.9.10
     # via service-commons
 pycodestyle==2.12.1
     # via
