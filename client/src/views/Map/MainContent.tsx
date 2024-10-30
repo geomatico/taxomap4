@@ -1,27 +1,30 @@
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
-import {Popup} from 'react-map-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import {ScatterplotLayer} from '@deck.gl/layers/typed';
-import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
-import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
-import useApplyColor from '../../hooks/useApplyColor';
-import {useTranslation} from 'react-i18next';
-import Box from '@mui/material/Box';
-import YearSlider from '../../components/YearSlider';
-import {DataFilterExtension} from '@deck.gl/extensions/typed';
-import useDictionaries from '../../hooks/useDictionaries';
-import useArrowData from '../../hooks/useArrowData';
-import {debounce} from 'throttle-debounce';
-import {Accessor, WebMercatorViewport} from '@deck.gl/core/typed';
-import {DeckGLProps} from '@deck.gl/react/typed';
 
+import 'maplibre-gl/dist/maplibre-gl.css';
+
+import DeckGL from '@deck.gl/react/typed';
+import {ScatterplotLayer} from '@deck.gl/layers/typed';
+import {HeatmapLayer} from '@deck.gl/aggregation-layers/typed';
+import {DataFilterExtension} from '@deck.gl/extensions/typed';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+
+import {debounce} from 'throttle-debounce';
+import {Accessor, PickingInfo, WebMercatorViewport} from '@deck.gl/core/typed';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import Map, {_MapContext as MapContext, Popup} from 'react-map-gl';
 import styled from '@mui/styles/styled';
 
+import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
+
+import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import {
   BBOX,
   Dictionaries,
-  FilterBy,
-  Filters,
+  FilterBy, Filters,
   Range,
   RGBAArrayColor,
   SymbolizeBy,
@@ -29,14 +32,15 @@ import {
   Viewport
 } from '../../commonTypes';
 
-import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
-
+import YearSlider from '../../components/YearSlider';
 import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
-import useCount from '../../hooks/useCount';
-import {HexagonLayer} from '@deck.gl/aggregation-layers/typed';
 import Legend from '../../components/Legend';
-import Button from '@mui/material/Button';
 
+import useDictionaries from '../../hooks/useDictionaries';
+import useArrowData from '../../hooks/useArrowData';
+import {useTranslation} from 'react-i18next';
+import useCount from '../../hooks/useCount';
+import useApplyColor from '../../hooks/useApplyColor';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -77,7 +81,7 @@ type MainContentProps = {
 };
 
 const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFilterChange, onBBOXChanged, onAggregatedDataChange }) => {
-  const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
+  const [viewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
@@ -86,28 +90,18 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
   const dictionaries: Dictionaries = useDictionaries();
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
-
+  
   const fullYearRange: Range | undefined = useMemo(() => {
     const years = data?.year.filter(year => year > 0).sort();
     return years ? [years[0], years[years.length - 1]] : undefined;
   }, [data]);
-
+  
   const countByYear = useCount({
     data,
     dictionaries,
     filters: {...filters, yearRange: fullYearRange},
     groupBy: FilterBy.year
   });
-
-  /*const getAggregatedPosition = (lat: number, lon: number, target: Position) => {
-    console.log('lat', lat);
-    console.log('lon', lon);
-    target[0]=0;
-    target[1]=0;
-    /!*target[0]=Number(lat);
-    target[1]=Number(lon);*!/
-    //return target;
-  };*/
 
   const handleViewportChange = (viewport : Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
   const notifyChanges = useCallback(debounce(200, handleViewportChange), []);
@@ -122,14 +116,30 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
   const deckLayers = useMemo(() => {
     if (isAggregatedData) {
       return [
-        new HexagonLayer<TaxomapData>({
-          //id: 'data-aggregate' as string,
-          data,
-          extruded: true,
-          elevationScale: 1,
-          radius: 100000,
-          pickable: true,
-        })
+        new HeatmapLayer<TaxomapData, {
+        getFilterValue: Accessor<TaxomapData, number | number[]>,
+        filterRange: Array<number | number[]>
+      }>({
+        id: 'Heatmap',
+        data,
+        aggregation: 'SUM',
+        radiusPixels: 50,
+        opacity: 0.5,
+        extensions: [new DataFilterExtension({ filterSize: 4 })],
+        getFilterValue: (_, { index, data }) => [
+          (data as TaxomapData).year[index],
+          (data as TaxomapData).institutioncode[index],
+          (data as TaxomapData).basisofrecord[index],
+          !filters.subtaxonVisibility || filters.subtaxonVisibility.isVisible[(data as TaxomapData)[filters.subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
+        ],
+        filterRange: [
+          filters.yearRange === undefined ? [0, 999999] : filters.yearRange,
+          filters.institutionId === undefined ? [0, 999999] : [filters.institutionId, filters.institutionId],
+          filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
+          [1, 1]
+        ],
+        pickable: true
+      })
       ];
     } else {
       return [
@@ -190,50 +200,52 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
     };
   };
 
-  const deckProps: Omit<DeckGLProps, 'style' | 'ref' | 'layers' | 'controller' | 'viewState' | 'onViewStateChange' | 'onWebGLInitialized' | 'glOptions' | 'onResize'> = useMemo(() => ({
-    controller: {doubleClickZoom: false},
-    onClick: (info, e) => {
-      if (e.target.className.includes && e.target.className.includes('mapboxgl-canvas')) {
-        if (info.picked) {
-          const elementData = getElementData(info.index);
-          const newFeature: SelectedFeature = {
-            ...elementData,
-            lat: info.coordinate ? info.coordinate[1] : undefined,
-            lon: info.coordinate ? info.coordinate[0] : undefined
-          };
-          setSelectedFeature(newFeature);
-        }
-      }
-    },
-    getCursor: ({isDragging, isHovering}: {
+  const handleClick = (info: PickingInfo) => {
+    if (info.picked) {
+      const elementData = getElementData(info.index);
+      const newFeature: SelectedFeature = {
+        ...elementData,
+        lat: info.coordinate ? info.coordinate[1] : undefined,
+        lon: info.coordinate ? info.coordinate[0] : undefined
+      };
+      setSelectedFeature(newFeature);
+    }
+  };
+  
+  const getCursor = ({isDragging, isHovering}: {
       isDragging: boolean,
       isHovering: boolean
-    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'))
-  }), [selectedFeature, data]);
-
-
+    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'));
+  
   return <>
-    <DeckGLMap
-      mapStyle={mapStyle}
-      deckLayers={deckLayers}
-      viewport={viewport}
-      onViewportChange={setViewport}
-      deckProps={isAggregatedData ? undefined: deckProps}
+    <DeckGL
+      initialViewState={viewport}
+      layers={deckLayers} 
+      controller={{doubleClickZoom: false}}
+      onClick={handleClick}
+      getCursor={getCursor}
+      ContextProvider={MapContext.Provider}
     >
-      {selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
-        <PopupInfo
-          latitude={selectedFeature?.lat}
-          longitude={selectedFeature?.lon}
-          maxWidth="500"
-          closeOnClick={false}
-          anchor="top"
-          onClose={() => setSelectedFeature(undefined)}
-        >
-          <PopUpContent selectedFeature={selectedFeature}/>
-        </PopupInfo>
+      <Map
+        mapLib={import('maplibre-gl')}
+        style={{ width: '100%', height: '100%' }}
+        mapStyle={mapStyle}
+        interactive={false}
+      />
+      {
+        !isAggregatedData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
+          <PopupInfo
+            latitude={selectedFeature?.lat}
+            longitude={selectedFeature?.lon}
+            maxWidth="500"
+            closeOnClick={false}
+            anchor="top"
+            onClose={() => setSelectedFeature(undefined)}
+          >
+            <PopUpContent selectedFeature={selectedFeature}/>
+          </PopupInfo>
       }
-    </DeckGLMap>
-
+    </DeckGL>
     <BaseMapPicker
       position="top-right"
       direction="down"
@@ -259,3 +271,6 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
 };
 
 export default MainContent;
+
+
+

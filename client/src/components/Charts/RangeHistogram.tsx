@@ -26,12 +26,8 @@ interface RootProps {
   height: number;
 }
 
-const Root = styled(
-  Box,
-  {shouldForwardProp: (prop) => prop !== 'height'}
-)<RootProps>(({height, theme}) => {
+const Root = styled(Box, {shouldForwardProp: (prop) => prop !== 'height'})<RootProps>(({height, theme}) => {
   return {
-
     '& .RangeHistogram-barContainer': {
       display: 'flex',
       paddingLeft: '1px',
@@ -40,7 +36,8 @@ const Root = styled(
     },
     '& .RangeHistogram-barGroupSelected': {
       position: 'relative',
-      backgroundColor: '#a297971f',
+      //backgroundColor: '#a297971f',
+      backgroundColor: 'rgb(51,51,51)',
       width: '100%',
       height: height,
       paddingBottom: '16px'
@@ -132,7 +129,7 @@ const HistogramBar: FC<RangeHistogramBarProps> = ({isSelected, value, year, heig
   return <Tooltip title={'Any: ' + year + ' valor: ' + (value || 0)} placement='top' arrow className={classes.tooltip}>
     <Box
       className={`${classes.barRange} ${isSelected ? classes.barWithinRange : classes.barOutOfRange}`}
-      style={{height: heightBar >= 1 ? `${heightBar}%` : '1px'}}
+      sx={{height: heightBar >= 1 ? `${heightBar}%` : '1px'}}
     />
   </Tooltip>;
 };
@@ -192,7 +189,7 @@ const RangeHistogram: FC<RangeHistogramProps> = ({data, value, minMax, height = 
                 backgroundColor: 'white',
                 height: '10px',
                 width: '10px',
-                borderRadius: 5
+                borderRadius: 5,
               }}/>
             }
             {year === value[1] &&
