@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState, createContext} from 'react';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -12,10 +12,9 @@ import Button from '@mui/material/Button';
 
 import {debounce} from 'throttle-debounce';
 import {Accessor, PickingInfo, WebMercatorViewport} from '@deck.gl/core/typed';
+import {MjolnirEvent} from 'mjolnir.js';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import Map, {_MapContext as MapContext, Popup} from 'react-map-gl';
+/*import Map, {Popup} from 'react-map-gl';*/
 import styled from '@mui/styles/styled';
 
 import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
@@ -41,6 +40,9 @@ import useArrowData from '../../hooks/useArrowData';
 import {useTranslation} from 'react-i18next';
 import useCount from '../../hooks/useCount';
 import useApplyColor from '../../hooks/useApplyColor';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import Map, {Popup} from 'react-map-gl';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -86,6 +88,8 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
 
+  /*const MapContext = createContext({viewport: INITIAL_VIEWPORT, setViewport: (viewport: Viewport) => {}});*/
+  
   const {t} = useTranslation();
   const dictionaries: Dictionaries = useDictionaries();
   const applyColor = useApplyColor(symbolizeBy);
@@ -200,15 +204,19 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
     };
   };
 
-  const handleClick = (info: PickingInfo) => {
-    if (info.picked) {
-      const elementData = getElementData(info.index);
-      const newFeature: SelectedFeature = {
-        ...elementData,
-        lat: info.coordinate ? info.coordinate[1] : undefined,
-        lon: info.coordinate ? info.coordinate[0] : undefined
-      };
-      setSelectedFeature(newFeature);
+  const handleClick = (info: PickingInfo, e: MjolnirEvent) => {
+    console.log('e', e);
+    console.log('info', info);
+    if (info.layer) {
+      if (info.picked) {
+        const elementData = getElementData(info.index);
+        const newFeature: SelectedFeature = {
+          ...elementData,
+          lat: info.coordinate ? info.coordinate[1] : undefined,
+          lon: info.coordinate ? info.coordinate[0] : undefined
+        };
+        setSelectedFeature(newFeature);
+      }
     }
   };
   
@@ -218,22 +226,22 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
     }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'));
   
   return <>
+    {/*<MapContext.Provider value={{viewport, setViewport}}>*/}
     <DeckGL
       initialViewState={viewport}
       layers={deckLayers} 
       controller={{doubleClickZoom: false}}
       onClick={handleClick}
       getCursor={getCursor}
-      ContextProvider={MapContext.Provider}
     >
       <Map
         mapLib={import('maplibre-gl')}
         style={{ width: '100%', height: '100%' }}
         mapStyle={mapStyle}
         interactive={false}
-      />
-      {
-        !isAggregatedData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
+      >
+        {
+          !isAggregatedData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
           <PopupInfo
             latitude={selectedFeature?.lat}
             longitude={selectedFeature?.lon}
@@ -244,8 +252,11 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
           >
             <PopUpContent selectedFeature={selectedFeature}/>
           </PopupInfo>
-      }
+        }
+      </Map>
     </DeckGL>
+    {/*</MapContext.Provider>*/}
+    
     <BaseMapPicker
       position="top-right"
       direction="down"
