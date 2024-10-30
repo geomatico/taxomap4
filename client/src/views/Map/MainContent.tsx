@@ -43,7 +43,7 @@ import useCount from '../../hooks/useCount';
 import useApplyColor from '../../hooks/useApplyColor';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import Map, {Popup} from 'react-map-gl';
+import Map, {Popup, _MapContext as MapContext} from 'react-map-gl';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -232,6 +232,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
       initialViewState={viewport}
       layers={deckLayers} 
       controller={{doubleClickZoom: false}}
+      ContextProvider={MapContext.Provider}
       onClick={handleClick}
       getCursor={getCursor}
     >
@@ -240,21 +241,20 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
         style={{ width: '100%', height: '100%' }}
         mapStyle={mapStyle}
         interactive={false}
-      >
-        {
-          !isAggregatedData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
-          <PopupInfo
-            latitude={selectedFeature?.lat}
-            longitude={selectedFeature?.lon}
-            maxWidth="500"
-            closeOnClick={false}
-            anchor="top"
-            onClose={() => setSelectedFeature(undefined)}
-          >
-            <PopUpContent selectedFeature={selectedFeature}/>
-          </PopupInfo>
-        }
-      </Map>
+      />
+      {
+        !isAggregatedData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
+        <PopupInfo
+          latitude={selectedFeature?.lat}
+          longitude={selectedFeature?.lon}
+          maxWidth="500"
+          closeOnClick={false}
+          anchor="top"
+          onClose={() => setSelectedFeature(undefined)}
+        >
+          <PopUpContent selectedFeature={selectedFeature}/>
+        </PopupInfo>
+      }
     </DeckGL>
     {/*</MapContext.Provider>*/}
     
