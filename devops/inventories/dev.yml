@@ -12,6 +12,8 @@ all:
       image_tag: "latest"
       restart_containers: "no"
 
+    static_resources_host: "{{ lookup('env', 'TAXOMAP_BACKEND_HOST') | default() }}"
+
     database:
       name: taxomap
       postgres_password: postgres

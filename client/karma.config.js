@@ -40,6 +40,12 @@ module.exports = (config) => {
         watched: false,
         included: false,
         served: true
+      },
+      {
+        pattern: 'test/resources/**/*',
+        watched: true,
+        served: true,
+        included: false
       }
     ],
     proxies: {

@@ -19,8 +19,8 @@ const ScrollableContent = styled(Box)({
 type SidePanelContentProps = {
   filters : Filters,
   isTactile: boolean,
-  onInstitutionFilterChange: (id: number) => void,
-  onBasisOfRecordChange: (id: number) => void,
+  onInstitutionFilterChange: (id?: number) => void,
+  onBasisOfRecordChange: (id?: number) => void,
   onTaxonChange: (taxon: Taxon) => void,
   onSubtaxonVisibilityChanged: (visibility: SubtaxonVisibility) => void,
   childrenItems: Array<ChildCount>
