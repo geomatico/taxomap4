@@ -24,7 +24,7 @@ const Index = () => {
   const [BBOX, setBBOX] = useState<BBOX>();
   const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
 
-  const [isAggregatedData, setAggreatedData] = useState<boolean>(true);
+  const [isAggregatedData, setAggreatedData] = useState<boolean>(false);
 
   const filters: Filters = {
     taxon: selectedTaxon,

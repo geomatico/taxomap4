@@ -1,11 +1,12 @@
-import React, {FC, useCallback, useEffect, useMemo, useState, /* createContext*/
-} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-import DeckGL from '@deck.gl/react/typed';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import ReactMapGL, { Popup, _MapContext as MapContext, ViewState } from 'react-map-gl';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
-import {HeatmapLayer} from '@deck.gl/aggregation-layers/typed';
+import {ContourLayer, GridLayer, HeatmapLayer, ScreenGridLayer} from '@deck.gl/aggregation-layers/typed';
 import {DataFilterExtension} from '@deck.gl/extensions/typed';
 
 import Box from '@mui/material/Box';
@@ -13,9 +14,7 @@ import Button from '@mui/material/Button';
 
 import {debounce} from 'throttle-debounce';
 import {Accessor, PickingInfo, WebMercatorViewport} from '@deck.gl/core/typed';
-import {MjolnirEvent} from 'mjolnir.js';
 
-/*import Map, {Popup} from 'react-map-gl';*/
 import styled from '@mui/styles/styled';
 
 import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
@@ -41,9 +40,8 @@ import useArrowData from '../../hooks/useArrowData';
 import {useTranslation} from 'react-i18next';
 import useCount from '../../hooks/useCount';
 import useApplyColor from '../../hooks/useApplyColor';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import Map, {Popup, _MapContext as MapContext} from 'react-map-gl';
+
+import DeckGL from '@deck.gl/react/typed';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -63,7 +61,7 @@ const rangeSliderContainer = {
 const legendSelectorContainer = {
   position: 'absolute',
   right: '12px',
-  bottom: '32px',
+  bottom: '24px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -84,18 +82,16 @@ type MainContentProps = {
 };
 
 const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFilterChange, onBBOXChanged, onAggregatedDataChange }) => {
-  const [viewport] = useState<Viewport>(INITIAL_VIEWPORT);
+  const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
 
-  /*const MapContext = createContext({viewport: INITIAL_VIEWPORT, setViewport: (viewport: Viewport) => {}});*/
-  
   const {t} = useTranslation();
   const dictionaries: Dictionaries = useDictionaries();
   const applyColor = useApplyColor(symbolizeBy);
   const data: TaxomapData | undefined = useArrowData();
-  
+
   const fullYearRange: Range | undefined = useMemo(() => {
     const years = data?.year.filter(year => year > 0).sort();
     return years ? [years[0], years[years.length - 1]] : undefined;
@@ -108,7 +104,8 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
     groupBy: FilterBy.year
   });
 
-  const handleViewportChange = (viewport : Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
+  const handleViewportChange = (viewport: Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
+
   const notifyChanges = useCallback(debounce(200, handleViewportChange), []);
   useEffect(() => notifyChanges(viewport), [viewport]);
 
@@ -121,6 +118,85 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
   const deckLayers = useMemo(() => {
     if (isAggregatedData) {
       return [
+        /*new ScreenGridLayer<TaxomapData, {
+          getFilterValue: Accessor<TaxomapData, number | number[]>,
+          filterRange: Array<number | number[]>
+        }>({
+          id: 'ScreenGridLayer',
+          data,
+          cellSizePixels: 20,
+          colorRange: [
+            [0, 25, 0, 25],
+            [0, 85, 0, 85],
+            [0, 127, 0, 127],
+            [0, 170, 0, 170],
+            [0, 190, 0, 190],
+            [0, 255, 0, 255]
+          ],
+          opacity: 0.8,
+          extensions: [new DataFilterExtension({ filterSize: 4 })],
+          getFilterValue: (_, { index, data }) => [
+            (data as TaxomapData).year[index],
+            (data as TaxomapData).institutioncode[index],
+            (data as TaxomapData).basisofrecord[index],
+            !filters.subtaxonVisibility || filters.subtaxonVisibility.isVisible[(data as TaxomapData)[filters.subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
+          ],
+          filterRange: [
+            filters.yearRange === undefined ? [0, 999999] : filters.yearRange,
+            filters.institutionId === undefined ? [0, 999999] : [filters.institutionId, filters.institutionId],
+            filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
+            [1, 1]
+          ],
+          updateTriggers: {
+            getFillColor: [symbolizeBy],
+            getFilterValue: [filters.subtaxonVisibility]
+          },
+          pickable: true
+        })*/
+        /*new GridLayer({
+          id: 'GridLayer',
+          data,
+          extruded: true,
+          cellSize: 2000,
+          colorRange: [
+            [0, 25, 0, 25],
+            [0, 85, 0, 85],
+            [0, 127, 0, 127],
+            [0, 170, 0, 170],
+            [0, 190, 0, 190],
+            [0, 255, 0, 255]
+          ],
+          /!*getPosition: d => d.COORDINATES,*!/
+          /!*getColorWeight: d => d.SPACES,
+          getElevationWeight: d => d.SPACES,*!/
+          elevationScale: 40,
+          pickable: true,
+        })*/
+        /*new GridLayer<TaxomapData, {
+          getFilterValue: Accessor<TaxomapData, number | number[]>,
+          filterRange: Array<number | number[]>
+        }>({
+          id: 'GridLayer',
+          data,
+          extruded: true,
+          extensions: [new DataFilterExtension({ filterSize: 4 })],
+          elevationScale: 4,
+          cellSize: 200,
+          gpuAggregation: true,
+          getFilterValue: (_, { index, data }) => [
+            (data as TaxomapData).year[index],
+            (data as TaxomapData).institutioncode[index],
+            (data as TaxomapData).basisofrecord[index],
+            !filters.subtaxonVisibility || filters.subtaxonVisibility.isVisible[(data as TaxomapData)[filters.subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
+          ],
+          filterRange: [
+            filters.yearRange === undefined ? [0, 999999] : filters.yearRange,
+            filters.institutionId === undefined ? [0, 999999] : [filters.institutionId, filters.institutionId],
+            filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
+            [1, 1]
+          ],
+          pickable: true
+        })*/
         new HeatmapLayer<TaxomapData, {
         getFilterValue: Accessor<TaxomapData, number | number[]>,
         filterRange: Array<number | number[]>
@@ -143,6 +219,9 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
           filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
           [1, 1]
         ],
+        updateTriggers: {
+          getFilterValue: [filters.subtaxonVisibility]
+        },
         pickable: true
       })
       ];
@@ -205,9 +284,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
     };
   };
 
-  const handleClick = (info: PickingInfo, e: MjolnirEvent) => {
-    console.log('e', e);
-    console.log('info', info);
+  const handleClick = (info: PickingInfo) => {
     if (info.layer) {
       if (info.picked) {
         const elementData = getElementData(info.index);
@@ -220,28 +297,70 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
       }
     }
   };
-  
+
   const getCursor = ({isDragging, isHovering}: {
       isDragging: boolean,
       isHovering: boolean
     }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'));
-  
+
+  /*const deckProps: Omit<DeckGLProps, 'style' | 'ref' | 'layers' | 'controller' | 'viewState' | 'onViewStateChange' | 'onWebGLInitialized' | 'glOptions' | 'onResize'> = useMemo(() => ({
+    controller: {doubleClickZoom: false},
+    onClick: (info, e) => {
+      if (e.target.className.includes && e.target.className.includes('mapboxgl-canvas')) {
+        if (info.picked) {
+          const elementData = getElementData(info.index);
+          const newFeature: SelectedFeature = {
+            ...elementData,
+            lat: info.coordinate ? info.coordinate[1] : undefined,
+            lon: info.coordinate ? info.coordinate[0] : undefined
+          };
+          setSelectedFeature(newFeature);
+        }
+      }
+    },
+    getCursor: ({isDragging, isHovering}: {
+      isDragging: boolean,
+      isHovering: boolean
+    }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'))
+  }), [selectedFeature, data]);*/
+
   return <>
-    {/*<MapContext.Provider value={{viewport, setViewport}}>*/}
     <DeckGL
-      initialViewState={viewport}
-      layers={deckLayers} 
+      layers={deckLayers}
       controller={{doubleClickZoom: false}}
+      viewState={viewport}
+      onViewStateChange={({viewState}) => setViewport(viewState as ViewState)}
       ContextProvider={MapContext.Provider}
       onClick={handleClick}
       getCursor={getCursor}
     >
-      <Map
+      <ReactMapGL
         mapLib={import('maplibre-gl')}
-        style={{ width: '100%', height: '100%' }}
+        style={{width: '100%', height: '100%'}}
         mapStyle={mapStyle}
         interactive={false}
       />
+      {
+        !isAggregatedData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon && 
+        <PopupInfo
+          latitude={selectedFeature?.lat}
+          longitude={selectedFeature?.lon}
+          maxWidth="500"
+          closeOnClick={false}
+          anchor="top"
+          onClose={() => setSelectedFeature(undefined)}
+        >
+          <PopUpContent selectedFeature={selectedFeature}/>
+        </PopupInfo>
+      }
+    </DeckGL>
+    {/*<DeckGLMap
+      mapStyle={mapStyle}
+      deckLayers={deckLayers}
+      viewport={viewport}
+      onViewportChange={setViewport}
+      deckProps={deckProps}
+    >
       {
         !isAggregatedData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
         <PopupInfo
@@ -255,8 +374,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
           <PopUpContent selectedFeature={selectedFeature}/>
         </PopupInfo>
       }
-    </DeckGL>
-    {/*</MapContext.Provider>*/}
+    </DeckGLMap>*/}
     
     <BaseMapPicker
       position="top-right"

@@ -111,7 +111,6 @@ const Root = styled(Box, {shouldForwardProp: (prop) => prop !== 'height'})<RootP
 export type RangeHistogramProps = {
   value: Range,
   onValueChange: (range: Range) => void,
-  onChangeCommitted: (range: Range) => void,
   height: number,
   data: Record<number, number>,
   minMax?: Range,
@@ -134,7 +133,7 @@ const HistogramBar: FC<RangeHistogramBarProps> = ({isSelected, value, year, heig
   </Tooltip>;
 };
 
-const RangeHistogram: FC<RangeHistogramProps> = ({data, value, minMax, height = DEFAULT_HEIGHT, onValueChange, onChangeCommitted, sx = {},}) => {
+const RangeHistogram: FC<RangeHistogramProps> = ({data, value, minMax, height = DEFAULT_HEIGHT, onValueChange, sx = {},}) => {
 
   // AXIS X
   const axisXItems = Object.keys(data).map(el => parseInt(el));
@@ -207,7 +206,7 @@ const RangeHistogram: FC<RangeHistogramProps> = ({data, value, minMax, height = 
         )
       }
     </Box>
-    <RangeSlider sx={rangeSliderStyles} value={value} min={minAxisX} max={maxAxisX} onChangeCommitted={(event: Event | SyntheticEvent<Element, Event>, value: number | number[])=> onChangeCommitted(value as Range)} onValueChange={onValueChange}/>
+    <RangeSlider sx={rangeSliderStyles} value={value} min={minAxisX} max={maxAxisX} onValueChange={onValueChange}/>
   </Root>;
 };
 

@@ -40,12 +40,14 @@ const GraphicByLegend: FC<GraphicByLegendProps> = ({filters, symbolizeBy}) => {
       };
     }).filter(el => el !== undefined)
     : []) as ChartData;
-
-  return <>{
-    formattedForChart.length > 0
-      ? <PieChart data={formattedForChart}/>
-      : null
-  }</>;
+  
+  return <>
+    {
+      formattedForChart.length > 0
+        ? <PieChart data={formattedForChart}/>
+        : null
+    }
+  </>;
 };
 
 GraphicByLegend.defaultProps = {};

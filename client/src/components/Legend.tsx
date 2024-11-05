@@ -17,7 +17,7 @@ const container: SxProps = {
   maxWidth: LEGEND_WIDTH,
   borderRadius: '3px',
   p: 1,
-  mb: 1,
+  mb: 0,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
