@@ -8,7 +8,7 @@ import ReactMapGL, { Popup, _MapContext as MapContext, ViewState } from 'react-m
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
 import {ContourLayer, GridLayer, HeatmapLayer, ScreenGridLayer} from '@deck.gl/aggregation-layers/typed';
 import {DataFilterExtension} from '@deck.gl/extensions/typed';
-
+import {DeckGLProps} from '@deck.gl/react/typed';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -42,6 +42,7 @@ import useCount from '../../hooks/useCount';
 import useApplyColor from '../../hooks/useApplyColor';
 
 import DeckGL from '@deck.gl/react/typed';
+import DeckGLMap from '@geomatico/geocomponents/Map/DeckGLMap';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -303,7 +304,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
       isHovering: boolean
     }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'));
 
-  /*const deckProps: Omit<DeckGLProps, 'style' | 'ref' | 'layers' | 'controller' | 'viewState' | 'onViewStateChange' | 'onWebGLInitialized' | 'glOptions' | 'onResize'> = useMemo(() => ({
+  const deckProps: Omit<DeckGLProps, 'style' | 'ref' | 'layers' | 'controller' | 'viewState' | 'onViewStateChange' | 'onWebGLInitialized' | 'glOptions' | 'onResize'> = useMemo(() => ({
     controller: {doubleClickZoom: false},
     onClick: (info, e) => {
       if (e.target.className.includes && e.target.className.includes('mapboxgl-canvas')) {
@@ -322,7 +323,7 @@ const MainContent: FC<MainContentProps> = ({filters, isAggregatedData, onYearFil
       isDragging: boolean,
       isHovering: boolean
     }) => (isDragging ? 'grabbing' : (isHovering ? 'pointer' : 'grab'))
-  }), [selectedFeature, data]);*/
+  }), [selectedFeature, data]);
 
   return <>
     <DeckGL
