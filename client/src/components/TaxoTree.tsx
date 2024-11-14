@@ -37,7 +37,8 @@ const contentTaxoStyle = {
   bgcolor: 'secondary.main',
   borderRadius: 0.5,
   py: 1,
-  px: 2
+  pr: 1,
+  pl: 2
 };
 
 const labelTaxoStyle = {
@@ -52,6 +53,8 @@ const iconTaxoStyle = {
 };
 
 const listItemButtonStyle = {
+  pr: 0,
+  pl: 2,
   borderRadius: 2,
   '&:hover': {
     backgroundColor: (theme: Theme) => lighten(theme.palette.secondary.main, 0.85),
@@ -149,8 +152,8 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
         <Typography sx={labelTaxoStyle}>{getLabel()}</Typography>
       </Box>
       <Box display='flex' alignItems='center'>
-        <Tooltip title={t('infoTaxon')} placement="top">
-          <InfoOutlinedIcon onClick={handleOnMoreInfoClick} sx={{mr: 1, fontSize: 16}}/>
+        <Tooltip title={<Typography variant='caption'>{t('infoTaxon')}</Typography>} placement='top' sx={{fontSize: '20px'}}>
+          <InfoOutlinedIcon onClick={handleOnMoreInfoClick} sx={{mr: 1}}/>
         </Tooltip>
 
         <Popover
@@ -183,23 +186,23 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
             </ArrowContainer>
           )}
         >
-          <Box onClick={(event)=>handleDownloadClick(event.currentTarget)} style={{display: 'flex'}}>
-            <Tooltip title={t('download')} placement="top">
-              <DownloadIcon sx={{marginRight: '12px', fontSize: 16}}/>
+          <Box onClick={(e)=> handleDownloadClick(e.currentTarget)} sx={{display: 'flex'}}>
+            <Tooltip title={<Typography variant='caption'>{t('download')}</Typography>} placement="top">
+              <DownloadIcon sx={{mr: 1, fontSize: 16}}/>
             </Tooltip>
           </Box>
         </Popover>
       </Box>
 
     </Box>
-    <List dense sx={{ml: 2}}>
+    <List dense>
       {(!childrenItems?.length || !currentDictionaryEntry.name) &&
         <Typography variant="caption" display="block" gutterBottom sx={{fontStyle: 'italic', ml: 2}}>
           {t('no_subtaxa')}
         </Typography>
       }
       {!!childrenItems?.length && currentDictionaryEntry.name && filters.subtaxonVisibility && childrenItems.map(child =>
-        <ListItem key={child.id} disablePadding>
+        <ListItem key={child.id} disablePadding sx={{pl: 1}}>
           <ListItemButton sx={listItemButtonStyle} component="a">
             <ListItemText onClick={() => handleOnChildClick(child.id)}
               sx={filters.subtaxonVisibility?.isVisible[child.id] ? listItemTextStyle : {color: '#949090'}}>

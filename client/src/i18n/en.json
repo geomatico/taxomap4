@@ -5,6 +5,10 @@
     "nonFossil": "Non-fossil"
   },
   "csv": "Spreadsheet (CSV)",
+  "data": {
+    "aggregatedData": "View aggregated data",
+    "discreteData": "View discrete data"
+  },
   "download": "Download section",
   "fieldLabel": {
     "basisofrecord": "Basis of record",

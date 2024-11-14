@@ -11,26 +11,29 @@ import Box from '@mui/material/Box';
 
 const menuSelectStyles = {
   '& .SelectInput-menuItem': {
-    'fontSize': '12px',
+    'fontSize': '14px',
     'color': 'black',
   },
   '& .SelectInput-placeholder': {
     'fontStyle': 'italic',
-    'fontSize': '12px',
+    'fontSize': '14px',
   }
 };
 
 const selectStyles = {
   '&.SelectInput-root': {
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'blue',
+    },
     mt: 1,
     width: '260px',
     fontSize: '12px',
     '& .MuiTypography-body1': {
-      fontSize: '12px'
+      fontSize: '14px'
     }
   },
   '& .SelectInput-select': {
-    fontSize: '12px',
+    fontSize: '14px',
   }
 };
 

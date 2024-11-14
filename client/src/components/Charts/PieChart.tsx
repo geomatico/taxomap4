@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {VegaLite, VisualizationSpec} from 'react-vega';
+import {Vega, VisualizationSpec} from 'react-vega';
 import {HEXColor} from '../../commonTypes';
 
 type ChartItem = {
@@ -18,7 +18,7 @@ export interface PieChartProps {
 const PieChart: FC<PieChartProps> = ({data}) => {
 
   const specArc: VisualizationSpec = {
-    '$schema': 'https://vega.github.io/schema/vega/v3.0.json',
+    '$schema': 'https://vega.github.io/schema/vega/v5.25.0.json',
     'width': 180,
     'height': 180,
     'autosize': 'pad',
@@ -156,7 +156,7 @@ const PieChart: FC<PieChartProps> = ({data}) => {
     ]
   };
 
-  return <VegaLite spec={specArc} actions={false}/>;
+  return <Vega spec={specArc} actions={false}/>;
 };
 
 export default PieChart;
