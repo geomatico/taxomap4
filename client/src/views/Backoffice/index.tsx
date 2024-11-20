@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import authService, {CannotRefreshTokenError} from '../../services/auth';
 import LoginForm from '../../components/login/LoginForm';
-import {get, HttpError} from '../../services/common/jsonHttp';
+import {get, HttpError} from '@geomatico/client-commons';
 import {API_BASE_URL} from '../../config';
 
 const Index = () => {

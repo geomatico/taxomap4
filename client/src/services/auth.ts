@@ -1,6 +1,6 @@
-import cookieService from './common/cookie';
-import {decodeJwt, getExpirationDate, isTokenValid} from './common/jwt';
-import {post} from './common/jsonHttp';
+import cookieService from '@geomatico/client-commons/cookie';
+import {decodeJwt, getExpirationDate, isTokenExpired} from '@geomatico/client-commons';
+import {post} from '@geomatico/client-commons';
 import {API_BASE_URL} from '../config';
 
 const ACCESS_TOKEN_COOKIE = 'accessToken';
@@ -20,7 +20,7 @@ export class CannotRefreshTokenError extends Error {
   }
 }
 
-const isValid = (token?: string) => isTokenValid(decodeJwt(token), JWT_EXPIRATION_MARGIN);
+const isValid = (token?: string) => !isTokenExpired(decodeJwt(token), JWT_EXPIRATION_MARGIN);
 const isAccessTokenValid = () => isValid(cookieService.get(ACCESS_TOKEN_COOKIE));
 
 const newAccessToken = (accessToken: string) => {
