@@ -25,10 +25,9 @@ const autocompleteStyles = {
   '& .MuiOutlinedInput-root': {padding: '6px 9px'},
   '& .MuiOutlinedInput-root .MuiAutocomplete-input': {
     padding: '2.5px 4px 2px 6px',
-    fontSize: 12,
+    fontSize: 14,
   },
   '& .MuiAutocomplete-clearIndicator': {fontSize: '0.25rem'}
-
 };
 
 const LISTBOX_PADDING = 8; // px

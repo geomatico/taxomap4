@@ -139,3 +139,5 @@ export const MUSEU_ID = idByName(institutioncode)('Museu Ciències Naturals Barc
 export const FILTER_BY = ['institutioncode', 'basisofrecord'];
 
 export const GEOSERVER_BASE_URL = process.env.GEOSERVER_BASE_URL;
+
+export const API_BASE_URL = process.env.API_BASE_URL as string;

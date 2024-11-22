@@ -20,7 +20,6 @@ export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, fullYearRange
     {data && fullYearRange &&
       <RangeHistogram
         onValueChange={handleYearRangeChanged}
-        onChangeCommitted={handleYearRangeChanged} // TODO quitar este handler cuando se use Geocomponents > 3.0.4 (FRONT-71)
         value={(yearRange || fullYearRange)}
         minMax={fullYearRange}
         height={50}

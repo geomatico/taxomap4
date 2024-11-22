@@ -12,13 +12,13 @@ const data: ChartData = [
     label: 'Label-1',
     id: 1,
     color: '#FABB5C',
-    percentage: 30
+    percentage: 35
   },
   {
     label: 'Label-2',
     id: 2,
     color: '#58A062',
-    percentage: 25
+    percentage: 20
   },
   {
     label: 'Label-3',

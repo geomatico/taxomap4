@@ -24,6 +24,8 @@ const Index = () => {
   const [BBOX, setBBOX] = useState<BBOX>();
   const [subtaxonVisibility, setSubtaxonVisibility] = useState<SubtaxonVisibility>();
 
+  const [isAggregatedData, setAggreatedData] = useState<boolean>(false);
+
   const filters: Filters = {
     taxon: selectedTaxon,
     institutionId: selectedInstitutionId,
@@ -87,9 +89,11 @@ const Index = () => {
   />;
 
   const mainContent = <MainContent
+    isAggregatedData={isAggregatedData}
     filters={filters}
     onYearFilterChange={setYearRange}
     onBBOXChanged={setBBOX}
+    onAggregatedDataChange={() => setAggreatedData(!isAggregatedData)}
   />;
 
   return <Layout
