@@ -3,12 +3,14 @@ import Typography from '@mui/material/Typography';
 import {useTranslation} from 'react-i18next';
 import {CardActions, CardContent} from '@mui/material';
 import {MUSEU_ID} from '../config';
-import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import {DictionaryEntry} from '../commonTypes';
 import {WfsProperties, getWfsFeatureProperties, WFS_PROPERTY} from '../wfs/wfs';
 
-type PopUpContentProps = {
+import './utils/popUp.css';
+
+export type PopUpContentProps = {
   selectedFeature: SelectedFeature,
 }
 
@@ -73,13 +75,13 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
   const scientificNameLabel = wfsProperties?.scientificName || selectedFeature.species?.name;
   const placeLabel = wfsProperties && getPlaceLabel(wfsProperties);
   const dateLabel = wfsProperties && getDateLabel(wfsProperties);
-
+  console.log('selectedFeature.institutioncode', selectedFeature.institutioncode);
   return <Card variant="outlined">
     <CardContent>
-      <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+      <Typography variant='button' color="text.secondary">
         {selectedFeature.catalognumber}
       </Typography>
-      <Typography variant="subtitle1" sx={{textTransform: 'uppercase'}} component="div">
+      <Typography variant="h5" sx={{mt: 1, textTransform: 'uppercase', fontWeight: 'bold'}} component="h3">
         {scientificNameLabel}
       </Typography>
       <Typography sx={{fontSize: 14}} color="text.secondary">
@@ -91,7 +93,10 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
     {
       selectedFeature.institutioncode?.id === MUSEU_ID &&
       <CardActions>
-        <Button href={getMoreInfoUrl(selectedFeature)} target="_blank" size="small">{t('moreInfo')}</Button>
+        <Link href={getMoreInfoUrl(selectedFeature)} color="inherit" underline="none" target="_blank" sx={{ml: 1,mb: 1, textTransform: 'uppercase'}}>
+          {t('moreInfo')}
+        </Link>
+        {/*<Link color='primary' href={getMoreInfoUrl(selectedFeature)} size="small" target="_blank">{t('moreInfo')}</Link>*/}
       </CardActions>
     }
   </Card>;
