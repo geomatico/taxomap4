@@ -41,6 +41,11 @@
     "rain": "Pluja",
     "temperature": "Temperatura"
   },
+  "mapTypes": {
+    "discreteData": "Dades discretes",
+    "heatMap": "Mapa de calorHeatmap",
+    "aggregateData": "Aggregate Data"
+  },
   "moreInfo": "Més informació",
   "navbar": {
     "collections": {
