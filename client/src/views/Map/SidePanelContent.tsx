@@ -3,7 +3,6 @@ import React, {FC, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import styled from '@mui/styles/styled';
-import Geomatico from '../../components/Geomatico';
 import FilterByForm from '../../components/FilterByForm';
 import TaxoTree from '../../components/TaxoTree';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
@@ -63,7 +62,6 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
         onSubtaxonVisibilityChanged={onSubtaxonVisibilityChanged}
       />
     </ScrollableContent>
-    <Geomatico/>
   </Stack>;
 };
 

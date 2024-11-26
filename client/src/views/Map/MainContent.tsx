@@ -107,11 +107,8 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
       ?.addEventListener('contextmenu', evt => evt.preventDefault());
   }, []);
   
-  const deckLayers = useMemo(() => {
-    switch (selectedMapType) {
-      
-    case MapType.heatMap:
-      return [new HeatmapLayer<TaxomapData, {
+  const heatMapLayer = [
+    new HeatmapLayer<TaxomapData, {
         getFilterValue: Accessor<TaxomapData, number | number[]>,
         filterRange: Array<number | number[]>
       }>({
@@ -137,9 +134,8 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
           getFilterValue: [filters.subtaxonVisibility]
         }
       })];
-    case MapType.aggregateData:
-      return [
-        new ScreenGridLayer<TaxomapData, {
+  const aggregateDataLayer = [
+    new ScreenGridLayer<TaxomapData, {
           getFilterValue: Accessor<TaxomapData, number | number[]>,
           filterRange: Array<number | number[]>
         }>({
@@ -173,10 +169,9 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
             getFilterValue: [filters.subtaxonVisibility]
           }
         })    
-      ];
-    default:
-      return [
-        new ScatterplotLayer<TaxomapData, {
+  ];
+  const discreteDataLayer = [
+    new ScatterplotLayer<TaxomapData, {
         getFilterValue: Accessor<TaxomapData, number | number[]>,
         filterRange: Array<number | number[]>
       }>({
@@ -208,8 +203,19 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
         },
         pickable: true
       }) 
-      ];
+  ];
 
+  const deckLayers = useMemo(() => {
+    switch (selectedMapType) {
+      
+    case MapType.heatMap:
+      return heatMapLayer;
+    case MapType.aggregateData:
+      return aggregateDataLayer;
+    case MapType.discreteData:
+      return discreteDataLayer;
+    default:
+      return discreteDataLayer;
     }
   }, [selectedMapType, data, symbolizeBy, filters, dictionaries]);
 
@@ -270,7 +276,7 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
         interactive={false}
       />
       {
-        selectedMapType !== MapType.discreteData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
+        selectedMapType === MapType.discreteData && selectedFeature && selectedFeature?.lat && selectedFeature?.lon &&
         <PopupInfo
           latitude={selectedFeature?.lat}
           longitude={selectedFeature?.lon}
