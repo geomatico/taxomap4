@@ -1,0 +1,38 @@
+all:
+  vars:
+    ansible_connection: local
+
+    name: taxomap
+    domain: localhost
+    deploy_user: "{{ lookup('env','USER') }}"
+    service_path: /tmp/taxomap
+
+    docker:
+      image_tag: "latest"
+      restart_containers: "no"
+
+    database:
+      name: taxomap
+      postgres_password: postgres
+      taxomap_user: taxomap
+      taxomap_password: taxomap
+      extra_ports:
+        - "{{ lookup('env', 'TAXOMAP_DB_PORT') | default(5432, true) }}:5432"
+
+    backend:
+      settings: project.settings.local
+      command: ["start_dev.sh"]
+      extra_volumes:
+        - "../server:/server"
+      extra_ports:
+        - "8000:80"
+
+    geoserver:
+      url: http://localhost/geoserver
+      data_dir: ../devops/geoserver_data_dir
+      admin_password: geoserver
+      extra_ports:
+        - "8080:8080"
+
+  hosts:
+    localhost:

@@ -7,9 +7,9 @@ echo "Please be patient, this will take some time..."
 docker compose up -d
 
 # Dumps normalized DB
-echo "Dumping normalized database to docker/taxomap-db/initdb-scripts/dump/20-taxomap-normalized.sql.gz"
+echo "Dumping normalized database to docker/taxomap-database/initdb-scripts/dump/20-taxomap-normalized.sql.gz"
 docker compose exec taxomap-old-db \
-  pg_dump -U postgres -d taxomap --format=p --encoding=UTF-8 -t taxomap | gzip > ../docker/taxomap-db/initdb-scripts/dump/20-taxomap-normalized.sql.gz
+  pg_dump -U postgres -d taxomap --format=p --encoding=UTF-8 -t taxomap | gzip > ../docker/taxomap-database/initdb-scripts/dump/20-taxomap-normalized.sql.gz
 
 # Converts postgis table to geoarrow (needs GDAL 3.5+, using docker)
 echo "Creating ../../client/static/data/taxomap.arrow"

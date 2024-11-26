@@ -14,7 +14,7 @@
     <entry key="Batch insert size">1</entry>
     <entry key="preparedStatements">false</entry>
     <entry key="database">taxomap</entry>
-    <entry key="host">taxomap-db</entry>
+    <entry key="host">taxomap-database</entry>
     <entry key="Loose bbox">true</entry>
     <entry key="SSL mode">DISABLE</entry>
     <entry key="Estimated extends">true</entry>

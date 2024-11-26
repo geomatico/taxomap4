@@ -14,7 +14,7 @@
    
 Esto actualizará los siguientes assets:
 
-* BDD normalizada, que se expondrá a través de GeoServer: `docker/taxomap-db/initdb-scripts/dump/20-taxomap-normalized.sql.gz`
+* BDD normalizada, que se expondrá a través de GeoServer: `docker/taxomap-database/initdb-scripts/dump/20-taxomap-normalized.sql.gz`
 * Fichero geoarrow para frontend: `static/data/taxomap.arrow`.
 * Diccionarios para frontend: `static/data/dictionares/*.json`.
 

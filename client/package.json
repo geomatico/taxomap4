@@ -9,8 +9,6 @@
   },
   "scripts": {
     "test": "npm run lint && karma start karma.config.js",
-    "docker-start": "cd ../devops/docker && docker compose up && cd -",
-    "docker-clean": "cd ../devops/docker && docker compose down && cd -",
     "update-data": "cd static/data && rm -rf * && ../../../devops/extract_data_from_db.sh && cd -",
     "start": "webpack serve --env dev",
     "build": "npm test && webpack --env prod",
@@ -21,7 +19,10 @@
     "lint": "npm run lint:js && npm run lint:i18n",
     "lint:js": "eslint src",
     "lint:i18n": "eslint --fix --format node_modules/eslint-plugin-i18n-json/formatter.js src/i18n/*.json",
-    "prepare": "cd .. && husky install .husky"
+    "prepare": "cd .. && husky install .husky",
+    "docker-prepare": "docker run --rm -t -e TAXOMAP_BACKEND_HOST=localhost:8000 -v $PWD/../:/repo mullnerz/ansible-playbook ansible-playbook -i /repo/devops/inventories/dev.yml /repo/devops/render-templates.yml -e '{use_frontend: False, use_proxy: False}'",
+    "docker-start": "npm run docker-prepare && docker compose -f ../devops/docker-compose.yml up",
+    "docker-clean": "npm run docker-prepare && docker compose -f ../devops/docker-compose.yml down --rmi local"
   },
   "repository": {
     "type": "git",

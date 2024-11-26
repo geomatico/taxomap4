@@ -1,0 +1,48 @@
+name: Deploy to staging
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: staging_deployment
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: ./devops
+env:
+    ANSIBLE_HOST_KEY_CHECKING: False
+    ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
+
+jobs:
+  backend-tests:
+    uses: ./.github/workflows/test-backend.yml
+    secrets:
+      DJANGO_PIPELINE: ${{ secrets.DJANGO_PIPELINE }}
+  frontend-tests:
+    uses: ./.github/workflows/test-frontend.yml
+
+  upload:
+    name: Build and upload images
+    needs: [backend-tests, frontend-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: create ansible vault file
+        run: echo ${{ secrets.ANSIBLE_STAGING_VAULT }} > ~/.vaultfile
+
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: run upload-images playbook
+        run: ansible-playbook -i inventories/staging.yml upload-images.yml
+
+      - name: run deploy playbook
+        run: ansible-playbook -i inventories/staging.yml deploy.yml
+
+      - name: run prune-images playbook
+        run: ansible-playbook -i inventories/staging.yml prune-images.yml

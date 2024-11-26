@@ -1,0 +1,32 @@
+name: Backend tests
+on:
+  workflow_call:
+    secrets:
+      DJANGO_PIPELINE:
+        required: true
+  pull_request:
+    paths:
+      - server/**/*
+      - devops/**/*
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Checkout pipeline tools
+      uses: actions/checkout@v4
+      with:
+        repository: geomatico/django-pipeline
+        path: pipeline
+        ssh-key: ${{ secrets.DJANGO_PIPELINE }}
+
+    - name: Render templates
+      working-directory: devops
+      run: ansible-playbook -i inventories/backend-ci.yml render-templates.yml
+
+    - name: Run tests
+      working-directory: devops
+      run: docker compose up --abort-on-container-exit --exit-code-from taxomap-backend

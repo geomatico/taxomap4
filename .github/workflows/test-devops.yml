@@ -1,0 +1,22 @@
+name: Devops tests
+on:
+  pull_request:
+    paths:
+      - devops/**/*
+
+jobs:
+  devops-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Create ansible vault file
+      run: echo ${{ secrets.ANSIBLE_STAGING_VAULT }} > ~/.vaultfile
+
+    - name: Render templates
+      working-directory: devops
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: False
+        ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
+      run: for inventory in ls inventories/*.yml; do ansible-playbook -c local -i $inventory render-templates.yml; done
