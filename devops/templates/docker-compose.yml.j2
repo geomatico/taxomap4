@@ -1,6 +1,6 @@
 services:
 {% if use_proxy is not defined or use_proxy %}
-  {{ name }}-proxy:
+  taxomap-proxy:
     image: geomatico/{{ name }}-proxy:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build: docker/proxy
@@ -15,9 +15,9 @@ services:
       - "{{ service_path }}/static:/static"
       - "{{ service_path }}/media:/media"
     depends_on:
-      - {{ name }}-database
-      - {{ name }}-frontend
-      - {{ name }}-backend
+      - taxomap-database
+      - taxomap-frontend
+      - taxomap-backend
 {% if domain == 'localhost' %}
     ports:
       - "80:80"
@@ -30,7 +30,7 @@ services:
 {% endif %}
 {% endif %}
 
-  {{ name }}-database:
+  taxomap-database:
 {% if build_needed is not defined or build_needed %}
     build: docker/database
 {% endif %}
@@ -64,7 +64,7 @@ services:
 {% endfor %}
 {% endif %}
 
-  {{ name }}-backend:
+  taxomap-backend:
     image: geomatico/{{ name }}-backend:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build:
@@ -72,7 +72,7 @@ services:
       context: ../
 {% endif %}
     depends_on:
-      {{ name }}-database:
+      taxomap-database:
         condition: service_healthy
     container_name: {{ name }}-backend
     restart: {{ docker.restart_containers | default('always') }}
@@ -101,7 +101,7 @@ services:
       - internal
 
 {% if use_frontend is not defined or use_frontend %}
-  {{ name }}-frontend:
+  taxomap-frontend:
     image: geomatico/{{ name }}-frontend:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build:
@@ -111,14 +111,14 @@ services:
     container_name: {{ name }}-frontend
     restart: {{ docker.restart_containers | default('always') }}
     depends_on:
-      - {{ name }}-database
-      - {{ name }}-geoserver
+      - taxomap-database
+      - taxomap-geoserver
     networks:
       - internal
 {% endif %}
 
 {% if use_geoserver is not defined or use_geoserver %}
-  {{ name }}-geoserver:
+  taxomap-geoserver:
     image: geomatico/{{ name }}-geoserver:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build: docker/geoserver
@@ -126,7 +126,7 @@ services:
     container_name:  {{ name }}-geoserver
     restart: {{ docker.restart_containers | default('always') }}
     depends_on:
-      {{ name }}-database:
+      taxomap-database:
         condition: service_healthy
     environment:
       CUSTOM_UID: 1001
