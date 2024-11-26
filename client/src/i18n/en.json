@@ -41,6 +41,11 @@
     "rain": "Rain",
     "temperature": "Temperature"
   },
+  "mapTypes": {
+    "discreteData": "Discrete Data",
+    "heatMap": "Heatmap",
+    "aggregateData": "Aggregate Data"
+  },
   "moreInfo": "More information",
   "navbar": {
     "collections": {

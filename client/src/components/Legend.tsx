@@ -7,7 +7,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Typography from '@mui/material/Typography';
 import SelectInput from '@geomatico/geocomponents/Forms/SelectInput';
 import GraphicByLegend from './GraphicByLegend';
-import {Filters, SymbolizeBy} from '../commonTypes';
+import {Filters, MapType, SymbolizeBy} from '../commonTypes';
 
 //STYLES
 const LEGEND_WIDTH = '280px';
@@ -74,14 +74,20 @@ type OptionLegend = {
   legend: Array<LegendItem> | undefined
 };
 
+type OptionMapType = {
+  id: MapType,
+  label: string
+};
+
 export type LegendProps = {
   symbolizeBy: SymbolizeBy,
   filters: Filters,
+  selectedMapType: MapType,
   onSymbolizeByChange: (symbolizeBy: SymbolizeBy) => void,
-  isAggregatedData: boolean
+  onMapTypeChange: (mapType: MapType) => void
 };
 
-const Legend: FC<LegendProps> = ({isAggregatedData, symbolizeBy, filters, onSymbolizeByChange}) => {
+const Legend: FC<LegendProps> = ({symbolizeBy, selectedMapType, filters, onSymbolizeByChange, onMapTypeChange}) => {
   const {t} = useTranslation();
 
   const symbolizationOptions: Array<OptionLegend> = [
@@ -113,12 +119,27 @@ const Legend: FC<LegendProps> = ({isAggregatedData, symbolizeBy, filters, onSymb
       }))
     }
   ];
+  
+  const mapTypeOptions: Array<OptionMapType> = [
+    {
+      id: MapType.discreteData,
+      label: t('mapTypes.discreteData')
+    },
+    {
+      id: MapType.heatMap,
+      label: t('mapTypes.heatMap')
+    },
+    {
+      id: MapType.aggregateData,
+      label: t('mapTypes.aggregateData')
+    }
+  ];
 
   const selectedLegend = symbolizationOptions.find(option => option.id === symbolizeBy)?.legend;
 
   return <Box sx={container}>
     {
-      !isAggregatedData && <>
+      selectedMapType === MapType.discreteData && <>
         <GraphicByLegend filters={filters} symbolizeBy={symbolizeBy}/>
         <Box sx={legend}>
           {
@@ -138,7 +159,13 @@ const Legend: FC<LegendProps> = ({isAggregatedData, symbolizeBy, filters, onSymb
         />
       </>
     }
-    
+    <SelectInput
+      options={mapTypeOptions}
+      selectedOptionId={selectedMapType}
+      onOptionChange={(option) => option && onMapTypeChange(option as MapType)}
+      sx={selectStyles}
+      menuSx={menuSelectStyles}
+    />
   </Box>;
 };
 export default Legend;

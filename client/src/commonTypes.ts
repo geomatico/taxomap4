@@ -132,3 +132,9 @@ export type Filters = {
   subtaxonVisibility?: SubtaxonVisibility,
   bbox?: BBOX
 }
+
+export enum MapType {
+  discreteData = 'discreteData',
+  heatMap = 'heatMap',
+  aggregateData = 'aggregateData'
+}
