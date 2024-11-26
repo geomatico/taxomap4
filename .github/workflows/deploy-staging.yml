@@ -1,10 +1,9 @@
 name: Deploy to staging
 on:
   workflow_dispatch:
-# TODO TAX-67 enable when prod/staging are different envs
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - main
 
 concurrency:
   group: staging_deployment
