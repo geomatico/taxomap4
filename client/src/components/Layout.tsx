@@ -13,7 +13,7 @@ import SidePanel from '@geomatico/geocomponents/Layout/SidePanel';
 
 //UTILS
 import Logo from './icons/Logo';
-import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT} from '../config';
+import {DRAWER_WIDTH, OFFSET_TOP, SM_BREAKPOINT, IS_TACTILE} from '../config';
 import {useTranslation} from 'react-i18next';
 
 import AboutModal from './About/AboutModal';
@@ -106,8 +106,8 @@ const Layout: FC<LayoutProps> = ({mainContent, sidePanelContent, selectedTaxon, 
       isStartIconCloseable={isSidePanelOpen}
       sx={{'&.MuiAppBar-root': {zIndex: 1500}, top: OFFSET_TOP}}
     >
-      <Button onClick={() => setAboutModalOpen(true)} sx={helperTextStyle}>{t('about')}</Button>
-      <Button onClick={() => setHelpModalOpen(true)} sx={helperTextStyle}>{t('help')}</Button>
+      {!IS_TACTILE && <Button onClick={() => setAboutModalOpen(true)} sx={helperTextStyle}>{t('about')}</Button>}
+      {!IS_TACTILE && <Button onClick={() => setHelpModalOpen(true)} sx={helperTextStyle}>{t('help')}</Button>}
       <AboutModal onClose={() => setAboutModalOpen(false)} isAboutModalOpen={isAboutModalOpen}/>
       <HelpModal onClose={() => setHelpModalOpen(false)} isHelpModalOpen={isHelpModalOpen}/>
 

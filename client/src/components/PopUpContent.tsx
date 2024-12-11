@@ -2,7 +2,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import {useTranslation} from 'react-i18next';
 import {CardActions, CardContent} from '@mui/material';
-import {MUSEU_ID} from '../config';
+import {IS_TACTILE, MUSEU_ID} from '../config';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import {DictionaryEntry} from '../commonTypes';
@@ -91,12 +91,11 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
       {dateLabel && <Typography variant="caption" color="text.secondary">{dateLabel}</Typography>}
     </CardContent>
     {
-      selectedFeature.institutioncode?.id === MUSEU_ID &&
+      selectedFeature.institutioncode?.id === MUSEU_ID && !IS_TACTILE &&
       <CardActions>
         <Link href={getMoreInfoUrl(selectedFeature)} color="inherit" underline="none" target="_blank" sx={{ml: 1,mb: 1, textTransform: 'uppercase'}}>
           {t('moreInfo')}
         </Link>
-        {/*<Link color='primary' href={getMoreInfoUrl(selectedFeature)} size="small" target="_blank">{t('moreInfo')}</Link>*/}
       </CardActions>
     }
   </Card>;
