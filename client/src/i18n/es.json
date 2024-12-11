@@ -45,9 +45,9 @@
     "temperature": "Temperatura"
   },
   "mapTypes": {
+    "aggregateData": "Datos agregados",
     "discreteData": "Datos discretos",
-    "heatMap": "Mapa de calor",
-    "aggregateData": "Datos agregados"
+    "heatMap": "Mapa de calor"
   },
   "moreInfo": "Más información",
   "navbar": {

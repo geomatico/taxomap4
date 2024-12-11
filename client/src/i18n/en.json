@@ -42,9 +42,9 @@
     "temperature": "Temperature"
   },
   "mapTypes": {
+    "aggregateData": "Aggregate Data",
     "discreteData": "Discrete Data",
-    "heatMap": "Heatmap",
-    "aggregateData": "Aggregate Data"
+    "heatMap": "Heatmap"
   },
   "moreInfo": "More information",
   "navbar": {
