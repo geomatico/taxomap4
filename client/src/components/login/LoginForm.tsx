@@ -6,10 +6,12 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import LockIcon from '@mui/icons-material/Lock';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {Avatar, FormHelperText, Grid, Paper} from '@mui/material';
+import {Avatar, FormHelperText, Grid, InputAdornment, Paper} from '@mui/material';
 import {SxProps} from '@mui/system';
 import {useTranslation} from 'react-i18next';
 import Stack from '@mui/material/Stack';
+import Logo from '../icons/Logo';
+import {Person} from '@mui/icons-material';
 
 const errorText = {
   color: 'error.main',
@@ -48,47 +50,59 @@ const LoginForm: FC<LoginFormProps> = ({error, onLogin}) => {
   
   return  <Grid container component='main' sx={{height: '100vh'}}>
     <Grid item xs={false} sm={4} md={5} component={Paper} elevation={6} square
-      sx={{bgcolor: 'common.black', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <img src='./images/logos/logo.png' alt='Bioexplora' width='500px'/>
+      sx={{bgcolor: 'common.black', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2}}>
+      <img src='./images/logos/logo.png' alt='Bioexplora' width='400px'/>
+      <Logo width='400px'/>
     </Grid>
     <Grid item xs={12} sm={8} md={7} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-      <Box component="form" onSubmit={handleLoginClick} noValidate sx={containerSx}>
+      <Box component='form' onSubmit={handleLoginClick} noValidate sx={containerSx}>
         <Stack>
           <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
             <LockIcon/>
           </Avatar>
           <Typography variant='overline' sx={{fontSize: 14}}>{t('login.enter')}</Typography>  
         </Stack>
-          
         <TextField
-          type="text"
+          type='text'
           required
           fullWidth
-          id="email"
-          name="email"
-          autoComplete="email"
+          id='email'
+          name='email'
+          autoComplete='email'
           autoFocus
-          placeholder="Email"
+          placeholder='Email'
           onChange={event => setEmail(event.target.value)}
           value={email}
-          InputProps={{startAdornment: <AccountCircleIcon sx={{marginRight: 1}}/>}}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <Person color='primary' sx={{fontSize: '24px'}}/>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           required
           fullWidth
-          name="password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          placeholder="Password"
+          name='password'
+          type='password'
+          id='password'
+          autoComplete='current-password'
+          placeholder='Password'
           onChange={event => setPassword(event.target.value)}
           value={password}
-          InputProps={{startAdornment: <LockIcon sx={{marginRight: 1}}/>}}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <LockIcon color='primary' sx={{fontSize: '24px'}}/>
+              </InputAdornment>
+            ),
+          }}
         />
-        <Typography variant="body2" sx={errorText}>
+        <Typography variant='body2' sx={errorText}>
           { error && <FormHelperText>{error}</FormHelperText> }
         </Typography>
-        <Button type="submit" fullWidth color='secondary' variant="contained" sx={loginButton}>
+        <Button type='submit' fullWidth color='secondary' variant='contained' sx={loginButton}>
           {t('login.enter')}
         </Button>
       </Box>

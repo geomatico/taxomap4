@@ -33,6 +33,9 @@
     "ub": "Universitat de Barcelona",
     "valencia": "Museu Valencià d'Història Natural"
   },
+  "login": {
+    "enter": "Enter"
+  },
   "mapStyles": {
     "bright": "Bright",
     "gray": "Gray",
