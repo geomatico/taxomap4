@@ -6,6 +6,7 @@ all:
     domain: localhost
     deploy_user: "{{ lookup('env','USER') }}"
     service_path: /tmp/taxomap
+    api_base_url: "http://localhost:8000/api/v1"
 
     docker:
       image_tag: "latest"
