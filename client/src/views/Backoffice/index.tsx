@@ -64,7 +64,10 @@ const exceptionHandler = (
 
 const getError = (e: Error): string => {
   if (e instanceof HttpError) {
-    return 'detail' in e.payload ? e.payload.detail : e.text;
+    if (e.payload && 'detail' in e.payload) {
+      return e.payload.detail;
+    }
+    return e.text;
   } else if (e.message) {
     return e.message;
   } else {
