@@ -4,6 +4,7 @@ from drf_yasg.views import get_schema_view
 from geomatico_django.view import SimpleRouter
 
 from api.views.dummy_view import DummyView
+from api.views.upload_csv_view import UploadCsvView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -22,6 +23,7 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path('auth/', include('api.auth.common.urls')),
+    path('upload-csv/', UploadCsvView.as_view(), name='upload_csv'),
 ]
 
 router = SimpleRouter()
