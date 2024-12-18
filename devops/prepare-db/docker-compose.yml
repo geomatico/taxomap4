@@ -1,7 +1,7 @@
 services:
   taxomap-prepare-db:
     build:
-      context: ../docker/taxomap-db
+      context: ../docker/database
     image: geomatico/taxomap-prepare-db
     container_name: taxomap-prepare-db
     environment:
