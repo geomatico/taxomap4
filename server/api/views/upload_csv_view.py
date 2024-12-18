@@ -63,9 +63,16 @@ def _write_csv(csv_reader) -> None:
         institution_code_id_by_value = _get_id_by_value_dict(cursor, 'institutioncode')
         for row in csv_reader:
             year, month, day = _parse_date(_get_value(row, 'eventDate'))
+
             latitude = _get_value(row, 'decimalLatitude')
             longitude = _get_value(row, 'decimalLongitude')
-            geometry_wkt = f'POINT({longitude} {latitude})' if longitude and latitude else None
+            geometry_wkt = None
+            try:
+                if -90 < float(latitude) < 90 and -180 < float(longitude) < 180:
+                    geometry_wkt = f'POINT({longitude} {latitude})'
+            except BaseException:
+                ...
+
             # noinspection SqlDialectInspection
             cursor.execute(
                 'insert into taxomap ('
