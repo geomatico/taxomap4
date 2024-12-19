@@ -24,5 +24,5 @@ for script in "$DIR"/scripts/*; do
 done
 sudo chown -R $USER: data
 
-echo "[INFO] Stopping database container..."
-docker compose down --rmi local
+#echo "[INFO] Stopping database container..."
+#docker compose down --rmi local
