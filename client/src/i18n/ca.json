@@ -43,7 +43,7 @@
   },
   "mapTypes": {
     "discreteData": "Dades discretes",
-    "heatMap": "Mapa de calor",
+    "densityMap": "Mapa de densitat",
     "aggregateData": "Aggregate Data"
   },
   "moreInfo": "Més informació",

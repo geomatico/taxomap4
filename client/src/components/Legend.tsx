@@ -126,8 +126,8 @@ const Legend: FC<LegendProps> = ({symbolizeBy, selectedMapType, filters, onSymbo
       label: t('mapTypes.discreteData')
     },
     {
-      id: MapType.heatMap,
-      label: t('mapTypes.heatMap')
+      id: MapType.densityMap,
+      label: t('mapTypes.densityMap')
     },
     /*{
       id: MapType.aggregateData,
