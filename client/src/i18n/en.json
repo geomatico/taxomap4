@@ -46,7 +46,7 @@
   },
   "mapTypes": {
     "densityMap": "Density map",
-    "aggregateData": "Aggregate Data"
+    "discreteData": "Discrete data"
   },
   "moreInfo": "More information",
   "navbar": {
