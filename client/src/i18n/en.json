@@ -45,9 +45,8 @@
     "temperature": "Temperature"
   },
   "mapTypes": {
-    "aggregateData": "Aggregate Data",
-    "discreteData": "Discrete Data",
-    "heatMap": "Heatmap"
+    "densityMap": "Density map",
+    "discreteData": "Discrete data"
   },
   "moreInfo": "More information",
   "navbar": {
