@@ -1,4 +1,4 @@
-import React, {FC, SyntheticEvent, useLayoutEffect, useRef, useState} from 'react';
+import React, {FC, useLayoutEffect, useRef, useState} from 'react';
 import 'react-resizable/css/styles.css';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';

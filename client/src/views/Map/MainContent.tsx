@@ -6,7 +6,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 // @ts-ignore
 import ReactMapGL, { Popup, _MapContext as MapContext, ViewState } from 'react-map-gl';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
-import {HeatmapLayer, ScreenGridLayer} from '@deck.gl/aggregation-layers/typed';
+import {HeatmapLayer} from '@deck.gl/aggregation-layers/typed';
 import {DataFilterExtension} from '@deck.gl/extensions/typed';
 
 import Box from '@mui/material/Box';
@@ -208,7 +208,7 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
   const deckLayers = useMemo(() => {
     switch (selectedMapType) {
       
-    case MapType.heatMap:
+    case MapType.densityMap:
       return heatMapLayer;
     /*case MapType.aggregateData:
       return aggregateDataLayer;*/
