@@ -5,6 +5,7 @@ all:
     service_path: /srv/services/taxomap-staging
     deploy_user: geomatico
     letsencrypt_mail: francisco.perez@geomatico.es
+    api_base_url: "https://{{ domain }}/api/v1"
 
     geoserver:
       url: "https://{{ domain }}/geoserver"
