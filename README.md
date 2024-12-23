@@ -53,3 +53,10 @@ curl http://localhost:8000/api/v1/auth/users/activation/ --data '{"uid": "<from_
 
 Todos los endpoints del backoffice están abiertos para cualquier usuario autenticado.
 Todos los endpoints del backoffice están cerrados para cualquier usuario no autenticado.
+
+## Taxonomia
+
+El dataset son ~7M de filas que importamos de un fichero de texto: https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28
+
+Para importar el backbone de GBIF, ejecutar ./prepare-db.sh en devops/prepare-db 
+Puede tardar 10mn en descargar.
