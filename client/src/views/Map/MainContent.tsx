@@ -134,7 +134,7 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
           getFilterValue: [filters.subtaxonVisibility]
         }
       })];
-  const aggregateDataLayer = [
+  /*const aggregateDataLayer = [
     new ScreenGridLayer<TaxomapData, {
           getFilterValue: Accessor<TaxomapData, number | number[]>,
           filterRange: Array<number | number[]>
@@ -169,7 +169,7 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
             getFilterValue: [filters.subtaxonVisibility]
           }
         })    
-  ];
+  ];*/
   const discreteDataLayer = [
     new ScatterplotLayer<TaxomapData, {
         getFilterValue: Accessor<TaxomapData, number | number[]>,
@@ -210,8 +210,8 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
       
     case MapType.heatMap:
       return heatMapLayer;
-    case MapType.aggregateData:
-      return aggregateDataLayer;
+    /*case MapType.aggregateData:
+      return aggregateDataLayer;*/
     case MapType.discreteData:
       return discreteDataLayer;
     default:

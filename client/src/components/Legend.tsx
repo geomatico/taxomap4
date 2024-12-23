@@ -129,10 +129,10 @@ const Legend: FC<LegendProps> = ({symbolizeBy, selectedMapType, filters, onSymbo
       id: MapType.heatMap,
       label: t('mapTypes.heatMap')
     },
-    {
+    /*{
       id: MapType.aggregateData,
       label: t('mapTypes.aggregateData')
-    }
+    }*/
   ];
 
   const selectedLegend = symbolizationOptions.find(option => option.id === symbolizeBy)?.legend;
