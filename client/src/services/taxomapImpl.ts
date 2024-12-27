@@ -8,16 +8,13 @@ type UploadResponse = {
 
 const uploadCsv = async (file: File): Promise<string | void> => {
 
-  const csv = await file.text();
   try {
-    const response: UploadResponse = await post({
-      baseUrl: API_BASE_URL,
-      path: 'upload-csv/',
-      headers: {
-        'Content-Type': `multipart/form-data;boundary=${encodeURIComponent(csv)}`,
-        'Content-Disposition': `attachment; filename=${file.name}`
-      },
-      //body: `data=${encodeURIComponent(csv)}`,
+    const formData = new FormData();
+    formData.append('data', file);
+
+    const response: UploadResponse = await fetch(API_BASE_URL + '/upload-csv/', {
+      method: 'POST',
+      body: formData
     });
 
     if (response.status === 204) {

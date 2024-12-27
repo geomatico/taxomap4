@@ -1,0 +1,736 @@
+== Info: Host taxomap.geomatico.es:443 was resolved.
+== Info: IPv6: (none)
+== Info: IPv4: 37.187.151.226
+== Info:   Trying 37.187.151.226:443...
+== Info: Connected to taxomap.geomatico.es (37.187.151.226) port 443
+== Info: ALPN: curl offers h2,http/1.1
+=> Send SSL data, 5 bytes (0x5)
+0000: 16 03 01 02 00                                  .....
+== Info: TLSv1.3 (OUT), TLS handshake, Client hello (1):
+=> Send SSL data, 512 bytes (0x200)
+0000: 01 00 01 fc 03 03 08 ac 61 b2 63 e9 60 2e bd 58 ........a.c.`..X
+0010: 7f df 75 a9 1e ef 1e a5 14 ad 16 5c 84 f0 8f 97 ..u........\....
+0020: 86 54 de 20 78 03 20 88 b1 62 51 0b b4 a8 e8 0f .T. x. ..bQ.....
+0030: 1b ea bb 70 be b6 5a 99 9b 9e ec 16 91 7d bb f7 ...p..Z......}..
+0040: 92 7a b2 75 dd 2b f8 00 3e 13 02 13 03 13 01 c0 .z.u.+..>.......
+0050: 2c c0 30 00 9f cc a9 cc a8 cc aa c0 2b c0 2f 00 ,.0.........+./.
+0060: 9e c0 24 c0 28 00 6b c0 23 c0 27 00 67 c0 0a c0 ..$.(.k.#.'.g...
+0070: 14 00 39 c0 09 c0 13 00 33 00 9d 00 9c 00 3d 00 ..9.....3.....=.
+0080: 3c 00 35 00 2f 00 ff 01 00 01 75 00 00 00 19 00 <.5./.....u.....
+0090: 17 00 00 14 74 61 78 6f 6d 61 70 2e 67 65 6f 6d ....taxomap.geom
+00a0: 61 74 69 63 6f 2e 65 73 00 0b 00 04 03 00 01 02 atico.es........
+00b0: 00 0a 00 16 00 14 00 1d 00 17 00 1e 00 19 00 18 ................
+00c0: 01 00 01 01 01 02 01 03 01 04 00 10 00 0e 00 0c ................
+00d0: 02 68 32 08 68 74 74 70 2f 31 2e 31 00 16 00 00 .h2.http/1.1....
+00e0: 00 17 00 00 00 31 00 00 00 0d 00 2a 00 28 04 03 .....1.....*.(..
+00f0: 05 03 06 03 08 07 08 08 08 09 08 0a 08 0b 08 04 ................
+0100: 08 05 08 06 04 01 05 01 06 01 03 03 03 01 03 02 ................
+0110: 04 02 05 02 06 02 00 2b 00 05 04 03 04 03 03 00 .......+........
+0120: 2d 00 02 01 01 00 33 00 26 00 24 00 1d 00 20 aa -.....3.&.$... .
+0130: 4d cf 20 6a 70 72 bc cf d6 6b 0e 67 7d d5 e4 8b M. jpr...k.g}...
+0140: 61 83 02 1d 97 eb ac 03 80 43 5f 48 72 82 23 00 a........C_Hr.#.
+0150: 15 00 ad 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+0160: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+0170: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+0180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+0190: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+01a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+01b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+01c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+01d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+01e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+01f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+== Info:  CAfile: /etc/ssl/certs/ca-certificates.crt
+== Info:  CApath: /etc/ssl/certs
+<= Recv SSL data, 5 bytes (0x5)
+0000: 16 03 03 00 7a                                  ....z
+== Info: TLSv1.3 (IN), TLS handshake, Server hello (2):
+<= Recv SSL data, 122 bytes (0x7a)
+0000: 02 00 00 76 03 03 91 ea a8 66 70 09 21 ee 8e 66 ...v.....fp.!..f
+0010: 9d 00 4d bf e3 5a c8 32 24 28 95 01 7e c6 b2 93 ..M..Z.2$(..~...
+0020: 8e 3b a5 59 a8 cf 20 88 b1 62 51 0b b4 a8 e8 0f .;.Y.. ..bQ.....
+0030: 1b ea bb 70 be b6 5a 99 9b 9e ec 16 91 7d bb f7 ...p..Z......}..
+0040: 92 7a b2 75 dd 2b f8 13 02 00 00 2e 00 2b 00 02 .z.u.+.......+..
+0050: 03 04 00 33 00 24 00 1d 00 20 37 b6 92 c6 3c d6 ...3.$... 7...<.
+0060: bc fc 06 40 21 f5 b4 b8 3a 76 c1 f4 b9 33 1f d5 ...@!...:v...3..
+0070: 2d 0a 60 ec 5c d0 9c ef 79 44                   -.`.\...yD
+<= Recv SSL data, 5 bytes (0x5)
+0000: 14 03 03 00 01                                  .....
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 24                                  ....$
+<= Recv SSL data, 1 bytes (0x1)
+0000: 16                                              .
+== Info: TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+<= Recv SSL data, 19 bytes (0x13)
+0000: 08 00 00 0f 00 0d 00 00 00 00 00 10 00 05 00 03 ................
+0010: 02 68 32                                        .h2
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 0b 27                                  ....'
+<= Recv SSL data, 1 bytes (0x1)
+0000: 16                                              .
+== Info: TLSv1.3 (IN), TLS handshake, Certificate (11):
+<= Recv SSL data, 2838 bytes (0xb16)
+0000: 0b 00 0b 12 00 00 0b 0e 00 05 fb 30 82 05 f7 30 ...........0...0
+0010: 82 04 df a0 03 02 01 02 02 12 03 18 4f 68 07 ab ............Oh..
+0020: e9 ab 81 b4 cf d4 a6 51 0d 0b a6 b7 30 0d 06 09 .......Q....0...
+0030: 2a 86 48 86 f7 0d 01 01 0b 05 00 30 33 31 0b 30 *.H........031.0
+0040: 09 06 03 55 04 06 13 02 55 53 31 16 30 14 06 03 ...U....US1.0...
+0050: 55 04 0a 13 0d 4c 65 74 27 73 20 45 6e 63 72 79 U....Let's Encry
+0060: 70 74 31 0c 30 0a 06 03 55 04 03 13 03 52 31 30 pt1.0...U....R10
+0070: 30 1e 17 0d 32 34 31 31 32 35 31 33 30 38 31 34 0...241125130814
+0080: 5a 17 0d 32 35 30 32 32 33 31 33 30 38 31 33 5a Z..250223130813Z
+0090: 30 1f 31 1d 30 1b 06 03 55 04 03 13 14 74 61 78 0.1.0...U....tax
+00a0: 6f 6d 61 70 2e 67 65 6f 6d 61 74 69 63 6f 2e 65 omap.geomatico.e
+00b0: 73 30 82 02 22 30 0d 06 09 2a 86 48 86 f7 0d 01 s0.."0...*.H....
+00c0: 01 01 05 00 03 82 02 0f 00 30 82 02 0a 02 82 02 .........0......
+00d0: 01 00 c3 37 51 2d 77 bc e4 98 ce e6 24 58 16 b9 ...7Q-w.....$X..
+00e0: ca 66 c0 e4 5e 82 86 38 d3 93 5e f9 27 7e 93 b6 .f..^..8..^.'~..
+00f0: fb 4f 61 27 ca 55 82 62 b1 b4 9c 34 9f bc a7 16 .Oa'.U.b...4....
+0100: 4b 7f b3 6b 98 0c d0 3b 5b 21 37 a0 15 1c c3 36 K..k...;[!7....6
+0110: 80 a4 73 0c 1d 8d 71 54 12 0d 11 13 20 c3 44 89 ..s...qT.... .D.
+0120: 69 93 00 8e 7f 29 14 a5 11 cb 05 25 53 fb f5 ce i....).....%S...
+0130: 3c f4 8b 6d 5c d0 37 7b 5a 7c 28 a3 0d 58 71 e5 <..m\.7{Z|(..Xq.
+0140: d5 0f 10 e6 d9 e9 b2 a9 98 0c c3 9c 6d 57 6e 01 ............mWn.
+0150: 91 4b e1 bb d9 0a fe 3a 7f ad e4 41 b1 37 47 21 .K.....:...A.7G!
+0160: 61 cc 71 09 a1 48 cb 6f 15 a2 a4 e8 e3 49 08 11 a.q..H.o.....I..
+0170: fa d5 c6 aa bd cf 2b 11 16 f6 98 76 09 01 68 44 ......+....v..hD
+0180: 4b 78 f7 cf d5 55 96 f2 a8 a4 bc 6c d0 97 c8 ad Kx...U.....l....
+0190: 2a f1 ef f9 5a b7 e2 11 8c 7f de d3 90 bc cf 37 *...Z..........7
+01a0: 65 bc ef 60 07 f3 0b 3d ed 8e 5c d8 4c 2f a6 25 e..`...=..\.L/.%
+01b0: 5b ac 8c d3 1c f7 de 85 e3 36 83 f6 0f 9b ba 6a [........6.....j
+01c0: 23 f8 86 68 2a 60 29 f3 1e 4a 03 1a a5 1e 63 c9 #..h*`)..J....c.
+01d0: 22 cd d5 81 45 59 b8 96 28 09 5e e8 55 fe eb 4a "...EY..(.^.U..J
+01e0: 6d c7 14 fd ad b8 5e 86 c5 5b 9e 09 66 d7 4a d5 m.....^..[..f.J.
+01f0: ab 53 c9 fa 4a 6d a7 b1 ab 16 16 aa f0 ba 57 9c .S..Jm........W.
+0200: fe 93 70 aa d1 70 01 10 3a c3 d8 e0 24 fa 99 89 ..p..p..:...$...
+0210: 52 b2 49 eb ee 9c d3 d3 a4 3f 7b 64 2a 7c 3d dc R.I......?{d*|=.
+0220: bb c7 3f 4a 6b 3f ef 66 32 ef da 7a ab 17 b1 00 ..?Jk?.f2..z....
+0230: b1 fa 2d 5b 9c f4 f4 f2 0d 87 e5 e6 74 25 30 0c ..-[........t%0.
+0240: fd d4 a2 6e 09 b5 0a 63 91 25 c6 0c 13 24 40 2f ...n...c.%...$@/
+0250: ce be 69 92 95 8e 5b bb 63 06 4e 05 7d a6 e3 b8 ..i...[.c.N.}...
+0260: 88 55 e4 67 5b af b7 64 87 b6 97 39 ba 8e a3 ff .U.g[..d...9....
+0270: 6e d4 68 31 41 3a 49 07 d7 ee 71 0c 22 f7 ad 97 n.h1A:I...q."...
+0280: db 39 7a 19 3f 55 55 9f 16 9a b9 a0 8f 06 8b 0e .9z.?UU.........
+0290: f1 62 56 88 bf b5 5a 4a aa e4 ed 9b 2d b8 2c 9e .bV...ZJ....-.,.
+02a0: 43 84 80 1b 6a aa 87 e1 e3 f6 d6 b7 60 a0 01 35 C...j.......`..5
+02b0: 02 7a c3 6c 6b 34 37 42 95 c1 79 30 e3 6c b3 2c .z.lk47B..y0.l.,
+02c0: f3 ad 4f d8 e6 ed a6 02 f3 3e d5 c5 11 20 23 eb ..O......>... #.
+02d0: 4a 15 02 03 01 00 01 a3 82 02 17 30 82 02 13 30 J..........0...0
+02e0: 0e 06 03 55 1d 0f 01 01 ff 04 04 03 02 05 a0 30 ...U...........0
+02f0: 1d 06 03 55 1d 25 04 16 30 14 06 08 2b 06 01 05 ...U.%..0...+...
+0300: 05 07 03 01 06 08 2b 06 01 05 05 07 03 02 30 0c ......+.......0.
+0310: 06 03 55 1d 13 01 01 ff 04 02 30 00 30 1d 06 03 ..U.......0.0...
+0320: 55 1d 0e 04 16 04 14 00 6b 2a 8c dc 04 de 5f fc U.......k*...._.
+0330: 1f 35 8c e3 0f 13 9b ac 14 2d 5b 30 1f 06 03 55 .5.......-[0...U
+0340: 1d 23 04 18 30 16 80 14 bb bc c3 47 a5 e4 bc a9 .#..0......G....
+0350: c6 c3 a4 72 0c 10 8d a2 35 e1 c8 e8 30 57 06 08 ...r....5...0W..
+0360: 2b 06 01 05 05 07 01 01 04 4b 30 49 30 22 06 08 +........K0I0"..
+0370: 2b 06 01 05 05 07 30 01 86 16 68 74 74 70 3a 2f +.....0...http:/
+0380: 2f 72 31 30 2e 6f 2e 6c 65 6e 63 72 2e 6f 72 67 /r10.o.lencr.org
+0390: 30 23 06 08 2b 06 01 05 05 07 30 02 86 17 68 74 0#..+.....0...ht
+03a0: 74 70 3a 2f 2f 72 31 30 2e 69 2e 6c 65 6e 63 72 tp://r10.i.lencr
+03b0: 2e 6f 72 67 2f 30 1f 06 03 55 1d 11 04 18 30 16 .org/0...U....0.
+03c0: 82 14 74 61 78 6f 6d 61 70 2e 67 65 6f 6d 61 74 ..taxomap.geomat
+03d0: 69 63 6f 2e 65 73 30 13 06 03 55 1d 20 04 0c 30 ico.es0...U. ..0
+03e0: 0a 30 08 06 06 67 81 0c 01 02 01 30 82 01 03 06 .0...g.....0....
+03f0: 0a 2b 06 01 04 01 d6 79 02 04 02 04 81 f4 04 81 .+.....y........
+0400: f1 00 ef 00 76 00 a2 e3 0a e4 45 ef bd ad 9b 7e ....v.....E....~
+0410: 38 ed 47 67 77 53 d7 82 5b 84 94 d7 2b 5e 1b 2c 8.GgwS..[...+^.,
+0420: c4 b9 50 a4 47 e7 00 00 01 93 63 a5 66 b6 00 00 ..P.G.....c.f...
+0430: 04 03 00 47 30 45 02 20 40 99 87 36 19 85 b7 c4 ...G0E. @..6....
+0440: 43 b7 e6 f8 24 f2 e0 80 4f ff f7 8f c6 62 7c 88 C...$...O....b|.
+0450: c3 b6 b2 f0 68 f1 87 57 02 21 00 ff 11 35 a0 dd ....h..W.!...5..
+0460: 8b 36 2f 19 44 34 f4 24 e3 ff 03 ae 37 1c a1 a0 .6/.D4.$....7...
+0470: 53 fe 6b c2 63 49 4b 45 05 46 31 00 75 00 cf 11 S.k.cIKE.F1.u...
+0480: 56 ee d5 2e 7c af f3 87 5b d9 69 2e 9b e9 1a 71 V...|...[.i....q
+0490: 67 4a b0 17 ec ac 01 d2 5b 77 ce cc 3b 08 00 00 gJ......[w..;...
+04a0: 01 93 63 a5 66 fa 00 00 04 03 00 46 30 44 02 20 ..c.f......F0D. 
+04b0: 0b 64 9b 89 3d f5 75 f2 f0 36 11 3e ed 3a 8e 0c .d..=.u..6.>.:..
+04c0: ed b2 c9 d8 6f 08 b4 f5 37 c0 2a dd cd 5c 8d 90 ....o...7.*..\..
+04d0: 02 20 64 11 4f 91 4a db c2 fb c1 fc d5 dc 0c 74 . d.O.J........t
+04e0: c3 df 8b 3a fd 31 66 fa 22 9d 9d 29 86 30 07 fd ...:.1f."..).0..
+04f0: 02 ad 30 0d 06 09 2a 86 48 86 f7 0d 01 01 0b 05 ..0...*.H.......
+0500: 00 03 82 01 01 00 03 3f e0 23 68 2b 1e 7a 2c 90 .......?.#h+.z,.
+0510: 2e b1 09 a9 a1 07 07 3b d3 81 f7 c8 c0 d6 c5 27 .......;.......'
+0520: df f0 fc a8 f8 bc 84 ae c8 fc de 4e c0 4a 2f 15 ...........N.J/.
+0530: 8e bc 78 14 b0 5d aa 97 73 8b f5 98 0e da 2c fb ..x..]..s.....,.
+0540: 9b 36 09 5e e6 f7 8e 39 a1 5d e8 1a 75 13 79 f4 .6.^...9.]..u.y.
+0550: 6e 60 26 19 a7 ce 82 79 92 f7 e6 72 8d 2c 17 17 n`&....y...r.,..
+0560: 14 1d 0c 3a 1b a4 19 b1 5d 85 27 51 35 8d 47 94 ...:....].'Q5.G.
+0570: b0 bc 82 2c 80 1a 71 a5 1b e2 f0 32 a8 bc 52 42 ...,..q....2..RB
+0580: 34 cf 72 c2 f0 e3 6e b4 93 63 1c aa cf 01 85 99 4.r...n..c......
+0590: 27 9e 6d e9 33 b7 31 01 11 98 17 27 f6 9d 47 25 '.m.3.1....'..G%
+05a0: a6 3d c8 10 85 d5 57 81 14 25 5f 5d 0d c0 38 24 .=....W..%_]..8$
+05b0: 3f 32 be 07 ca 2c dd df 33 9f a2 c1 95 82 88 47 ?2...,..3......G
+05c0: 85 66 f0 72 e0 89 81 b1 47 8a 7e ae 12 06 9b 9e .f.r....G.~.....
+05d0: 1b 91 d9 85 0c 4b 06 ef e2 d2 b6 61 f6 fb fa 95 .....K.....a....
+05e0: db ed 3d 3e c4 52 bb 3f 7f 0e d0 49 ad df 70 dd ..=>.R.?...I..p.
+05f0: 6d f8 96 97 d0 6c de 6f c6 0c ad ad 40 b1 13 3d m....l.o....@..=
+0600: 4c b7 a7 d0 72 57 00 00 00 05 09 30 82 05 05 30 L...rW.....0...0
+0610: 82 02 ed a0 03 02 01 02 02 10 4b a8 52 93 f7 9a ..........K.R...
+0620: 2f a2 73 06 4b a8 04 8d 75 d0 30 0d 06 09 2a 86 /.s.K...u.0...*.
+0630: 48 86 f7 0d 01 01 0b 05 00 30 4f 31 0b 30 09 06 H........0O1.0..
+0640: 03 55 04 06 13 02 55 53 31 29 30 27 06 03 55 04 .U....US1)0'..U.
+0650: 0a 13 20 49 6e 74 65 72 6e 65 74 20 53 65 63 75 .. Internet Secu
+0660: 72 69 74 79 20 52 65 73 65 61 72 63 68 20 47 72 rity Research Gr
+0670: 6f 75 70 31 15 30 13 06 03 55 04 03 13 0c 49 53 oup1.0...U....IS
+0680: 52 47 20 52 6f 6f 74 20 58 31 30 1e 17 0d 32 34 RG Root X10...24
+0690: 30 33 31 33 30 30 30 30 30 30 5a 17 0d 32 37 30 0313000000Z..270
+06a0: 33 31 32 32 33 35 39 35 39 5a 30 33 31 0b 30 09 312235959Z031.0.
+06b0: 06 03 55 04 06 13 02 55 53 31 16 30 14 06 03 55 ..U....US1.0...U
+06c0: 04 0a 13 0d 4c 65 74 27 73 20 45 6e 63 72 79 70 ....Let's Encryp
+06d0: 74 31 0c 30 0a 06 03 55 04 03 13 03 52 31 30 30 t1.0...U....R100
+06e0: 82 01 22 30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 .."0...*.H......
+06f0: 05 00 03 82 01 0f 00 30 82 01 0a 02 82 01 01 00 .......0........
+0700: cf 57 e5 e6 c4 54 12 ed b4 47 fe c9 27 58 76 46 .W...T...G..'XvF
+0710: 50 28 8c 1d 3e 88 df 05 9d d5 b5 18 29 bd dd b5 P(..>.......)...
+0720: 5a bf fa f6 ce a3 be af 00 21 4b 62 5a 5a 3c 01 Z........!KbZZ<.
+0730: 2f c5 58 03 f6 89 ff 8e 11 43 eb c1 b5 e0 14 07 /.X......C......
+0740: 96 8f 6f 1f d7 e7 ba 81 39 09 75 65 b7 c2 af 18 ..o.....9.ue....
+0750: 5b 37 26 28 e7 a3 f4 07 2b 6d 1a ff ab 58 bc 95 [7&(....+m...X..
+0760: ae 40 ff e9 cb 57 c4 b5 5b 7f 78 0d 18 61 bc 17 .@...W..[.x..a..
+0770: e7 54 c6 bb 49 91 cd 6e 18 d1 80 85 ee a6 65 36 .T..I..n......e6
+0780: bc 74 ea bc 50 4c ea fc 21 f3 38 16 93 94 ba b0 .t..PL..!.8.....
+0790: d3 6b 38 06 cd 16 12 7a ca 52 75 c8 ad 76 b2 c2 .k8....z.Ru..v..
+07a0: 9c 5d 98 45 5c 6f 61 7b c6 2d ee 3c 13 52 86 01 .].E\oa{.-.<.R..
+07b0: d9 57 e6 38 1c df 8d b5 1f 92 91 9a e7 4a 1c cc .W.8.........J..
+07c0: 45 a8 72 55 f0 b0 e6 a3 07 ec fd a7 1b 66 9e 3f E.rU.........f.?
+07d0: 48 8b 71 84 71 58 c9 3a fa ef 5e f2 5b 44 2b 3c H.q.qX.:..^.[D+<
+07e0: 74 e7 8f b2 47 c1 07 6a cd 9a b7 0d 96 f7 12 81 t...G..j........
+07f0: 26 51 54 0a ec 61 f6 f7 f5 e2 f2 8a c8 95 0d 8d &QT..a..........
+0800: 02 03 01 00 01 a3 81 f8 30 81 f5 30 0e 06 03 55 ........0..0...U
+0810: 1d 0f 01 01 ff 04 04 03 02 01 86 30 1d 06 03 55 ...........0...U
+0820: 1d 25 04 16 30 14 06 08 2b 06 01 05 05 07 03 02 .%..0...+.......
+0830: 06 08 2b 06 01 05 05 07 03 01 30 12 06 03 55 1d ..+.......0...U.
+0840: 13 01 01 ff 04 08 30 06 01 01 ff 02 01 00 30 1d ......0.......0.
+0850: 06 03 55 1d 0e 04 16 04 14 bb bc c3 47 a5 e4 bc ..U.........G...
+0860: a9 c6 c3 a4 72 0c 10 8d a2 35 e1 c8 e8 30 1f 06 ....r....5...0..
+0870: 03 55 1d 23 04 18 30 16 80 14 79 b4 59 e6 7b b6 .U.#..0...y.Y.{.
+0880: e5 e4 01 73 80 08 88 c8 1a 58 f6 e9 9b 6e 30 32 ...s.....X...n02
+0890: 06 08 2b 06 01 05 05 07 01 01 04 26 30 24 30 22 ..+........&0$0"
+08a0: 06 08 2b 06 01 05 05 07 30 02 86 16 68 74 74 70 ..+.....0...http
+08b0: 3a 2f 2f 78 31 2e 69 2e 6c 65 6e 63 72 2e 6f 72 ://x1.i.lencr.or
+08c0: 67 2f 30 13 06 03 55 1d 20 04 0c 30 0a 30 08 06 g/0...U. ..0.0..
+08d0: 06 67 81 0c 01 02 01 30 27 06 03 55 1d 1f 04 20 .g.....0'..U... 
+08e0: 30 1e 30 1c a0 1a a0 18 86 16 68 74 74 70 3a 2f 0.0.......http:/
+08f0: 2f 78 31 2e 63 2e 6c 65 6e 63 72 2e 6f 72 67 2f /x1.c.lencr.org/
+0900: 30 0d 06 09 2a 86 48 86 f7 0d 01 01 0b 05 00 03 0...*.H.........
+0910: 82 02 01 00 92 b1 e7 41 37 eb 79 9d 81 e6 cd e2 .......A7.y.....
+0920: 25 e1 3a 20 e9 90 44 95 a3 81 5c cf c3 5d fd bd %.: ..D...\..]..
+0930: a0 70 d5 b1 96 28 22 0b d2 f2 28 cf 0c e7 d4 e6 .p...("...(.....
+0940: 43 8c 24 22 1d c1 42 92 d1 09 af 9f 4b f4 c8 70 C.$"..B.....K..p
+0950: 4f 20 16 b1 5a dd 01 f6 1f f8 1f 61 6b 14 27 b0 O ..Z......ak.'.
+0960: 72 8d 63 ae ee e2 ce 4b cf 37 dd bb a3 d4 cd e7 r.c....K.7......
+0970: ad 50 ad bd bf e3 ec 3e 62 36 70 99 31 a7 e8 8d .P.....>b6p.1...
+0980: dd ea 62 e2 12 ae f5 9c d4 3d 2c 0c aa d0 9c 79 ..b......=,....y
+0990: be ea 3d 5c 44 6e 96 31 63 5a 7d d6 7e 4f 24 a0 ..=\Dn.1cZ}.~O$.
+09a0: 4b 05 7f 5e 6f d2 d4 ea 5f 33 4b 13 d6 57 b6 ca K..^o..._3K..W..
+09b0: de 51 b8 5d a3 09 82 74 fd c7 78 9e b3 b9 ac 16 .Q.]...t..x.....
+09c0: da 4a 2b 96 c3 b6 8b 62 8f f9 74 19 a2 9e 03 de .J+....b..t.....
+09d0: e9 6f 9b b0 0f d2 a0 5a f6 85 5c c2 04 b7 c8 d5 .o.....Z..\.....
+09e0: 4e 32 c4 bf 04 5d bc 29 f6 f7 81 8f 0c 5d 3c 53 N2...].).....]<S
+09f0: c9 40 90 8b fb b6 08 65 b9 a4 21 d5 09 e5 13 84 .@.....e..!.....
+0a00: 84 37 82 ce 10 28 fc 76 c2 06 25 7a 46 52 4d da .7...(.v..%zFRM.
+0a10: 53 72 a4 27 3f 62 70 ac be 69 48 00 fb 67 0f db Sr.'?bp..iH..g..
+0a20: 5b a1 e8 d7 03 21 2d d7 c9 f6 99 42 39 83 43 df [....!-....B9.C.
+0a30: 77 0a 12 08 f1 25 d6 ba 94 19 54 18 88 a5 c5 8e w....%....T.....
+0a40: e1 1a 99 93 79 6b ec 1c f9 31 40 b0 cc 32 00 df ....yk...1@..2..
+0a50: 9f 5e e7 b4 92 ab 90 82 91 8d 0d e0 1e 95 ba 59 .^.............Y
+0a60: 3b 2e 4b 5f c2 b7 46 35 52 39 06 c0 bd aa ac 52 ;.K_..F5R9.....R
+0a70: c1 22 a0 44 97 99 f7 0c a0 21 a7 a1 6c 71 47 16 .".D.....!..lqG.
+0a80: 17 01 68 c0 ca a6 26 65 04 7c b3 ae c9 e7 94 55 ..h...&e.|.....U
+0a90: c2 6f 9b 3c 1c a9 f9 2e c5 20 1a f0 76 e0 be ec .o.<..... ..v...
+0aa0: 18 d6 4f d8 25 fb 76 11 e8 bf e6 21 0f e8 e8 cc ..O.%.v....!....
+0ab0: b5 b6 a7 d5 b8 f7 9f 41 cf 61 22 46 6a 83 b6 68 .......A.a"Fj..h
+0ac0: 97 2e 7c ea 4e 95 db 23 eb 2e c8 2b 28 84 a4 60 ..|.N..#...+(..`
+0ad0: e9 49 f4 44 2e 3b f9 ca 62 57 01 e2 5d 90 16 f9 .I.D.;..bW..]...
+0ae0: c9 fc 7a 23 48 8e a6 d5 81 72 f1 28 fa 5d ce fb ..z#H....r.(.]..
+0af0: ed 4e 73 8f 94 2e d2 41 94 98 99 db a7 af 70 5f .Ns....A......p_
+0b00: f5 be fb 02 20 bf 66 27 6c b4 ad fa 75 12 0b 2b .... .f'l...u..+
+0b10: 3e ce 03 9e 00 00                               >.....
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 02 19                                  .....
+<= Recv SSL data, 1 bytes (0x1)
+0000: 16                                              .
+== Info: TLSv1.3 (IN), TLS handshake, CERT verify (15):
+<= Recv SSL data, 520 bytes (0x208)
+0000: 0f 00 02 04 08 04 02 00 27 64 87 81 e9 71 c0 21 ........'d...q.!
+0010: d0 a9 01 3e ba 05 38 54 4e 50 e9 2f a0 34 bd fc ...>..8TNP./.4..
+0020: f5 9c e1 3c 5c 2a 77 b8 7c ac 24 a1 74 4b f4 7a ...<\*w.|.$.tK.z
+0030: 55 73 38 17 8e 8b 1a ff e2 8e c3 d7 2c 6f c7 6c Us8.........,o.l
+0040: d6 ef 91 a2 0c 96 ba 79 96 4f 2b 51 6f f4 0f 90 .......y.O+Qo...
+0050: 90 af 39 97 c8 92 4d 96 dc 18 00 db df 6f aa 10 ..9...M......o..
+0060: 63 d4 33 77 7b 93 fc 3d 98 6a 8e 52 6d 18 fc 5f c.3w{..=.j.Rm.._
+0070: ed 30 f6 e5 a2 28 51 08 ca 72 04 ec 7b 01 b9 ee .0...(Q..r..{...
+0080: b6 fd f1 ea d9 22 c2 14 36 8b 16 55 22 b6 be 4f ....."..6..U"..O
+0090: 93 f8 30 a7 87 d2 6d e5 3f aa c1 54 b2 86 72 eb ..0...m.?..T..r.
+00a0: 7c e9 1f d3 0c 5c fc 23 33 4c 04 33 26 8b db 52 |....\.#3L.3&..R
+00b0: da 15 64 34 1c 60 ac 22 5b a7 29 19 12 1b b3 82 ..d4.`."[.).....
+00c0: 94 0b f4 41 08 ed 51 74 a9 28 98 ec a3 12 0c 73 ...A..Qt.(.....s
+00d0: 08 0d 2d 4c 5c 00 9a ca c5 2c dc df 07 05 39 7b ..-L\....,....9{
+00e0: da b3 a9 26 ee 27 60 d9 39 f1 6d 08 54 49 e0 8a ...&.'`.9.m.TI..
+00f0: f3 49 2c e7 ca 2f bb b2 3d 90 0d 63 cb b6 68 fc .I,../..=..c..h.
+0100: 57 e4 51 37 7c da 10 32 83 dc 85 64 70 a4 2b e7 W.Q7|..2...dp.+.
+0110: 19 ec 12 72 47 a1 84 b6 c8 0e 0b 87 10 98 e2 94 ...rG...........
+0120: 45 c3 69 26 27 73 4c b5 27 ea 7b b3 90 d7 87 c3 E.i&'sL.'.{.....
+0130: d4 4a bb 8f e1 56 6d 45 9e 2b 72 40 81 46 94 51 .J...VmE.+r@.F.Q
+0140: 14 64 aa ec e4 a2 02 48 a8 72 f1 65 5e 71 9d 46 .d.....H.r.e^q.F
+0150: f5 f3 de bc 28 ba 56 9c 53 8c fe 4a 22 c0 6a 7e ....(.V.S..J".j~
+0160: eb d8 9b 09 d6 49 3f c6 16 4d 8d 31 d3 fc e5 3c .....I?..M.1...<
+0170: 28 3a ab 12 24 d7 ed c5 ca 4b 73 83 fd 90 da 60 (:..$....Ks....`
+0180: fe 10 f8 80 76 d7 2d 34 d1 08 57 85 6f e3 cb ab ....v.-4..W.o...
+0190: 74 98 5d 0c 18 e2 3c 08 e0 0c 5b bc c1 46 b6 5a t.]...<...[..F.Z
+01a0: a4 b4 84 cd 2b 73 45 5f d1 13 5e d1 a1 98 1b 12 ....+sE_..^.....
+01b0: 43 06 d8 ed 1f d0 f7 68 7b ae 8c 96 46 e5 d2 bb C......h{...F...
+01c0: 18 a2 15 11 d2 d5 cd 38 27 63 3f cf 79 d0 49 18 .......8'c?.y.I.
+01d0: ad df eb 0a dc 48 e8 06 5f 20 fe 49 48 b3 93 84 .....H.._ .IH...
+01e0: 91 53 9f f5 82 39 a4 91 62 e8 e8 a1 d2 e3 f7 3f .S...9..b......?
+01f0: 53 8c 20 1c 9e e5 4e 10 ef aa 0b 83 ba 24 be 86 S. ...N......$..
+0200: c4 53 85 06 19 a7 05 d7                         .S......
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 45                                  ....E
+<= Recv SSL data, 1 bytes (0x1)
+0000: 16                                              .
+== Info: TLSv1.3 (IN), TLS handshake, Finished (20):
+<= Recv SSL data, 52 bytes (0x34)
+0000: 14 00 00 30 c3 25 4b 0c a9 db 20 4c 99 4f 01 3d ...0.%K... L.O.=
+0010: a3 9e 5a 5b fc 06 c3 f6 f2 af 3f 51 0b 70 1d da ..Z[......?Q.p..
+0020: 05 a9 f9 8f fe 2d 38 95 33 4e b3 b4 3d c2 87 c6 .....-8.3N..=...
+0030: 82 58 da f7                                     .X..
+=> Send SSL data, 5 bytes (0x5)
+0000: 14 03 03 00 01                                  .....
+== Info: TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+=> Send SSL data, 1 bytes (0x1)
+0000: 01                                              .
+=> Send SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 45                                  ....E
+=> Send SSL data, 1 bytes (0x1)
+0000: 16                                              .
+== Info: TLSv1.3 (OUT), TLS handshake, Finished (20):
+=> Send SSL data, 52 bytes (0x34)
+0000: 14 00 00 30 8f e6 be 8f fc fc c7 07 ec 0d a5 6e ...0...........n
+0010: e2 07 5b 15 95 2f 32 45 3f 72 1d 34 d8 07 82 fc ..[../2E?r.4....
+0020: d8 07 74 95 46 21 59 44 d3 02 b0 39 b6 88 3a 46 ..t.F!YD...9..:F
+0030: 28 df a6 e8                                     (...
+== Info: SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519 / RSASSA-PSS
+== Info: ALPN: server accepted h2
+== Info: Server certificate:
+== Info:  subject: CN=taxomap.geomatico.es
+== Info:  start date: Nov 25 13:08:14 2024 GMT
+== Info:  expire date: Feb 23 13:08:13 2025 GMT
+== Info:  subjectAltName: host "taxomap.geomatico.es" matched cert's "taxomap.geomatico.es"
+== Info:  issuer: C=US; O=Let's Encrypt; CN=R10
+== Info:  SSL certificate verify ok.
+== Info:   Certificate level 0: Public key type RSA (4096/152 Bits/secBits), signed using sha256WithRSAEncryption
+== Info:   Certificate level 1: Public key type RSA (2048/112 Bits/secBits), signed using sha256WithRSAEncryption
+== Info:   Certificate level 2: Public key type RSA (4096/152 Bits/secBits), signed using sha256WithRSAEncryption
+=> Send SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 51                                  ....Q
+=> Send SSL data, 1 bytes (0x1)
+0000: 17                                              .
+== Info: using HTTP/2
+== Info: [HTTP/2] [1] OPENED stream for https://taxomap.geomatico.es/api/v1/upload-csv/
+== Info: [HTTP/2] [1] [:method: POST]
+== Info: [HTTP/2] [1] [:scheme: https]
+== Info: [HTTP/2] [1] [:authority: taxomap.geomatico.es]
+== Info: [HTTP/2] [1] [:path: /api/v1/upload-csv/]
+== Info: [HTTP/2] [1] [user-agent: curl/8.5.0]
+== Info: [HTTP/2] [1] [accept: */*]
+== Info: [HTTP/2] [1] [content-length: 4383]
+== Info: [HTTP/2] [1] [content-type: multipart/form-data; boundary=------------------------DSTtmsRhATUZZvcuU4vq2U]
+=> Send SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 8d                                  .....
+=> Send SSL data, 1 bytes (0x1)
+0000: 17                                              .
+=> Send header, 214 bytes (0xd6)
+0000: 50 4f 53 54 20 2f 61 70 69 2f 76 31 2f 75 70 6c POST /api/v1/upl
+0010: 6f 61 64 2d 63 73 76 2f 20 48 54 54 50 2f 32 0d oad-csv/ HTTP/2.
+0020: 0a 48 6f 73 74 3a 20 74 61 78 6f 6d 61 70 2e 67 .Host: taxomap.g
+0030: 65 6f 6d 61 74 69 63 6f 2e 65 73 0d 0a 55 73 65 eomatico.es..Use
+0040: 72 2d 41 67 65 6e 74 3a 20 63 75 72 6c 2f 38 2e r-Agent: curl/8.
+0050: 35 2e 30 0d 0a 41 63 63 65 70 74 3a 20 2a 2f 2a 5.0..Accept: */*
+0060: 0d 0a 43 6f 6e 74 65 6e 74 2d 4c 65 6e 67 74 68 ..Content-Length
+0070: 3a 20 34 33 38 33 0d 0a 43 6f 6e 74 65 6e 74 2d : 4383..Content-
+0080: 54 79 70 65 3a 20 6d 75 6c 74 69 70 61 72 74 2f Type: multipart/
+0090: 66 6f 72 6d 2d 64 61 74 61 3b 20 62 6f 75 6e 64 form-data; bound
+00a0: 61 72 79 3d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d ary=------------
+00b0: 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 44 53 54 74 ------------DSTt
+00c0: 6d 73 52 68 41 54 55 5a 5a 76 63 75 55 34 76 71 msRhATUZZvcuU4vq
+00d0: 32 55 0d 0a 0d 0a                               2U....
+=> Send SSL data, 5 bytes (0x5)
+0000: 17 03 03 11 39                                  ....9
+=> Send SSL data, 1 bytes (0x1)
+0000: 17                                              .
+=> Send data, 4383 bytes (0x111f)
+0000: 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d ----------------
+0010: 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 44 53 54 74 6d 73 ----------DSTtms
+0020: 52 68 41 54 55 5a 5a 76 63 75 55 34 76 71 32 55 RhATUZZvcuU4vq2U
+0030: 0d 0a 43 6f 6e 74 65 6e 74 2d 44 69 73 70 6f 73 ..Content-Dispos
+0040: 69 74 69 6f 6e 3a 20 66 6f 72 6d 2d 64 61 74 61 ition: form-data
+0050: 3b 20 6e 61 6d 65 3d 22 64 61 74 61 22 3b 20 66 ; name="data"; f
+0060: 69 6c 65 6e 61 6d 65 3d 22 6d 69 6e 69 5f 70 72 ilename="mini_pr
+0070: 75 65 62 61 2e 63 73 76 22 0d 0a 43 6f 6e 74 65 ueba.csv"..Conte
+0080: 6e 74 2d 54 79 70 65 3a 20 61 70 70 6c 69 63 61 nt-Type: applica
+0090: 74 69 6f 6e 2f 6f 63 74 65 74 2d 73 74 72 65 61 tion/octet-strea
+00a0: 6d 0d 0a 0d 0a 6f 63 63 75 72 72 65 6e 63 65 49 m....occurrenceI
+00b0: 44 2c 69 6e 73 74 69 74 75 74 69 6f 6e 43 6f 64 D,institutionCod
+00c0: 65 2c 63 6f 6c 6c 65 63 74 69 6f 6e 43 6f 64 65 e,collectionCode
+00d0: 2c 62 61 73 69 73 4f 66 52 65 63 6f 72 64 2c 63 ,basisOfRecord,c
+00e0: 61 74 61 6c 6f 67 4e 75 6d 62 65 72 2c 72 65 63 atalogNumber,rec
+00f0: 6f 72 64 4e 75 6d 62 65 72 2c 72 65 63 6f 72 64 ordNumber,record
+0100: 65 64 42 79 2c 69 6e 64 69 76 69 64 75 61 6c 43 edBy,individualC
+0110: 6f 75 6e 74 2c 73 65 78 2c 6c 69 66 65 53 74 61 ount,sex,lifeSta
+0120: 67 65 2c 70 72 65 70 61 72 61 74 69 6f 6e 73 2c ge,preparations,
+0130: 61 73 73 6f 63 69 61 74 65 64 52 65 66 65 72 65 associatedRefere
+0140: 6e 63 65 73 2c 6f 74 68 65 72 43 61 74 61 6c 6f nces,otherCatalo
+0150: 67 4e 75 6d 62 65 72 73 2c 61 73 73 6f 63 69 61 gNumbers,associa
+0160: 74 65 64 4f 63 63 75 72 72 65 6e 63 65 73 2c 70 tedOccurrences,p
+0170: 72 65 76 69 6f 75 73 49 64 65 6e 74 69 66 69 63 reviousIdentific
+0180: 61 74 69 6f 6e 73 2c 66 69 65 6c 64 4e 75 6d 62 ations,fieldNumb
+0190: 65 72 2c 65 76 65 6e 74 44 61 74 65 2c 76 65 72 er,eventDate,ver
+01a0: 62 61 74 69 6d 45 76 65 6e 74 44 61 74 65 2c 68 batimEventDate,h
+01b0: 61 62 69 74 61 74 2c 65 73 74 61 62 6c 69 73 68 abitat,establish
+01c0: 6d 65 6e 74 4d 65 61 6e 73 2c 73 61 6d 70 6c 69 mentMeans,sampli
+01d0: 6e 67 50 72 6f 74 6f 63 6f 6c 2c 65 76 65 6e 74 ngProtocol,event
+01e0: 52 65 6d 61 72 6b 73 2c 63 6f 6e 74 69 6e 65 6e Remarks,continen
+01f0: 74 2c 63 6f 75 6e 74 72 79 2c 63 6f 75 6e 74 72 t,country,countr
+0200: 79 43 6f 64 65 2c 73 74 61 74 65 50 72 6f 76 69 yCode,stateProvi
+0210: 6e 63 65 2c 63 6f 75 6e 74 79 2c 6d 75 6e 69 63 nce,county,munic
+0220: 69 70 61 6c 69 74 79 2c 6c 6f 63 61 6c 69 74 79 ipality,locality
+0230: 2c 76 65 72 62 61 74 69 6d 4c 6f 63 61 6c 69 74 ,verbatimLocalit
+0240: 79 2c 77 61 74 65 72 42 6f 64 79 2c 69 73 6c 61 y,waterBody,isla
+0250: 6e 64 2c 69 73 6c 61 6e 64 47 72 6f 75 70 2c 6d nd,islandGroup,m
+0260: 69 6e 69 6d 75 6d 45 6c 65 76 61 74 69 6f 6e 49 inimumElevationI
+0270: 6e 4d 65 74 65 72 73 2c 6d 61 78 69 6d 75 6d 45 nMeters,maximumE
+0280: 6c 65 76 61 74 69 6f 6e 49 6e 4d 65 74 65 72 73 levationInMeters
+0290: 2c 6d 69 6e 69 6d 75 6d 44 65 70 74 68 49 6e 4d ,minimumDepthInM
+02a0: 65 74 65 72 73 2c 6d 61 78 69 6d 75 6d 44 65 70 eters,maximumDep
+02b0: 74 68 49 6e 4d 65 74 65 72 73 2c 64 65 63 69 6d thInMeters,decim
+02c0: 61 6c 4c 61 74 69 74 75 64 65 2c 64 65 63 69 6d alLatitude,decim
+02d0: 61 6c 4c 6f 6e 67 69 74 75 64 65 2c 67 65 6f 64 alLongitude,geod
+02e0: 65 74 69 63 44 61 74 75 6d 2c 63 6f 6f 72 64 69 eticDatum,coordi
+02f0: 6e 61 74 65 55 6e 63 65 72 74 61 69 6e 74 79 49 nateUncertaintyI
+0300: 6e 4d 65 74 65 72 73 2c 76 65 72 62 61 74 69 6d nMeters,verbatim
+0310: 43 6f 6f 72 64 69 6e 61 74 65 73 2c 69 64 65 6e Coordinates,iden
+0320: 74 69 66 69 65 64 42 79 2c 64 61 74 65 49 64 65 tifiedBy,dateIde
+0330: 6e 74 69 66 69 65 64 2c 69 64 65 6e 74 69 66 69 ntified,identifi
+0340: 63 61 74 69 6f 6e 51 75 61 6c 69 66 69 65 72 2c cationQualifier,
+0350: 74 79 70 65 53 74 61 74 75 73 2c 73 63 69 65 6e typeStatus,scien
+0360: 74 69 66 69 63 4e 61 6d 65 2c 6b 69 6e 67 64 6f tificName,kingdo
+0370: 6d 2c 70 68 79 6c 75 6d 2c 63 6c 61 73 73 2c 6f m,phylum,class,o
+0380: 72 64 65 72 2c 66 61 6d 69 6c 79 2c 67 65 6e 75 rder,family,genu
+0390: 73 2c 73 75 62 67 65 6e 75 73 2c 73 70 65 63 69 s,subgenus,speci
+03a0: 66 69 63 45 70 69 74 68 65 74 2c 69 6e 66 72 61 ficEpithet,infra
+03b0: 73 70 65 63 69 66 69 63 45 70 69 74 68 65 74 2c specificEpithet,
+03c0: 73 63 69 65 6e 74 69 66 69 63 4e 61 6d 65 41 75 scientificNameAu
+03d0: 74 68 6f 72 73 68 69 70 2c 74 61 78 6f 6e 52 61 thorship,taxonRa
+03e0: 6e 6b 0a 4d 43 4e 42 3a 4d 43 4e 42 2d 4d 61 6c nk.MCNB:MCNB-Mal
+03f0: 61 63 3a 4d 5a 42 20 38 34 2d 34 33 33 33 2c 4d ac:MZB 84-4333,M
+0400: 43 4e 42 2c 4d 43 4e 42 2d 4d 61 6c 61 63 2c 70 CNB,MCNB-Malac,p
+0410: 72 65 73 65 72 76 65 64 53 70 65 63 69 6d 65 6e reservedSpecimen
+0420: 2c 4d 5a 42 20 38 34 2d 34 33 33 33 2c 2c 22 47 ,MZB 84-4333,,"G
+0430: 61 73 75 6c 6c 20 69 20 4d 61 72 74 c3 ad 6e 65 asull i Mart..ne
+0440: 7a 2c 20 4c 6c 75 c3 ad 73 22 2c 2c 2c 2c 63 6f z, Llu..s",,,,co
+0450: 6e 71 75 69 6c 6c 61 20 73 65 6e 73 65 20 6f 70 nquilla sense op
+0460: 65 72 63 6c 65 20 28 73 65 63 29 2c 2c 2c 2c 54 ercle (sec),,,,T
+0470: 75 72 72 69 74 65 6c 6c 61 20 74 72 69 70 6c 69 urritella tripli
+0480: 63 61 74 61 2c 2c 31 39 36 31 2d 30 33 2d 31 32 cata,,1961-03-12
+0490: 2c 2c 2c 2c 2c 2c 45 75 72 6f 70 61 2c 45 73 70 ,,,,,,Europa,Esp
+04a0: 61 6e 79 61 2c 45 53 2c 4d 61 6c 6c 6f 72 63 61 anya,ES,Mallorca
+04b0: 2c 2c 45 73 63 6f 72 63 61 2c 2c 2c 2c 2c 2c 2c ,,Escorca,,,,,,,
+04c0: 2c 2c 2c 33 39 2e 38 35 32 33 36 39 35 2c 32 2e ,,,39.8523695,2.
+04d0: 38 30 32 31 38 39 35 2c 57 47 53 38 34 2c 33 31 8021895,WGS84,31
+04e0: 35 2e 36 31 32 2c 2c 2c 2c 2c 2c 22 54 75 72 72 5.612,,,,,,"Turr
+04f0: 69 74 65 6c 6c 61 20 74 75 72 62 6f 6e 61 20 4d itella turbona M
+0500: 6f 6e 74 65 72 6f 73 61 74 6f 2c 20 31 38 37 37 onterosato, 1877
+0510: 22 2c 41 6e 69 6d 61 6c 69 61 2c 4d 6f 6c 6c 75 ",Animalia,Mollu
+0520: 73 63 61 2c 47 61 73 74 72 6f 70 6f 64 61 2c 4e sca,Gastropoda,N
+0530: 65 6f 74 61 65 6e 69 6f 67 6c 6f 73 73 61 2c 54 eotaenioglossa,T
+0540: 75 72 72 69 74 65 6c 6c 69 64 61 65 2c 54 75 72 urritellidae,Tur
+0550: 72 69 74 65 6c 6c 61 2c 2c 74 75 72 62 6f 6e 61 ritella,,turbona
+0560: 2c 2c 22 4d 6f 6e 74 65 72 6f 73 61 74 6f 2c 20 ,,"Monterosato, 
+0570: 31 38 37 37 22 2c 45 73 70 c3 a8 63 69 65 0a 4d 1877",Esp..cie.M
+0580: 43 4e 42 3a 4d 43 4e 42 2d 4d 61 6c 61 63 3a 4d CNB:MCNB-Malac:M
+0590: 5a 42 20 38 34 2d 34 36 35 31 2c 4d 43 4e 42 2c ZB 84-4651,MCNB,
+05a0: 4d 43 4e 42 2d 4d 61 6c 61 63 2c 70 72 65 73 65 MCNB-Malac,prese
+05b0: 72 76 65 64 53 70 65 63 69 6d 65 6e 2c 4d 5a 42 rvedSpecimen,MZB
+05c0: 20 38 34 2d 34 36 35 31 2c 2c 22 47 61 73 75 6c  84-4651,,"Gasul
+05d0: 6c 20 69 20 4d 61 72 74 c3 ad 6e 65 7a 2c 20 4c l i Mart..nez, L
+05e0: 6c 75 c3 ad 73 22 2c 2c 2c 2c 63 6f 6e 71 75 69 lu..s",,,,conqui
+05f0: 6c 6c 61 20 73 65 6e 73 65 20 6f 70 65 72 63 6c lla sense opercl
+0600: 65 20 28 73 65 63 29 2c 2c 2c 2c 54 75 72 72 69 e (sec),,,,Turri
+0610: 74 65 6c 6c 61 20 74 72 69 70 6c 69 63 61 74 61 tella triplicata
+0620: 2c 2c 31 39 37 34 2d 30 36 2d 32 31 2c 2c 2c 2c ,,1974-06-21,,,,
+0630: 2c 2c 45 75 72 6f 70 61 2c 45 73 70 61 6e 79 61 ,,Europa,Espanya
+0640: 2c 45 53 2c 4d 61 6c 6c 6f 72 63 61 2c 2c 53 65 ,ES,Mallorca,,Se
+0650: 73 20 53 61 6c 69 6e 65 73 2c 43 6f 6c c3 b2 6e s Salines,Col..n
+0660: 69 61 20 53 61 6e 74 20 4a 6f 72 64 69 2c 2c 2c ia Sant Jordi,,,
+0670: 2c 2c 2c 2c 38 30 2c 2c 33 39 2e 33 31 39 31 38 ,,,,80,,39.31918
+0680: 34 2c 32 2e 39 39 32 33 36 31 2c 57 47 53 38 34 4,2.992361,WGS84
+0690: 2c 39 38 32 2e 33 39 33 2c 2c 2c 2c 2c 2c 22 54 ,982.393,,,,,,"T
+06a0: 75 72 72 69 74 65 6c 6c 61 20 74 75 72 62 6f 6e urritella turbon
+06b0: 61 20 4d 6f 6e 74 65 72 6f 73 61 74 6f 2c 20 31 a Monterosato, 1
+06c0: 38 37 37 22 2c 41 6e 69 6d 61 6c 69 61 2c 4d 6f 877",Animalia,Mo
+06d0: 6c 6c 75 73 63 61 2c 47 61 73 74 72 6f 70 6f 64 llusca,Gastropod
+06e0: 61 2c 4e 65 6f 74 61 65 6e 69 6f 67 6c 6f 73 73 a,Neotaeniogloss
+06f0: 61 2c 54 75 72 72 69 74 65 6c 6c 69 64 61 65 2c a,Turritellidae,
+0700: 54 75 72 72 69 74 65 6c 6c 61 2c 2c 74 75 72 62 Turritella,,turb
+0710: 6f 6e 61 2c 2c 22 4d 6f 6e 74 65 72 6f 73 61 74 ona,,"Monterosat
+0720: 6f 2c 20 31 38 37 37 22 2c 45 73 70 c3 a8 63 69 o, 1877",Esp..ci
+0730: 65 0a 4d 43 4e 42 3a 4d 43 4e 42 2d 4d 61 6c 61 e.MCNB:MCNB-Mala
+0740: 63 3a 4d 5a 42 20 38 34 2d 37 36 36 39 2c 4d 43 c:MZB 84-7669,MC
+0750: 4e 42 2c 4d 43 4e 42 2d 4d 61 6c 61 63 2c 70 72 NB,MCNB-Malac,pr
+0760: 65 73 65 72 76 65 64 53 70 65 63 69 6d 65 6e 2c eservedSpecimen,
+0770: 4d 5a 42 20 38 34 2d 37 36 36 39 2c 2c 22 47 61 MZB 84-7669,,"Ga
+0780: 73 75 6c 6c 20 69 20 4d 61 72 74 c3 ad 6e 65 7a sull i Mart..nez
+0790: 2c 20 4c 6c 75 c3 ad 73 22 2c 2c 2c 2c 63 6f 6e , Llu..s",,,,con
+07a0: 71 75 69 6c 6c 61 20 73 65 6e 73 65 20 6f 70 65 quilla sense ope
+07b0: 72 63 6c 65 20 28 73 65 63 29 2c 2c 2c 2c 54 75 rcle (sec),,,,Tu
+07c0: 72 72 69 74 65 6c 6c 61 20 74 72 69 70 6c 69 63 rritella triplic
+07d0: 61 74 61 2c 2c 31 39 36 39 2d 31 32 2d 31 36 2c ata,,1969-12-16,
+07e0: 2c 2c 2c 2c 2c 45 75 72 6f 70 61 2c 45 73 70 61 ,,,,,Europa,Espa
+07f0: 6e 79 61 2c 45 53 2c 45 69 76 69 73 73 61 2c 2c nya,ES,Eivissa,,
+0800: 45 69 76 69 73 73 61 2c 50 6f 72 74 20 64 27 45 Eivissa,Port d'E
+0810: 69 76 69 73 73 61 2c 2c 2c 2c 2c 2c 2c 2c 2c 33 ivissa,,,,,,,,,3
+0820: 38 2e 39 31 33 33 31 31 35 2c 31 2e 34 34 32 39 8.9133115,1.4429
+0830: 33 35 37 35 2c 57 47 53 38 34 2c 39 34 31 2e 38 3575,WGS84,941.8
+0840: 34 38 2c 2c 2c 2c 2c 2c 22 54 75 72 72 69 74 65 48,,,,,,"Turrite
+0850: 6c 6c 61 20 74 75 72 62 6f 6e 61 20 4d 6f 6e 74 lla turbona Mont
+0860: 65 72 6f 73 61 74 6f 2c 20 31 38 37 37 22 2c 41 erosato, 1877",A
+0870: 6e 69 6d 61 6c 69 61 2c 4d 6f 6c 6c 75 73 63 61 nimalia,Mollusca
+0880: 2c 47 61 73 74 72 6f 70 6f 64 61 2c 4e 65 6f 74 ,Gastropoda,Neot
+0890: 61 65 6e 69 6f 67 6c 6f 73 73 61 2c 54 75 72 72 aenioglossa,Turr
+08a0: 69 74 65 6c 6c 69 64 61 65 2c 54 75 72 72 69 74 itellidae,Turrit
+08b0: 65 6c 6c 61 2c 2c 74 75 72 62 6f 6e 61 2c 2c 22 ella,,turbona,,"
+08c0: 4d 6f 6e 74 65 72 6f 73 61 74 6f 2c 20 31 38 37 Monterosato, 187
+08d0: 37 22 2c 45 73 70 c3 a8 63 69 65 0a 4d 43 4e 42 7",Esp..cie.MCNB
+08e0: 3a 4d 43 4e 42 2d 4d 61 6c 61 63 3a 4d 5a 42 20 :MCNB-Malac:MZB 
+08f0: 38 34 2d 37 37 34 37 2c 4d 43 4e 42 2c 4d 43 4e 84-7747,MCNB,MCN
+0900: 42 2d 4d 61 6c 61 63 2c 70 72 65 73 65 72 76 65 B-Malac,preserve
+0910: 64 53 70 65 63 69 6d 65 6e 2c 4d 5a 42 20 38 34 dSpecimen,MZB 84
+0920: 2d 37 37 34 37 2c 2c 5a 61 62 65 6c 2c 2c 2c 61 -7747,,Zabel,,,a
+0930: 64 75 6c 74 2c 63 6f 6e 71 75 69 6c 6c 61 20 73 dult,conquilla s
+0940: 65 6e 73 65 20 6f 70 65 72 63 6c 65 20 28 73 65 ense opercle (se
+0950: 63 29 2c 2c 2c 2c 43 6c 61 75 73 69 6c 69 61 20 c),,,,Clausilia 
+0960: 70 61 72 76 75 6c 61 2c 2c 31 39 36 36 2c 2c 2c parvula,,1966,,,
+0970: 2c 2c 2c 45 75 72 6f 70 61 2c 41 6c 65 6d 61 6e ,,,Europa,Aleman
+0980: 79 61 2c 44 45 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c ya,DE,,,,,,,,,,,
+0990: 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 43 6c 61 75 73 ,,,,,,,,,,,Claus
+09a0: 69 6c 69 61 20 28 43 6c 61 75 73 69 6c 69 61 29 ilia (Clausilia)
+09b0: 20 72 75 67 6f 73 61 20 70 61 72 76 75 6c 61 2c  rugosa parvula,
+09c0: 41 6e 69 6d 61 6c 69 61 2c 4d 6f 6c 6c 75 73 63 Animalia,Mollusc
+09d0: 61 2c 47 61 73 74 72 6f 70 6f 64 61 2c 53 74 79 a,Gastropoda,Sty
+09e0: 6c 6f 6d 6d 61 74 6f 70 68 6f 72 61 2c 43 6c 61 lommatophora,Cla
+09f0: 75 73 69 6c 69 69 64 61 65 2c 43 6c 61 75 73 69 usiliidae,Clausi
+0a00: 6c 69 61 2c 43 6c 61 75 73 69 6c 69 61 2c 72 75 lia,Clausilia,ru
+0a10: 67 6f 73 61 2c 70 61 72 76 75 6c 61 2c 2c 53 75 gosa,parvula,,Su
+0a20: 62 65 73 70 c3 a8 63 69 65 0a 4d 43 4e 42 3a 4d besp..cie.MCNB:M
+0a30: 43 4e 42 2d 4d 61 6c 61 63 3a 4d 5a 42 20 38 34 CNB-Malac:MZB 84
+0a40: 2d 37 37 36 30 2c 4d 43 4e 42 2c 4d 43 4e 42 2d -7760,MCNB,MCNB-
+0a50: 4d 61 6c 61 63 2c 70 72 65 73 65 72 76 65 64 53 Malac,preservedS
+0a60: 70 65 63 69 6d 65 6e 2c 4d 5a 42 20 38 34 2d 37 pecimen,MZB 84-7
+0a70: 37 36 30 2c 2c 5a 61 62 65 6c 2c 2c 2c 61 64 75 760,,Zabel,,,adu
+0a80: 6c 74 2c 63 6f 6e 71 75 69 6c 6c 61 20 73 65 6e lt,conquilla sen
+0a90: 73 65 20 6f 70 65 72 63 6c 65 20 28 73 65 63 29 se opercle (sec)
+0aa0: 2c 2c 2c 2c 49 70 68 69 67 65 6e 61 20 76 65 6e ,,,,Iphigena ven
+0ab0: 74 72 69 63 6f 73 61 2c 2c 31 39 36 38 2d 30 37 tricosa,,1968-07
+0ac0: 2c 2c 2c 2c 2c 2c 45 75 72 6f 70 61 2c 41 6c 65 ,,,,,,Europa,Ale
+0ad0: 6d 61 6e 79 61 2c 44 45 2c 55 6e 74 65 72 66 72 manya,DE,Unterfr
+0ae0: 61 6e 6b 65 6e 2c 2c 42 61 64 20 42 6f 63 6b 6c anken,,Bad Bockl
+0af0: 65 74 2c 42 75 72 67 20 41 73 63 68 61 63 68 2c et,Burg Aschach,
+0b00: 2c 2c 2c 2c 2c 2c 2c 2c 35 30 2e 32 35 34 35 2c ,,,,,,,,50.2545,
+0b10: 31 30 2e 30 36 32 32 2c 57 47 53 38 34 2c 31 37 10.0622,WGS84,17
+0b20: 38 2c 2c 2c 2c 2c 2c 4d 61 63 72 6f 67 61 73 74 8,,,,,,Macrogast
+0b30: 72 61 20 28 4d 61 63 72 6f 67 61 73 74 72 61 29 ra (Macrogastra)
+0b40: 20 76 65 6e 74 72 69 63 6f 73 61 2c 41 6e 69 6d  ventricosa,Anim
+0b50: 61 6c 69 61 2c 4d 6f 6c 6c 75 73 63 61 2c 47 61 alia,Mollusca,Ga
+0b60: 73 74 72 6f 70 6f 64 61 2c 53 74 79 6c 6f 6d 6d stropoda,Stylomm
+0b70: 61 74 6f 70 68 6f 72 61 2c 43 6c 61 75 73 69 6c atophora,Clausil
+0b80: 69 69 64 61 65 2c 4d 61 63 72 6f 67 61 73 74 72 iidae,Macrogastr
+0b90: 61 2c 4d 61 63 72 6f 67 61 73 74 72 61 2c 76 65 a,Macrogastra,ve
+0ba0: 6e 74 72 69 63 6f 73 61 2c 2c 2c 45 73 70 c3 a8 ntricosa,,,Esp..
+0bb0: 63 69 65 0a 4d 43 4e 42 3a 4d 43 4e 42 2d 4d 61 cie.MCNB:MCNB-Ma
+0bc0: 6c 61 63 3a 4d 5a 42 20 38 34 2d 37 37 34 34 2c lac:MZB 84-7744,
+0bd0: 4d 43 4e 42 2c 4d 43 4e 42 2d 4d 61 6c 61 63 2c MCNB,MCNB-Malac,
+0be0: 70 72 65 73 65 72 76 65 64 53 70 65 63 69 6d 65 preservedSpecime
+0bf0: 6e 2c 4d 5a 42 20 38 34 2d 37 37 34 34 2c 2c 5a n,MZB 84-7744,,Z
+0c00: 61 62 65 6c 2c 2c 2c 61 64 75 6c 74 2c 63 6f 6e abel,,,adult,con
+0c10: 71 75 69 6c 6c 61 20 73 65 6e 73 65 20 6f 70 65 quilla sense ope
+0c20: 72 63 6c 65 20 28 73 65 63 29 2c 2c 2c 2c 49 70 rcle (sec),,,,Ip
+0c30: 68 69 67 65 6e 61 20 70 6c 69 63 61 74 75 6c 61 higena plicatula
+0c40: 2c 2c 31 39 36 36 2c 2c 2c 2c 2c 2c 45 75 72 6f ,,1966,,,,,,Euro
+0c50: 70 61 2c 41 6c 65 6d 61 6e 79 61 2c 44 45 2c 44 pa,Alemanya,DE,D
+0c60: 65 74 6d 6f 6c 64 2c 2c 48 c3 b6 78 74 65 72 2c etmold,,H..xter,
+0c70: 2c 2c 2c 2c 2c 2c 2c 2c 2c 35 31 2e 37 36 37 35 ,,,,,,,,,51.7675
+0c80: 2c 39 2e 33 36 32 35 2c 57 47 53 38 34 2c 31 32 ,9.3625,WGS84,12
+0c90: 37 35 30 2c 2c 2c 2c 2c 2c 4d 61 63 72 6f 67 61 750,,,,,,Macroga
+0ca0: 73 74 72 61 20 28 50 79 72 6f 73 74 6f 6d 61 29 stra (Pyrostoma)
+0cb0: 20 70 6c 69 63 61 74 75 6c 61 2c 41 6e 69 6d 61  plicatula,Anima
+0cc0: 6c 69 61 2c 4d 6f 6c 6c 75 73 63 61 2c 47 61 73 lia,Mollusca,Gas
+0cd0: 74 72 6f 70 6f 64 61 2c 53 74 79 6c 6f 6d 6d 61 tropoda,Stylomma
+0ce0: 74 6f 70 68 6f 72 61 2c 43 6c 61 75 73 69 6c 69 tophora,Clausili
+0cf0: 69 64 61 65 2c 4d 61 63 72 6f 67 61 73 74 72 61 idae,Macrogastra
+0d00: 2c 50 79 72 6f 73 74 6f 6d 61 2c 70 6c 69 63 61 ,Pyrostoma,plica
+0d10: 74 75 6c 61 2c 2c 2c 45 73 70 c3 a8 63 69 65 0a tula,,,Esp..cie.
+0d20: 4d 43 4e 42 3a 4d 43 4e 42 2d 4d 61 6c 61 63 3a MCNB:MCNB-Malac:
+0d30: 4d 5a 42 20 38 34 2d 37 37 35 37 2c 4d 43 4e 42 MZB 84-7757,MCNB
+0d40: 2c 4d 43 4e 42 2d 4d 61 6c 61 63 2c 70 72 65 73 ,MCNB-Malac,pres
+0d50: 65 72 76 65 64 53 70 65 63 69 6d 65 6e 2c 4d 5a ervedSpecimen,MZ
+0d60: 42 20 38 34 2d 37 37 35 37 2c 2c 5a 61 62 65 6c B 84-7757,,Zabel
+0d70: 2c 2c 2c 61 64 75 6c 74 2c 63 6f 6e 71 75 69 6c ,,,adult,conquil
+0d80: 6c 61 20 73 65 6e 73 65 20 6f 70 65 72 63 6c 65 la sense opercle
+0d90: 20 28 73 65 63 29 2c 2c 2c 2c 2c 2c 31 39 36 36  (sec),,,,,,1966
+0da0: 2c 2c 2c 2c 2c 2c 45 75 72 6f 70 61 2c 41 6c 65 ,,,,,,Europa,Ale
+0db0: 6d 61 6e 79 61 2c 44 45 2c 4b 61 72 6c 73 72 75 manya,DE,Karlsru
+0dc0: 68 65 2c 2c 4e 65 75 65 6e 62 c3 bc 72 67 2c 2c he,,Neuenb..rg,,
+0dd0: 2c 2c 2c 2c 2c 2c 2c 2c 34 38 2e 38 32 35 35 2c ,,,,,,,,48.8255,
+0de0: 38 2e 35 37 32 35 2c 57 47 53 38 34 2c 35 35 30 8.5725,WGS84,550
+0df0: 30 2c 2c 2c 2c 2c 2c 4c 61 63 69 6e 69 61 72 69 0,,,,,,Laciniari
+0e00: 61 20 70 6c 69 63 61 74 61 2c 41 6e 69 6d 61 6c a plicata,Animal
+0e10: 69 61 2c 4d 6f 6c 6c 75 73 63 61 2c 47 61 73 74 ia,Mollusca,Gast
+0e20: 72 6f 70 6f 64 61 2c 53 74 79 6c 6f 6d 6d 61 74 ropoda,Stylommat
+0e30: 6f 70 68 6f 72 61 2c 43 6c 61 75 73 69 6c 69 69 ophora,Clausilii
+0e40: 64 61 65 2c 4c 61 63 69 6e 69 61 72 69 61 2c 2c dae,Laciniaria,,
+0e50: 70 6c 69 63 61 74 61 2c 2c 2c 45 73 70 c3 a8 63 plicata,,,Esp..c
+0e60: 69 65 0a 4d 43 4e 42 3a 4d 43 4e 42 2d 4d 61 6c ie.MCNB:MCNB-Mal
+0e70: 61 63 3a 4d 5a 42 20 38 34 2d 37 37 35 35 2c 4d ac:MZB 84-7755,M
+0e80: 43 4e 42 2c 4d 43 4e 42 2d 4d 61 6c 61 63 2c 70 CNB,MCNB-Malac,p
+0e90: 72 65 73 65 72 76 65 64 53 70 65 63 69 6d 65 6e reservedSpecimen
+0ea0: 2c 4d 5a 42 20 38 34 2d 37 37 35 35 2c 2c 22 48 ,MZB 84-7755,,"H
+0eb0: 69 6e 7a 2c 20 57 2e 22 2c 2c 2c 61 64 75 6c 74 inz, W.",,,adult
+0ec0: 2c 63 6f 6e 71 75 69 6c 6c 61 20 73 65 6e 73 65 ,conquilla sense
+0ed0: 20 6f 70 65 72 63 6c 65 20 28 73 65 63 29 2c 2c  opercle (sec),,
+0ee0: 2c 2c 2c 2c 31 39 36 36 2c 2c 2c 2c 2c 2c 45 75 ,,,,1966,,,,,,Eu
+0ef0: 72 6f 70 61 2c c3 80 75 73 74 72 69 61 2c 41 54 ropa,..ustria,AT
+0f00: 2c 53 61 6c 7a 62 75 72 67 2c 2c 2c 2c 2c 2c 2c ,Salzburg,,,,,,,
+0f10: 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 2c 43 6c ,,,,,,,,,,,,,,Cl
+0f20: 61 75 73 69 6c 69 61 20 28 41 6e 64 72 61 65 61 ausilia (Andraea
+0f30: 29 20 64 75 62 69 61 2c 41 6e 69 6d 61 6c 69 61 ) dubia,Animalia
+0f40: 2c 4d 6f 6c 6c 75 73 63 61 2c 47 61 73 74 72 6f ,Mollusca,Gastro
+0f50: 70 6f 64 61 2c 53 74 79 6c 6f 6d 6d 61 74 6f 70 poda,Stylommatop
+0f60: 68 6f 72 61 2c 43 6c 61 75 73 69 6c 69 69 64 61 hora,Clausiliida
+0f70: 65 2c 43 6c 61 75 73 69 6c 69 61 2c 41 6e 64 72 e,Clausilia,Andr
+0f80: 61 65 61 2c 64 75 62 69 61 2c 2c 2c 45 73 70 c3 aea,dubia,,,Esp.
+0f90: a8 63 69 65 0a 4d 43 4e 42 3a 4d 43 4e 42 2d 4d .cie.MCNB:MCNB-M
+0fa0: 61 6c 61 63 3a 4d 5a 42 20 38 34 2d 37 37 35 38 alac:MZB 84-7758
+0fb0: 2c 4d 43 4e 42 2c 4d 43 4e 42 2d 4d 61 6c 61 63 ,MCNB,MCNB-Malac
+0fc0: 2c 70 72 65 73 65 72 76 65 64 53 70 65 63 69 6d ,preservedSpecim
+0fd0: 65 6e 2c 4d 5a 42 20 38 34 2d 37 37 35 38 2c 2c en,MZB 84-7758,,
+0fe0: 5a 61 62 65 6c 2c 2c 2c 61 64 75 6c 74 2c 63 6f Zabel,,,adult,co
+0ff0: 6e 71 75 69 6c 6c 61 20 73 65 6e 73 65 20 6f 70 nquilla sense op
+1000: 65 72 63 6c 65 20 28 73 65 63 29 2c 2c 2c 2c 2c ercle (sec),,,,,
+1010: 2c 31 39 36 37 2c 2c 2c 2c 2c 2c 45 75 72 6f 70 ,1967,,,,,,Europ
+1020: 61 2c 41 6c 65 6d 61 6e 79 61 2c 44 45 2c 41 72 a,Alemanya,DE,Ar
+1030: 6e 73 62 65 72 67 2c 2c 42 65 73 74 77 69 67 2c nsberg,,Bestwig,
+1040: 2c 2c 2c 2c 2c 2c 2c 2c 2c 35 31 2e 33 36 36 36 ,,,,,,,,,51.3666
+1050: 2c 38 2e 34 31 32 2c 57 47 53 38 34 2c 39 34 30 ,8.412,WGS84,940
+1060: 2c 2c 2c 2c 2c 2c 43 6c 61 75 73 69 6c 69 61 20 ,,,,,,Clausilia 
+1070: 28 43 6c 61 75 73 69 6c 69 61 29 20 62 69 64 65 (Clausilia) bide
+1080: 6e 74 61 74 61 2c 41 6e 69 6d 61 6c 69 61 2c 4d ntata,Animalia,M
+1090: 6f 6c 6c 75 73 63 61 2c 47 61 73 74 72 6f 70 6f ollusca,Gastropo
+10a0: 64 61 2c 53 74 79 6c 6f 6d 6d 61 74 6f 70 68 6f da,Stylommatopho
+10b0: 72 61 2c 43 6c 61 75 73 69 6c 69 69 64 61 65 2c ra,Clausiliidae,
+10c0: 43 6c 61 75 73 69 6c 69 61 2c 43 6c 61 75 73 69 Clausilia,Clausi
+10d0: 6c 69 61 2c 62 69 64 65 6e 74 61 74 61 2c 2c 2c lia,bidentata,,,
+10e0: 45 73 70 c3 a8 63 69 65 0a 0d 0a 2d 2d 2d 2d 2d Esp..cie...-----
+10f0: 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d ----------------
+1100: 2d 2d 2d 2d 2d 44 53 54 74 6d 73 52 68 41 54 55 -----DSTtmsRhATU
+1110: 5a 5a 76 63 75 55 34 76 71 32 55 2d 2d 0d 0a    ZZvcuU4vq2U--..
+== Info: We are completely uploaded and fine
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 4a                                  ....J
+<= Recv SSL data, 1 bytes (0x1)
+0000: 16                                              .
+== Info: TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+<= Recv SSL data, 57 bytes (0x39)
+0000: 04 00 00 35 00 00 01 2c 10 64 60 83 08 00 00 00 ...5...,.d`.....
+0010: 00 00 00 00 00 00 20 d0 53 f6 2c 48 a1 62 b0 f8 ...... .S.,H.b..
+0020: d5 5e af ef 89 bc d1 87 2c b4 1c ef 15 f6 9b e9 .^......,.......
+0030: 9d 58 ed 8f f8 41 90 00 00                      .X...A...
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 4a                                  ....J
+<= Recv SSL data, 1 bytes (0x1)
+0000: 16                                              .
+== Info: TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+<= Recv SSL data, 57 bytes (0x39)
+0000: 04 00 00 35 00 00 01 2c 76 b1 04 8d 08 00 00 00 ...5...,v.......
+0010: 00 00 00 00 01 00 20 fd 3f f2 de 2b 12 2d 4f 68 ...... .?..+.-Oh
+0020: c1 c6 ba 08 d7 33 bc e3 5e 28 24 3c fd cd 69 79 .....3..^($<..iy
+0030: 5a 7b c7 5c 2b 13 8b 00 00                      Z{.\+....
+== Info: old SSL session ID is stale, removing
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 42                                  ....B
+<= Recv SSL data, 1 bytes (0x1)
+0000: 17                                              .
+=> Send SSL data, 5 bytes (0x5)
+0000: 17 03 03 00 1a                                  .....
+=> Send SSL data, 1 bytes (0x1)
+0000: 17                                              .
+<= Recv SSL data, 5 bytes (0x5)
+0000: 17 03 03 01 e2                                  .....
+<= Recv SSL data, 1 bytes (0x1)
+0000: 17                                              .
+<= Recv header, 13 bytes (0xd)
+0000: 48 54 54 50 2f 32 20 32 30 34 20 0d 0a          HTTP/2 204 ..
+<= Recv header, 22 bytes (0x16)
+0000: 73 65 72 76 65 72 3a 20 6e 67 69 6e 78 2f 31 2e server: nginx/1.
+0010: 32 33 2e 34 0d 0a                               23.4..
+<= Recv header, 37 bytes (0x25)
+0000: 64 61 74 65 3a 20 46 72 69 2c 20 32 37 20 44 65 date: Fri, 27 De
+0010: 63 20 32 30 32 34 20 31 32 3a 34 30 3a 30 34 20 c 2024 12:40:04 
+0020: 47 4d 54 0d 0a                                  GMT..
+<= Recv header, 22 bytes (0x16)
+0000: 61 6c 6c 6f 77 3a 20 50 4f 53 54 2c 20 4f 50 54 allow: POST, OPT
+0010: 49 4f 4e 53 0d 0a                               IONS..
+<= Recv header, 23 bytes (0x17)
+0000: 78 2d 66 72 61 6d 65 2d 6f 70 74 69 6f 6e 73 3a x-frame-options:
+0010: 20 44 45 4e 59 0d 0a                             DENY..
+<= Recv header, 39 bytes (0x27)
+0000: 76 61 72 79 3a 20 41 63 63 65 70 74 2d 4c 61 6e vary: Accept-Lan
+0010: 67 75 61 67 65 2c 20 43 6f 6f 6b 69 65 2c 20 6f guage, Cookie, o
+0020: 72 69 67 69 6e 0d 0a                            rigin..
+<= Recv header, 22 bytes (0x16)
+0000: 63 6f 6e 74 65 6e 74 2d 6c 61 6e 67 75 61 67 65 content-language
+0010: 3a 20 65 6e 0d 0a                               : en..
+<= Recv header, 33 bytes (0x21)
+0000: 78 2d 63 6f 6e 74 65 6e 74 2d 74 79 70 65 2d 6f x-content-type-o
+0010: 70 74 69 6f 6e 73 3a 20 6e 6f 73 6e 69 66 66 0d ptions: nosniff.
+0020: 0a                                              .
+<= Recv header, 30 bytes (0x1e)
+0000: 72 65 66 65 72 72 65 72 2d 70 6f 6c 69 63 79 3a referrer-policy:
+0010: 20 73 61 6d 65 2d 6f 72 69 67 69 6e 0d 0a        same-origin..
+<= Recv header, 41 bytes (0x29)
+0000: 63 72 6f 73 73 2d 6f 72 69 67 69 6e 2d 6f 70 65 cross-origin-ope
+0010: 6e 65 72 2d 70 6f 6c 69 63 79 3a 20 73 61 6d 65 ner-policy: same
+0020: 2d 6f 72 69 67 69 6e 0d 0a                      -origin..
+<= Recv header, 40 bytes (0x28)
+0000: 61 63 63 65 73 73 2d 63 6f 6e 74 72 6f 6c 2d 61 access-control-a
+0010: 6c 6c 6f 77 2d 63 72 65 64 65 6e 74 69 61 6c 73 llow-credentials
+0020: 3a 20 74 72 75 65 0d 0a                         : true..
+<= Recv header, 202 bytes (0xca)
+0000: 61 63 63 65 73 73 2d 63 6f 6e 74 72 6f 6c 2d 61 access-control-a
+0010: 6c 6c 6f 77 2d 68 65 61 64 65 72 73 3a 20 41 75 llow-headers: Au
+0020: 74 68 6f 72 69 7a 61 74 69 6f 6e 2c 41 63 63 65 thorization,Acce
+0030: 70 74 2c 4f 72 69 67 69 6e 2c 44 4e 54 2c 58 2d pt,Origin,DNT,X-
+0040: 43 75 73 74 6f 6d 48 65 61 64 65 72 2c 4b 65 65 CustomHeader,Kee
+0050: 70 2d 41 6c 69 76 65 2c 55 73 65 72 2d 41 67 65 p-Alive,User-Age
+0060: 6e 74 2c 58 2d 52 65 71 75 65 73 74 65 64 2d 57 nt,X-Requested-W
+0070: 69 74 68 2c 49 66 2d 4d 6f 64 69 66 69 65 64 2d ith,If-Modified-
+0080: 53 69 6e 63 65 2c 43 61 63 68 65 2d 43 6f 6e 74 Since,Cache-Cont
+0090: 72 6f 6c 2c 43 6f 6e 74 65 6e 74 2d 54 79 70 65 rol,Content-Type
+00a0: 2c 43 6f 6e 74 65 6e 74 2d 52 61 6e 67 65 2c 52 ,Content-Range,R
+00b0: 61 6e 67 65 2c 43 6f 6e 74 65 6e 74 2d 44 69 73 ange,Content-Dis
+00c0: 70 6f 73 69 74 69 6f 6e 0d 0a                   position..
+<= Recv header, 65 bytes (0x41)
+0000: 61 63 63 65 73 73 2d 63 6f 6e 74 72 6f 6c 2d 61 access-control-a
+0010: 6c 6c 6f 77 2d 6d 65 74 68 6f 64 73 3a 20 47 45 llow-methods: GE
+0020: 54 2c 50 4f 53 54 2c 4f 50 54 49 4f 4e 53 2c 50 T,POST,OPTIONS,P
+0030: 55 54 2c 44 45 4c 45 54 45 2c 50 41 54 43 48 0d UT,DELETE,PATCH.
+0040: 0a                                              .
+<= Recv header, 45 bytes (0x2d)
+0000: 73 74 72 69 63 74 2d 74 72 61 6e 73 70 6f 72 74 strict-transport
+0010: 2d 73 65 63 75 72 69 74 79 3a 20 6d 61 78 2d 61 -security: max-a
+0020: 67 65 3d 33 31 35 33 36 30 30 30 0d 0a          ge=31536000..
+<= Recv header, 2 bytes (0x2)
+0000: 0d 0a                                           ..
+== Info: Connection #0 to host taxomap.geomatico.es left intact
