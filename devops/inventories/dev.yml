@@ -10,6 +10,8 @@ all:
 
     api_url: "http://{{ domain }}/api/v1"
 
+    api_url: "http://{{ domain }}/api/v1"
+
     docker:
       image_tag: "latest"
       restart_containers: "no"

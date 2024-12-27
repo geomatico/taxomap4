@@ -9,6 +9,8 @@ all:
 
     api_url: "https://{{ domain }}/api/v1"
 
+    api_url: "https://{{ domain }}/api/v1"
+
     geoserver:
       url: "https://{{ domain }}/geoserver"
       data_dir: "{{ service_path }}/geoserver_data_dir"
