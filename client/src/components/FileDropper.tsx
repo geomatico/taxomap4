@@ -9,10 +9,6 @@ import Alert from './Alert';
 
 //TYPES
 export type FileDropperProps = {
-  onDrop: () => void,
-  onDragOver: () => void,
-  onDragEnter: () => void,
-  onDragLeave: () => void,
   onInput: (file: File) => void,
 };
 
@@ -58,7 +54,7 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
   const handleAlertAccept = () => setAlertReason(undefined);
   
   const contentSx = {
-    outline: isDragging ? '4px dashed lightgrey' : '1px solid lightgrey',
+    outline: isDragging ? '4px dashed lightgrey' : '0px solid lightgrey',
     bgcolor: isDragging ? '#f6f6f6' : 'white',
     m: 2,
     width: 'auto',
@@ -90,18 +86,19 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
     }
   };
   
-  return <><Card elevation={0}>
+  return <><Card elevation={1}>
     <CardHeader sx={{bgcolor: 'secondary.main', m: 0, py: 0}}
-      title={<Typography variant='overline' component='h5'>Añadir archivo de datos</Typography>}>
+      title={<Typography variant='overline' sx={{fontSize: 12}}>Añadir archivo de datos</Typography>}>
     </CardHeader>
     <CardContent sx={contentSx} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} onDrop={(e: DragEvent<HTMLDivElement>) => handleDrop(e)}>
-      <FileUploadIcon sx={{fontSize: 50}}/>
+      <FileUploadIcon sx={{fontSize: 45}}/>
       <Typography>Arrastre aquí un un archivo o</Typography>
       <Button variant='contained' component="label">
         <Typography variant='button'>SELECCIONAR ARCHIVO CSV</Typography>
         <input
           type='file'
           hidden
+          style={{display: 'none'}}
           accept={'.csv'}
           onChange={(e) => handleInput(e.target.files && e.target.files[0])}
         />

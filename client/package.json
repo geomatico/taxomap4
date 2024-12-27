@@ -20,7 +20,7 @@
     "lint:js": "eslint src",
     "lint:i18n": "eslint --fix --format node_modules/eslint-plugin-i18n-json/formatter.js src/i18n/*.json",
     "prepare": "cd .. && husky install .husky",
-    "docker-prepare": "docker run --rm -t -e TAXOMAP_BACKEND_HOST=localhost:8000 -v $PWD/../:/repo mullnerz/ansible-playbook ansible-playbook -i /repo/devops/inventories/dev.yml /repo/devops/render-templates.yml -e '{use_frontend: False, use_proxy: False}'",
+    "docker-prepare": "docker run --rm -t -e TAXOMAP_BACKEND_HOST=localhost:8000 -v $PWD/../:/repo mullnerz/ansible-playbook ansible-playbook -i /repo/devops/inventories/dev.yml /repo/devops/render-templates.yml -e '{use_frontend: True, use_proxy: True}'",
     "docker-start": "npm run docker-prepare && docker compose -f ../devops/docker-compose.yml up",
     "docker-clean": "npm run docker-prepare && docker compose -f ../devops/docker-compose.yml down --rmi local"
   },

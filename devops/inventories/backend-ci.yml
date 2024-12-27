@@ -7,6 +7,8 @@ all:
     deploy_user: "{{ lookup('env','USER') }}"
     service_path: /tmp/taxomap
 
+    api_url: "http://{{ domain }}/api/v1"
+
     use_frontend: false
     use_proxy: false
     use_geoserver: false

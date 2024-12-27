@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import authService, {CannotRefreshTokenError} from '../../services/auth';
+import taxomapService from '../../services/taxomapImpl';
 import LoginForm from '../../components/login/LoginForm';
 import {get, HttpError} from '@geomatico/client-commons';
 import {API_BASE_URL} from '../../config';
+import AdminPage from './AdminPage';
+import Loading from '../../components/Loading';
 
 const Index = () => {
-  const [isLogged, setLogged] = useState<boolean>();
+  const [isLogged, setLogged] = useState<boolean>(true);
   const [error, setError] = useState<string>();
   const [dummyData, setDummyData] = useState<string>();
 
@@ -17,13 +20,17 @@ const Index = () => {
       .catch(handleException);
   };
 
-  useEffect(() => {
+  const handleUpload = (file: File) => {
+    taxomapService.uploadCsv(file);
+  };
+
+  /*useEffect(() => {
     authService.isLogged()
       .then(setLogged)
       .catch(handleException);
-  }, []);
+  }, []);*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     // TODO http calls should be somewhere else
     if (isLogged) {
       authService.getAccessToken().then(async accessToken => {
@@ -35,17 +42,18 @@ const Index = () => {
         setDummyData(data);
       }).catch(handleException);
     }
-  }, [isLogged]);
+  }, [isLogged]);*/
 
-  if (isLogged === false) {
+  if (!isLogged) {
     return <LoginForm
       error={error}
       onLogin={handleLogin}
     />;
   } else if (dummyData) {
-    return <div>{dummyData}</div>;
+    return <AdminPage onUpload={handleUpload}/>;
   } else {
-    return <div>Loading...</div>;
+    //return <Loading/>;
+    return <AdminPage onUpload={handleUpload}/>;
   }
 };
 
