@@ -141,3 +141,10 @@ export const FILTER_BY = ['institutioncode', 'basisofrecord'];
 export const GEOSERVER_BASE_URL = process.env.GEOSERVER_BASE_URL;
 
 export const API_BASE_URL = process.env.API_BASE_URL as string;
+
+export const INSTITUTION_COLOR = [
+  {
+    id: 'MVHN',
+    color: '#343FCE'
+  }
+];
