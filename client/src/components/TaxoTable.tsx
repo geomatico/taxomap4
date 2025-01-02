@@ -1,13 +1,17 @@
 import React, {FC} from 'react';
 
-import {DataGrid, esES, GridRenderCellParams} from '@mui/x-data-grid';
-import {Chip, lighten} from '@mui/material';
-import {INSTITUTION_COLOR} from '../config';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+
+
+import {lighten} from '@mui/material/styles';
 import {grey} from '@mui/material/colors';
+import {DataGrid, esES, GridRenderCellParams} from '@mui/x-data-grid';
+
 
 //TYPES
 export type Occurrency = {
+  index: number,
   catalogNumber: string,
   institutionCode: string,
   basisOfRecord: string,
@@ -30,7 +34,7 @@ const TaxoTable: FC<TaxoTableProps> = ({data}) => {
   const renderInstitution = (params: GridRenderCellParams) => {
     const chipColor = grey[700];
     //const chipColor = INSTITUTION_COLOR.filter(i => i.id === params.value)[0].color || '#fabada';
-    return <Chip label={params.value} variant="outlined" sx={{color: chipColor, borderColor: chipColor, bgcolor: lighten(chipColor, 0.75), fontSize: 12}}/>;
+    return params.value !== '' && <Chip label={params.value} variant="outlined" sx={{color: chipColor, borderColor: chipColor, bgcolor: lighten(chipColor, 0.75), fontSize: 12}}/>;
   };
   const columns = [
     {
@@ -115,7 +119,7 @@ const TaxoTable: FC<TaxoTableProps> = ({data}) => {
         noRowsLabel: 'Sin Ocurrencias', // Sobrescribe el texto para filas vacías
       }}
       //hideFooter
-      getRowId={params => params.catalogNumber}
+      getRowId={params => params.index}
     />
   </Box>;
 };

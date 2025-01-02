@@ -14,6 +14,7 @@ export const Default = Template.bind({});
 Default.args = {
   data: [
     {
+      index: 0,
       catalogNumber: '181219HH10',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -27,6 +28,7 @@ Default.args = {
       specificepithet: 'tentaculata'
     },
     {
+      index: 1,
       catalogNumber: '090120PK01',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -40,6 +42,7 @@ Default.args = {
       specificepithet: 'assimilis'
     },
     {
+      index: 2,
       catalogNumber: '280120VE01',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -53,6 +56,7 @@ Default.args = {
       specificepithet: 'assimilis'
     },
     {
+      index: 3,
       catalogNumber: '280120VE02',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -66,6 +70,7 @@ Default.args = {
       specificepithet: 'assimilis'
     },
     {
+      index: 4,
       catalogNumber: '280120VE03',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -79,6 +84,7 @@ Default.args = {
       specificepithet: 'psilla'
     },
     {
+      index: 5,
       catalogNumber: '280120VE04',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -92,6 +98,7 @@ Default.args = {
       specificepithet: 'pharaonis'
     },
     {
+      index: 6,
       catalogNumber: '010220BT01',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -105,6 +112,7 @@ Default.args = {
       specificepithet: 'fragilis'
     },
     {
+      index: 7,
       catalogNumber: '120220RT01',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -118,6 +126,7 @@ Default.args = {
       specificepithet: 'assimilis'
     },
     {
+      index: 8,
       catalogNumber: '060320UY02',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -131,6 +140,7 @@ Default.args = {
       specificepithet: 'braunii'
     },
     {
+      index: 9,
       catalogNumber: '060320UY04',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -144,6 +154,7 @@ Default.args = {
       specificepithet: 'obvia'
     },
     {
+      index: 10,
       catalogNumber: '120220FM01',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -157,6 +168,7 @@ Default.args = {
       specificepithet: 'navalis'
     },
     {
+      index: 11,
       catalogNumber: '120220FM02',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -170,6 +182,7 @@ Default.args = {
       specificepithet: 'gigas'
     },
     {
+      index: 12,
       catalogNumber: '120220FM03',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -183,6 +196,7 @@ Default.args = {
       specificepithet: 'granulata'
     },
     {
+      index: 13,
       catalogNumber: '120220FM04',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -196,6 +210,7 @@ Default.args = {
       specificepithet: 'stellatus'
     },
     {
+      index: 14,
       catalogNumber: '270320YR02',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -209,6 +224,7 @@ Default.args = {
       specificepithet: 'itala'
     },
     {
+      index: 15,
       catalogNumber: '220420YT01',
       institutionCode: 'MVHN',
       basisOfRecord: 'PreservedSpecimen',
@@ -222,5 +238,4 @@ Default.args = {
       specificepithet: 'celtiberica'
     }
   ]
-
 };

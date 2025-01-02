@@ -17,7 +17,6 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [alertReason, setAlertReason] = useState<string | undefined>(undefined);
 
-
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
@@ -85,7 +84,7 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
       return '';
     }
   };
-  
+
   return <><Card elevation={1}>
     <CardHeader sx={{bgcolor: 'secondary.main', m: 0, py: 0}}
       title={<Typography variant='overline' sx={{fontSize: 12}}>Añadir archivo de datos</Typography>}>
@@ -94,7 +93,7 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
       <FileUploadIcon sx={{fontSize: 45}}/>
       <Typography>Arrastre aquí un un archivo o</Typography>
       <Button variant='contained' component="label">
-        <Typography variant='button'>SELECCIONAR ARCHIVO CSV</Typography>
+        <Typography variant='button'>SELECCIONAR CSV</Typography>
         <input
           type='file'
           hidden
