@@ -7,6 +7,7 @@ import Chip from '@mui/material/Chip';
 import {lighten} from '@mui/material/styles';
 import {grey} from '@mui/material/colors';
 import {DataGrid, esES, GridRenderCellParams} from '@mui/x-data-grid';
+import {INSTITUTION_COLOR} from '../config';
 
 
 //TYPES
@@ -32,9 +33,13 @@ export type TaxoTableProps = {
 const TaxoTable: FC<TaxoTableProps> = ({data}) => {
   
   const renderInstitution = (params: GridRenderCellParams) => {
-    const chipColor = grey[700];
-    //const chipColor = INSTITUTION_COLOR.filter(i => i.id === params.value)[0].color || '#fabada';
-    return params.value !== '' && <Chip label={params.value} variant="outlined" sx={{color: chipColor, borderColor: chipColor, bgcolor: lighten(chipColor, 0.75), fontSize: 12}}/>;
+    const chipColor = INSTITUTION_COLOR.filter(i => i.id === params.value)[0].color || '#d3d3d3';
+    return params.value !== '' && 
+            <Chip 
+              label={params.value} 
+              variant='outlined'
+              sx={{color: grey[700], borderColor: chipColor, bgcolor: lighten(chipColor, 0.75), fontSize: 12, textTransform: 'uppercase'}}
+            />;
   };
   const columns = [
     {
@@ -45,7 +50,7 @@ const TaxoTable: FC<TaxoTableProps> = ({data}) => {
     {
       field: 'institutionCode',
       headerName: 'INSTITUCIÓN',
-      width: 130,
+      width: 250,
       renderCell: renderInstitution
     },
     {
@@ -56,7 +61,7 @@ const TaxoTable: FC<TaxoTableProps> = ({data}) => {
     {
       field: 'scientificName',
       headerName: 'NOMBRE CIENTÍFICO',
-      width: 250,
+      width: 250
     },
     {
       field: 'kingdom',

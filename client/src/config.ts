@@ -144,7 +144,27 @@ export const API_BASE_URL = process.env.API_BASE_URL as string;
 
 export const INSTITUTION_COLOR = [
   {
-    id: 'MVHN',
-    color: '#343FCE'
+    id: 'Museu Ciències Naturals Barcelona',
+    color: '#58a062'
+  },
+  {
+    id: 'Museu Valencià d\'Història Natural',
+    color: '#fabb5c'
+  },
+  {
+    id: 'Universitat de Barcelona',
+    color: '#5a9dda'
+  },
+  {
+    id: 'Institut Mediterrani d\'Estudis Avançats',
+    color: '#f02921'
+  },
+  {
+    id: 'Institut Botànic de Barcelona',
+    color: '#58a062'
+  },
+  {
+    id: 'MCNB',
+    color: '#a5a4a4'
   }
 ];

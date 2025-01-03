@@ -55,10 +55,10 @@ const Index = () => {
 
     const data = result && result.data.map((row, index) => ({
       index,
-      catalogNumber: row.catalogNumber || '',
-      institutionCode: row.institutionCode || '',
-      basisOfRecord: row.basisOfRecord || '',
-      scientificName: row.scientificName || '',
+      catalogNumber: row.catalognumber || '',
+      institutionCode: row.institutioncode || '',
+      basisOfRecord: row.basisofrecord || '',
+      scientificName: row.scientificname || '',
       kingdom: row.kingdom || '',
       phylum: row.phylum || '',
       class: row.class || '',
