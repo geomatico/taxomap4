@@ -6,8 +6,6 @@ type UploadResponse = {
   message?: string;
 }
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 const uploadCsv = async (file: File): Promise<string | void> => {
 
   try {
@@ -20,8 +18,7 @@ const uploadCsv = async (file: File): Promise<string | void> => {
     });
 
     if (response.status === 204) {
-      window.location.reload();
-      //await downloadCsv();
+      window.location.reload(); //TODO
       return 'Subido con éxito';
     } else {
       throw new Error(response.message || 'Error al subir el archivo');

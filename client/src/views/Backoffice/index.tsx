@@ -2,11 +2,12 @@ import React, {useEffect, useState} from 'react';
 import authService, {CannotRefreshTokenError} from '../../services/auth';
 import taxomapService from '../../services/taxomapImpl';
 import LoginForm from '../../components/login/LoginForm';
-import { HttpError} from '@geomatico/client-commons';
+import {get, HttpError} from '@geomatico/client-commons';
 import AdminPage from './AdminPage';
 import Loading from '../../components/Loading';
 import {Occurrency} from '../../components/TaxoTable';
 import Papa, {ParseResult} from 'papaparse';
+import {API_BASE_URL} from '../../config';
 
 
 
@@ -69,33 +70,15 @@ const Index = () => {
     }));
 
     data !== '' ? setData(data) : setData(undefined);
-
   };
 
-  if (!isLogged) {
-    return <LoginForm
-      error={error}
-      onLogin={handleLogin}
-    />;
-  } else if (dummyData) {
-    return <Loading/>;
-  } else {
-    return <AdminPage 
-      data={data} 
-      onUpload={handleUpload}
-      isUploading={isLoading}
-      success={success} 
-      onAlertAccept={() => setSuccess(false)}
-    />;
-  }
-
-  /*useEffect(() => {
+  useEffect(() => {
     authService.isLogged()
       .then(setLogged)
       .catch(handleException);
-  }, []);*/
+  }, []);
 
-  /*useEffect(() => {
+  useEffect(() => {
     // TODO http calls should be somewhere else
     if (isLogged) {
       authService.getAccessToken().then(async accessToken => {
@@ -107,19 +90,24 @@ const Index = () => {
         setDummyData(data);
       }).catch(handleException);
     }
-  }, [isLogged]);*/
+  }, [isLogged]);
 
-  /*if (!isLogged) {
+  if (!isLogged) {
     return <LoginForm
       error={error}
       onLogin={handleLogin}
     />;
   } else if (dummyData) {
-    return <AdminPage onUpload={handleUpload}/>;
+    return <AdminPage
+      data={data}
+      onUpload={handleUpload}
+      isUploading={isLoading}
+      success={success}
+      onAlertAccept={() => setSuccess(false)}
+    />;
   } else {
-    //return <Loading/>;
-    return <AdminPage onUpload={handleUpload}/>;
-  }*/
+    return <Loading/>;
+  }
 };
 
 const exceptionHandler = (
