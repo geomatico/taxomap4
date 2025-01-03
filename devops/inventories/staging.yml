@@ -7,6 +7,10 @@ all:
     letsencrypt_mail: francisco.perez@geomatico.es
     api_base_url: "https://{{ domain }}/api/v1"
 
+    api_url: "https://{{ domain }}/api/v1"
+
+    api_url: "https://{{ domain }}/api/v1"
+
     geoserver:
       url: "https://{{ domain }}/geoserver"
       data_dir: "{{ service_path }}/geoserver_data_dir"

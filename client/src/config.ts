@@ -141,3 +141,30 @@ export const FILTER_BY = ['institutioncode', 'basisofrecord'];
 export const GEOSERVER_BASE_URL = process.env.GEOSERVER_BASE_URL;
 
 export const API_BASE_URL = process.env.API_BASE_URL as string;
+
+export const INSTITUTION_COLOR = [
+  {
+    id: 'Museu Ciències Naturals Barcelona',
+    color: '#58a062'
+  },
+  {
+    id: 'Museu Valencià d\'Història Natural',
+    color: '#fabb5c'
+  },
+  {
+    id: 'Universitat de Barcelona',
+    color: '#5a9dda'
+  },
+  {
+    id: 'Institut Mediterrani d\'Estudis Avançats',
+    color: '#f02921'
+  },
+  {
+    id: 'Institut Botànic de Barcelona',
+    color: '#58a062'
+  },
+  {
+    id: 'MCNB',
+    color: '#a5a4a4'
+  }
+];
