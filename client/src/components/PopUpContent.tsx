@@ -75,7 +75,7 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
   const scientificNameLabel = wfsProperties?.scientificName || selectedFeature.species?.name;
   const placeLabel = wfsProperties && getPlaceLabel(wfsProperties);
   const dateLabel = wfsProperties && getDateLabel(wfsProperties);
-  console.log('selectedFeature.institutioncode', selectedFeature.institutioncode);
+
   return <Card variant="outlined">
     <CardContent>
       <Typography variant='button' color="text.secondary">

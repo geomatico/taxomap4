@@ -33,6 +33,9 @@
     "ub": "Universitat de Barcelona",
     "valencia": "Museu Valencià d'Història Natural"
   },
+  "login": {
+    "enter": "Enter"
+  },
   "mapStyles": {
     "bright": "Bright",
     "gray": "Gray",
@@ -42,9 +45,8 @@
     "temperature": "Temperature"
   },
   "mapTypes": {
-    "discreteData": "Discrete Data",
-    "heatMap": "Heatmap",
-    "aggregateData": "Aggregate Data"
+    "densityMap": "Density map",
+    "discreteData": "Discrete data"
   },
   "moreInfo": "More information",
   "navbar": {

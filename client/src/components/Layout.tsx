@@ -98,7 +98,7 @@ const Layout: FC<LayoutProps> = ({mainContent, sidePanelContent, selectedTaxon, 
       logo={
         <Link href="/" target="_blank">
           <Box sx={{my: 1.5, ml: 2}}>
-            <Logo/>
+            <Logo width='195px'/>
           </Box>
         </Link>
       }

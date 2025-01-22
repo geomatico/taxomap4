@@ -135,6 +135,6 @@ export type Filters = {
 
 export enum MapType {
   discreteData = 'discreteData',
-  heatMap = 'heatMap',
+  densityMap = 'densityMap',
   aggregateData = 'aggregateData'
 }

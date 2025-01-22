@@ -5,6 +5,11 @@ all:
     service_path: /srv/services/taxomap-staging
     deploy_user: geomatico
     letsencrypt_mail: francisco.perez@geomatico.es
+    api_base_url: "https://{{ domain }}/api/v1"
+
+    api_url: "https://{{ domain }}/api/v1"
+
+    api_url: "https://{{ domain }}/api/v1"
 
     geoserver:
       url: "https://{{ domain }}/geoserver"
@@ -34,6 +39,8 @@ all:
         33666436613165633235653938393763626239333433636135376239613335343338643532353938
         3532633735613136320a356532323639353533343634656432303962373566646139626261613837
         62633761333263303361396239396366326239383765613238356464383430663332
+      extra_volumes:
+        - "{{ service_path }}/pgdata:/var/lib/postgresql/data"
 
     backend:
       settings: project.settings.prod

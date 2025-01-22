@@ -53,3 +53,33 @@ curl http://localhost:8000/api/v1/auth/users/activation/ --data '{"uid": "<from_
 
 Todos los endpoints del backoffice están abiertos para cualquier usuario autenticado.
 Todos los endpoints del backoffice están cerrados para cualquier usuario no autenticado.
+
+## Taxonomia
+
+El dataset son ~7M de filas que importamos de un fichero de texto: https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28
+
+Para importar el backbone de GBIF, ejecutar ./prepare-db.sh en devops/prepare-db 
+Puede tardar 10mn en descargar.
+
+
+## Base de datos en Staging
+
+Ahora mismo la base de datos se persiste entre despliegues. Si en algún momento en necesario resetearla, se puede hacer entrando en el servidor.
+El proceso sería:
+
+1. Apagar Servicios
+2. Borrar Volumen
+3. Arrancar Servicios
+
+```shell
+ssh ubuntu@staging.geomatico.es
+cd /srv/services/taxomap-staging
+docker compose down
+sudo su
+rm -rf pgdata
+exit
+docker compose up -d
+```
+
+Esto volverá a ejecutar el contenido de `initdb-scripts` del contenedor de `database`.
+
