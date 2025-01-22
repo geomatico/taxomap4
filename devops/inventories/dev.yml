@@ -29,7 +29,7 @@ all:
         - "8000:80"
 
     geoserver:
-      url: http://localhost/geoserver
+      url: "http://{{ domain }}/geoserver"
       data_dir: ../devops/geoserver_data_dir
       admin_password: geoserver
       extra_ports:
