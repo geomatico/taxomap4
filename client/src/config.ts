@@ -5,8 +5,6 @@ import institutioncode from '../static/data/dictionaries/institutioncode.json';
 import kingdom from '../static/data/dictionaries/kingdom.json';
 import phylum from '../static/data/dictionaries/phylum.json';
 
-export const IS_TACTILE: boolean = true;
-
 export const DRAWER_WIDTH = 300;
 export const SM_BREAKPOINT = 600;
 export const OFFSET_TOP = 83;

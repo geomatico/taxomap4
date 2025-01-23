@@ -2,7 +2,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import {useTranslation} from 'react-i18next';
 import {CardActions, CardContent} from '@mui/material';
-import {IS_TACTILE, MUSEU_ID} from '../config';
+import {MUSEU_ID} from '../config';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import {DictionaryEntry} from '../commonTypes';
@@ -12,6 +12,7 @@ import './utils/popUp.css';
 
 export type PopUpContentProps = {
   selectedFeature: SelectedFeature,
+  isTactile: boolean
 }
 
 export type SelectedFeature = {
@@ -55,7 +56,7 @@ export const getDateLabel = (properties: WfsProperties): string | undefined => {
     .join('-');
 };
 
-const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
+const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile}) => {
   const {t} = useTranslation();
   const [wfsProperties, setWfsProperties] = useState<WfsProperties>();
 
@@ -91,7 +92,7 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
       {dateLabel && <Typography variant="caption" color="text.secondary">{dateLabel}</Typography>}
     </CardContent>
     {
-      selectedFeature.institutioncode?.id === MUSEU_ID && !IS_TACTILE &&
+      selectedFeature.institutioncode?.id === MUSEU_ID && !isTactile &&
       <CardActions>
         <Link href={getMoreInfoUrl(selectedFeature)} color="inherit" underline="none" target="_blank" sx={{ml: 1,mb: 1, textTransform: 'uppercase'}}>
           {t('moreInfo')}
