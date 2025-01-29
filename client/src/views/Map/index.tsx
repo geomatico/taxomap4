@@ -89,6 +89,7 @@ const Index: FC<IndexProps> = ({isTactile}) => {
 
   const sidePanelContent = <SidePanelContent
     filters={filters}
+    isTactile={isTactile}
     onInstitutionFilterChange={setInstitutionId}
     onBasisOfRecordChange={setBasisOfRecordId}
     onTaxonChange={setTaxon}

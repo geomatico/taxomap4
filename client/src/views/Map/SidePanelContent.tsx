@@ -18,6 +18,7 @@ const ScrollableContent = styled(Box)({
 
 type SidePanelContentProps = {
   filters : Filters,
+  isTactile: boolean,
   onInstitutionFilterChange: (id: number) => void,
   onBasisOfRecordChange: (id: number) => void,
   onTaxonChange: (taxon: Taxon) => void,
@@ -27,6 +28,7 @@ type SidePanelContentProps = {
 
 const SidePanelContent: FC<SidePanelContentProps> = ({
   filters,
+  isTactile,
   onInstitutionFilterChange,
   onBasisOfRecordChange,
   onTaxonChange,
@@ -57,6 +59,7 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
     <ScrollableContent>
       <TaxoTree
         filters={filters}
+        isTactile={isTactile}
         onTaxonChanged={onTaxonChange}
         childrenItems={childrenItems}
         onSubtaxonVisibilityChanged={onSubtaxonVisibilityChanged}
