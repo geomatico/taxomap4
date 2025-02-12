@@ -52,7 +52,7 @@ const Index: FC<IndexProps> = ({isTactile}) => {
   useEffect(()=>{
     if(selectedTaxon) {
       if (isTactile) {
-        navigate(`../tactile/map/${selectedTaxon.level}/${selectedTaxon.id}`);
+        navigate(`../planetavida/${selectedTaxon.level}/${selectedTaxon.id}`);
       } else {
         navigate(`../map/${selectedTaxon.level}/${selectedTaxon.id}`);
       }
