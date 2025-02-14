@@ -100,7 +100,7 @@ const Layout: FC<LayoutProps> = ({mainContent, sidePanelContent, selectedTaxon, 
     <ResponsiveHeader
       title={<Breadcrumbs tree={taxonPath} onTaxonChange={onTaxonChange}/>}
       logo={
-        <Link href={isTactile ? '#/tactile/map' : '/#/map'} target="_blank">
+        <Link href={isTactile ? '/#/planetavida' : '/#/map'} target="_blank">
           <Box sx={{my: 1.5, ml: 2}}>
             <Logo width='195px'/>
           </Box>

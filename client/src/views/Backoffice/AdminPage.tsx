@@ -26,7 +26,7 @@ const AdminPage: FC<AdminProps> = ({data, onUpload, isUploading, onAlertAccept, 
     <ResponsiveHeader
       title=''
       logo={
-        <Link href="/" target="_blank">
+        <Link href="#" target="_blank">
           <Box sx={{my: 1.5, ml: 2}}>
             <Logo width='195px'/>
           </Box>
