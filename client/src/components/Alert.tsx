@@ -3,7 +3,6 @@ import Dialog from '@mui/material/Dialog';
 import {DialogActions, DialogContent, DialogTitle} from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 //TYPES
 export type AlertProps = {
