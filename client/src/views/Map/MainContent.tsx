@@ -178,7 +178,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
       }>({
         id: 'data',
         data,
-        getRadius: 4,
+        getRadius: isTactile ? 7 : 4,
         radiusUnits: 'pixels',
         stroked: true,
         getLineColor: [255, 255, 255],
