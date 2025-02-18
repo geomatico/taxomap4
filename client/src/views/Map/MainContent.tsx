@@ -68,11 +68,12 @@ const legendSelectorContainer = {
 
 type MainContentProps = {
   filters : Filters,
+  isTactile: boolean,
   onYearFilterChange: (range?: Range) => void,
   onBBOXChanged: (bbox: BBOX) => void,
 };
 
-const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXChanged }) => {
+const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChange, onBBOXChanged }) => {
   const [viewport, setViewport] = useState<Viewport>(INITIAL_VIEWPORT);
   const [mapStyle, setMapStyle] = useState<string>(INITIAL_MAPSTYLE_URL);
   const [symbolizeBy, setSymbolizeBy] = useState<SymbolizeBy>(SymbolizeBy.institutioncode);
@@ -177,7 +178,7 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
       }>({
         id: 'data',
         data,
-        getRadius: 4,
+        getRadius: isTactile ? 7 : 4,
         radiusUnits: 'pixels',
         stroked: true,
         getLineColor: [255, 255, 255],
@@ -285,7 +286,7 @@ const MainContent: FC<MainContentProps> = ({filters, onYearFilterChange, onBBOXC
           anchor="top"
           onClose={() => setSelectedFeature(undefined)}
         >
-          <PopUpContent selectedFeature={selectedFeature}/>
+          <PopUpContent selectedFeature={selectedFeature} isTactile={isTactile}/>
         </PopupInfo>
       }
     </DeckGL>

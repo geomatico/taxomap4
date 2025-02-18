@@ -36,10 +36,11 @@ function TabPanel(props: TabPanelProps) {
 export type TaxonInfoModalProps = {
   selectedTaxon: TaxonomicLevel,
   isModalOpen: boolean,
+  isTactile: boolean,
   onModalOpenChange: (_isOpen: boolean) => void,
 }
 
-const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, onModalOpenChange}) => {
+const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, isTactile, onModalOpenChange}) => {
   const handleClose = () => onModalOpenChange(false);
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -87,7 +88,7 @@ const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, on
         indicatorColor="secondary"
       >
         <Tab value={0} label="Wikipedia"/>
-        <Tab value={1} label="Links"/>
+        {!isTactile && <Tab value={1} label="Links"/>}
       </Tabs>
     </Box>
     <TabPanel value={selectedTab} index={0}>
