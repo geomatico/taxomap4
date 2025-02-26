@@ -72,12 +72,13 @@ const listItemTextStyle = {
 
 export type TaxoTreeProps = {
   filters : Filters,
+  isTactile: boolean,
   onTaxonChanged: (taxon: Taxon) => void,
   onSubtaxonVisibilityChanged: (visibility: SubtaxonVisibility) => void,
   childrenItems: Array<ChildCount>
 }
 
-const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
+const TaxoTree: FC<TaxoTreeProps> = ({filters, isTactile, onSubtaxonVisibilityChanged, onTaxonChanged, childrenItems}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
@@ -152,7 +153,8 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
         <Typography sx={labelTaxoStyle}>{getLabel()}</Typography>
       </Box>
       <Box display='flex' alignItems='center'>
-        <Tooltip title={<Typography variant='caption'>{t('infoTaxon')}</Typography>} placement='top' sx={{fontSize: '20px'}}>
+        <Tooltip title={<Typography variant='caption'>{t('infoTaxon')}</Typography>} placement='top'
+          sx={{fontSize: '20px'}}>
           <InfoOutlinedIcon onClick={handleOnMoreInfoClick} sx={{mr: 1}}/>
         </Tooltip>
 
@@ -186,11 +188,13 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
             </ArrowContainer>
           )}
         >
-          <Box onClick={(e)=> handleDownloadClick(e.currentTarget)} sx={{display: 'flex'}}>
-            <Tooltip title={<Typography variant='caption'>{t('download')}</Typography>} placement="top">
-              <DownloadIcon sx={{mr: 1, fontSize: 16}}/>
-            </Tooltip>
-          </Box>
+          {
+            !isTactile ? <Box onClick={(e) => handleDownloadClick(e.currentTarget)} sx={{display: 'flex'}}>
+              <Tooltip title={<Typography variant='caption'>{t('download')}</Typography>} placement="top">
+                <DownloadIcon sx={{mr: 1, fontSize: 16}}/>
+              </Tooltip>
+            </Box> : <></>
+          }
         </Popover>
       </Box>
 
@@ -225,7 +229,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, onSubtaxonVisibilityChanged, onTa
       )}
     </List>
 
-    {isModalOpen && <TaxonInfoModal isModalOpen={isModalOpen} selectedTaxon={currentDictionaryEntry?.name as TaxonomicLevel} onModalOpenChange={setIsModalOpen}/>}
+    {isModalOpen && <TaxonInfoModal isModalOpen={isModalOpen} isTactile={isTactile} selectedTaxon={currentDictionaryEntry?.name as TaxonomicLevel} onModalOpenChange={setIsModalOpen}/>}
 
   </> : null;
 };

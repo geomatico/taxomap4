@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
 import Layout from '../../components/Layout';
 import SidePanelContent from './SidePanelContent';
@@ -12,7 +12,11 @@ import {BBOX, ChildCount, SubtaxonVisibility, Taxon, TaxonId, TaxonomicLevel, Ra
 import {useNavigate, useParams} from 'react-router-dom';
 import {nextTaxonomicLevel} from '../../taxonomicLevelUtils';
 
-const Index = () => {
+export type IndexProps = {
+  isTactile: boolean
+}
+
+const Index: FC<IndexProps> = ({isTactile}) => {
   const dictionaries = useDictionaries();
   const navigate = useNavigate();
   const {level, id} = useParams();
@@ -46,7 +50,13 @@ const Index = () => {
   },[]);
 
   useEffect(()=>{
-    if(selectedTaxon) navigate(`../map/${selectedTaxon.level}/${selectedTaxon.id}`);
+    if(selectedTaxon) {
+      if (isTactile) {
+        navigate(`../planetavida/${selectedTaxon.level}/${selectedTaxon.id}`);
+      } else {
+        navigate(`../map/${selectedTaxon.level}/${selectedTaxon.id}`);
+      }
+    }
   },[selectedTaxon]);
 
 
@@ -79,6 +89,7 @@ const Index = () => {
 
   const sidePanelContent = <SidePanelContent
     filters={filters}
+    isTactile={isTactile}
     onInstitutionFilterChange={setInstitutionId}
     onBasisOfRecordChange={setBasisOfRecordId}
     onTaxonChange={setTaxon}
@@ -88,6 +99,7 @@ const Index = () => {
 
   const mainContent = <MainContent
     filters={filters}
+    isTactile={isTactile}
     onYearFilterChange={setYearRange}
     onBBOXChanged={setBBOX}
   />;
@@ -96,6 +108,7 @@ const Index = () => {
     sidePanelContent={sidePanelContent}
     mainContent={mainContent}
     selectedTaxon={selectedTaxon}
+    isTactile={isTactile}
     onTaxonChange={setTaxon}
   />;
 };
