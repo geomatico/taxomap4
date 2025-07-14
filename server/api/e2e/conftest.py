@@ -1,7 +1,10 @@
 import pytest
+from django.db.backends.base import creation
 from geomatico_django_test.database_aware_factory import DatabaseAwareFactory
 
 from api.models import User
+
+creation.TEST_DATABASE_PREFIX = ''
 
 
 @pytest.fixture

@@ -7,3 +7,4 @@ DATABASES = {
 
 STATIC_ROOT = env("STATIC_ROOT", default='/tmp/taxomap/static')
 MEDIA_ROOT = env("MEDIA_ROOT", default='/tmp/taxomap/media')
+GDAL_ROOT = env("GDAL_ROOT", default='/tmp/taxomap/gdal-shared')

@@ -3,7 +3,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from geomatico_django.view import SimpleRouter
 
-from api.views.dummy_view import DummyView
+from api.views.manage_view import ManageView
 from api.views.upload_csv_view import UploadCsvView
 
 schema_view = get_schema_view(
@@ -27,5 +27,5 @@ urlpatterns = [
 ]
 
 router = SimpleRouter()
-router.register('holi', DummyView, basename="dummy"),
+router.register('manage', ManageView, basename="manage"),
 urlpatterns += router.urls

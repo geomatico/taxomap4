@@ -2,7 +2,7 @@ import csv
 import io
 from typing import Optional
 
-from django.db import transaction, connection
+from django.db import connection, transaction
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.response import Response

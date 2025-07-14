@@ -31,3 +31,7 @@ LANGUAGES = [
     ("es", "Spanish"),
     ("en", "English"),
 ]
+
+GDAL_HOST = env('GDAL_HOST', default='taxomap-gdal')
+GDAL_PORT = env('GDAL_PORT', default='22')
+GDAL_PASSWORD = env('GDAL_PASSWORD', default='geoprocessing')

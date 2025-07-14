@@ -2,6 +2,7 @@
 [tool.pytest.ini_options]
 pythonpath = ["src", "tests", "e2e"]
 DJANGO_SETTINGS_MODULE = "project.settings.local"
+addopts = "--reuse-db"  # for testing against the original database, without re-creating each time
 log_level = "ERROR"
 log_cli = true
 

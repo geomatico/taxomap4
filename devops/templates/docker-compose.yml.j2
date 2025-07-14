@@ -1,6 +1,6 @@
 services:
 {% if use_proxy is not defined or use_proxy %}
-  taxomap-proxy:
+  {{ name }}-proxy:
     image: geomatico/{{ name }}-proxy:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build: docker/proxy
@@ -15,9 +15,9 @@ services:
       - "{{ service_path }}/static:/static"
       - "{{ service_path }}/media:/media"
     depends_on:
-      - taxomap-database
-      - taxomap-frontend
-      - taxomap-backend
+      - {{ name }}-database
+      - {{ name }}-frontend
+      - {{ name }}-backend
 {% if domain == 'localhost' %}
     ports:
       - "80:80"
@@ -30,7 +30,7 @@ services:
 {% endif %}
 {% endif %}
 
-  taxomap-database:
+  {{ name }}-database:
 {% if build_needed is not defined or build_needed %}
     build: docker/database
 {% endif %}
@@ -64,7 +64,7 @@ services:
 {% endfor %}
 {% endif %}
 
-  taxomap-backend:
+  {{ name }}-backend:
     image: geomatico/{{ name }}-backend:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build:
@@ -72,7 +72,9 @@ services:
       context: ../
 {% endif %}
     depends_on:
-      taxomap-database:
+      {{ name }}-database:
+        condition: service_healthy
+      {{ name }}-gdal:
         condition: service_healthy
     container_name: {{ name }}-backend
     restart: {{ docker.restart_containers | default('always') }}
@@ -80,6 +82,7 @@ services:
     volumes:
       - "{{ service_path }}/static:/static"
       - "{{ service_path }}/media:/media"
+      - "{{ service_path }}/gdal-shared:/gdal"
 {% if 'extra_volumes' in backend %}
 {% for volume in backend.extra_volumes %}
       - "{{ volume }}"
@@ -97,11 +100,39 @@ services:
       DOMAIN: {{ domain }}
       DJANGO_ALLOWED_HOSTS: "{{ backend.allowed_hosts | default() }}"
       SECRET_KEY: {{ backend.secret_key | default() }}
+      GDAL_HOST: {{ backend.gdal_host | default() }}
+      GDAL_PORT: {{ backend.gdal_port | default() }}
+      GDAL_PASSWORD: {{ gdal.password | default() }}
+    networks:
+      - internal
+
+  {{ name }}-gdal:
+    image: geomatico/{{ name }}-gdal:latest
+    build: docker/gdal
+    container_name: {{ name }}-gdal
+    depends_on:
+      {{ name }}-database:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "ogrinfo --version" ]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+{% if 'extra_ports' in gdal %}
+    ports:
+{% for port in gdal.extra_ports %}
+      - "{{ port }}"
+{% endfor %}
+{% endif %}
+    volumes:
+      - "{{ service_path }}/gdal-shared:/gdal-outputs"
+    environment:
+      GEOPROCESSING_PASSWORD: {{ gdal.password }}
     networks:
       - internal
 
 {% if use_frontend is not defined or use_frontend %}
-  taxomap-frontend:
+  {{ name }}-frontend:
     image: geomatico/{{ name }}-frontend:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build:
@@ -111,14 +142,14 @@ services:
     container_name: {{ name }}-frontend
     restart: {{ docker.restart_containers | default('always') }}
     depends_on:
-      - taxomap-database
-      - taxomap-geoserver
+      - {{ name }}-database
+      - {{ name }}-geoserver
     networks:
       - internal
 {% endif %}
 
 {% if use_geoserver is not defined or use_geoserver %}
-  taxomap-geoserver:
+  {{ name }}-geoserver:
     image: geomatico/{{ name }}-geoserver:{{TAG}}
 {% if build_needed is not defined or build_needed %}
     build: docker/geoserver
@@ -126,7 +157,7 @@ services:
     container_name:  {{ name }}-geoserver
     restart: {{ docker.restart_containers | default('always') }}
     depends_on:
-      taxomap-database:
+      {{ name }}-database:
         condition: service_healthy
     environment:
       CUSTOM_UID: 1001

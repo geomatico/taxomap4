@@ -11,8 +11,10 @@ ADD devops/docker/backend/scripts /usr/bin
 
 ENV MEDIA_ROOT=/media
 ENV STATIC_ROOT=/static
+ENV GDAL_ROOT=/gdal
 VOLUME $MEDIA_ROOT
 VOLUME $STATIC_ROOT
+VOLUME $GDAL_ROOT
 
 EXPOSE 80
 
