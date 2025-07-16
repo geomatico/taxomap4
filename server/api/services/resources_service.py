@@ -10,7 +10,6 @@ from api.repositories.taxonomy import TaxonomyItem, TaxonomyRepository
 from api.services import gdal_service
 
 _DICTIONARIES_DIR = os.path.join(settings.STATIC_ROOT, 'dictionaries')
-Path(_DICTIONARIES_DIR).mkdir(parents=True, exist_ok=True)
 
 
 def generate_all_resources():
@@ -44,6 +43,7 @@ def generate_dictionaries():
 
 
 def _update_json(filename: str, items: list[TaxonomyItem]):
+    Path(_DICTIONARIES_DIR).mkdir(parents=True, exist_ok=True)
     dest = os.path.join(_DICTIONARIES_DIR, filename)
     if os.path.exists(dest):
         shutil.move(dest, f'{dest}.bak')

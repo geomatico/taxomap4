@@ -34,7 +34,7 @@ create table backbone (
  issues text[]
 );
 
-\copy backbone from 'gbif-backbone.txt';
+copy backbone from '/tmp/gbif-backbone.txt';
 
 alter table backbone alter column is_synonym set not null;
 alter table backbone alter column status set not null;
@@ -52,3 +52,4 @@ alter table backbone add constraint backbone_species_fk foreign key (species_key
 
 create index on backbone(rank);
 create index on backbone(status);
+create index on backbone(canonical_name);

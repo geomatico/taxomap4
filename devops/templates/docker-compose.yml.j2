@@ -82,7 +82,7 @@ services:
     volumes:
       - "{{ service_path }}/static:/static"
       - "{{ service_path }}/media:/media"
-      - "{{ service_path }}/gdal-shared:/gdal"
+      - "{{ service_path }}/gdal-shared:/gdal-outputs"
 {% if 'extra_volumes' in backend %}
 {% for volume in backend.extra_volumes %}
       - "{{ volume }}"
