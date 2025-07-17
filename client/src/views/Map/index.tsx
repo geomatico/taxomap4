@@ -36,7 +36,7 @@ const Index: FC<IndexProps> = ({isTactile}) => {
     subtaxonVisibility: subtaxonVisibility,
     yearRange: selectedYearRange,
     bbox: BBOX
-  } : undefined, [selectedTaxon, selectedInstitutionId, selectedBasisOfRecordId, subtaxonVisibility, BBOX]);
+  } : undefined, [selectedTaxon, selectedInstitutionId, selectedBasisOfRecordId, subtaxonVisibility, selectedYearRange, BBOX]);
 
   useEffect(() => {
     if (!level || !id) {
