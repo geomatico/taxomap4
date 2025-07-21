@@ -171,7 +171,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
           [1, 1]
         ],
         updateTriggers: {
-          getFillColor: [symbolizeBy],
+          getFillColor: [symbolizeBy, legends],
           getFilterValue: [filters.subtaxonVisibility]
         },
         pickable: true
@@ -190,7 +190,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
     default:
       return discreteDataLayer;
     }
-  }, [selectedMapType, data, symbolizeBy, filters, dictionaries]);
+  }, [selectedMapType, data, symbolizeBy, filters, dictionaries, legends]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,

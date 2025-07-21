@@ -40,7 +40,7 @@ const useApplyColor = (legends: Legends, field: SymbolizeBy) => {
     target[0] = color[0];
     target[1] = color[1];
     target[2] = color[2];
-    target[3] = 255;
+    target[3] = color === undefined ? 0 : 255;
     return target;
   };
 };

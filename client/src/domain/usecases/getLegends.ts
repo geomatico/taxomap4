@@ -9,7 +9,7 @@ export type Legends = {
 
 const getLegends = (dictionaries: Dictionaries): Legends => {
   return {
-    basisOfRecordLegend: [{
+    basisOfRecordLegend: dictionaries.basisofrecord.length ? [{
       id: getIdByName(dictionaries.basisofrecord, 'Non-fossil/No fòssil/No fósil'),
       labelKey: 'basisofrecordLegend.nonFossil',
       color: '#58A062'
@@ -17,8 +17,8 @@ const getLegends = (dictionaries: Dictionaries): Legends => {
       id: getIdByName(dictionaries.basisofrecord, 'Fossil/Fòssil/Fósil'),
       labelKey: 'basisofrecordLegend.fossil',
       color: '#F07971'
-    }],
-    institutionlegend: [{
+    }]: [],
+    institutionlegend:  dictionaries.institutioncode.length ? [{
       id: getIdByName(dictionaries.institutioncode, 'Institut Botànic de Barcelona'),
       labelKey: 'institutionLegend.botanic',
       color: '#58A062'
@@ -38,8 +38,8 @@ const getLegends = (dictionaries: Dictionaries): Legends => {
       id: getIdByName(dictionaries.institutioncode, 'Museu Ciències Naturals Barcelona'),
       labelKey: 'institutionLegend.mcnb',
       color: '#FABB5C'
-    }],
-    phylumLegend: [{
+    }]: [],
+    phylumLegend: dictionaries.phylum.length ? [{
       id: getIdByName(dictionaries.phylum, 'Tracheophyta'),
       labelKey: 'phylumLegend.tracheophyta',
       color: '#58A062'
@@ -59,7 +59,7 @@ const getLegends = (dictionaries: Dictionaries): Legends => {
       id: 0,
       labelKey: 'phylumLegend.other',
       color: '#FABB5C'
-    }]
+    }] : []
   };
 };
 
