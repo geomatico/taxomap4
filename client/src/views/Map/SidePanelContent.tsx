@@ -8,6 +8,7 @@ import TaxoTree from '../../components/TaxoTree';
 import {AutocompleteVirtualized} from '../../components/AutocompleteVirtualized';
 import Divider from '@mui/material/Divider';
 import {ChildCount, Filters, SubtaxonVisibility, Taxon} from '../../commonTypes';
+import GeomaticoLink from '../../components/GeomaticoLink';
 
 const ScrollableContent = styled(Box)({
   overflow: 'auto',
@@ -65,6 +66,7 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
         onSubtaxonVisibilityChanged={onSubtaxonVisibilityChanged}
       />
     </ScrollableContent>
+    <GeomaticoLink/>
   </Stack>;
 };
 
