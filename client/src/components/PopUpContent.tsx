@@ -2,17 +2,17 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import {useTranslation} from 'react-i18next';
 import {CardActions, CardContent} from '@mui/material';
-import {MUSEU_ID} from '../config';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import {DictionaryEntry} from '../commonTypes';
-import {WfsProperties, getWfsFeatureProperties, WFS_PROPERTY} from '../wfs/wfs';
+import {getWfsFeatureProperties, WFS_PROPERTY, WfsProperties} from '../wfs/wfs';
 
 import './utils/popUp.css';
 
 export type PopUpContentProps = {
   selectedFeature: SelectedFeature,
   isTactile: boolean
+  museuId: number
 }
 
 export type SelectedFeature = {
@@ -56,7 +56,7 @@ export const getDateLabel = (properties: WfsProperties): string | undefined => {
     .join('-');
 };
 
-const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile}) => {
+const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile, museuId}) => {
   const {t} = useTranslation();
   const [wfsProperties, setWfsProperties] = useState<WfsProperties>();
 
@@ -88,11 +88,17 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile}) => {
       <Typography sx={{fontSize: 14}} color="text.secondary">
         {selectedFeature.institutioncode?.name}
       </Typography>
-      {placeLabel && <Typography variant="caption" sx={{marginTop:1, display: 'block'}} color="text.secondary">{placeLabel}</Typography>}
-      {dateLabel && <Typography variant="caption" color="text.secondary">{dateLabel}</Typography>}
+      {placeLabel &&
+        <Typography variant="caption" sx={{marginTop: 1, display: 'block'}} color="text.secondary">
+          {placeLabel}
+        </Typography>}
+      {dateLabel &&
+        <Typography variant="caption" color="text.secondary">
+          {dateLabel}
+        </Typography>}
     </CardContent>
     {
-      selectedFeature.institutioncode?.id === MUSEU_ID && !isTactile &&
+      selectedFeature.institutioncode?.id === museuId && !isTactile &&
       <CardActions>
         <Link href={getMoreInfoUrl(selectedFeature)} color="inherit" underline="none" target="_blank" sx={{ml: 1,mb: 1, textTransform: 'uppercase'}}>
           {t('moreInfo')}

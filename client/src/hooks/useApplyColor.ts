@@ -1,5 +1,5 @@
-import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, PHYLUM_LEGEND} from '../config';
-import {HEXColor, RGBAArrayColor, RGBArrayColor, SymbolizeBy} from '../commonTypes';
+import {HEXColor, Legend, RGBAArrayColor, RGBArrayColor, SymbolizeBy} from '../commonTypes';
+import {Legends} from '../domain/usecases/getLegends';
 
 function hexToRgb(hex: HEXColor): RGBArrayColor {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -10,36 +10,37 @@ function hexToRgb(hex: HEXColor): RGBArrayColor {
   ] : [0, 0, 0];
 }
 
-const otherPhylumColor = hexToRgb(PHYLUM_LEGEND.find(({id}) => id === 0)?.color || '#000000');
+const otherPhylumColor = (legend: Legend) => hexToRgb(legend.find(({id}) => id === 0)?.color || '#000000');
 
-const getPalette = (field: SymbolizeBy) => {
+const getPalette = (legends: Legends, field: SymbolizeBy) => {
   switch (field) {
   case SymbolizeBy.phylum:
-    return PHYLUM_LEGEND.reduce((acc, {id, color}) => {
+    return legends.phylumLegend.reduce((acc, {id, color}) => {
       acc[id] = color;
       return acc;
     }, [] as Array<HEXColor>).map(hexToRgb);
   case SymbolizeBy.basisofrecord:
-    return BASIS_OF_RECORD_LEGEND.reduce((acc, {id, color}) => {
+    return legends.basisOfRecordLegend.reduce((acc, {id, color}) => {
       acc[id] = color;
       return acc;
     }, [] as Array<HEXColor>).map(hexToRgb);
   case SymbolizeBy.institutioncode:
-    return INSTITUTION_LEGEND.reduce((acc, {id, color}) => {
+    return legends.institutionlegend.reduce((acc, {id, color}) => {
       acc[id] = color;
       return acc;
     }, [] as Array<HEXColor>).map(hexToRgb);
   }
 };
 
-const useApplyColor = (field: SymbolizeBy) => {
-  const palette = getPalette(field);
+const useApplyColor = (legends: Legends, field: SymbolizeBy) => {
+  const palette = getPalette(legends, field);
   return (value: number, target: RGBAArrayColor) => {
-    const color: RGBArrayColor = palette && palette[value] || (field === SymbolizeBy.phylum ? otherPhylumColor : [0, 0, 0]);
+    const color: RGBArrayColor = palette && palette[value]
+        || (field === SymbolizeBy.phylum ? otherPhylumColor(legends.phylumLegend) : [0, 0, 0]);
     target[0] = color[0];
     target[1] = color[1];
     target[2] = color[2];
-    target[3] = 255;
+    target[3] = color === undefined ? 0 : 255;
     return target;
   };
 };

@@ -4,7 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import ReactMapGL, { Popup, _MapContext as MapContext, ViewState } from 'react-map-gl';
+import ReactMapGL, {_MapContext as MapContext, Popup, ViewState} from 'react-map-gl';
 import {ScatterplotLayer} from '@deck.gl/layers/typed';
 import {HeatmapLayer} from '@deck.gl/aggregation-layers/typed';
 import {DataFilterExtension} from '@deck.gl/extensions/typed';
@@ -20,8 +20,9 @@ import BaseMapPicker from '@geomatico/geocomponents/Map/BaseMapPicker';
 import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import {
   BBOX,
-  Dictionaries,
-  FilterBy, Filters, MapType,
+  FilterBy,
+  Filters,
+  MapType,
   Range,
   RGBAArrayColor,
   SymbolizeBy,
@@ -40,6 +41,8 @@ import useCount from '../../hooks/useCount';
 import useApplyColor from '../../hooks/useApplyColor';
 
 import DeckGL from '@deck.gl/react/typed';
+import useLegends from '../../hooks/useLegends';
+import {getIdByName} from '../../domain/usecases/getDictionaries';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -81,9 +84,11 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
 
   const {t} = useTranslation();
-  const dictionaries: Dictionaries = useDictionaries();
-  const applyColor = useApplyColor(symbolizeBy);
-  const data: TaxomapData | undefined = useArrowData();
+  const dictionaries = useDictionaries();
+  const legends = useLegends();
+  const data = useArrowData();
+
+  const applyColor = useApplyColor(legends, symbolizeBy);
 
   const fullYearRange: Range | undefined = useMemo(() => {
     const years = data?.year.filter(year => year > 0).sort();
@@ -96,6 +101,9 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
     filters: {...filters, yearRange: fullYearRange},
     groupBy: FilterBy.year
   });
+  const museuId = useMemo(
+    () => getIdByName(dictionaries.institutioncode, 'Museu Ciències Naturals Barcelona'),
+    [dictionaries]);
 
   const handleViewportChange = (viewport: Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
 
@@ -135,42 +143,6 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
           getFilterValue: [filters.subtaxonVisibility]
         }
       })];
-  /*const aggregateDataLayer = [
-    new ScreenGridLayer<TaxomapData, {
-          getFilterValue: Accessor<TaxomapData, number | number[]>,
-          filterRange: Array<number | number[]>
-        }>({
-          id: 'ScreenGridLayer',
-          data,
-          cellSizePixels: 50,
-          colorRange: [
-            [0, 25, 0, 25],
-            [0, 85, 0, 85],
-            [0, 127, 0, 127],
-            [0, 170, 0, 170],
-            [0, 190, 0, 190],
-            [0, 255, 0, 255]
-          ],
-          opacity: 0.8,
-          extensions: [new DataFilterExtension({ filterSize: 4 })],
-          getFilterValue: (_, { index, data }) => [
-            (data as TaxomapData).year[index],
-            (data as TaxomapData).institutioncode[index],
-            (data as TaxomapData).basisofrecord[index],
-            !filters.subtaxonVisibility || filters.subtaxonVisibility.isVisible[(data as TaxomapData)[filters.subtaxonVisibility.subtaxonLevel][index]] === true ? 1 : 0
-          ],
-          filterRange: [
-            filters.yearRange === undefined ? [0, 999999] : filters.yearRange,
-            filters.institutionId === undefined ? [0, 999999] : [filters.institutionId, filters.institutionId],
-            filters.basisOfRecordId === undefined ? [0, 999999] : [filters.basisOfRecordId, filters.basisOfRecordId],
-            [1, 1]
-          ],
-          updateTriggers: {
-            getFillColor: [symbolizeBy],
-            getFilterValue: [filters.subtaxonVisibility]
-          }
-        })    
-  ];*/
   const discreteDataLayer = [
     new ScatterplotLayer<TaxomapData, {
         getFilterValue: Accessor<TaxomapData, number | number[]>,
@@ -199,7 +171,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
           [1, 1]
         ],
         updateTriggers: {
-          getFillColor: [symbolizeBy],
+          getFillColor: [symbolizeBy, legends],
           getFilterValue: [filters.subtaxonVisibility]
         },
         pickable: true
@@ -218,7 +190,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
     default:
       return discreteDataLayer;
     }
-  }, [selectedMapType, data, symbolizeBy, filters, dictionaries]);
+  }, [selectedMapType, data, symbolizeBy, filters, dictionaries, legends]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
@@ -286,7 +258,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
           anchor="top"
           onClose={() => setSelectedFeature(undefined)}
         >
-          <PopUpContent selectedFeature={selectedFeature} isTactile={isTactile}/>
+          <PopUpContent selectedFeature={selectedFeature} museuId={museuId} isTactile={isTactile}/>
         </PopupInfo>
       }
     </DeckGL>
@@ -308,7 +280,8 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
       }
     </Box>
     <Box sx={legendSelectorContainer}>
-      <Legend symbolizeBy={symbolizeBy} filters={filters} onSymbolizeByChange={setSymbolizeBy} selectedMapType={selectedMapType} onMapTypeChange={setMapType}/>
+      <Legend symbolizeBy={symbolizeBy} filters={filters} onSymbolizeByChange={setSymbolizeBy}
+        selectedMapType={selectedMapType} onMapTypeChange={setMapType}/>
     </Box>
   </>;
 };

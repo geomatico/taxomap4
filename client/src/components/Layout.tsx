@@ -31,7 +31,8 @@ export type MainProps = {
 }
 
 const Main = styled(Box,
-  {shouldForwardProp: (prop) => prop !== 'widescreen' && prop !== 'isleftdraweropen' && prop !== 'isTactile'
+  {
+    shouldForwardProp: (prop) => prop !== 'widescreen' && prop !== 'isleftdraweropen' && prop !== 'isTactile'
   })<MainProps>(({widescreen, isTactile, isleftdraweropen}) => ({
     flexGrow: 1,
     padding: 0,
@@ -40,7 +41,7 @@ const Main = styled(Box,
     '@media (min-width: 0px) and (orientation: landscape)': {
       top: isTactile ? 48 : 48 + OFFSET_TOP
     },
-    ['@media (min-width: '+ SM_BREAKPOINT +'px)']: {
+    ['@media (min-width: ' + SM_BREAKPOINT + 'px)']: {
       top: isTactile ? 64 : 64 + OFFSET_TOP,
     },
     bottom: 0,

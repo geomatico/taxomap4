@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
-import {BASIS_OF_RECORD_LEGEND, INSTITUTION_LEGEND, PHYLUM_LEGEND} from '../config';
 import {SxProps} from '@mui/system';
 import Box from '@mui/material/Box';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Typography from '@mui/material/Typography';
 import SelectInput from '@geomatico/geocomponents/Forms/SelectInput';
 import GraphicByLegend from './GraphicByLegend';
-import {Filters, MapType, SymbolizeBy} from '../commonTypes';
+import {Filters, Legend, MapType, SymbolizeBy} from '../commonTypes';
+import useLegends from '../hooks/useLegends';
 
 //STYLES
 const LEGEND_WIDTH = '280px';
@@ -62,18 +62,6 @@ const menuSelectStyles = {
 };
 
 //TYPES
-type LegendItem = {
-  id: number,
-  color: `#${string}`
-  label: string
-};
-
-type OptionLegend = {
-  id: SymbolizeBy,
-  label: string,
-  legend: Array<LegendItem> | undefined
-};
-
 type OptionMapType = {
   id: MapType,
   label: string
@@ -89,53 +77,37 @@ export type LegendProps = {
 
 const Legend: FC<LegendProps> = ({symbolizeBy, selectedMapType, filters, onSymbolizeByChange, onMapTypeChange}) => {
   const {t} = useTranslation();
+  const legends = useLegends();
 
-  const symbolizationOptions: Array<OptionLegend> = [
-    {
-      id: SymbolizeBy.basisofrecord,
-      label: t('fieldLabel.basisofrecord'),
-      legend: BASIS_OF_RECORD_LEGEND.map(({id, color, labelKey}) => ({
-        id,
-        color,
-        label: t(`basisofrecordLegend.${labelKey}`)
-      }))
-    },
-    {
-      id: SymbolizeBy.phylum,
-      label: t('fieldLabel.phylum'),
-      legend: PHYLUM_LEGEND.map(({id, color, labelKey}) => ({
-        id,
-        color,
-        label: t(`phylumLegend.${labelKey}`)
-      }))
-    },
-    {
-      id: SymbolizeBy.institutioncode,
-      label: t('fieldLabel.institutioncode'),
-      legend: INSTITUTION_LEGEND.map(({id, color, labelKey}) => ({
-        id,
-        color,
-        label: t(`institutionLegend.${labelKey}`)
-      }))
-    }
-  ];
-  
-  const mapTypeOptions: Array<OptionMapType> = [
-    {
-      id: MapType.discreteData,
-      label: t('mapTypes.discreteData')
-    },
-    {
-      id: MapType.densityMap,
-      label: t('mapTypes.densityMap')
-    },
-    /*{
-      id: MapType.aggregateData,
-      label: t('mapTypes.aggregateData')
-    }*/
-  ];
+  const translateLegend = (legend: Legend) => legend.map(({id, color, labelKey}) => ({
+    id,
+    color,
+    label: t(labelKey)
+  }));
 
-  const selectedLegend = symbolizationOptions.find(option => option.id === symbolizeBy)?.legend;
+  const symbolizationOptions = [{
+    id: 'basisofrecord',
+    label: t('fieldLabel.basisofrecord'),
+    legend: translateLegend(legends.basisOfRecordLegend)
+  }, {
+    id: 'phylum',
+    label: t('fieldLabel.phylum'),
+    legend: translateLegend(legends.phylumLegend)
+  }, {
+    id: 'institutioncode',
+    label: t('fieldLabel.institutioncode'),
+    legend: translateLegend(legends.institutionlegend)
+  }];
+
+  const mapTypeOptions: Array<OptionMapType> = [{
+    id: MapType.discreteData,
+    label: t('mapTypes.discreteData')
+  }, {
+    id: MapType.densityMap,
+    label: t('mapTypes.densityMap')
+  }];
+
+  const selectedLegend = symbolizationOptions.find(option => option.id === symbolizeBy)?.legend || [];
 
   return <Box sx={container}>
     {

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import TaxoTree, {TaxoTreeProps} from './TaxoTree';
-import {INITIAL_TAXON} from '../config';
 import {Meta, Story} from '@storybook/react';
 import {SubtaxonVisibility, TaxonomicLevel} from '../commonTypes';
 
@@ -48,7 +47,10 @@ const ManagedTemplate: Story<TaxoTreeProps> = ({filters, onTaxonChanged, onSubta
 export const Default = Template.bind({});
 Default.args = {
   filters: {
-    taxon: INITIAL_TAXON,
+    taxon: {
+      level: TaxonomicLevel.kingdom,
+      id: 1
+    },
     subtaxonVisibility
   }
 };
@@ -61,7 +63,10 @@ Managed.args = {
 export const ManagedWithoutVisibility = ManagedTemplate.bind({});
 ManagedWithoutVisibility.args = {
   filters: {
-    taxon: INITIAL_TAXON,
+    taxon: {
+      level: TaxonomicLevel.kingdom,
+      id: 1
+    },
     subtaxonVisibility: undefined
   }
 };

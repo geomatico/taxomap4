@@ -144,7 +144,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, isTactile, onSubtaxonVisibilityCh
     setAnchorEl(null);
   };
 
-  return currentDictionaryEntry ? <>
+  return currentDictionaryEntry && subtaxonCountBBOX !== undefined ? <>
     <Box sx={contentTaxoStyle}>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
         {!isRootTaxonomicLevel(filters.taxon.level) && <Tooltip title={t('parentTaxon')} arrow>
@@ -178,7 +178,10 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, isTactile, onSubtaxonVisibilityCh
                 <Box sx={{display: 'flex', flexDirection: 'column'}}>
                   {
                     Object.keys(availableDownloadFormats).map((format: string) => {
-                      return <Link key={format} variant="body2" sx={{px: 2, py: 1, cursor: 'pointer', fontSize: 12}} onClick={() => downloadFile(availableDownloadFormats[format as keyof typeof availableDownloadFormats])}>
+                      return <Link
+                        key={format} variant="body2" sx={{px: 2, py: 1, cursor: 'pointer', fontSize: 12}}
+                        onClick={() => downloadFile(
+                          availableDownloadFormats[format as keyof typeof availableDownloadFormats])}>
                         {t(format)}
                       </Link>;
                     })
@@ -229,7 +232,11 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, isTactile, onSubtaxonVisibilityCh
       )}
     </List>
 
-    {isModalOpen && <TaxonInfoModal isModalOpen={isModalOpen} isTactile={isTactile} selectedTaxon={currentDictionaryEntry?.name as TaxonomicLevel} onModalOpenChange={setIsModalOpen}/>}
+    {isModalOpen && 
+        <TaxonInfoModal isModalOpen={isModalOpen} isTactile={isTactile}
+          selectedTaxon={currentDictionaryEntry?.name as TaxonomicLevel}
+          onModalOpenChange={setIsModalOpen}/>
+    }
 
   </> : null;
 };
