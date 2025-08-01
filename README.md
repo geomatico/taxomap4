@@ -43,10 +43,14 @@ Esto implica que el despliegue en cualquier entorno implica crear un superusuari
 ./manage.py createsuperuser
 ```
 
-y luego crear los usuarios normales necesarios manualmente mediante `POST /auth/users`.
+En local para pruebas ya se incluye uno por defecto (info@geomatico.es:1234).
+
+Se pueden añadir para otros entornos configurando `backend.django_superuser_password` en el inventario de ansible correspondiente.
+
+Luego se pueden crear los usuarios normales necesarios manualmente mediante `POST /auth/users`.
 
 ```bash
-export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "superuser@geomatico.es", "password": "superuser"}' -H 'content-type: application/json' | jq -r .access)
+export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
 curl http://localhost:8000/api/v1/auth/users/ --data '{"firstName": "Regular", "lastName": "User", "email": "regular.user@geomatico.es", "password": "regu"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
 curl http://localhost:8000/api/v1/auth/users/activation/ --data '{"uid": "<from_email_in_backend_logs>", "token": "<from_email_in_backend_logs>"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
 ```

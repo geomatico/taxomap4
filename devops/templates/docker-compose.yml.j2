@@ -95,6 +95,7 @@ services:
 {% endfor %}
 {% endif %}
     environment:
+      DJANGO_SUPERUSER_PASSWORD: {{ backend.django_superuser_password | default() }}
       DJANGO_SETTINGS_MODULE: {{ backend.settings }}
       DATABASE_URL: postgis://{{ database.taxomap_user }}:{{ database.taxomap_password }}@{{ name }}-database:5432/{{ database.name }}
       DOMAIN: {{ domain }}
