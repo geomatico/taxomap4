@@ -12,5 +12,6 @@
         - geomatico/{{ name }}-proxy
         - geomatico/{{ name }}-frontend
         - geomatico/{{ name }}-backend
+        - geomatico/{{ name }}-gdal
         - geomatico/{{ name }}-database
         - geomatico/{{ name }}-geoserver
