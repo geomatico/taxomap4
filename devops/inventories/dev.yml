@@ -24,6 +24,7 @@ all:
 
     backend:
       settings: project.settings.local
+      django_superuser_password: 1234
       command: ["start_dev.sh"]
       extra_volumes:
         - "../server:/server"
@@ -36,6 +37,11 @@ all:
       admin_password: geoserver
       extra_ports:
         - "8080:8080"
+
+    gdal:
+      password: geoprocessing
+      extra_ports:
+        - "2222:22"
 
   hosts:
     localhost:

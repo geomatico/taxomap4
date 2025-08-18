@@ -55,5 +55,8 @@ all:
         32643261653863656435
       allowed_hosts: "{{ domain }}"
 
+    gdal:
+      password: geoprocessing
+
   hosts:
     staging:

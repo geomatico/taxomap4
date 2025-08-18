@@ -30,5 +30,11 @@ all:
       command: [ "mango", "verify" ]
       extra_volumes:
         - ../pipeline/mango:/usr/local/bin/mango
+
+    gdal:
+      password: geoprocessing
+      extra_ports:
+        - "2222:22"
+
   hosts:
     localhost:

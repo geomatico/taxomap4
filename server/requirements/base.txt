@@ -6,56 +6,63 @@
 #
 --extra-index-url https://labs.geomatico.es/django-commons/
 
-asgiref==3.8.1
+asgiref==3.9.1
     # via
     #   django
     #   django-cors-headers
-certifi==2024.8.30
+bcrypt==4.3.0
+    # via paramiko
+certifi==2025.7.14
     # via requests
 cffi==1.17.1
-    # via cryptography
-charset-normalizer==3.4.0
+    # via
+    #   cryptography
+    #   pynacl
+charset-normalizer==3.4.2
     # via requests
-cryptography==43.0.1
-    # via social-auth-core
-defusedxml==0.8.0rc2
+cryptography==45.0.5
+    # via
+    #   paramiko
+    #   social-auth-core
+defusedxml==0.7.1
     # via
     #   python3-openid
     #   social-auth-core
 deprecation==2.1.0
     # via service-commons
-dj-database-url==2.2.0
+dj-database-url==2.3.0
     # via service-commons
-django==4.2.16
+django==4.2.23
     # via
     #   dj-database-url
     #   django-cors-headers
     #   django-filter
     #   djangorestframework
+    #   djangorestframework-gis
     #   djangorestframework-simplejwt
     #   djoser
     #   drf-orjson-renderer
     #   drf-yasg
     #   service-commons
     #   social-auth-app-django
-django-cors-headers==4.5.0
+django-cors-headers==4.7.0
     # via service-commons
-django-environ==0.11.2
+django-environ==0.12.0
     # via service-commons
-django-filter==24.3
+django-filter==25.1
     # via djangorestframework-gis
 django-templated-mail==1.1.1
     # via djoser
-djangorestframework==3.15.2
+djangorestframework==3.16.0
     # via
     #   djangorestframework-gis
     #   djangorestframework-simplejwt
     #   drf-orjson-renderer
     #   drf-yasg
     #   service-commons
-djangorestframework-gis==1.1
+djangorestframework-gis==1.2.0
     # via service-commons
-djangorestframework-simplejwt==5.3.1
+djangorestframework-simplejwt==5.5.1
     # via
     #   -r requirements/base.in
     #   djoser
@@ -63,39 +70,43 @@ djoser @ https://labs.geomatico.es/djoser/djoser-2.2.2-ca.tar.gz
     # via -r requirements/base.in
 drf-orjson-renderer==1.7.3
     # via service-commons
-drf-yasg==1.21.7
+drf-yasg==1.21.10
     # via service-commons
 idna==3.10
     # via requests
 inflection==0.5.1
     # via drf-yasg
-markdown==3.7
+markdown==3.8.2
     # via -r requirements/base.in
-oauthlib==3.2.2
+oauthlib==3.3.1
     # via
     #   requests-oauthlib
     #   social-auth-core
-orjson==3.10.7
+orjson==3.11.0
     # via drf-orjson-renderer
-packaging==24.1
+packaging==25.0
     # via
     #   deprecation
     #   drf-yasg
+paramiko==3.5.1
+    # via -r requirements/base.in
 psycopg2==2.9.10
     # via service-commons
 pycparser==2.22
     # via cffi
-pyjwt==2.9.0
+pyjwt==2.10.1
     # via
     #   djangorestframework-simplejwt
     #   social-auth-core
+pynacl==1.5.0
+    # via paramiko
 python3-openid==3.2.0
     # via social-auth-core
-pytz==2024.2
+pytz==2025.2
     # via drf-yasg
 pyyaml==6.0.2
     # via drf-yasg
-requests==2.32.3
+requests==2.32.4
     # via
     #   requests-oauthlib
     #   social-auth-core
@@ -103,15 +114,15 @@ requests-oauthlib==2.0.0
     # via social-auth-core
 service-commons==0.2.5
     # via -r requirements/base.in
-social-auth-app-django==5.4.2
+social-auth-app-django==5.4.3
     # via djoser
-social-auth-core==4.5.4
+social-auth-core==4.7.0
     # via social-auth-app-django
-sqlparse==0.5.1
+sqlparse==0.5.3
     # via django
-typing-extensions==4.12.2
+typing-extensions==4.14.1
     # via dj-database-url
-uritemplate==4.1.1
+uritemplate==4.2.0
     # via drf-yasg
-urllib3==2.2.3
+urllib3==2.5.0
     # via requests

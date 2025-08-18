@@ -3,3 +3,4 @@ service-commons==0.2.5
 markdown
 djoser@https://labs.geomatico.es/djoser/djoser-2.2.2-ca.tar.gz
 djangorestframework_simplejwt
+paramiko>=3.5,<4.0

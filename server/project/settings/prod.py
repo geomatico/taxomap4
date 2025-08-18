@@ -6,6 +6,7 @@ CSRF_TRUSTED_ORIGINS = [f"https://{env("DJANGO_ALLOWED_HOSTS")}", f"http://{env(
 
 STATIC_ROOT = env("STATIC_ROOT")
 MEDIA_ROOT = env("MEDIA_ROOT")
+GDAL_ROOT = env("GDAL_ROOT")
 
 SECRET_KEY = env("SECRET_KEY")
 
