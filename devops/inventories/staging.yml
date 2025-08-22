@@ -39,6 +39,8 @@ all:
         62633761333263303361396239396366326239383765613238356464383430663332
       extra_volumes:
         - "{{ service_path }}/pgdata:/var/lib/postgresql/data"
+        # TODO remove after migration
+        - "{{ service_path }}/gbif-backbone.txt:/tmp/gbif-backbone.txt"
 
     backend:
       settings: project.settings.prod

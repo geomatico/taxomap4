@@ -11,7 +11,7 @@ ADD devops/docker/backend/scripts /usr/bin
 
 ENV MEDIA_ROOT=/media
 ENV STATIC_ROOT=/static
-ENV GDAL_ROOT=/gdal
+ENV GDAL_ROOT=/gdal-outputs
 VOLUME $MEDIA_ROOT
 VOLUME $STATIC_ROOT
 VOLUME $GDAL_ROOT
