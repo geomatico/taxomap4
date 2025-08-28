@@ -1,35 +1,20 @@
 # TAXOMAP
 
-## Cómo actualizar la BDD
+## Setup
 
-1. En el directorio `devops/db_normalizer/initdb-scripts`, borrar el dump anterior y copiar el dump nuevo, que:
-   * Debe estar en formato `.sql.gz` (texto plano comprimido, no vale el formato binario  de pg_dump, ni tar).
-   * El nombre debe empezar por un número entre 2 y 8, para que se ejecute después del script `10-create-user-and-db` pero antes del `90-generate-dictionaries`.
+El fichero (texto) de taxonomía de GBIF se monta como un volumen en el contenedor de postgis
+para cargarlo en una tabla (migración de Django).
 
-2. Cambiar al directorio db_normalizer y ejecutar el script de normalización:
-    ```bash
-   cd devops/db_normalizer
-    ./normalize_db.sh
-    ```
-   
-Esto actualizará los siguientes assets:
+Automáticamente se monta el fichero `server/data/gbif-backbone-test.txt` que tiene un subset
+solo con lo que necesitamos.
 
-* BDD normalizada, que se expondrá a través de GeoServer: `docker/taxomap-database/initdb-scripts/dump/20-taxomap-normalized.sql.gz`
-* Fichero geoarrow para frontend: `static/data/taxomap.arrow`.
-* Diccionarios para frontend: `static/data/dictionares/*.json`.
+Si por el motivo que sea se quiere cargar todo GBIF en local para desarrollar lo que sea, habrá que:
+* Meter el fichero completo (https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28/ ,simple.txt.gz) 
+  en `server/data/gbif-backbone.txt` (descomprimido).
+* Modificar `devops/inventories/dev.yml` (y/o `backend-ci.yml`) para meter `gbif-backbone.txt` en 
+  `backend.extra_volumes` (en lugar de `gbif-backbone-test.txt`).
 
-Habrá que commitear estos cambios al repo.
-
-
-Al cambiar la BDD en el entorno de desarrollo, se debe hacer rebuild de ese entorno para que refleje los cambios:
-
-```bash
-cd devops/docker
-docker compose build
-```
-
-Lo mismo aplica a frontend, donde habrá que parar y arrancar el dev server (comando `npm start`) para que vuelva a leer los ficheros estáticos.
-
+Con todo GBIF, la migración inicial tarda unos minutos.
 
 ## Backoffice
 

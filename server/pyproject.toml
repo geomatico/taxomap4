@@ -14,7 +14,7 @@ skip_glob = "*/settings/*"
 
 [tool.flake8]
 max-line-length = 120
-exclude = "*/settings/*"
+exclude = "*/settings/*,*/migrations/*"
 
 [tool.autoflake]
 exclude = ["project/settings", "api/migrations"]

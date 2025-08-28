@@ -27,12 +27,6 @@ jobs:
       working-directory: devops
       run: ansible-playbook -i inventories/backend-ci.yml render-templates.yml
 
-    - name: Copy test files
-      # the file we actually mount into the database for GBIF import is gbif-backbone.txt;
-      # we don't upload that to the repository since it's huge;
-      # instead we use a subset with only the required GBIF species to have a consistent database.
-      run: cp server/data/gbif-backbone-test.txt server/data/gbif-backbone.txt
-
     - name: Run tests
       working-directory: devops
       run: docker compose up --abort-on-container-exit --exit-code-from taxomap-backend
