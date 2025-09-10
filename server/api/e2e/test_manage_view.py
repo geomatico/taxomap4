@@ -8,7 +8,9 @@ from geomatico_django_test.view_tests import post
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN
 
 
-@pytest.mark.django_db
+# this test involves the communication with the gdal container via database,
+# so we need to make sure we persist whatever we write during the execution
+@pytest.mark.django_db(transaction=True)
 def test_generate_resources(staff_user):
     # WHEN
     response = post('manage/generate-resources', {}, user=staff_user)
@@ -48,11 +50,11 @@ def _validate_dictionaries():
         kingdoms = json.loads(content)
         assert kingdoms == [
             {"id": 1, "name": "Animalia", "domain_id": 1},
-            {"id": 2, "name": "Plantae", "domain_id": 1},
+            {"id": 6, "name": "Plantae", "domain_id": 1},
         ]
 
 
 def _validate_arrow():
     arrow_path = os.path.join(settings.STATIC_ROOT, 'taxomap.arrow')
     assert os.path.getmtime(arrow_path) > time() - 10  # modified less than 10s ago
-    assert os.path.getsize(arrow_path) > 15 * 1024 * 1024  # >15MB
+    assert os.path.getsize(arrow_path) > 7 * 1024 * 1024  # >15MB

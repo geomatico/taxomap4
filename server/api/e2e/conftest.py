@@ -9,12 +9,18 @@ creation.TEST_DATABASE_PREFIX = ''
 
 @pytest.fixture
 def staff_user():
-    return User.objects.create_user(email='admin@geomatico.es', password='admin@geomatico.es', is_staff=True)
+    try:
+        return User.objects.get(email='admin@geomatico.es')
+    except User.DoesNotExist:
+        return User.objects.create_user(email='admin@geomatico.es', password='admin@geomatico.es', is_staff=True)
 
 
 @pytest.fixture
 def regular_user():
-    return User.objects.create_user(email='user@geomatico.es', password='user@geomatico.es', is_staff=False)
+    try:
+        return User.objects.get(email='user@geomatico.es')
+    except User.DoesNotExist:
+        return User.objects.create_user(email='user@geomatico.es', password='user@geomatico.es', is_staff=False)
 
 
 @pytest.fixture
