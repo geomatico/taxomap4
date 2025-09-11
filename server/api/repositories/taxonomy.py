@@ -4,6 +4,8 @@ from typing import Optional
 
 from django.db.models import RESTRICT, ForeignKey, IntegerField, Model, TextField
 
+from api.services.mixins import DictionaryMixin
+
 
 class TaxonomyRank(Enum):
     DOMAIN = ('DOMAIN', 'domain')
@@ -48,7 +50,7 @@ _VALID_DB_RANK_VALUES = [
 
 
 @dataclass(frozen=True)
-class TaxonomyItem:
+class TaxonomyItem(DictionaryMixin):
     id: int = None
     name: str = None
     parent_id: Optional[int] = None
