@@ -54,9 +54,9 @@ describe('wfs', () => {
     // THEN
     const params = validateUrlAndGetParams(format, urlString);
     expect(params.get('cql_filter')).to.equal('family_id = 1 ' +
-      'AND institutioncode_id = 2 AND basisofrecord_id = 3 AND genus IN (1,3) ' +
+      'AND institution_id = 2 AND basis_of_record_id = 3 AND genus IN (1,3) ' +
       'AND year >= 1920 AND year <= 2010 ' +
-      'AND BBOX(geom,0.5,42.7,0.6,42.8)');
+      'AND BBOX(geometry,0.5,42.7,0.6,42.8)');
   });
 
   it('getWfsDownloadUrl returns URL with all subtaxa visible"', async () => {
@@ -174,8 +174,8 @@ describe('wfs', () => {
           year: 2023,
           month: 11,
           county: 'Burjassot',
-          stateprovince: 'Valencia',
-          scientificname: 'Ornithorhynchus anatinus'
+          state_province: 'Valencia',
+          scientific_name: 'Ornithorhynchus anatinus'
         }
       }]
     };
@@ -190,8 +190,8 @@ describe('wfs', () => {
     expect(properties?.day).to.equal(undefined);
     expect(properties?.municipality).to.equal(undefined);
     expect(properties?.county).to.equal(response.features[0].properties.county);
-    expect(properties?.stateProvince).to.equal(response.features[0].properties.stateprovince);
-    expect(properties?.scientificName).to.equal(response.features[0].properties.scientificname);
+    expect(properties?.stateProvince).to.equal(response.features[0].properties.state_province);
+    expect(properties?.scientificName).to.equal(response.features[0].properties.scientific_name);
   });
 
   const validateUrlAndGetParams = (expectedFormat: string, urlString: string): URLSearchParams => {

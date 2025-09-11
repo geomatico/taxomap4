@@ -8,16 +8,16 @@ export const WFS_TYPENAME = 'taxomap:taxomap';
  * These depend on how the database is generated. Make sure they always match whatever is done in `91-generate-dictionaries.sql`.
  */
 export enum WFS_PROPERTY {
-  institutionCodeId = 'institutioncode_id',
-  basisOfRecordId = 'basisofrecord_id',
+  institutionCodeId = 'institution_id',
+  basisOfRecordId = 'basis_of_record_id',
   year = 'year',
   month = 'month',
   day = 'day',
   municipality = 'municipality',
   county = 'county',
-  stateProvince = 'stateprovince',
-  geometry = 'geom',
-  scientificName = 'scientificname'
+  stateProvince = 'state_province',
+  geometry = 'geometry',
+  scientificName = 'scientific_name'
 }
 
 export type WfsProperties = { [key in (keyof typeof WFS_PROPERTY)]?: number | string | undefined }
