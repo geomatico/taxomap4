@@ -7,9 +7,12 @@ from typing import Iterable
 
 from django.conf import settings
 
+from api.repositories.basis_of_record import BasisOfRecordRepository
+from api.repositories.institution import InstitutionRepository
 from api.repositories.occurrence import OccurrenceRepository
-from api.repositories.taxonomy import TaxonomyItem, TaxonomyRepository
+from api.repositories.taxonomy import TaxonomyRepository
 from api.services import gdal_service
+from api.services.mixins import DictionaryMixin
 
 _DICTIONARIES_DIR = os.path.join(settings.STATIC_ROOT, 'dictionaries')
 
@@ -39,6 +42,8 @@ def generate_dictionaries():
     _update_json('genus.json', repository.get_genera())
     _update_json('species.json', repository.get_species())
     _update_json('subspecies.json', repository.get_subspecies())
+    _update_json('basisofrecord.json', BasisOfRecordRepository().find_all())
+    _update_json('institution.json', InstitutionRepository().find_all())
 
 
 def generate_arrow():
@@ -49,7 +54,7 @@ def generate_arrow():
     shutil.copy(src, dest)
 
 
-def _update_json(filename: str, items: Iterable[TaxonomyItem]):
+def _update_json(filename: str, items: Iterable[DictionaryMixin]):
     Path(_DICTIONARIES_DIR).mkdir(parents=True, exist_ok=True)
     dest = os.path.join(_DICTIONARIES_DIR, filename)
     if os.path.exists(dest):
@@ -58,5 +63,5 @@ def _update_json(filename: str, items: Iterable[TaxonomyItem]):
     items = sorted([item for item in items if item], key=lambda item: item.id)
     with open(dest, 'w') as output:
         output.write('[\n')
-        output.write(',\n'.join(json.dumps(item.to_dict()) for item in items))
+        output.write(',\n'.join(json.dumps(item.to_dict(), ensure_ascii=False) for item in items))
         output.write('\n]')
