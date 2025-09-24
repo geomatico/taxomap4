@@ -1,0 +1,82 @@
+alter table taxomap drop column domain;
+alter table taxomap drop column kingdom;
+alter table taxomap drop column phylum;
+alter table taxomap drop column class;
+alter table taxomap drop column "order";
+alter table taxomap drop column family;
+alter table taxomap drop column genus;
+alter table taxomap drop column subgenus;
+alter table taxomap drop column species;
+alter table taxomap drop column subspecies;
+alter table taxomap drop column domain_id;
+alter table taxomap drop column kingdom_id;
+alter table taxomap drop column phylum_id;
+alter table taxomap drop column class_id;
+alter table taxomap drop column order_id;
+alter table taxomap drop column family_id;
+alter table taxomap drop column genus_id;
+alter table taxomap drop column species_id;
+alter table taxomap drop column subspecies_id;
+alter table taxomap drop column familyid;
+alter table taxomap drop column genusid;
+alter table taxomap drop column speciesid;
+alter table taxomap drop column subspeciesid;
+
+alter table taxomap drop column basisofrecord;
+alter table taxomap drop column institutioncode;
+
+alter table taxomap drop column scientificname;
+alter table taxomap drop column specificepithet;
+alter table taxomap drop column infraspecificepithet;
+alter table taxomap drop column taxonrank;
+alter table taxomap drop column scientificnameauthorship;
+
+
+alter table taxomap drop column minimumdepthinmeters;
+alter table taxomap drop column maximumdepthinmeters;
+alter table taxomap drop column minimumelevationinmeters;
+alter table taxomap drop column maximumelevationinmeters;
+alter table taxomap drop column decimallatitude;
+alter table taxomap drop column decimallongitude;
+alter table taxomap drop column geodeticdatum;
+alter table taxomap drop column coordinateuncertaintyinmeters;
+alter table taxomap drop column verbatimcoordinates;
+alter table taxomap drop column verbatimeventdate;
+alter table taxomap drop column verbatimlocality;
+alter table taxomap drop column gid;
+
+alter table taxomap drop column typestatus;
+alter table taxomap drop column identifiedby;
+alter table taxomap drop column identificationqualifier;
+alter table taxomap drop column dateidentified;
+alter table taxomap drop column eventdate;
+alter table taxomap drop column eventremarks;
+alter table taxomap drop column habitat;
+alter table taxomap drop column establishmentmeans;
+alter table taxomap drop column samplingprotocol;
+alter table taxomap drop column fieldnumber;
+alter table taxomap drop column previousidentifications;
+alter table taxomap drop column associatedreferences;
+alter table taxomap drop column associatedoccurrences;
+alter table taxomap drop column othercatalognumbers;
+alter table taxomap drop column preparations;
+alter table taxomap drop column lifestage;
+alter table taxomap drop column sex;
+alter table taxomap drop column recordedby;
+alter table taxomap drop column recordnumber;
+alter table taxomap drop column individualcount;
+
+alter table taxomap drop column island;
+alter table taxomap drop column islandgroup;
+alter table taxomap drop column waterbody;
+alter table taxomap drop column locality;
+alter table taxomap drop column country;
+alter table taxomap drop column countrycode;
+alter table taxomap drop column continent;
+
+alter table taxomap rename column occurrenceid to occurrence_id;
+alter table taxomap rename column collectioncode to collection_code;
+alter table taxomap rename column stateprovince to state_province;
+alter table taxomap rename column catalognumber to catalog_number;
+alter table taxomap rename column basisofrecord_id to basis_of_record_id;
+alter table taxomap rename column institutioncode_id to institution_id;
