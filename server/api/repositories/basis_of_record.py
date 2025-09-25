@@ -22,3 +22,6 @@ class BasisOfRecordRepository(AbstractEntityRepository):
 
     def find_all(self):
         return BasisOfRecord.objects.all()
+
+    def get_by_name_en(self, name: str) -> BasisOfRecord:
+        return BasisOfRecord.objects.get(name_en=name)

@@ -20,3 +20,6 @@ class InstitutionRepository(AbstractEntityRepository):
 
     def find_all(self):
         return Institution.objects.all()
+
+    def get_by_name(self, name: str) -> Institution:
+        return Institution.objects.get(name=name)
