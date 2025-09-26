@@ -2,7 +2,7 @@ version: '3.9'
 services:
   taxomap-proxy:
     build: taxomap-proxy
-    image: geomatico/taxomap-proxy:${TAG:-latest}
+    image: ghcr.io/geomatico/taxomap-proxy:${TAG:-latest}
     container_name: taxomap-proxy
     ports:
       - 80:80
@@ -12,7 +12,7 @@ services:
       - taxomap-frontend
   taxomap-db:
     build: taxomap-db
-    image: geomatico/taxomap-db:${TAG:-latest}
+    image: ghcr.io/geomatico/taxomap-db:${TAG:-latest}
     container_name: taxomap-db
     environment:
       POSTGRES_DB: postgres
@@ -32,7 +32,7 @@ services:
     build:
       dockerfile: devops/docker/taxomap-geoserver/Dockerfile
       context: ../../
-    image: geomatico/taxomap-geoserver:${TAG:-latest}
+    image: ghcr.io/geomatico/taxomap-geoserver:${TAG:-latest}
     container_name: taxomap-geoserver
     depends_on:
       taxomap-db:
@@ -49,7 +49,7 @@ services:
     build:
       dockerfile: devops/docker/taxomap-frontend/Dockerfile
       context: ../../
-    image: geomatico/taxomap-frontend:${TAG:-latest}
+    image: ghcr.io/geomatico/taxomap-frontend:${TAG:-latest}
     container_name: taxomap-frontend
     depends_on:
       - taxomap-db

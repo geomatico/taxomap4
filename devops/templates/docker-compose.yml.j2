@@ -1,22 +1,18 @@
-version: '3.9'
 services:
   taxomap-proxy:
-    image: geomatico/taxomap-proxy:{{TAG}}
+    image: ghcr.io/geomatico/taxomap-proxy:{{TAG}}
     container_name: taxomap-proxy
     restart: always
-    environment:
-      - VIRTUAL_HOST={{ domain }}
-      - LETSENCRYPT_HOST={{ domain }}
-      - LETSENCRYPT_EMAIL={{ letsencrypt_mail }}
+    ports:
+      - "80:80"
     depends_on:
       - taxomap-db
       - taxomap-geoserver
       - taxomap-frontend
     networks:
-      - base-proxy
       - internal
   taxomap-db:
-    image: geomatico/taxomap-db:{{TAG}}
+    image: ghcr.io/geomatico/taxomap-db:{{TAG}}
     container_name: taxomap-db
     restart: always
     environment:
@@ -34,7 +30,7 @@ services:
     networks:
       - internal
   taxomap-geoserver:
-    image: geomatico/taxomap-geoserver:{{TAG}}
+    image: ghcr.io/geomatico/taxomap-geoserver:{{TAG}}
     container_name: taxomap-geoserver
     restart: always
     depends_on:
@@ -46,12 +42,10 @@ services:
       TAXOMAP_PASSWORD: {{ postgres_taxomap_pass }}
       GEOSERVER_ADMIN_PASSWORD: {{ geoserver_admin_pass }}
       PROXY_BASE_URL: {{ geoserver_url }}
-    volumes:
-      - {{ compose_path }}/geoserver_data_dir:/var/local/geoserver
     networks:
       - internal
   taxomap-frontend:
-    image: geomatico/taxomap-frontend:{{TAG}}
+    image: ghcr.io/geomatico/taxomap-frontend:{{TAG}}
     container_name: taxomap-frontend
     restart: always
     depends_on:
@@ -60,8 +54,5 @@ services:
     networks:
       - internal
 networks:
-  base-proxy:
-    external: true
-    name: base-proxy
   internal:
     name: "{{ name }}"

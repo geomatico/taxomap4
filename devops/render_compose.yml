@@ -1,0 +1,19 @@
+- hosts: all
+  connection: local
+  tasks:
+    - name: Get commit hash
+      local_action: shell echo production
+      register: git_hash
+
+    - name: Check docker-compose template
+      local_action: stat path=templates/docker-compose.yml.j2
+      register: docker_compose_stat
+
+    - name: Generate docker-compose.yml from template
+      local_action:
+        module: ansible.builtin.template
+        src: "templates/docker-compose.yml.j2"
+        dest: "docker-compose.yml"
+      vars:
+        TAG: "{{ docker.image_tag | default(git_hash.stdout) }}"
+      when: docker_compose_stat.stat.exists

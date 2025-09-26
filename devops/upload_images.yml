@@ -1,5 +1,5 @@
 - hosts: all
-  remote_user: '{{ deploy_user }}'
+  connection: local
   tasks:
     - name: Frontend env file
       local_action:
@@ -7,17 +7,24 @@
         src: "templates/frontend_dotenv.j2"
         dest: "../.env"
 
+    # Download previous images, if exists, to use as cache
+    - name: Download latest images
+      local_action:
+        module: ansible.builtin.shell
+        cmd: docker compose -f docker/docker-compose.yml pull --ignore-pull-failures
+
+    # Build images, the second compose build is for tag same images with latest
     - name: build images
       local_action:
         module: ansible.builtin.shell
-        cmd: export TAG=`git rev-parse --short HEAD` && docker compose -f docker/docker-compose.yml build
+        cmd: |
+          export TAG=`git rev-parse --short HEAD` && docker compose -f docker/docker-compose.yml build
+          export TAG=production && docker compose -f docker/docker-compose.yml build
 
-    - name: upload images
+    # NOTE: This task need to be logged to ghcr.io (GitHub Container Registry)
+    - name: push images
       local_action:
         module: ansible.builtin.shell
-        cmd: export TAG=`git rev-parse --short HEAD` && docker save {{ item }}:${TAG} | bzip2 | ssh {{ deploy_user }}@{{ inventory_hostname }} docker load
-      loop:
-        - geomatico/taxomap-proxy
-        - geomatico/taxomap-frontend
-        - geomatico/taxomap-geoserver
-        - geomatico/taxomap-db
+        cmd: |
+          export TAG=`git rev-parse --short HEAD` && docker compose -f docker/docker-compose.yml push
+          export TAG=production && docker compose -f docker/docker-compose.yml push
