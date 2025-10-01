@@ -45,7 +45,7 @@ export const MAPSTYLES: Array<MapStyle> = [
   }
 ];
 
-export const INITIAL_MAPSTYLE_URL = MAPSTYLES[2].id;
+export const INITIAL_MAPSTYLE_URL = MAPSTYLES[1].id;
 
 export const ARROW_FIELDS = [
   'id', 'catalognumber', 'domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus',
