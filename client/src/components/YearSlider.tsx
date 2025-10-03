@@ -19,11 +19,11 @@ export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, fullYearRange
   return <Box sx={{p: 1, pb: 0, background: '#333333e0', borderRadius: '3px'}}>
     {data && fullYearRange &&
       <RangeHistogram
-        onValueChange={handleYearRangeChanged}
-        value={(yearRange || fullYearRange)}
-        minMax={fullYearRange}
-        height={50}
         data={data}
+        value={(yearRange || fullYearRange)}
+        onValueChange={handleYearRangeChanged}
+        onChangeCommitted={handleYearRangeChanged}
+        height={50}
       />
     }
   </Box>;

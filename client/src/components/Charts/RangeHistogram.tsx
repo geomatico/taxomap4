@@ -1,68 +1,103 @@
-import React, {FC, useLayoutEffect, useRef, useState} from 'react';
-import 'react-resizable/css/styles.css';
+import React, {FC, useLayoutEffect, useRef, useState, memo, useMemo, useCallback} from 'react';
 import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
 import {styled} from '@mui/material/styles';
 import {cyan} from '@mui/material/colors';
 import {SxProps} from '@mui/system';
 import RangeSlider from '@geomatico/geocomponents/Forms/RangeSlider';
 import {Range} from '../../commonTypes';
 
-//STYLES
 const DEFAULT_HEIGHT = 200;
 
 const classes = {
   root: 'RangeHistogram-root',
-  barContainer: 'RangeHistogram-barContainer',
-  barGroupSelected: 'RangeHistogram-barGroupSelected',
-  barGroupNoSelected: 'RangeHistogram-barGroupNoSelected',
-  barRange: 'RangeHistogram-barRange',
-  barWithinRange: 'RangeHistogram-barWithinRange',
-  barOutOfRange: 'RangeHistogram-barOutOfRange',
-  tooltip: 'RangeHistogram-tooltip',
+  barContainer: 'RangeHistogram-barContainer'
 };
 
 interface RootProps {
   height: number;
 }
 
-const Root = styled(Box, {shouldForwardProp: (prop) => prop !== 'height'})<RootProps>(({height, theme}) => {
+const Root = styled(
+  Box,
+  {shouldForwardProp: (prop) => prop !== 'height'}
+)<RootProps>(({height, theme}) => {
   return {
     '& .RangeHistogram-barContainer': {
       display: 'flex',
       paddingLeft: '1px',
-      transform: 'rotateX(180deg)',
-      //background: '#000000a6'
+      transform: 'rotateX(180deg)'
     },
-    '& .RangeHistogram-barGroupSelected': {
+    '& .bar-group-selected': {
       position: 'relative',
-      //backgroundColor: '#a297971f',
-      backgroundColor: 'rgb(51,51,51)',
+      backgroundColor: '#a297971f',
       width: '100%',
       height: height,
       paddingBottom: '16px'
     },
-    '& .RangeHistogram-barGroupNoSelected': {
+    '& .bar-group-no-selected': {
       backgroundColor: 'transparent',
       width: '100%',
       height: height,
       paddingBottom: '16px'
     },
-    '& .RangeHistogram-barRange': {
+    '& .bar-range': {
       flex: 1,
       margin: '1px',
+      cursor: 'default'
     },
-    '& .RangeHistogram-barWithinRange': {
+    '& .bar-within-range': {
       backgroundColor: cyan[300],
       '&:hover': {
         backgroundColor: theme.palette.grey[300]
-      },
+      }
     },
-    '& .RangeHistogram-barOutOfRange': {
+    '& .bar-out-of-range': {
       backgroundColor: theme.palette.grey[500],
       '&:hover': {
         backgroundColor: '#a2979773'
-      },
+      }
+    },
+    '& .custom-tooltip': {
+      position: 'fixed',
+      backgroundColor: 'rgba(97, 97, 97, 0.95)',
+      color: 'white',
+      padding: '6px 12px',
+      borderRadius: '4px',
+      fontSize: '12px',
+      pointerEvents: 'none',
+      zIndex: 9999,
+      whiteSpace: 'nowrap',
+      transform: 'translate(-50%, -100%)',
+      marginTop: '-8px',
+      opacity: 0,
+      transition: 'opacity 0.15s'
+    },
+    '& .custom-tooltip.visible': {
+      opacity: 1
+    },
+    '& .custom-tooltip::after': {
+      content: '""',
+      position: 'absolute',
+      top: '100%',
+      left: '50%',
+      marginLeft: '-4px',
+      borderWidth: '4px',
+      borderStyle: 'solid',
+      borderColor: 'rgba(97, 97, 97, 0.95) transparent transparent transparent'
+    },
+    '& .range-marker': {
+      position: 'absolute',
+      bottom: height - 5,
+      backgroundColor: 'white',
+      height: '10px',
+      width: '10px',
+      borderRadius: '5px'
+    },
+    '& .range-marker-start': {
+      left: '-5px'
+    },
+    '& .range-marker-end': {
+      right: '-5px'
     },
     '& .MuiSlider-rail': {display: 'none'},
     '& .MuiSlider-track': {display: 'none'},
@@ -78,21 +113,21 @@ const Root = styled(Box, {shouldForwardProp: (prop) => prop !== 'height'})<RootP
       padding: '8px',
       borderRadius: '4px',
       '&.Mui-focusVisible': {
-        boxShadow: 'none',
+        boxShadow: 'none'
       },
       '&:hover': {
-        boxShadow: 'none',
+        boxShadow: 'none'
       },
       '&:focus-visible': {
         outline: 'unset',
-        boxShadow: 'none',
-      },
+        boxShadow: 'none'
+      }
     },
     '& .Mui-active': {
-      boxShadow: 'none',
+      boxShadow: 'none'
     },
     '&.Mui-focusVisible': {
-      boxShadow: 'none',
+      boxShadow: 'none'
     },
     '& .MuiSlider-thumb::after': {
       width: '0px'
@@ -111,103 +146,191 @@ const Root = styled(Box, {shouldForwardProp: (prop) => prop !== 'height'})<RootP
 export type RangeHistogramProps = {
   value: Range,
   onValueChange: (range: Range) => void,
+  onChangeCommitted: (range: Range) => void,
   height: number,
   data: Record<number, number>,
-  minMax?: Range,
   sx?: SxProps
 }
 
-export type RangeHistogramBarProps = {
+type RangeHistogramBarProps = {
   isSelected: boolean,
   heightBar: number,
-  value: number | undefined,
+  value: number,
   year: number,
+  onMouseEnter: (e: React.MouseEvent, year: number, value: number) => void,
+  onMouseMove: (e: React.MouseEvent) => void,
+  onMouseLeave: () => void,
 }
 
-const HistogramBar: FC<RangeHistogramBarProps> = ({isSelected, value, year, heightBar = DEFAULT_HEIGHT}) => {
-  return <Tooltip title={'Any: ' + year + ' valor: ' + (value || 0)} placement='top' arrow className={classes.tooltip}>
-    <Box
-      className={`${classes.barRange} ${isSelected ? classes.barWithinRange : classes.barOutOfRange}`}
-      sx={{height: heightBar >= 1 ? `${heightBar}%` : '1px'}}
+// Memoized bar component - only re-renders if props change
+const HistogramBar: FC<RangeHistogramBarProps> = memo(({
+  isSelected,
+  value,
+  year,
+  heightBar = DEFAULT_HEIGHT,
+  onMouseEnter,
+  onMouseMove,
+  onMouseLeave
+}) => {
+  return (
+    <div
+      className={`bar-range ${isSelected ? 'bar-within-range' : 'bar-out-of-range'}`}
+      style={{height: heightBar >= 1 ? `${heightBar}%` : '1px'}}
+      onMouseEnter={(e) => onMouseEnter(e, year, value)}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
     />
-  </Tooltip>;
-};
+  );
+});
 
-const RangeHistogram: FC<RangeHistogramProps> = ({data, value, minMax, height = DEFAULT_HEIGHT, onValueChange, sx = {},}) => {
+HistogramBar.displayName = 'HistogramBar';
 
-  // AXIS X
-  const axisXItems = Object.keys(data).map(el => parseInt(el));
-  const maxAxisX = minMax ? minMax[1] : Math.max(...axisXItems); // si manda minMax, tiene preferencia, sino se calcula el min y max del data
-  const minAxisX = minMax ? minMax[0] : Math.min(...axisXItems);
-
-  //AXIS Y
-  const maxAxisY = Math.max(...Object.values(data)) || 300;
-
-  const getHeight = (value: number) => (value / maxAxisY) * 100;
-  const isSelected = (v: number) => v >= value[0] && v <= value[1];
-  const targetRef = useRef();
+const RangeHistogram: FC<RangeHistogramProps> = ({
+  data,
+  value,
+  height = DEFAULT_HEIGHT,
+  onValueChange,
+  onChangeCommitted,
+  sx = {}
+}) => {
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const targetRef = useRef<HTMLDivElement | null>(null);
   const [barWidth, setDimensions] = useState(0);
 
-  const allYears: Array<number> = [];
+  // Memoize expensive calculations
+  const {maxAxisX, minAxisX, maxAxisY, allYears} = useMemo(() => {
+    const axisXItems = Object.keys(data).map(el => parseInt(el));
+    const maxAxisX = Math.max(...axisXItems);
+    const minAxisX = Math.min(...axisXItems);
+    const maxAxisY = Math.max(...Object.values(data));
 
-  for (let i = minAxisX; i <= maxAxisX; i++) {
-    allYears.push(i);
-  }
+    const allYears: Array<number> = [];
+    for (let i = minAxisX; i <= maxAxisX; i++) {
+      allYears.push(i);
+    }
+
+    return {axisXItems, maxAxisX, minAxisX, maxAxisY, allYears};
+  }, [data]);
+
+  const getHeight = useCallback((value: number) => (value / maxAxisY) * 100, [maxAxisY]);
+  const isSelected = useCallback((v: number) => v >= value[0] && v <= value[1], [value]);
 
   useLayoutEffect(() => {
     if (targetRef.current) {
-      setDimensions((targetRef.current as HTMLElement)?.offsetWidth);
+      setDimensions(targetRef.current.offsetWidth);
     }
   }, []);
 
-  const rangeSliderStyles = {
+  // Lightweight tooltip handlers
+  const handleMouseEnter = useCallback((e: React.MouseEvent, year: number, val: number) => {
+    if (tooltipRef.current) {
+      tooltipRef.current.textContent = `Any: ${year} valor: ${val || 0}`;
+      tooltipRef.current.classList.add('visible');
+
+      // Position at cursor
+      const tooltip = tooltipRef.current;
+      const tooltipWidth = tooltip.offsetWidth;
+      const viewportWidth = window.innerWidth;
+
+      let left = e.clientX;
+
+      // Check if tooltip would overflow on the right
+      if (left + tooltipWidth / 2 > viewportWidth - 10) {
+        left = viewportWidth - tooltipWidth / 2 - 10;
+      }
+
+      // Check if tooltip would overflow on the left
+      if (left - tooltipWidth / 2 < 10) {
+        left = tooltipWidth / 2 + 10;
+      }
+
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${e.clientY}px`;
+    }
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (tooltipRef.current && tooltipRef.current.classList.contains('visible')) {
+      const tooltip = tooltipRef.current;
+      const tooltipWidth = tooltip.offsetWidth;
+      const viewportWidth = window.innerWidth;
+
+      let left = e.clientX;
+
+      // Check if tooltip would overflow on the right
+      if (left + tooltipWidth / 2 > viewportWidth - 10) {
+        left = viewportWidth - tooltipWidth / 2 - 10;
+      }
+
+      // Check if tooltip would overflow on the left
+      if (left - tooltipWidth / 2 < 10) {
+        left = tooltipWidth / 2 + 10;
+      }
+
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${e.clientY}px`;
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (tooltipRef.current) {
+      tooltipRef.current.classList.remove('visible');
+    }
+  }, []);
+
+  const rangeSliderStyles = useMemo(() => ({
     p: `${barWidth / 2}px !important`,
+    '& .MuiSlider-root': {
+      p: '0 !important',
+      color: 'transparent'
+    },
     '& .RangeSlider-textRange': {
       color: 'white'
     },
-    '& .MuiSvgIcon-root': {
-      color: 'white',
-    },
-    '& .MuiSlider-root': {
-      p: '0 !important',
-      color: 'transparent',
+    '& .RangeSlider-iconRange': {
+      color: 'white'
     }
-  };
+  }), [barWidth]);
 
-  return <Root className={classes.root} sx={sx} height={height}>
-    <Box className={classes.barContainer}>
-      {
-        allYears.map((year) =>
-          <Box ref={targetRef} key={year} className={isSelected(year) ? classes.barGroupSelected : classes.barGroupNoSelected}>
-            <HistogramBar value={data[year]} year={year} heightBar={getHeight(data[year])} isSelected={isSelected(year)}/>
-            {year === value[0] &&
-              <Box sx={{
-                position: 'absolute',
-                bottom: height - 5,
-                left: '-5px',
-                backgroundColor: 'white',
-                height: '10px',
-                width: '10px',
-                borderRadius: 5,
-              }}/>
-            }
-            {year === value[1] &&
-              <Box sx={{
-                position: 'absolute',
-                bottom: height - 5,
-                right: '-5px',
-                backgroundColor: 'white',
-                height: '10px',
-                width: '10px',
-                borderRadius: 5
-              }}/>
-            }
-          </Box>
-        )
-      }
-    </Box>
-    <RangeSlider sx={rangeSliderStyles} value={value} min={minAxisX} max={maxAxisX} onValueChange={onValueChange}/>
-  </Root>;
+  return (
+    <Root className={classes.root} sx={sx} height={height}>
+      <div className={classes.barContainer}>
+        {allYears.map((year) => {
+          const selected = isSelected(year);
+          const barHeight = getHeight(data[year]);
+
+          return (
+            <div
+              ref={year === allYears[0] ? targetRef : null}
+              key={year}
+              className={selected ? 'bar-group-selected' : 'bar-group-no-selected'}
+            >
+              <HistogramBar
+                value={data[year]}
+                year={year}
+                heightBar={barHeight}
+                isSelected={selected}
+                onMouseEnter={handleMouseEnter}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              />
+              {year === value[0] && <div className="range-marker range-marker-start"/>}
+              {year === value[1] && <div className="range-marker range-marker-end"/>}
+            </div>
+          );
+        })}
+      </div>
+      <div ref={tooltipRef} className="custom-tooltip"/>
+      <RangeSlider
+        sx={rangeSliderStyles}
+        value={value}
+        min={minAxisX}
+        max={maxAxisX}
+        onChangeCommitted={(e, v) => Array.isArray(v) && onChangeCommitted([v[0], v[1]])}
+        onValueChange={onValueChange}
+      />
+    </Root>
+  );
 };
 
-export default RangeHistogram;
+export default memo(RangeHistogram);
