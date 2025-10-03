@@ -283,6 +283,12 @@ const RangeHistogram: FC<RangeHistogramProps> = ({
     '& .MuiSlider-root': {
       p: '0 !important',
       color: 'transparent'
+    },
+    '& .RangeSlider-textRange': {
+      color: 'white'
+    },
+    '& .RangeSlider-iconRange': {
+      color: 'white'
     }
   }), [barWidth]);
 
