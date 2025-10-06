@@ -24,7 +24,7 @@ class CsvUploadRenderer(BaseRenderer):
             return JSONRenderer().render(data)
         header = data.pop(0)
         output = io.StringIO()
-        writer = csv.DictWriter(output, fieldnames=header + ['error'])
+        writer = csv.DictWriter(output, fieldnames=header + ['falloImportacion'])
         writer.writeheader()
         for row in data:
             row_dict = {}
@@ -34,7 +34,7 @@ class CsvUploadRenderer(BaseRenderer):
                 except IndexError:
                     row_dict[header[i]] = ''
 
-            row_dict['error'] = row[len(header)]
+            row_dict['falloImportacion'] = row[len(header)]
             writer.writerow(row_dict)
         return output.getvalue().encode('UTF-8')
 

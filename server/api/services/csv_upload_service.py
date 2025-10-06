@@ -4,16 +4,18 @@ from django.contrib.gis import geos
 from rest_framework.exceptions import ParseError
 
 from api.repositories.basis_of_record import BasisOfRecordRepository
+from api.repositories.country import CountryRepository
 from api.repositories.institution import InstitutionRepository
-from api.repositories.occurrence import Occurrence, OccurrenceRepository
+from api.repositories.occurrence import Occurrence, OccurrenceRepository, VerificationStatus
 from api.repositories.taxonomy import TaxonomyRepository
 
 EXPECTED_COLUMNS = (
-    'collection_code', 'catalog_number', 'gbif_id', 'latitude', 'longitude', 'date', 'institution', 'basisOfRecord',
-    'municipality', 'county', 'stateProvince',
+    'collectionCode', 'catalogNumber', 'taxonID', 'decimalLatitude', 'decimalLongitude', 'eventDate',
+    'institutionCode', 'basisOfRecord', 'countryCode', 'municipality', 'county', 'stateProvince',
 )
 NOT_NULL_COLUMNS = (
-    'collection_code', 'catalog_number', 'gbif_id', 'latitude', 'longitude', 'date', 'institution', 'basisOfRecord',
+    'collectionCode', 'catalogNumber', 'taxonID', 'decimalLatitude', 'decimalLongitude',
+    'institutionCode', 'basisOfRecord',
 )
 
 INSTITUTION_NAME_BY_ENUM_TEXT = {
@@ -59,7 +61,7 @@ def _validate_header(header: list[str]) -> None:
 def _row_to_occurrence(header, row) -> Occurrence:
     def get_value(name):
         try:
-            return row[header.index(name)] or None
+            return str(row[header.index(name)]).strip() or None
         except IndexError:
             return None
 
@@ -67,36 +69,40 @@ def _row_to_occurrence(header, row) -> Occurrence:
     if columns_with_invalid_nulls:
         raise CsvValueError(f'Nulos para las columnas: {columns_with_invalid_nulls}')
 
-    collection_code = get_value('collection_code')
-    catalog_number = get_value('catalog_number')
+    collection_code = get_value('collectionCode')
+    catalog_number = get_value('catalogNumber')
     date = _get_date(get_value)
     longitude, latitude = _get_coordinate(get_value)
     gbif_id = _get_gbif_id(get_value)
     institution = _get_institution(get_value)
     basis_of_record = _get_basis_of_record(get_value)
+    country_code = _get_country_code(get_value)
     municipality = get_value('municipality')
     county = get_value('county')
     state_province = get_value('stateProvince')
 
     return Occurrence(
-        geom=geos.Point(longitude, latitude),
+        geometry=geos.Point(longitude, latitude),
         occurrence_id=f'{institution.name}:{collection_code}:{catalog_number}',
         collection_code=collection_code,
         catalog_number=catalog_number,
         institution_id=institution.id,
         basis_of_record_id=basis_of_record.id,
-        backbone_id=gbif_id,
-        year=date.year,
-        month=date.month,
-        day=date.day,
+        taxon_id=gbif_id,
+        event_date=date,
+        country_code=country_code,
         municipality=municipality,
         county=county,
         state_province=state_province,
+        georeference_verification_status=VerificationStatus.VERIFIED,
+        identification_verification_status=VerificationStatus.VERIFIED,
     )
 
 
 def _get_date(get_value):
-    date_str = get_value('date')
+    date_str = get_value('eventDate')
+    if not date_str:
+        return None
     try:
         return datetime.fromisoformat(date_str)
     except BaseException:
@@ -104,8 +110,8 @@ def _get_date(get_value):
 
 
 def _get_coordinate(get_value):
-    longitude_str = get_value('longitude')
-    latitude_str = get_value('latitude')
+    longitude_str = get_value('decimalLongitude')
+    latitude_str = get_value('decimalLatitude')
     try:
         longitude = float(longitude_str)
         latitude = float(latitude_str)
@@ -117,7 +123,7 @@ def _get_coordinate(get_value):
 
 
 def _get_gbif_id(get_value):
-    gbif_id_str = get_value('gbif_id')
+    gbif_id_str = get_value('taxonID')
     try:
         gbif_id = int(gbif_id_str)
         if not TaxonomyRepository().exists_by_id(gbif_id):
@@ -128,7 +134,7 @@ def _get_gbif_id(get_value):
 
 
 def _get_institution(get_value):
-    institution_enum = get_value('institution')
+    institution_enum = get_value('institutionCode')
     try:
         institution = InstitutionRepository().get_by_name(INSTITUTION_NAME_BY_ENUM_TEXT[institution_enum])
         if not institution:
@@ -149,6 +155,18 @@ def _get_basis_of_record(get_value):
         return basis_of_record
     except BaseException:
         raise CsvValueError(f'Invalid basis of record: {basis_of_record_enum}')
+
+
+def _get_country_code(get_value):
+    country_code = get_value('countryCode')
+    if not country_code:
+        return None
+    try:
+        if not CountryRepository().exists_by_code(country_code):
+            raise CsvValueError(f'Invalid country code: {country_code}')
+        return country_code
+    except BaseException:
+        raise CsvValueError(f'Invalid country code: {country_code}')
 
 
 class CsvValueError(Exception):

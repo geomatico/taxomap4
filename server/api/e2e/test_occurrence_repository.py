@@ -9,7 +9,7 @@ cut = OccurrenceRepository()
 @pytest.mark.django_db
 def test_update_backbone_ancestors():
     # GIVEN
-    occurrence = Occurrence(backbone_id=4406427)
+    occurrence = Occurrence(taxon_id=4406427)
     assert not BackboneItemWithAncestors.objects.filter(id=4406427).exists()
 
     # WHEN
