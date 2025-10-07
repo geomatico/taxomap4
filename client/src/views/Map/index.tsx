@@ -73,24 +73,31 @@ const Index: FC<IndexProps> = ({isTactile}) => {
     [subtaxonCount, selectedTaxon, dictionaries]);
 
   useEffect(() => {
-    if (!childrenItems?.length || selectedTaxon === undefined) {
+    if (selectedTaxon === undefined) {
       return;
+    } else if (!childrenItems?.length) {
+      // We are in a leaf, no real subtaxons.
+      // But this is the way we hack deck.gl filters so the visible taxon is oneself.
+      setSubtaxonVisibility({
+        subtaxonLevel: selectedTaxon.level,
+        isVisible: {[selectedTaxon.id]: true}
+      });
+    } else {
+      setSubtaxonVisibility((prevVisibility) => {
+        const prevSubtaxonLevel = prevVisibility?.subtaxonLevel;
+        const nextSubtaxonLevel = nextTaxonomicLevel(selectedTaxon.level);
+        const levelChanged = prevSubtaxonLevel !== nextSubtaxonLevel;
+
+        return {
+          subtaxonLevel: nextSubtaxonLevel,
+          isVisible: childrenItems.reduce((isVisible, count) => {
+            // Keep visibility state if level didn't change
+            isVisible[count.id] = levelChanged ? true : prevVisibility?.isVisible[count.id] ?? true;
+            return isVisible;
+          }, {} as Record<TaxonId, boolean>)
+        };
+      });
     }
-
-    setSubtaxonVisibility((prevVisibility) => {
-      const prevSubtaxonLevel = prevVisibility?.subtaxonLevel;
-      const nextSubtaxonLevel = nextTaxonomicLevel(selectedTaxon.level);
-      const levelChanged = prevSubtaxonLevel !== nextSubtaxonLevel;
-
-      return {
-        subtaxonLevel: nextSubtaxonLevel,
-        isVisible: childrenItems.reduce((isVisible, count) => {
-          // Keep visibility state if level didn't change
-          isVisible[count.id] = levelChanged ? true : prevVisibility?.isVisible[count.id] ?? true;
-          return isVisible;
-        }, {} as Record<TaxonId, boolean>)
-      };
-    });
   }, [childrenItems]);
 
   if (!filters || !selectedTaxon || !childrenItems) {
