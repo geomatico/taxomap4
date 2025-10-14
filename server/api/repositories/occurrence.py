@@ -16,7 +16,6 @@ class VerificationStatus(EnumWithText):
 
 class Occurrence(Model):
     geometry = PointField()
-    occurrence_id = TextField()
     collection_code = TextField()
     catalog_number = TextField()
     institution = ForeignKey(Institution, on_delete=RESTRICT)

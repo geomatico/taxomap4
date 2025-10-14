@@ -52,9 +52,9 @@ def test_success_with_some_errors():
         ['collectionCode', 'catalogNumber', 'taxonID', 'decimalLongitude', 'decimalLatitude', 'eventDate',
          'institutionCode', 'basisOfRecord', 'countryCode', 'municipality', 'county', 'stateProvince'],
         ['MCNB-Art', 'MZB 87-495', '3792', '117', '5', '2025-05-20', 'MCNB', 'BOB', '', '', '', '',
-         'Invalid basis of record: BOB'],
+         'basisOfRecord inválido: BOB'],
         ['MCNB-Art', 'MZB 87-494', '3792', '117', '5', '2025-05-20', 'BOB', 'FOSSIL', '', '', '', '',
-         'Invalid institution: BOB'],
+         'Institución inválida: BOB'],
         ['MCNB-Art', 'MZB 87-493', '3792', '117', '5', '2025', 'MCNB', 'FOSSIL', '', '', '', '',
          'Fecha no válida (ISO8601 YYYY-MM-DD): 2025'],
         ['', 'MZB 87-492', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
@@ -62,13 +62,13 @@ def test_success_with_some_errors():
         ['MCNB-Art', '', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
          "Nulos para las columnas: ['catalogNumber']"],
         ['MCNB-Art', 'MZB 87-491', '-2', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
-         'Invalid GBIF id: -2'],
+         'Identificador GBIF inválido: -2'],
         ['MCNB-Art', 'MZB 87-490', '3792', 'x', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
          'Coordenadas no válidas: (x,5)'],
         ['MCNB-Art', 'MZB 87-489', '3792', '117', 'y', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
          'Coordenadas no válidas: (117,y)'],
         ['MCNB-Art', 'MZB 87-4959', '3792', '117', '5', '1995-05-20', 'MCNB', 'FOSSIL', 'wrong_country', '', '', '',
-         'Invalid country code: wrong_country'],
+         'Código de país inválido: wrong_country'],
     ]
 
 

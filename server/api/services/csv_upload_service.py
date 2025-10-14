@@ -3,9 +3,9 @@ from datetime import datetime
 from django.contrib.gis import geos
 from rest_framework.exceptions import ParseError
 
-from api.repositories.basis_of_record import BasisOfRecordRepository
+from api.repositories.basis_of_record import BasisOfRecordRepository, BasisOfRecordCode
 from api.repositories.country import CountryRepository
-from api.repositories.institution import InstitutionRepository
+from api.repositories.institution import InstitutionRepository, InstitutionCode
 from api.repositories.occurrence import Occurrence, OccurrenceRepository, VerificationStatus
 from api.repositories.taxonomy import TaxonomyRepository
 
@@ -17,19 +17,6 @@ NOT_NULL_COLUMNS = (
     'collectionCode', 'catalogNumber', 'taxonID', 'decimalLatitude', 'decimalLongitude',
     'institutionCode', 'basisOfRecord',
 )
-
-INSTITUTION_NAME_BY_ENUM_TEXT = {
-    'IMEDEA': 'Institut Mediterrani d\'Estudis Avançats',
-    'MCNB': 'Museu Ciències Naturals Barcelona',
-    'MVHN': 'Museu Valencià d\'Història Natural',
-    'UB': 'Universitat de Barcelona',
-    'IBB': 'Institut Botànic de Barcelona',
-}
-
-BASIS_OF_RECORD_NAME_BY_ENUM_TEXT = {
-    'FOSSIL': 'Fossil',
-    'NON_FOSSIL': 'Non-fossil',
-}
 
 
 def persist_csv(csv_reader):
@@ -83,7 +70,6 @@ def _row_to_occurrence(header, row) -> Occurrence:
 
     return Occurrence(
         geometry=geos.Point(longitude, latitude),
-        occurrence_id=f'{institution.name}:{collection_code}:{catalog_number}',
         collection_code=collection_code,
         catalog_number=catalog_number,
         institution_id=institution.id,
@@ -130,31 +116,27 @@ def _get_gbif_id(get_value):
             raise CsvValueError(f'Invalid GBIF id: {gbif_id}')
         return gbif_id
     except BaseException:
-        raise CsvValueError(f'Invalid GBIF id: {gbif_id_str}')
+        raise CsvValueError(f'Identificador GBIF inválido: {gbif_id_str}')
 
 
 def _get_institution(get_value):
-    institution_enum = get_value('institutionCode')
+    institution_code_str = get_value('institutionCode')
     try:
-        institution = InstitutionRepository().get_by_name(INSTITUTION_NAME_BY_ENUM_TEXT[institution_enum])
-        if not institution:
-            raise CsvValueError(f'Invalid institution: {institution_enum}')
+        institution_code = InstitutionCode.from_text(institution_code_str)
+        institution = InstitutionRepository().get_by_code(institution_code)
         return institution
     except BaseException:
-        raise CsvValueError(f'Invalid institution: {institution_enum}')
+        raise CsvValueError(f'Institución inválida: {institution_code_str}')
 
 
 def _get_basis_of_record(get_value):
-    basis_of_record_enum = get_value('basisOfRecord')
+    basis_of_record_str = get_value('basisOfRecord')
     try:
-        basis_of_record = BasisOfRecordRepository().get_by_name_en(
-            BASIS_OF_RECORD_NAME_BY_ENUM_TEXT[basis_of_record_enum]
-        )
-        if not basis_of_record:
-            raise CsvValueError(f'Invalid basis of record: {basis_of_record_enum}')
+        basis_of_record_code = BasisOfRecordCode.from_text(basis_of_record_str)
+        basis_of_record = BasisOfRecordRepository().get_by_code(basis_of_record_code)
         return basis_of_record
     except BaseException:
-        raise CsvValueError(f'Invalid basis of record: {basis_of_record_enum}')
+        raise CsvValueError(f'basisOfRecord inválido: {basis_of_record_str}')
 
 
 def _get_country_code(get_value):
@@ -163,10 +145,10 @@ def _get_country_code(get_value):
         return None
     try:
         if not CountryRepository().exists_by_code(country_code):
-            raise CsvValueError(f'Invalid country code: {country_code}')
+            raise CsvValueError(f'Código de país inválido: {country_code}')
         return country_code
     except BaseException:
-        raise CsvValueError(f'Invalid country code: {country_code}')
+        raise CsvValueError(f'Código de país inválido: {country_code}')
 
 
 class CsvValueError(Exception):

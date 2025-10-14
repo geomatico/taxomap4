@@ -1,10 +1,17 @@
 from django.db.models import Model, TextField
 from geomatico_django.repository import AbstractEntityRepository
+from geomatico_django.types import EnumWithText
 
 from api.services.mixins import DictionaryMixin
 
 
+class BasisOfRecordCode(EnumWithText):
+    FOSSIL = ('FOSSIL', 'Fossil')
+    NON_FOSSIL = ('NON_FOSSIL', 'Non fossil')
+
+
 class BasisOfRecord(Model, DictionaryMixin):
+    code = TextField()
     name_ca = TextField()
     name_en = TextField()
     name_es = TextField()
@@ -23,5 +30,5 @@ class BasisOfRecordRepository(AbstractEntityRepository):
     def find_all(self):
         return BasisOfRecord.objects.all()
 
-    def get_by_name_en(self, name: str) -> BasisOfRecord:
-        return BasisOfRecord.objects.get(name_en=name)
+    def get_by_code(self, code: BasisOfRecordCode) -> BasisOfRecord:
+        return BasisOfRecord.objects.get(code=code.text())
