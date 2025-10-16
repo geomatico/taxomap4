@@ -1,0 +1,93 @@
+import pytest
+from rest_framework.exceptions import ParseError
+
+from api.repositories.occurrence import Occurrence
+from api.services import csv_upload_service as cut
+
+
+@pytest.mark.django_db
+def test_missing_columns():
+    # GIVEN
+    csv = iter([
+        ['collectionCode', 'catalogNumber', 'taxonID'],
+        ['MCNB-Art', 'MZB 87-490', '3792'],
+        ['MCNB-Art', 'MZB 87-489', '3792'],
+    ])
+
+    # WHEN
+    with pytest.raises(ParseError) as e:
+        cut.persist_csv(csv)
+
+    # THEN
+    assert e.value.detail == (
+        "Invalid CSV. Missing columns: ['decimalLatitude', 'decimalLongitude', 'eventDate', "
+        "'institutionCode', 'basisOfRecord', 'countryCode', 'municipality', 'county', 'stateProvince']"
+    )
+
+
+@pytest.mark.django_db
+def test_success_with_some_errors():
+    # GIVEN
+    csv = iter([
+        ['collectionCode', 'catalogNumber', 'taxonID', 'decimalLongitude', 'decimalLatitude', 'eventDate',
+         'institutionCode', 'basisOfRecord', 'countryCode', 'municipality', 'county', 'stateProvince'],
+        ['MCNB-Art', 'MZB 87-4959', '3792', '117', '5', '1995-05-20', 'MCNB', 'FOSSIL', 'ES', '', '', ''],
+        ['MCNB-Art', 'MZB 87-496', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', ''],
+        ['MCNB-Art', 'MZB 87-495', '3792', '117', '5', '2025-05-20', 'MCNB', 'BOB', '', '', '', ''],
+        ['MCNB-Art', 'MZB 87-494', '3792', '117', '5', '2025-05-20', 'BOB', 'FOSSIL', '', '', '', ''],
+        ['MCNB-Art', 'MZB 87-493', '3792', '117', '5', '2025', 'MCNB', 'FOSSIL', '', '', '', ''],
+        ['', 'MZB 87-492', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', ''],
+        ['MCNB-Art', '', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', ''],
+        ['MCNB-Art', 'MZB 87-491', '-2', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', ''],
+        ['MCNB-Art', 'MZB 87-490', '3792', 'x', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', ''],
+        ['MCNB-Art', 'MZB 87-489', '3792', '117', 'y', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', ''],
+        ['MCNB-Art', 'MZB 87-4959', '3792', '117', '5', '1995-05-20', 'MCNB', 'FOSSIL', 'wrong_country', '', '', ''],
+    ])
+
+    # WHEN
+    errors = cut.persist_csv(csv)
+
+    # THEN
+    assert errors == [
+        ['collectionCode', 'catalogNumber', 'taxonID', 'decimalLongitude', 'decimalLatitude', 'eventDate',
+         'institutionCode', 'basisOfRecord', 'countryCode', 'municipality', 'county', 'stateProvince'],
+        ['MCNB-Art', 'MZB 87-495', '3792', '117', '5', '2025-05-20', 'MCNB', 'BOB', '', '', '', '',
+         'basisOfRecord inválido: BOB'],
+        ['MCNB-Art', 'MZB 87-494', '3792', '117', '5', '2025-05-20', 'BOB', 'FOSSIL', '', '', '', '',
+         'Institución inválida: BOB'],
+        ['MCNB-Art', 'MZB 87-493', '3792', '117', '5', '2025', 'MCNB', 'FOSSIL', '', '', '', '',
+         'Fecha no válida (ISO8601 YYYY-MM-DD): 2025'],
+        ['', 'MZB 87-492', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
+         "Nulos para las columnas: ['collectionCode']"],
+        ['MCNB-Art', '', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
+         "Nulos para las columnas: ['catalogNumber']"],
+        ['MCNB-Art', 'MZB 87-491', '-2', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
+         'Identificador GBIF inválido: -2'],
+        ['MCNB-Art', 'MZB 87-490', '3792', 'x', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
+         'Coordenadas no válidas: (x,5)'],
+        ['MCNB-Art', 'MZB 87-489', '3792', '117', 'y', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', '',
+         'Coordenadas no válidas: (117,y)'],
+        ['MCNB-Art', 'MZB 87-4959', '3792', '117', '5', '1995-05-20', 'MCNB', 'FOSSIL', 'wrong_country', '', '', '',
+         'Código de país inválido: wrong_country'],
+    ]
+
+
+@pytest.mark.django_db
+def test_success_replacing_existing():
+    # GIVEN
+    csv = iter([
+        ['collectionCode', 'catalogNumber', 'taxonID', 'decimalLongitude', 'decimalLatitude', 'eventDate',
+         'institutionCode', 'basisOfRecord', 'countryCode', 'municipality', 'county', 'stateProvince'],
+        ['MCNB-Art', 'MZB 87-4959', '3792', '117', '5', '2025-05-20', 'MCNB', 'FOSSIL', '', '', '', ''],
+    ])
+    num_occurrences = Occurrence.objects.count()
+    well_known_occurrence = Occurrence.objects.get(catalog_number='MZB 87-4959')
+
+    # WHEN
+    errors = cut.persist_csv(csv)
+
+    # THEN
+    assert errors is None
+    assert Occurrence.objects.count() == num_occurrences
+    assert not Occurrence.objects.filter(id=well_known_occurrence.id).exists()
+    assert Occurrence.objects.filter(catalog_number='MZB 87-4959').exists()

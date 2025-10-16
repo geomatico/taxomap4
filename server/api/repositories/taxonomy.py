@@ -94,6 +94,9 @@ class BackboneItemWithAncestors(Model):
 
 
 class TaxonomyRepository:
+    def exists_by_id(self, id: int) -> bool:
+        return BackboneItem.objects.filter(id=id).exists()
+
     def update_backbone_id_with_ancestors(self, backbone_id, force: bool = False):
         if BackboneItemWithAncestors.objects.filter(id=backbone_id).exists() and not force:
             return
