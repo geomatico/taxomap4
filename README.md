@@ -72,3 +72,8 @@ docker compose up -d
 
 Esto volverá a ejecutar el contenido de `initdb-scripts` del contenedor de `database`.
 
+## Planeta Vida (aplicación táctil)
+
+La URL para acceder es
+([https://taxomap.geomatico.es/#/planetavida/](https://taxomap.geomatico.es/#/planetavida/))
+
