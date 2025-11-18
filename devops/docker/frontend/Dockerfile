@@ -1,6 +1,6 @@
 FROM node:20.8.1-alpine as base
 
-FROM base as deps
+FROM base AS deps
 
 WORKDIR /srv
 
@@ -9,7 +9,7 @@ COPY client/package.json client/package-lock.json ./
 RUN npm ci
 
 
-FROM deps as build
+FROM deps AS build
 
 WORKDIR /srv
 

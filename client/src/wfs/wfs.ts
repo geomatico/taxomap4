@@ -1,26 +1,50 @@
 import {BBOX, Filters, Range, SubtaxonVisibility, TaxonomicLevel} from '../commonTypes';
+import {FeatureCollection, Point} from 'geojson';
 import {GEOSERVER_BASE_URL} from '../config';
 
 const FORMAT_GEOJSON = 'application/json';
 export const WFS_TYPENAME = 'taxomap:taxomap';
 
 /**
- * These depend on how the database is generated. Make sure they always match whatever is done in `91-generate-dictionaries.sql`.
+ * These depend on how the database is generated.
  */
 export enum WFS_PROPERTY {
-  institutionCodeId = 'institution_id',
-  basisOfRecordId = 'basis_of_record_id',
-  year = 'year',
-  month = 'month',
-  day = 'day',
-  municipality = 'municipality',
-  county = 'county',
-  stateProvince = 'state_province',
   geometry = 'geometry',
-  scientificName = 'scientific_name'
+  institutionCode = 'institutionCode',
+  collectionCode = 'collectionCode',
+  catalogNumber = 'catalogNumber',
+  basisOfRecord = 'basisOfRecord',
+  taxonID = 'taxonID',
+  scientificName = 'scientificName',
+  decimalLatitude = 'decimalLatitude',
+  decimalLongitude = 'decimalLongitude',
+  eventDate = 'eventDate',
+  countryCode = 'countryCode',
+  stateProvince = 'stateProvince',
+  county = 'county',
+  municipality = 'municipality',
+  georeferenceVerificationStatus = 'georeferenceVerificationStatus',
+  identificationVerificationStatus = 'identificationVerificationStatus'
 }
 
-export type WfsProperties = { [key in (keyof typeof WFS_PROPERTY)]?: number | string | undefined }
+export type WfsProperties = {
+  geometry: Point,
+  institutionCode: string,
+  collectionCode: string,
+  catalogNumber: string,
+  basisOfRecord: string,
+  taxonID: number,
+  scientificName: string,
+  decimalLatitude: number,
+  decimalLongitude: number,
+  eventDate: Date,
+  countryCode: string,
+  stateProvince: string,
+  county: string,
+  municipality: string,
+  georeferenceVerificationStatus: string,
+  identificationVerificationStatus: string
+}
 
 /**
  * Returns the property name with the ID associated to the given taxonomic level.
@@ -57,7 +81,7 @@ const cqlTaxonIn = (subtaxonVisibility: SubtaxonVisibility | undefined) => {
 };
 
 const cqlYearBetween = (yearRange: Range | undefined) => yearRange
-  ? `${WFS_PROPERTY.year} >= ${yearRange[0]} AND ${WFS_PROPERTY.year} <= ${yearRange[1]}`
+  ? `${WFS_PROPERTY.eventDate} DURING ${yearRange[0]}-01-01T00:00:00Z/${yearRange[1]}-12-31T23:59:59Z`
   : undefined;
 
 const cqlBbox = (bbox: BBOX | undefined) =>
@@ -81,14 +105,15 @@ export const getWfsDownloadUrl = (
 
   const cqlFilters = [
     cqlPropertyEquals(getPropertyName(taxon.level), taxon.id),
-    cqlPropertyEquals(WFS_PROPERTY.institutionCodeId, institutionId),
-    cqlPropertyEquals(WFS_PROPERTY.basisOfRecordId, basisOfRecordId),
+    cqlPropertyEquals('institution_id', institutionId),
+    cqlPropertyEquals('basis_of_record_id', basisOfRecordId),
     cqlTaxonIn(subtaxonVisibility),
     cqlYearBetween(yearRange),
     // cql_filter and BBOX query params are mutually exclusive, BBOX needs to be introduced as part of the cql_filter
     cqlBbox(bbox)
   ];
   url.searchParams.append('cql_filter', cqlFilters.filter(Boolean).join(' AND '));
+  url.searchParams.append('propertyName', Object.values(WFS_PROPERTY).join(','));
 
   return url.toString();
 };
@@ -103,7 +128,7 @@ export const getWfsDownloadUrl = (
 export const getWfsFeatureProperties = async (
   id: number | undefined,
   propertyNames: WFS_PROPERTY[]
-): Promise<WfsProperties | undefined> => {
+): Promise<Partial<WfsProperties> | undefined> => {
   if (id === undefined) return undefined;
 
   const url = new URL(GEOSERVER_BASE_URL + '/wfs');
@@ -118,17 +143,11 @@ export const getWfsFeatureProperties = async (
   const response = await fetch(url);
   if (!response.ok) return undefined;
 
-  const featureCollection = await response.json();
+  const featureCollection = await response.json() as FeatureCollection<Point, WfsProperties>;
   if (!featureCollection.features) return undefined;
-
-  const properties = featureCollection.features[0].properties;
-  return properties && {
-    year: properties[WFS_PROPERTY.year],
-    month: properties[WFS_PROPERTY.month],
-    day: properties[WFS_PROPERTY.day],
-    stateProvince: properties[WFS_PROPERTY.stateProvince],
-    municipality: properties[WFS_PROPERTY.municipality],
-    county: properties[WFS_PROPERTY.county],
-    scientificName: properties[WFS_PROPERTY.scientificName]
-  };
+  const {properties} = featureCollection.features[0];
+  if(properties.eventDate) {
+    properties.eventDate = new Date(properties.eventDate);
+  }
+  return properties;
 };

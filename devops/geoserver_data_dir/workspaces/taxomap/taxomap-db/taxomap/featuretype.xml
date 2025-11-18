@@ -40,12 +40,44 @@
     <entry key="JDBC_VIRTUAL_TABLE">
       <virtualTable>
         <name>taxomap</name>
-        <sql>select * from taxomap_with_ancestors
+        <sql>select&#xd;
+    taxomap.id as id,&#xd;
+    geometry,&#xd;
+    institution.code as &quot;institutionCode&quot;, -- IMEDEA, MCNB, MVHN, UB, IBB&#xd;
+    collection_code as &quot;collectionCode&quot;,&#xd;
+    catalog_number as &quot;catalogNumber&quot;,&#xd;
+    basis_of_record.code as &quot;basisOfRecord&quot;, -- FOSSIL, NON_FOSSIL&#xd;
+    taxon_id as &quot;taxonID&quot;,&#xd;
+    backbone_with_ancestors.canonical_name as &quot;scientificName&quot;,&#xd;
+    st_y(geometry) as &quot;decimalLatitude&quot;,&#xd;
+    st_x(geometry) as &quot;decimalLongitude&quot;,&#xd;
+    event_date as &quot;eventDate&quot;,&#xd;
+    country_code as &quot;countryCode&quot;,&#xd;
+    state_province as &quot;stateProvince&quot;,&#xd;
+    county,&#xd;
+    municipality,&#xd;
+    georeference_verification_status as &quot;georeferenceVerificationStatus&quot;, -- VERIFIED, UNVERIFIED&#xd;
+    identification_verification_status as &quot;identificationVerificationStatus&quot;, -- VERIFIED, UNVERIFIED&#xd;
+    institution_id,&#xd;
+    basis_of_record_id,&#xd;
+    1 as domain_id,&#xd;
+    kingdom_id,&#xd;
+    phylum_id,&#xd;
+    class_id,&#xd;
+    order_id,&#xd;
+    family_id,&#xd;
+    genus_id,&#xd;
+    species_id,&#xd;
+    subspecies_id&#xd;
+from taxomap, institution, basis_of_record, backbone_with_ancestors&#xd;
+where taxomap.institution_id = institution.id&#xd;
+and taxomap.basis_of_record_id = basis_of_record.id&#xd;
+and taxomap.taxon_id = backbone_with_ancestors.id
 </sql>
         <escapeSql>false</escapeSql>
         <keyColumn>id</keyColumn>
         <geometry>
-          <name>geom</name>
+          <name>geometry</name>
           <type>Point</type>
           <srid>4326</srid>
         </geometry>

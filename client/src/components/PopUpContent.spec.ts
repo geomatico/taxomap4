@@ -4,10 +4,10 @@ import {getDateLabel, getPlaceLabel} from './PopUpContent';
 describe('PopUpContent', () => {
   it('returns expected date labels"', async () => {
     // WHEN / THEN
-    expect(getDateLabel({})).to.equal(undefined);
-    expect(getDateLabel({year: 2000, day: 20})).to.equal('2000');
-    expect(getDateLabel({year: 2000, month: 2})).to.equal('2000-02');
-    expect(getDateLabel({year: 2000, month: 2, day: 7})).to.equal('2000-02-07');
+    expect(getDateLabel({}, '')).to.equal(undefined);
+    expect(getDateLabel({eventDate: new Date('2020-10-20Z')}, 'ca')).to.equal('20/10/2020');
+    expect(getDateLabel({eventDate: new Date('2020-10-20Z')}, 'en')).to.equal('10/20/2020');
+    expect(getDateLabel({eventDate: new Date('2020-10-20Z')}, 'es')).to.equal('20/10/2020');
   });
 
   it('returns expected place labels"', async () => {
