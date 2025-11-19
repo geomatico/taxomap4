@@ -37,16 +37,6 @@ export const MAPSTYLES: Array<MapStyle> = [
     id: 'mapstyles/landcover.json',
     label: 'landCover',
     thumbnail: 'images/landcover.png'
-  },
-  {
-    id: 'mapstyles/temperature.json',
-    label: 'temperature',
-    thumbnail: 'images/temperature.png'
-  },
-  {
-    id: 'mapstyles/rain.json',
-    label: 'rain',
-    thumbnail: 'images/rain.png'
   }
 ];
 

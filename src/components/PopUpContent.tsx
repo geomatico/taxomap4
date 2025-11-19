@@ -10,6 +10,7 @@ import {WfsProperties, getWfsFeatureProperties, WFS_PROPERTY} from '../wfs/wfs';
 
 type PopUpContentProps = {
   selectedFeature: SelectedFeature,
+  isTactile: boolean
 }
 
 export type SelectedFeature = {
@@ -53,7 +54,7 @@ export const getDateLabel = (properties: WfsProperties): string | undefined => {
     .join('-');
 };
 
-const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
+const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile}) => {
   const {t} = useTranslation();
   const [wfsProperties, setWfsProperties] = useState<WfsProperties>();
 
@@ -89,7 +90,7 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature}) => {
       {dateLabel && <Typography variant="caption" color="text.secondary">{dateLabel}</Typography>}
     </CardContent>
     {
-      selectedFeature.institutioncode?.id === MUSEU_ID &&
+      selectedFeature.institutioncode?.id === MUSEU_ID && !isTactile &&
       <CardActions>
         <Button href={getMoreInfoUrl(selectedFeature)} target="_blank" size="small">{t('moreInfo')}</Button>
       </CardActions>
