@@ -55,7 +55,7 @@ describe('wfs', () => {
     const params = validateUrlAndGetParams(format, urlString);
     expect(params.get('cql_filter')).to.equal('family_id = 1 ' +
       'AND institution_id = 2 AND basis_of_record_id = 3 AND genus IN (1,3) ' +
-      'AND year >= 1920 AND year <= 2010 ' +
+      'AND eventDate DURING 1920-01-01T00:00:00Z/2010-12-31T23:59:59Z ' +
       'AND BBOX(geometry,0.5,42.7,0.6,42.8)');
   });
 
@@ -164,18 +164,17 @@ describe('wfs', () => {
     // GIVEN
     const featureId = 42;
     const propertyNames = [
-      WFS_PROPERTY.year, WFS_PROPERTY.month, WFS_PROPERTY.day,
+      WFS_PROPERTY.eventDate,
       WFS_PROPERTY.municipality, WFS_PROPERTY.county, WFS_PROPERTY.stateProvince,
       WFS_PROPERTY.scientificName
     ];
     const response = {
       features: [{
         properties: {
-          year: 2023,
-          month: 11,
+          eventDate: '2023-11-01Z',
           county: 'Burjassot',
-          state_province: 'Valencia',
-          scientific_name: 'Ornithorhynchus anatinus'
+          stateProvince: 'Valencia',
+          scientificName: 'Ornithorhynchus anatinus'
         }
       }]
     };
@@ -185,13 +184,11 @@ describe('wfs', () => {
     const properties = await getWfsFeatureProperties(featureId, propertyNames);
 
     // THEN
-    expect(properties?.year).to.equal(response.features[0].properties.year);
-    expect(properties?.month).to.equal(response.features[0].properties.month);
-    expect(properties?.day).to.equal(undefined);
+    expect(properties?.eventDate).to.eql(new Date(response.features[0].properties.eventDate));
     expect(properties?.municipality).to.equal(undefined);
     expect(properties?.county).to.equal(response.features[0].properties.county);
-    expect(properties?.stateProvince).to.equal(response.features[0].properties.state_province);
-    expect(properties?.scientificName).to.equal(response.features[0].properties.scientific_name);
+    expect(properties?.stateProvince).to.equal(response.features[0].properties.stateProvince);
+    expect(properties?.scientificName).to.equal(response.features[0].properties.scientificName);
   });
 
   const validateUrlAndGetParams = (expectedFormat: string, urlString: string): URLSearchParams => {
@@ -203,7 +200,7 @@ describe('wfs', () => {
     expect(params.get('typeName')).to.equal('taxomap:taxomap');
     expect(params.get('outputFormat')).to.equal(expectedFormat);
     expect(params.get('content-disposition')).to.equal('attachment');
-    expect(Array.from(params.entries()).length).to.equal(6); // cql_filter to be validated separately for each test
+    expect(Array.from(params.entries()).length).to.equal(7); // cql_filter to be validated separately for each test
     return params;
   };
 

@@ -69,7 +69,7 @@
   <metadata>
     <entry key="logRequestsEnabled">false</entry>
   </metadata>
-  <updateSequence>449</updateSequence>
+  <updateSequence>467</updateSequence>
   <featureTypeCacheSize>0</featureTypeCacheSize>
   <globalServices>true</globalServices>
   <xmlPostRequestLogBufferSize>1024</xmlPostRequestLogBufferSize>

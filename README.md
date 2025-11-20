@@ -51,6 +51,14 @@ Para importar el backbone de GBIF, ejecutar ./prepare-db.sh en devops/prepare-db
 Puede tardar 10mn en descargar.
 
 
+### Generar árbol taxonómico y geoarrow
+
+```
+export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
+curl -X POST http://localhost/api/v1/manage/generate-resources/ -H "Accept: application/json" -H "Authorization: Bearer $JWT_TOKEN" | jq -r
+```
+
+
 ## Base de datos en Staging
 
 Ahora mismo la base de datos se persiste entre despliegues. Si en algún momento en necesario resetearla, se puede hacer entrando en el servidor.

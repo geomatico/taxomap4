@@ -32,27 +32,17 @@ export const MAPSTYLES: Array<MapStyle> = [
     id: 'mapstyles/landcover.json',
     label: 'landCover',
     thumbnail: 'images/landcover.png'
-  },
-  {
-    id: 'mapstyles/temperature.json',
-    label: 'temperature',
-    thumbnail: 'images/temperature.png'
-  },
-  {
-    id: 'mapstyles/rain.json',
-    label: 'rain',
-    thumbnail: 'images/rain.png'
   }
 ];
 
 export const INITIAL_MAPSTYLE_URL = MAPSTYLES[1].id;
 
 export const ARROW_FIELDS = [
-  'id', 'catalognumber', 'domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus',
-  'species', 'subspecies', 'basisofrecord', 'institutioncode', 'year'
+  'id', 'catalognumber', 'basisofrecord', 'institutioncode', 'year',
+  'domain', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'subspecies'
 ];
 
-export const FILTER_BY = ['institutioncode', 'basisofrecord'];
+export const FILTER_BY = ['basisofrecord', 'institutioncode'];
 
 export const INITIAL_TAXONOMIC_LEVEL = TaxonomicLevel.kingdom;
 export const INITIAL_TAXONOMIC_NAME = 'Animalia';

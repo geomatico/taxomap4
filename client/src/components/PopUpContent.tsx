@@ -28,12 +28,14 @@ export type SelectedFeature = {
  * Required WFS properties to fill the popup.
  */
 const PROPERTIES = [
-  WFS_PROPERTY.year, WFS_PROPERTY.month, WFS_PROPERTY.day,
+  WFS_PROPERTY.eventDate,
   WFS_PROPERTY.municipality, WFS_PROPERTY.county, WFS_PROPERTY.stateProvince,
   WFS_PROPERTY.scientificName
 ];
 
-export const getPlaceLabel = (properties: WfsProperties): string | undefined => {
+type PopupWfsProperties = Partial<Pick<WfsProperties, 'eventDate' | 'municipality' | 'county' | 'stateProvince' | 'scientificName'>>;
+
+export const getPlaceLabel = (properties: PopupWfsProperties): string | undefined => {
   const parts = [properties.municipality, properties.county, properties.stateProvince].filter(Boolean);
   if (parts.length === 0) {
     return undefined;
@@ -44,21 +46,13 @@ export const getPlaceLabel = (properties: WfsProperties): string | undefined => 
   return `${parts.join(', ')} (${last})`;
 };
 
-export const getDateLabel = (properties: WfsProperties): string | undefined => {
-  if (properties.year === undefined) {
-    return;
-  } else if (!properties.month) {
-    return `${properties.year}`;
-  }
-  return [properties.year, properties.month, properties.day]
-    .filter(Boolean)
-    .map(part => String(part).padStart(2, '0'))
-    .join('-');
+export const getDateLabel = (properties: PopupWfsProperties, lang: string): string | undefined => {
+  return properties.eventDate?.toLocaleDateString(lang);
 };
 
 const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile, museuId}) => {
-  const {t} = useTranslation();
-  const [wfsProperties, setWfsProperties] = useState<WfsProperties>();
+  const {t, i18n: {language}} = useTranslation();
+  const [wfsProperties, setWfsProperties] = useState<PopupWfsProperties>();
 
   const getMoreInfoUrl = (selectedFeature: SelectedFeature) => {
     const split = selectedFeature?.catalognumber?.split(' ');
@@ -75,7 +69,7 @@ const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile, museuI
 
   const scientificNameLabel = wfsProperties?.scientificName || selectedFeature.species?.name;
   const placeLabel = wfsProperties && getPlaceLabel(wfsProperties);
-  const dateLabel = wfsProperties && getDateLabel(wfsProperties);
+  const dateLabel = wfsProperties && getDateLabel(wfsProperties, language);
 
   return <Card variant="outlined">
     <CardContent>
