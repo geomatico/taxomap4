@@ -46,10 +46,11 @@ function TabPanel(props: TabPanelProps) {
 type TaxonInfoModalProps = {
   selectedTaxon: TaxonomicLevel,
   isModalOpen: boolean,
+  isTactile: boolean,
   onModalOpenChange: (_isOpen: boolean) => void,
 }
 
-const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, onModalOpenChange}) => {
+const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, isTactile, onModalOpenChange}) => {
   const handleClose = () => onModalOpenChange(false);
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -86,8 +87,8 @@ const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, on
     sx={{zIndex: '3000'}}
   >
     <Box sx={modalStyle}>
-      <Typography variant="h4" gutterBottom>{selectedTaxon}</Typography>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Typography variant="overline" sx={{pl: 2, fontWeight: 'bold', fontSize: '16px', bgcolor: 'secondary.main'}}>{selectedTaxon}</Typography>
+      <Box sx={{ borderBottom: 1, borderColor: 'secondary.main' }}>
         <Tabs
           value={selectedTab}
           onChange={handleChange}
@@ -96,7 +97,7 @@ const TaxonInfoModal: FC<TaxonInfoModalProps> = ({selectedTaxon, isModalOpen, on
           aria-label="secondary tabs example"
         >
           <Tab value={0} label="Wikipedia"/>
-          <Tab value={1} label="Links"/>
+          {!isTactile && <Tab value={1} label="Links"/>}
         </Tabs>
       </Box>
 
