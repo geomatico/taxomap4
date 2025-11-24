@@ -37,7 +37,7 @@ all:
     geoserver:
       url: "http://{{ domain }}/geoserver"
       data_dir: ../devops/geoserver_data_dir
-      admin_password: "plain:geoserver"
+      admin_password: "geoserver"
       extra_ports:
         - "8090:8080"
 
