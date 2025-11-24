@@ -138,3 +138,26 @@ export enum MapType {
   densityMap = 'densityMap',
   aggregateData = 'aggregateData'
 }
+
+export type InstitutionCode = 'MCNB' | 'MVHN' | 'UB' | 'IMEDEA' | 'IBB';
+export type Phylum = 'TRACHEOPHYTA' | 'CHORDATA' | 'MOLLUSCA' | 'ARTHROPODA' | 'OTHER';
+export type BasisOfRecord = 'FOSSIL' | 'NON_FOSSIL';
+export type VerificationSatus = 'VERIFIED' | 'UNVERIFIED';
+
+export type Occurrence = {
+  id: number,
+  institutionCode: InstitutionCode,
+  collectionCode?: string,
+  catalogNumber: string,
+  basisOfRecord: string,
+  taxonID: number,
+  decimalLatitude: number,
+  decimalLongitude: number,
+  eventDate?: Date,
+  countryCode?: string,
+  stateProvince?: string,
+  county?: string,
+  municipality?: string,
+  georeferenceVerificationStatus?: VerificationSatus,
+  identificationVerificationStatus?: VerificationSatus
+}

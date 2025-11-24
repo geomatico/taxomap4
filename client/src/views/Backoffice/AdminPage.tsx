@@ -7,13 +7,14 @@ import Typography from '@mui/material/Typography';
 import FileDropper from '../../components/FileDropper';
 import Grid from '@mui/material/Grid';
 import Loading from '../../components/Loading';
-import TaxoTable, {Occurrency} from '../../components/TaxoTable';
+import TaxoTable from '../../components/TaxoTable';
 import Alert from '../../components/Alert';
 import {Skeleton} from '@mui/material';
+import {Occurrence} from '../../commonTypes';
 
 //TYPES
-export type AdminProps = {
-  data: Array<Occurrency> | undefined,
+type Props = {
+  data?: Array<Occurrence>,
   onUpload: (file: File) => void,
   isUploading: boolean
   success: boolean,
@@ -21,7 +22,7 @@ export type AdminProps = {
 };
 
 
-const AdminPage: FC<AdminProps> = ({data, onUpload, isUploading, onAlertAccept, success}) => {
+const AdminPage: FC<Props> = ({data, onUpload, isUploading, onAlertAccept, success}) => {
   return <>
     <ResponsiveHeader
       title=''

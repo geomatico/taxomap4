@@ -1,5 +1,5 @@
-import React from 'react';
-import Legend, {LegendProps} from './Legend';
+import React, {ComponentProps} from 'react';
+import Legend from './Legend';
 import {Meta, Story} from '@storybook/react';
 import {SymbolizeBy, TaxonomicLevel} from '../commonTypes';
 
@@ -7,6 +7,8 @@ export default {
   title: 'Common/Legend',
   component: Legend,
 } as Meta;
+
+type LegendProps = ComponentProps<typeof Legend>;
 
 const Template: Story<LegendProps> = (args) => (
   <Legend {...args}/>

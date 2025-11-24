@@ -5,21 +5,19 @@ import LoginForm from '../../components/login/LoginForm';
 import {get, HttpError} from '@geomatico/client-commons';
 import AdminPage from './AdminPage';
 import Loading from '../../components/Loading';
-import {Occurrency} from '../../components/TaxoTable';
 import Papa, {ParseResult} from 'papaparse';
 import {API_BASE_URL} from '../../config';
-
+import {BasisOfRecord, InstitutionCode, Occurrence, VerificationSatus} from '../../commonTypes';
 
 
 const Index = () => {
   const [isLogged, setLogged] = useState<boolean>(true);
   const [error, setError] = useState<string>();
-  const [dummyData, setDummyData] = useState<string>();
   
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const [data, setData] = useState<Array<Occurrency> | undefined>();
+  const [data, setData] = useState<Array<Occurrence> | undefined>();
 
   const handleException = exceptionHandler(setLogged, setError);
 
@@ -50,26 +48,29 @@ const Index = () => {
       skipEmptyLines: true,
     }) as ParseResult<Record<string, string>>;
 
-    if(!result) {
+    if (result && result.data && result.data.length) {
+      const data: Array<Occurrence> = result.data.map((row) => ({
+        id: parseInt(row.FID.replace('taxomap.', '')),
+        institutionCode: row.institutionCode as InstitutionCode,
+        collectionCode: row.collectionCode || undefined,
+        catalogNumber: row.catalogNumber,
+        basisOfRecord: row.basisOfRecord as BasisOfRecord,
+        taxonID: parseInt(row.taxonID),
+        decimalLatitude: +parseFloat(row.decimalLatitude).toFixed(5),
+        decimalLongitude: +parseFloat(row.decimalLongitude).toFixed(5),
+        eventDate: row.eventDate ? new Date(row.eventDate) : undefined,
+        countryCode: row.countryCode || undefined,
+        stateProvince: row.stateProvince || undefined,
+        county: row.county || undefined,
+        municipality: row.municipality || undefined,
+        georeferenceVerificationStatus: row.georeferenceVerificationStatus as VerificationSatus || undefined,
+        identificationVerificationStatus: row.identificationVerificationStatus as VerificationSatus || undefined
+      }));
+      console.log(data);
+      setData(data);
+    } else {
       setData(undefined);
     }
-
-    const data = result && result.data.map((row, index) => ({
-      index,
-      catalogNumber: row.catalognumber || '',
-      institutionCode: row.institutioncode || '',
-      basisOfRecord: row.basisofrecord || '',
-      scientificName: row.scientificname || '',
-      kingdom: row.kingdom || '',
-      phylum: row.phylum || '',
-      class: row.class || '',
-      order: row.order || '',
-      family: row.family || '',
-      genus: row.genus || '',
-      specificepithet: row.specificepithet || '',
-    }));
-
-    data !== '' ? setData(data) : setData(undefined);
   };
 
   useEffect(() => {
@@ -82,12 +83,11 @@ const Index = () => {
     // TODO http calls should be somewhere else
     if (isLogged) {
       authService.getAccessToken().then(async accessToken => {
-        const data = await get<string>({
+        await get({
           baseUrl: API_BASE_URL,
           path: 'holi',
           headers: {Authorization: 'Bearer ' + accessToken}
         });
-        setDummyData(data);
       }).catch(handleException);
     }
   }, [isLogged]);
@@ -97,7 +97,7 @@ const Index = () => {
       error={error}
       onLogin={handleLogin}
     />;
-  } else if (dummyData) {
+  } else if (data) {
     return <AdminPage
       data={data}
       onUpload={handleUpload}

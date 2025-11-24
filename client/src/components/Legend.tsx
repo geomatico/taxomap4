@@ -6,7 +6,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Typography from '@mui/material/Typography';
 import SelectInput from '@geomatico/geocomponents/Forms/SelectInput';
 import GraphicByLegend from './GraphicByLegend';
-import {Filters, Legend, MapType, SymbolizeBy} from '../commonTypes';
+import {Filters, Legend as LegendType, MapType, SymbolizeBy} from '../commonTypes';
 import useLegends from '../hooks/useLegends';
 
 //STYLES
@@ -67,7 +67,7 @@ type OptionMapType = {
   label: string
 };
 
-export type LegendProps = {
+type Props = {
   symbolizeBy: SymbolizeBy,
   filters: Filters,
   selectedMapType: MapType,
@@ -75,11 +75,11 @@ export type LegendProps = {
   onMapTypeChange: (mapType: MapType) => void
 };
 
-const Legend: FC<LegendProps> = ({symbolizeBy, selectedMapType, filters, onSymbolizeByChange, onMapTypeChange}) => {
+const Legend: FC<Props> = ({symbolizeBy, selectedMapType, filters, onSymbolizeByChange, onMapTypeChange}) => {
   const {t} = useTranslation();
   const legends = useLegends();
 
-  const translateLegend = (legend: Legend) => legend.map(({id, color, labelKey}) => ({
+  const translateLegend = (legend: LegendType) => legend.map(({id, color, labelKey}) => ({
     id,
     color,
     label: t(labelKey)
