@@ -8,21 +8,16 @@ import FileDropper from '../../components/FileDropper';
 import Grid from '@mui/material/Grid';
 import Loading from '../../components/Loading';
 import TaxoTable from '../../components/TaxoTable';
-import Alert from '../../components/Alert';
 import {Skeleton} from '@mui/material';
 import {Occurrence} from '../../commonTypes';
 
-//TYPES
 type Props = {
   data?: Array<Occurrence>,
   onUpload: (file: File) => void,
   isUploading: boolean
-  success: boolean,
-  onAlertAccept: () => void
 };
 
-
-const AdminPage: FC<Props> = ({data, onUpload, isUploading, onAlertAccept, success}) => {
+const AdminPage: FC<Props> = ({data, onUpload, isUploading}) => {
   return <>
     <ResponsiveHeader
       title=''
@@ -51,7 +46,6 @@ const AdminPage: FC<Props> = ({data, onUpload, isUploading, onAlertAccept, succe
       </Grid>
     </Grid>
     {isUploading && <Loading/>}
-    {success && <Alert isOpen={true} title='Cargar csv' description='Archivo cargado con éxito' onAccept={onAlertAccept}/>}
   </>;
 };
 export default AdminPage;

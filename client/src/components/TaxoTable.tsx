@@ -71,7 +71,7 @@ const TaxoTable: FC<Props> = ({data}) => {
       field: 'eventDate',
       headerName: 'eventDate',
       width: 150,
-      valueFormatter: (params: { value?: Date }) => params?.value ? params.value.toLocaleDateString('en-GB') : undefined, // en-GB uses DD/MM/YYYY with zero padding
+      valueFormatter: ({value}: {value?: Date}) => value ? value.toISOString().split('T')[0] : undefined,
     },
     {
       field: 'countryCode',

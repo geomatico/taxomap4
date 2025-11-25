@@ -9,12 +9,6 @@ import {getWfsFeatureProperties, WFS_PROPERTY, WfsProperties} from '../wfs/wfs';
 
 import './utils/popUp.css';
 
-export type PopUpContentProps = {
-  selectedFeature: SelectedFeature,
-  isTactile: boolean
-  museuId: number
-}
-
 export type SelectedFeature = {
   id?: number,
   catalognumber?: string,
@@ -29,11 +23,18 @@ export type SelectedFeature = {
  */
 const PROPERTIES = [
   WFS_PROPERTY.eventDate,
-  WFS_PROPERTY.municipality, WFS_PROPERTY.county, WFS_PROPERTY.stateProvince,
+  WFS_PROPERTY.municipality,
+  WFS_PROPERTY.county,
+  WFS_PROPERTY.stateProvince,
   WFS_PROPERTY.scientificName
 ];
 
 type PopupWfsProperties = Partial<Pick<WfsProperties, 'eventDate' | 'municipality' | 'county' | 'stateProvince' | 'scientificName'>>;
+
+const getMoreInfoUrl = (selectedFeature: SelectedFeature) => {
+  const split = selectedFeature?.catalognumber?.split(' ');
+  return split ? `https://www.bioexplora.cat/ca/colleccions-obertes/${split[0]}/${split[0]}_${split[1]}` : '';
+};
 
 export const getPlaceLabel = (properties: PopupWfsProperties): string | undefined => {
   const parts = [properties.municipality, properties.county, properties.stateProvince].filter(Boolean);
@@ -50,18 +51,26 @@ export const getDateLabel = (properties: PopupWfsProperties, lang: string): stri
   return properties.eventDate?.toLocaleDateString(lang);
 };
 
-const PopUpContent: FC<PopUpContentProps> = ({selectedFeature, isTactile, museuId}) => {
+
+
+
+type Props = {
+  selectedFeature: SelectedFeature,
+  isTactile: boolean
+  museuId: number
+}
+
+const PopUpContent: FC<Props> = ({selectedFeature, isTactile, museuId}) => {
   const {t, i18n: {language}} = useTranslation();
+
   const [wfsProperties, setWfsProperties] = useState<PopupWfsProperties>();
 
-  const getMoreInfoUrl = (selectedFeature: SelectedFeature) => {
-    const split = selectedFeature?.catalognumber?.split(' ');
-    return split ? `https://www.bioexplora.cat/ca/colleccions-obertes/${split[0]}/${split[0]}_${split[1]}` : '';
-  };
-
   const getWfsProperties = useCallback(async () =>
-    await getWfsFeatureProperties(selectedFeature?.id, PROPERTIES), [selectedFeature]);
+    await getWfsFeatureProperties(selectedFeature?.id, PROPERTIES),
+  [selectedFeature]);
+
   useEffect(() => {
+    setWfsProperties(undefined);
     getWfsProperties()
       .then(setWfsProperties)
       .catch(console.log);
