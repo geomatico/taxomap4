@@ -55,7 +55,8 @@ Puede tardar 10mn en descargar.
 
 ```
 export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
-curl -X POST http://localhost/api/v1/manage/generate-resources/ -H "Accept: application/json" -H "Authorization: Bearer $JWT_TOKEN" | jq -r
+echo $JWT_TOKEN
+curl -X POST http://localhost/api/v1/manage/generate-resources/ -H "Accept: application/json" -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
 
@@ -84,4 +85,6 @@ Esto volverá a ejecutar el contenido de `initdb-scripts` del contenedor de `dat
 
 La URL para acceder es
 ([https://taxomap.geomatico.es/#/planetavida/](https://taxomap.geomatico.es/#/planetavida/))
+
+
 

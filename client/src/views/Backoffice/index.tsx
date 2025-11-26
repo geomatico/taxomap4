@@ -1,126 +1,120 @@
 import React, {useEffect, useState} from 'react';
-import authService, {CannotRefreshTokenError} from '../../services/auth';
-import taxomapService from '../../services/taxomapImpl';
-import LoginForm from '../../components/login/LoginForm';
-import {get, HttpError} from '@geomatico/client-commons';
-import AdminPage from './AdminPage';
-import Loading from '../../components/Loading';
-import {Occurrency} from '../../components/TaxoTable';
 import Papa, {ParseResult} from 'papaparse';
-import {API_BASE_URL} from '../../config';
 
-
+import {HttpError} from '@geomatico/client-commons';
+import {BasisOfRecord, InstitutionCode, Occurrence, VerificationSatus} from '../../commonTypes';
+import authService, {CannotRefreshTokenError} from '../../services/auth';
+import taxomapService, {CsvUploadResult} from '../../services/taxomapImpl';
+import LoginForm from '../../components/login/LoginForm';
+import Loading from '../../components/Loading';
+import AdminPage from './AdminPage';
+import Alert from '../../components/Alert';
+import {useTranslation} from 'react-i18next';
 
 const Index = () => {
-  const [isLogged, setLogged] = useState<boolean>(true);
+  const {i18n: {language}} = useTranslation();
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-  const [dummyData, setDummyData] = useState<string>();
-  
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
+  const [data, setData] = useState<Array<Occurrence> | undefined>();
+  const [uploadResult, setUploadResult] = useState<CsvUploadResult | undefined>();
 
-  const [data, setData] = useState<Array<Occurrency> | undefined>();
-
-  const handleException = exceptionHandler(setLogged, setError);
-
-  const handleLogin = (email: string, password: string) => {
-    authService.login(email, password)
-      .then(() => setLogged(true))
-      .catch(handleException);
-  };
-
-  const handleUpload = (file: File) => {
-    setIsLoading(true);
-    taxomapService.uploadCsv(file)
-      .then(() => setSuccess(true))
-      .finally(() => setIsLoading(false));
-  };
-
-  useEffect(() => {
-    setIsLoading(true);
-    taxomapService.downloadCsv()
-      .then((res) => parseCsv(res))
-      .then(() => setSuccess(true))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  const parseCsv = (res: string | undefined) => {
-    const result = res && Papa.parse(res, {
-      header: true, // Trata la primera fila como encabezados
-      skipEmptyLines: true,
-    }) as ParseResult<Record<string, string>>;
-
-    if(!result) {
-      setData(undefined);
-    }
-
-    const data = result && result.data.map((row, index) => ({
-      index,
-      catalogNumber: row.catalognumber || '',
-      institutionCode: row.institutioncode || '',
-      basisOfRecord: row.basisofrecord || '',
-      scientificName: row.scientificname || '',
-      kingdom: row.kingdom || '',
-      phylum: row.phylum || '',
-      class: row.class || '',
-      order: row.order || '',
-      family: row.family || '',
-      genus: row.genus || '',
-      specificepithet: row.specificepithet || '',
-    }));
-
-    data !== '' ? setData(data) : setData(undefined);
-  };
-
-  useEffect(() => {
-    authService.isLogged()
-      .then(setLogged)
-      .catch(handleException);
-  }, []);
-
-  useEffect(() => {
-    // TODO http calls should be somewhere else
-    if (isLogged) {
-      authService.getAccessToken().then(async accessToken => {
-        const data = await get<string>({
-          baseUrl: API_BASE_URL,
-          path: 'holi',
-          headers: {Authorization: 'Bearer ' + accessToken}
-        });
-        setDummyData(data);
-      }).catch(handleException);
-    }
-  }, [isLogged]);
-
-  if (!isLogged) {
-    return <LoginForm
-      error={error}
-      onLogin={handleLogin}
-    />;
-  } else if (dummyData) {
-    return <AdminPage
-      data={data}
-      onUpload={handleUpload}
-      isUploading={isLoading}
-      success={success}
-      onAlertAccept={() => setSuccess(false)}
-    />;
-  } else {
-    return <Loading/>;
-  }
-};
-
-const exceptionHandler = (
-  setLogged: (logged: boolean) => void,
-  setError: (error: string) => void
-) => {
-  return (e: Error) => {
+  const handleException = (e: Error) => {
     if (e instanceof CannotRefreshTokenError) {
-      setLogged(false);
+      setLoggedIn(false);
     } else {
       setError(getError(e));
     }
   };
+
+  const handleLogin = (email: string, password: string) => {
+    authService.login(email, password)
+      .then(() => setLoggedIn(true))
+      .catch(handleException);
+  };
+
+  const handleUpload = (file: File) => {
+    setLoading(true);
+    taxomapService.uploadCsv(file, language)
+      .then(setUploadResult)
+      .catch(handleException)
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    authService.isLogged()
+      .then(setLoggedIn)
+      .catch(handleException);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchData();
+    }
+  }, [isLoggedIn]);
+
+  const fetchData = () => {
+    setLoading(true);
+    setData(undefined);
+    taxomapService.downloadCsv()
+      .then((res) => parseCsv(res))
+      .then(setData)
+      .finally(() => setLoading(false));
+  };
+
+  let uploadFinishedMessage = uploadResult?.discardedRecords ? 'Se han incorporado parcialmente los datos. Al aceptar, se descargará un fichero con los datos descartados y el motivo de su rechazo.' : 'Se han incorporado todos los datos correctamente.';
+  if (uploadResult?.publishingFailed) {
+    uploadFinishedMessage += ' Aunque los datos se han incorporado a la base de datos, se ha producido un error en el proceso de publicación y no serán visibles. Contacta con el administrador del sistema para investigar la causa.';
+  }
+
+  const handleUploadFinishedAccept = () => {
+    if (uploadResult?.discardedRecords) {
+      downloadFile(uploadResult.discardedRecords, 'datos-descartados.csv');
+    }
+    setUploadResult(undefined);
+    fetchData();
+  };
+
+  return !isLoggedIn ?
+    <LoginForm error={error} onLogin={handleLogin}/> :
+    data ? <>
+      {error &&
+        <Alert isOpen={true} title="Error" description={error} onAccept={() => setError(undefined)}/>
+      }
+      {uploadResult &&
+        <Alert isOpen={true} title="Subida finalizada" description={uploadFinishedMessage} onAccept={handleUploadFinishedAccept}/>
+      }
+      <AdminPage data={data} onUpload={handleUpload} isUploading={isLoading}/>
+    </> :
+      <Loading/>;
+};
+
+
+const parseCsv = (res: string | undefined): Array<Occurrence> | undefined => {
+  const result = res && Papa.parse(res, {
+    header: true,
+    skipEmptyLines: true
+  }) as ParseResult<Record<string, string>>;
+
+  if (result && result.data && result.data.length) {
+    return result.data.map((row) => ({
+      id: parseInt(row.FID.replace('taxomap.', '')),
+      institutionCode: row.institutionCode as InstitutionCode,
+      collectionCode: row.collectionCode || undefined,
+      catalogNumber: row.catalogNumber,
+      basisOfRecord: row.basisOfRecord as BasisOfRecord,
+      taxonID: parseInt(row.taxonID),
+      decimalLatitude: +parseFloat(row.decimalLatitude).toFixed(5),
+      decimalLongitude: +parseFloat(row.decimalLongitude).toFixed(5),
+      eventDate: row.eventDate ? new Date(row.eventDate) : undefined,
+      countryCode: row.countryCode || undefined,
+      stateProvince: row.stateProvince || undefined,
+      county: row.county || undefined,
+      municipality: row.municipality || undefined,
+      georeferenceVerificationStatus: row.georeferenceVerificationStatus as VerificationSatus || undefined,
+      identificationVerificationStatus: row.identificationVerificationStatus as VerificationSatus || undefined
+    }));
+  }
 };
 
 const getError = (e: Error): string => {
@@ -134,6 +128,15 @@ const getError = (e: Error): string => {
   } else {
     return `${e}`;
   }
+};
+
+const downloadFile = (blob: Blob, fileName: string) => {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  URL.revokeObjectURL(url);
 };
 
 export default Index;

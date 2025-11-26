@@ -7,21 +7,17 @@ import Typography from '@mui/material/Typography';
 import FileDropper from '../../components/FileDropper';
 import Grid from '@mui/material/Grid';
 import Loading from '../../components/Loading';
-import TaxoTable, {Occurrency} from '../../components/TaxoTable';
-import Alert from '../../components/Alert';
+import TaxoTable from '../../components/TaxoTable';
 import {Skeleton} from '@mui/material';
+import {Occurrence} from '../../commonTypes';
 
-//TYPES
-export type AdminProps = {
-  data: Array<Occurrency> | undefined,
+type Props = {
+  data?: Array<Occurrence>,
   onUpload: (file: File) => void,
   isUploading: boolean
-  success: boolean,
-  onAlertAccept: () => void
 };
 
-
-const AdminPage: FC<AdminProps> = ({data, onUpload, isUploading, onAlertAccept, success}) => {
+const AdminPage: FC<Props> = ({data, onUpload, isUploading}) => {
   return <>
     <ResponsiveHeader
       title=''
@@ -50,7 +46,6 @@ const AdminPage: FC<AdminProps> = ({data, onUpload, isUploading, onAlertAccept, 
       </Grid>
     </Grid>
     {isUploading && <Loading/>}
-    {success && <Alert isOpen={true} title='Cargar csv' description='Archivo cargado con éxito' onAccept={onAlertAccept}/>}
   </>;
 };
 export default AdminPage;

@@ -1,100 +1,109 @@
 import React, {FC} from 'react';
-
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-
-
 import {lighten} from '@mui/material/styles';
 import {grey} from '@mui/material/colors';
 import {DataGrid, esES, GridRenderCellParams} from '@mui/x-data-grid';
+
 import {INSTITUTION_COLOR} from '../config';
+import {InstitutionCode, Occurrence} from '../commonTypes';
 
-
-//TYPES
-export type Occurrency = {
-  index: number,
-  catalogNumber: string,
-  institutionCode: string,
-  basisOfRecord: string,
-  scientificName: string,
-  kingdom: string,
-  phylum: string,
-  class: string,
-  order: string,
-  family: string,
-  genus: string,
-  specificepithet: string,
-}
-
-export type TaxoTableProps = {
-   data: Array<Occurrency>
+const renderInstitution = (params: GridRenderCellParams<Occurrence, InstitutionCode>) => {
+  if (params.value) {
+    const chipColor = INSTITUTION_COLOR[params.value] || '#d3d3d3';
+    return <Chip
+      label={params.value}
+      variant='outlined'
+      sx={{color: grey[700], borderColor: chipColor, bgcolor: lighten(chipColor, 0.75), fontSize: 12, textTransform: 'uppercase'}}
+    />;
+  }
 };
 
-const TaxoTable: FC<TaxoTableProps> = ({data}) => {
-  
-  const renderInstitution = (params: GridRenderCellParams) => {
-    const chipColor = INSTITUTION_COLOR.filter(i => i.id === params.value)[0].color || '#d3d3d3';
-    return params.value !== '' && 
-            <Chip 
-              label={params.value} 
-              variant='outlined'
-              sx={{color: grey[700], borderColor: chipColor, bgcolor: lighten(chipColor, 0.75), fontSize: 12, textTransform: 'uppercase'}}
-            />;
-  };
+
+type Props = {
+   data: Array<Occurrence>
+};
+
+const TaxoTable: FC<Props> = ({data}) => {
   const columns = [
     {
-      field: 'catalogNumber',
-      headerName: 'Nº CATÁLOGO',
-      width: 160,
+      field: 'id',
+      headerName: 'id',
+      width: 80
     },
     {
       field: 'institutionCode',
-      headerName: 'INSTITUCIÓN',
-      width: 250,
+      headerName: 'institutionCode',
+      width: 120,
       renderCell: renderInstitution
     },
     {
+      field: 'collectionCode',
+      headerName: 'collectionCode',
+      width: 150
+    },
+    {
+      field: 'catalogNumber',
+      headerName: 'catalogNumber',
+      width: 150,
+    },
+    {
       field: 'basisOfRecord',
-      headerName: 'BASIS OF RECORD',
-      width: 200,
-    },
-    {
-      field: 'scientificName',
-      headerName: 'NOMBRE CIENTÍFICO',
-      width: 250
-    },
-    {
-      field: 'kingdom',
-      headerName: 'KINGDOM',
-      width: 100,
-    },
-    {
-      field: 'phylum',
-      headerName: 'PHYLUM',
-      width: 100,
-    },
-    {
-      field: 'class',
-      headerName: 'CLASS',
-      width: 100,
-    },
-    {
-      field: 'order',
-      headerName: 'ORDER',
+      headerName: 'basisOfRecord',
       width: 150,
     },
     {
-      field: 'family',
-      headerName: 'FAMILY',
-      width: 150,
+      field: 'taxonID',
+      headerName: 'taxonID',
+      width: 100
     },
     {
-      field: 'specificepithet',
-      headerName: 'SPECIFICE PITHET',
-      width: 200,
+      field: 'decimalLatitude',
+      headerName: 'decimalLatitude',
+      width: 150
+    },
+    {
+      field: 'decimalLongitude',
+      headerName: 'decimalLongitude',
+      width: 150
+    },
+    {
+      field: 'eventDate',
+      headerName: 'eventDate',
+      width: 150,
+      valueFormatter: ({value}: {value?: Date}) => value ? value.toISOString().split('T')[0] : undefined,
+    },
+    {
+      field: 'countryCode',
+      headerName: 'countryCode',
+      width: 100
+    },
+    {
+      field: 'stateProvince',
+      headerName: 'stateProvince',
+      width: 150
+    },
+    {
+      field: 'county',
+      headerName: 'county',
+      width: 150
+    },
+    {
+      field: 'municipality',
+      headerName: 'municipality',
+      width: 180
+    },
+    {
+      field: 'georeferenceVerificationStatus',
+      headerName: 'georeferenceVerificationStatus',
+      width: 150
+    },
+    {
+      field: 'identificationVerificationStatus',
+      headerName: 'identificationVerificationStatus',
+      width: 150
     }
   ];
-
 
   return <Box sx={{height: '90vh'}}>
     <DataGrid
@@ -107,7 +116,7 @@ const TaxoTable: FC<TaxoTableProps> = ({data}) => {
           textAlign: 'center'
         },
         '& .MuiDataGrid-columnHeaderTitle': {
-          textTransform: 'uppercase'
+          fontWeight: 'bold'
         },
         '& .MuiDataGrid-columnSeparator': {
           color: 'secondary.main',
@@ -124,7 +133,7 @@ const TaxoTable: FC<TaxoTableProps> = ({data}) => {
         noRowsLabel: 'Sin Ocurrencias', // Sobrescribe el texto para filas vacías
       }}
       //hideFooter
-      getRowId={params => params.index}
+      getRowId={params => params.id}
     />
   </Box>;
 };

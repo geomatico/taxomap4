@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {ComponentProps} from 'react';
 import {Meta, Story} from '@storybook/react';
 
-import PopUpContent, {PopUpContentProps} from './PopUpContent';
+import PopUpContent from './PopUpContent';
 
 export default {
   title: 'Common/PopUpContent',
@@ -10,6 +10,8 @@ export default {
     (Story) => <div style={{margin: '20px'}}><Story/></div>
   ]
 } as Meta;
+
+type PopUpContentProps = ComponentProps<typeof PopUpContent>;
 
 const Template: Story<PopUpContentProps> = args => <PopUpContent {...args}/>;
 
@@ -31,4 +33,3 @@ Default.args = {
     lon: -4.611523437500166
   }
 };
-

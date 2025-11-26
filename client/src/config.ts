@@ -1,4 +1,4 @@
-import {MapStyle, TaxonomicLevel, Viewport} from './commonTypes';
+import {BasisOfRecord, HEXColor, InstitutionCode, MapStyle, Phylum, TaxonomicLevel, Viewport} from './commonTypes';
 
 export const DRAWER_WIDTH = 300;
 export const SM_BREAKPOINT = 600;
@@ -51,31 +51,25 @@ export const GEOSERVER_BASE_URL = process.env.GEOSERVER_BASE_URL;
 
 export const API_BASE_URL = process.env.API_BASE_URL as string;
 
-export const INSTITUTION_COLOR = [
-  {
-    id: 'Museu Ciències Naturals Barcelona',
-    color: '#58a062'
-  },
-  {
-    id: 'Museu Valencià d\'Història Natural',
-    color: '#fabb5c'
-  },
-  {
-    id: 'Universitat de Barcelona',
-    color: '#5a9dda'
-  },
-  {
-    id: 'Institut Mediterrani d\'Estudis Avançats',
-    color: '#f02921'
-  },
-  {
-    id: 'Institut Botànic de Barcelona',
-    color: '#58a062'
-  },
-  {
-    id: 'MCNB',
-    color: '#a5a4a4'
-  }
-];
+export const INSTITUTION_COLOR: Record<InstitutionCode, HEXColor> = {
+  MCNB: '#FABB5C',
+  MVHN: '#343FCE',
+  UB: '#5A9DDA',
+  IMEDEA: '#F02921',
+  IBB: '#58A062'
+};
+
+export const PHYLUM_COLOR: Record<Phylum, HEXColor> = {
+  TRACHEOPHYTA: '#58A062',
+  CHORDATA: '#F07971',
+  MOLLUSCA: '#54BFDE',
+  ARTHROPODA: '#666666',
+  OTHER: '#FABB5C'
+};
+
+export const BASISOFRECORD_COLOR: Record<BasisOfRecord, HEXColor> = {
+  FOSSIL: '#F07971',
+  NON_FOSSIL: '#58A062'
+};
 
 export const STATIC_RESOURCES_HOST = process.env.STATIC_RESOURCES_HOST || '';

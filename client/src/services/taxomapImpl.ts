@@ -1,31 +1,47 @@
 import {API_BASE_URL, GEOSERVER_BASE_URL} from '../config';
 import {WFS_TYPENAME} from '../wfs/wfs';
+import auth from './auth';
 
-type UploadResponse = {
-  status: number;
-  message?: string;
+type UploadError = {
+  detail: string;
 }
 
-const uploadCsv = async (file: File): Promise<string | void> => {
+export type CsvUploadResult = {
+  discardedRecords?: Blob,
+  publishingFailed: boolean
+}
 
-  try {
-    const formData = new FormData();
-    formData.append('data', file);
+const uploadCsv = async (file: File, lang: string): Promise<CsvUploadResult> => {
+  const formData = new FormData();
+  formData.append('data', file);
 
-    const response: UploadResponse = await fetch(API_BASE_URL + '/upload-csv/', {
-      method: 'POST',
-      body: formData
-    });
+  const jwt = await auth.getAccessToken();
 
-    if (response.status === 204) {
-      window.location.reload(); //TODO
-      return 'Subido con éxito';
-    } else {
-      throw new Error(response.message || 'Error al subir el archivo');
+  const response = await fetch(API_BASE_URL + '/upload-csv/', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'accept-language': lang,
+      authorization: `Bearer ${jwt}`
     }
-  } catch (error) {
-    console.error('Error al subir el archivo:', error);
-    throw error;
+  });
+
+  if ([200, 204, 520].includes(response.status)) { // OK
+    const csvText = await response.text();
+    return {
+      discardedRecords: csvText ? new Blob([csvText], {type: 'text/csv'}) : undefined,
+      publishingFailed: response.status === 520 // Ver https://geomatico.atlassian.net/wiki/spaces/KB/pages/1523679233/API
+    };
+  } else if (response.status === 403) {
+    throw new Error('No autorizado');
+  } else {
+    let body: UploadError;
+    try {
+      body = await response.json();
+    } catch {
+      throw new Error('Error al subir el archivo');
+    }
+    throw new Error(body?.detail || 'Error al subir el archivo');
   }
 };
 
