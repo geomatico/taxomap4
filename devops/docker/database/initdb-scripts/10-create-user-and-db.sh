@@ -8,4 +8,4 @@ psql --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} -c \
 psql --username ${TAXOMAP_USER} --dbname ${TAXOMAP_DB} -c \
   "CREATE EXTENSION POSTGIS;"
 
-gunzip -c /docker-entrypoint-initdb.d/dump/20-taxomap-normalized.sql.gz | psql --username "$TAXOMAP_USER" --dbname "$TAXOMAP_DB" --no-password --no-psqlrc --quiet
+gunzip -c /docker-entrypoint-initdb.d/dump/20-taxomap-20251126.sql.gz | psql --username "$TAXOMAP_USER" --dbname "$TAXOMAP_DB" --no-password --no-psqlrc --quiet
