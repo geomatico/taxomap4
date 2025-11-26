@@ -1,4 +1,4 @@
-CREATE TEMP TABLE public.tmp_backbone_matching_2 (
+CREATE TABLE public.tmp_backbone_matching_2 (
     id integer,
     backbone_id integer
 );
