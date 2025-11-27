@@ -17,7 +17,13 @@ class BasisOfRecord(Model, DictionaryMixin):
     name_es = TextField()
 
     def to_dict(self):
-        return {self.id: '/'.join([self.name_en, self.name_ca, self.name_es])}
+        return {
+            'id': self.id,
+            'name_ca': self.name_ca,
+            'name_en': self.name_en,
+            'name_es': self.name_es,
+            'code': self.code
+        }
 
     class Meta:
         managed = False

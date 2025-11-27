@@ -43,7 +43,7 @@ def generate_dictionaries():
     _update_json('species.json', repository.get_species())
     _update_json('subspecies.json', repository.get_subspecies())
     _update_json('basisofrecord.json', BasisOfRecordRepository().find_all())
-    _update_json('institution.json', InstitutionRepository().find_all())
+    _update_json('institutioncode.json', InstitutionRepository().find_all())
 
 
 def generate_arrow():
