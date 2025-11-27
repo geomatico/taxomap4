@@ -41,7 +41,7 @@ def _validate_dictionaries():
         'species.json',
         'subspecies.json',
         'basisofrecord.json',
-        'institution.json',
+        'institutioncode.json',
     ] if dictionary not in available_dictionaries]
     assert missing_dictionaries == []
 
@@ -54,22 +54,36 @@ def _validate_dictionaries():
 
     def validate_basis_of_records(basis_of_record):
         assert basis_of_record == [
-            {"1": "Fossil/Fòssil/Fósil"},
-            {"2": "Non-fossil/No fòssil/No fósil"}
-        ]
+            {'code': 'FOSSIL', 'id': 1, 'name_ca': 'Fòssil', 'name_en': 'Fossil', 'name_es': 'Fósil'},
+            {'code': 'NON_FOSSIL', 'id': 2, 'name_ca': 'No fòssil', 'name_en': 'Non-fossil', 'name_es': 'No fósil'}]
 
     def validate_institutions(institutions):
         assert institutions == [
-            {"1": "Institut Mediterrani d'Estudis Avançats"},
-            {"2": "Museu Ciències Naturals Barcelona"},
-            {"3": "Museu Valencià d'Història Natural"},
-            {"4": "Universitat de Barcelona"},
-            {"5": "Institut Botànic de Barcelona"}
+            {'code': 'IMEDEA', 'id': 1,
+             'name_ca': "Institut Mediterrani d'Estudis Avançats",
+             'name_en': 'Mediterranean Institute for Advanced Studies',
+             'name_es': 'Instituto Mediterráneo de Estudios Avanzados'},
+            {'code': 'MCNB', 'id': 2,
+             'name_ca': 'Museu Ciències Naturals Barcelona',
+             'name_en': 'Museum of Natural Sciences of Barcelona',
+             'name_es': 'Museo de Ciencias Naturales de Barcelona'},
+            {'code': 'MVHN', 'id': 3,
+             'name_ca': "Museu Valencià d'Història Natural",
+             'name_en': 'Natural History Museum of Valencia',
+             'name_es': 'Museo Valenciano de Historia Natural'},
+            {'code': 'UB', 'id': 4,
+             'name_ca': 'Universitat de Barcelona',
+             'name_en': 'University of Barcelona',
+             'name_es': 'Universidad de Barcelona'},
+            {'code': 'IBB', 'id': 5,
+             'name_ca': 'Institut Botànic de Barcelona',
+             'name_en': 'Botanical Institute of Barcelona',
+             'name_es': 'Instituto Botánico de Barcelona'}
         ]
 
     _validate_dictionary('kingdom.json', validate_kingdoms)
     _validate_dictionary('basisofrecord.json', validate_basis_of_records)
-    _validate_dictionary('institution.json', validate_institutions)
+    _validate_dictionary('institutioncode.json', validate_institutions)
 
 
 def _validate_arrow():

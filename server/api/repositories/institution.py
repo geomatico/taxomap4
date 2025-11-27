@@ -20,7 +20,13 @@ class Institution(Model, DictionaryMixin):
     name_es = TextField()
 
     def to_dict(self):
-        return {self.id: self.name_ca}
+        return {
+            'id': self.id,
+            'name_ca': self.name_ca,
+            'name_en': self.name_en,
+            'name_es': self.name_es,
+            'code': self.code
+        }
 
     class Meta:
         managed = False

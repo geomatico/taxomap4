@@ -3,9 +3,9 @@ from datetime import datetime
 from django.contrib.gis import geos
 from rest_framework.exceptions import ParseError
 
-from api.repositories.basis_of_record import BasisOfRecordRepository, BasisOfRecordCode
+from api.repositories.basis_of_record import BasisOfRecordCode, BasisOfRecordRepository
 from api.repositories.country import CountryRepository
-from api.repositories.institution import InstitutionRepository, InstitutionCode
+from api.repositories.institution import InstitutionCode, InstitutionRepository
 from api.repositories.occurrence import Occurrence, OccurrenceRepository, VerificationStatus
 from api.repositories.taxonomy import TaxonomyRepository
 
