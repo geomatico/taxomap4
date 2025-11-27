@@ -1,10 +1,13 @@
 import {useMemo} from 'react';
 import getLegends, {Legends} from '../domain/usecases/getLegends';
-import useDictionaries from './useDictionaries';
+import useFilterDictionaries from './useFilterDictionaries';
+import {Lang} from '../commonTypes';
+import useTaxonDictionaries from './useTaxonDictionaries';
 
-const useLegends = (): Legends => {
-  const dictionaries = useDictionaries();
-  return useMemo(() => getLegends(dictionaries), [dictionaries]);
+const useLegends = (lang: Lang): Legends => {
+  const filterDictionaries = useFilterDictionaries();
+  const taxonDictionaries = useTaxonDictionaries();
+  return useMemo(() => getLegends(filterDictionaries, taxonDictionaries, lang), [filterDictionaries, lang]);
 };
 
 export default useLegends;

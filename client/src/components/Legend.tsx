@@ -6,11 +6,11 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Typography from '@mui/material/Typography';
 import SelectInput from '@geomatico/geocomponents/Forms/SelectInput';
 import GraphicByLegend from './GraphicByLegend';
-import {Filters, Legend as LegendType, MapType, SymbolizeBy} from '../commonTypes';
+import {Filters, Lang, MapType, SymbolizeBy} from '../commonTypes';
 import useLegends from '../hooks/useLegends';
 
 //STYLES
-const LEGEND_WIDTH = '280px';
+const LEGEND_WIDTH = '330px';
 
 const container: SxProps = {
   width: LEGEND_WIDTH,
@@ -76,27 +76,21 @@ type Props = {
 };
 
 const Legend: FC<Props> = ({symbolizeBy, selectedMapType, filters, onSymbolizeByChange, onMapTypeChange}) => {
-  const {t} = useTranslation();
-  const legends = useLegends();
-
-  const translateLegend = (legend: LegendType) => legend.map(({id, color, labelKey}) => ({
-    id,
-    color,
-    label: t(labelKey)
-  }));
+  const {t, i18n: {language}} = useTranslation();
+  const legends = useLegends(language as Lang);
 
   const symbolizationOptions = [{
     id: 'basisofrecord',
     label: t('fieldLabel.basisofrecord'),
-    legend: translateLegend(legends.basisOfRecordLegend)
+    legend: legends.basisOfRecordLegend
   }, {
     id: 'phylum',
     label: t('fieldLabel.phylum'),
-    legend: translateLegend(legends.phylumLegend)
+    legend: legends.phylumLegend
   }, {
     id: 'institutioncode',
     label: t('fieldLabel.institutioncode'),
-    legend: translateLegend(legends.institutionlegend)
+    legend: legends.institutionlegend
   }];
 
   const mapTypeOptions: Array<OptionMapType> = [{

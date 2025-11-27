@@ -20,7 +20,7 @@ import AboutModal from './About/AboutModal';
 import HelpModal from './HelpModal';
 import Breadcrumbs from './Breadcrumbs';
 import useTaxonPath from '../hooks/useTaxonPath';
-import useDictionaries from '../hooks/useDictionaries';
+import useTaxonDictionaries from '../hooks/useTaxonDictionaries';
 import {Taxon, TaxonomicLevel} from '../commonTypes';
 import MainHeader from './MainHeader';
 
@@ -73,8 +73,8 @@ export type LayoutProps = {
 
 const Layout: FC<LayoutProps> = ({mainContent, sidePanelContent, selectedTaxon, isTactile, onTaxonChange}) => {
   const {t} = useTranslation();
-  const dictionaries = useDictionaries();
-  const taxonPath = useTaxonPath(selectedTaxon, dictionaries);
+  const taxonDictionaries = useTaxonDictionaries();
+  const taxonPath = useTaxonPath(selectedTaxon, taxonDictionaries);
 
   const widescreen = useMediaQuery(`@media (min-width:${SM_BREAKPOINT}px)`, {noSsr: true});
   const [isSidePanelOpen, setSidePanelOpen] = useState(true);

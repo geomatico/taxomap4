@@ -1,4 +1,4 @@
-import {Dictionaries, DictionaryEntry, TaxonomicLevel} from './commonTypes';
+import {TaxonDictionaries, TaxonDictionaryEntry, TaxonomicLevel} from './commonTypes';
 
 const TAXONOMIC_LEVELS : TaxonomicLevel[] = Object.values(TaxonomicLevel);
 
@@ -18,7 +18,7 @@ export const isRootTaxonomicLevel = (level: TaxonomicLevel): boolean => {
 };
 export const isLeafTaxonomicLevel = (level: TaxonomicLevel): boolean => level === TaxonomicLevel.subspecies;
 
-export const findDictionaryEntry = (level: TaxonomicLevel, id: number | undefined, dictionaries: Dictionaries): DictionaryEntry | undefined =>
+export const findDictionaryEntry = (level: TaxonomicLevel, id: number | undefined, dictionaries: TaxonDictionaries): TaxonDictionaryEntry | undefined =>
   level && dictionaries[level].find(el => el.id === id);
 
 export const getTaxonLabel = (name: string | undefined, parentName: string | undefined): string | undefined =>

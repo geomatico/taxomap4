@@ -1,6 +1,7 @@
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
+import maplibregl from 'maplibre-gl';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -21,7 +22,7 @@ import {INITIAL_MAPSTYLE_URL, INITIAL_VIEWPORT, MAPSTYLES} from '../../config';
 import {
   BBOX,
   FilterBy,
-  Filters,
+  Filters, Lang,
   MapType,
   Range,
   RGBAArrayColor,
@@ -34,7 +35,7 @@ import YearSlider from '../../components/YearSlider';
 import PopUpContent, {SelectedFeature} from '../../components/PopUpContent';
 import Legend from '../../components/Legend';
 
-import useDictionaries from '../../hooks/useDictionaries';
+import useTaxonDictionaries from '../../hooks/useTaxonDictionaries';
 import useArrowData from '../../hooks/useArrowData';
 import {useTranslation} from 'react-i18next';
 import useCount from '../../hooks/useCount';
@@ -42,7 +43,7 @@ import useApplyColor from '../../hooks/useApplyColor';
 
 import DeckGL from '@deck.gl/react/typed';
 import useLegends from '../../hooks/useLegends';
-import {getIdByName} from '../../domain/usecases/getDictionaries';
+import useFilterDictionaries from '../../hooks/useFilterDictionaries';
 
 const PopupInfo = styled(Popup)({
   cursor: 'default',
@@ -83,9 +84,10 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
   const [selectedMapType, setMapType] = useState<MapType>(MapType.discreteData);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature>();
 
-  const {t} = useTranslation();
-  const dictionaries = useDictionaries();
-  const legends = useLegends();
+  const {t, i18n: {language}} = useTranslation();
+  const taxonDictionaries = useTaxonDictionaries();
+  const filterDictionaries = useFilterDictionaries();
+  const legends = useLegends(language as Lang);
   const data = useArrowData();
 
   const applyColor = useApplyColor(legends, symbolizeBy);
@@ -97,13 +99,9 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
   
   const countByYear = useCount({
     data,
-    dictionaries,
     filters: {...filters, yearRange: fullYearRange},
     groupBy: FilterBy.year
   });
-  const museuId = useMemo(
-    () => getIdByName(dictionaries.institutioncode, 'Museu Ciències Naturals Barcelona'),
-    [dictionaries]);
 
   const handleViewportChange = (viewport: Viewport) => onBBOXChanged(new WebMercatorViewport(viewport).getBounds());
 
@@ -125,6 +123,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
         data,
         aggregation: 'SUM',
         radiusPixels: 50,
+        intensity: 5,
         opacity: 0.5,
         extensions: [new DataFilterExtension({ filterSize: 4 })],
         getFilterValue: (_, { index, data }) => [
@@ -190,7 +189,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
     default:
       return discreteDataLayer;
     }
-  }, [selectedMapType, data, symbolizeBy, filters, dictionaries, legends]);
+  }, [selectedMapType, data, symbolizeBy, filters, legends]);
 
   const translatedSyles = MAPSTYLES.map(style => ({
     ...style,
@@ -202,9 +201,9 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
     const id = data.id[index];
     const catalognumber = data.catalognumber[index];
     const speciesId = data.species[index];
-    const species = dictionaries.species.find(el => el.id === speciesId);
+    const species = taxonDictionaries.species.find(el => el.id === speciesId);
     const institutioncodeId = data.institutioncode[index];
-    const institutioncode = dictionaries.institutioncode.find(el => el.id === institutioncodeId);
+    const institutioncode = filterDictionaries.institutioncode.find(el => el.id === institutioncodeId);
     return {
       id,
       catalognumber,
@@ -243,7 +242,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
       getCursor={getCursor}
     >
       <ReactMapGL
-        mapLib={import('maplibre-gl')}
+        mapLib={maplibregl}
         style={{width: '100%', height: '100%'}}
         mapStyle={mapStyle}
         interactive={false}
@@ -258,7 +257,7 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
           anchor="top"
           onClose={() => setSelectedFeature(undefined)}
         >
-          <PopUpContent selectedFeature={selectedFeature} museuId={museuId} isTactile={isTactile}/>
+          <PopUpContent selectedFeature={selectedFeature} isTactile={isTactile}/>
         </PopupInfo>
       }
     </DeckGL>

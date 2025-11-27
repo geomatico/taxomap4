@@ -1,2 +1,16 @@
-[{"id":1,"name":"Fossil/Fòssil/Fósil"}, 
- {"id":2,"name":"Non-fossil/No fòssil/No fósil"}]
+[
+  {
+    "id": 1,
+    "code": "FOSSIL",
+    "name_ca": "Fòssil",
+    "name_en": "Fossil",
+    "name_es": "Fósil"
+  },
+  {
+    "id": 2,
+    "code": "NON_FOSSIL",
+    "name_ca": "No fòssil",
+    "name_en": "Non-fossil",
+    "name_es": "No fósil"
+  }
+]

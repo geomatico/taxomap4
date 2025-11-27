@@ -8,6 +8,7 @@ import NumericIdSelectInput from '@geomatico/geocomponents/Forms/NumericIdSelect
 import {FILTER_BY} from '../config';
 import Box from '@mui/material/Box';
 import useLegends from '../hooks/useLegends';
+import {Lang} from '../commonTypes';
 
 const menuSelectStyles = {
   '& .SelectInput-menuItem': {
@@ -48,8 +49,8 @@ export const FilterByForm: FC<FilterByFormProps> = ({
   institutionFilter, onInstitutionFilterChange,
   basisOfRecordFilter, onBasisOfRecordChange,
 }) => {
-  const {t} = useTranslation();
-  const legends = useLegends();
+  const {t, i18n: {language}} = useTranslation();
+  const legends = useLegends(language as Lang);
   const [selectedField, setSelectedField] = useState<string>();
 
   useEffect(() => {
@@ -60,16 +61,6 @@ export const FilterByForm: FC<FilterByFormProps> = ({
   const fieldOptions = FILTER_BY.map(field => ({
     id: field,
     label: t(`fieldLabel.${field}`)
-  }));
-
-  const institutionOptions = legends.institutionlegend.map(({id, labelKey}) => ({
-    id,
-    label: t(labelKey)
-  }));
-
-  const basisOfRecordOptions = legends.basisOfRecordLegend.map(({id, labelKey}) => ({
-    id,
-    label: t(labelKey)
   }));
 
   return <Box p={2}>
@@ -83,7 +74,7 @@ export const FilterByForm: FC<FilterByFormProps> = ({
       menuSx={menuSelectStyles}
     />
     {selectedField === 'institutioncode' && <NumericIdSelectInput
-      options={institutionOptions}
+      options={legends.institutionlegend}
       selectedOptionId={institutionFilter}
       onOptionChange={onInstitutionFilterChange}
       allowEmptyValue
@@ -92,7 +83,7 @@ export const FilterByForm: FC<FilterByFormProps> = ({
       menuSx={menuSelectStyles}
     />}
     {selectedField === 'basisofrecord' && <NumericIdSelectInput
-      options={basisOfRecordOptions}
+      options={legends.basisOfRecordLegend}
       selectedOptionId={basisOfRecordFilter}
       onOptionChange={onBasisOfRecordChange}
       allowEmptyValue

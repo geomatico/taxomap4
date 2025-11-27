@@ -1,9 +1,9 @@
-import {BBOX, Dictionaries, Filters, SubtaxonCount, TaxomapData, TaxonomicLevel} from '../../commonTypes';
+import {BBOX, TaxonDictionaries, Filters, SubtaxonCount, TaxomapData, TaxonomicLevel} from '../../commonTypes';
 import {nextTaxonomicLevel} from '../../taxonomicLevelUtils';
 
 const getSubtaxonCount = (
   data: TaxomapData | undefined,
-  dictionaries: Dictionaries,
+  taxonDictionaries: TaxonDictionaries,
   {taxon, institutionId, basisOfRecordId, yearRange, bbox, subtaxonVisibility}: Partial<Filters>
 ): SubtaxonCount | undefined => {
   if (taxon === undefined) {
@@ -12,7 +12,7 @@ const getSubtaxonCount = (
 
   const isLeaf = taxon.level === TaxonomicLevel.subspecies;
 
-  if (!data || !dictionaries || isLeaf) {
+  if (!data || !taxonDictionaries || isLeaf) {
     // No data available yet, or is last level and has no children
     return {};
   }

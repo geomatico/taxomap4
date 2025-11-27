@@ -1,11 +1,11 @@
-import {Dictionaries, Taxon} from '../commonTypes';
+import {Taxon, TaxonDictionaries} from '../commonTypes';
 import {findDictionaryEntry, previousTaxonomicLevel} from '../taxonomicLevelUtils';
 
 type NamedTaxon = Taxon & {
   label: string
 };
 
-const useTaxonPath = (selectedTaxon: Taxon, dictionaries: Dictionaries): Array<NamedTaxon> => {
+const useTaxonPath = (selectedTaxon: Taxon, dictionaries: TaxonDictionaries): Array<NamedTaxon> => {
   const taxoPath: Array<NamedTaxon> = [];
   let level = selectedTaxon.level;
   let id: number | undefined = selectedTaxon.id;

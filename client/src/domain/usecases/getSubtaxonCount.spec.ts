@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {Filters, SubtaxonCount, TaxonomicLevel} from '../../commonTypes';
 import phylum from '../../test/resources/dictionaries/phylum.json';
 import getSubtaxonCount from './getSubtaxonCount';
-import {readTestDictionaries, readTestTaxomapData} from '../../test/testData';
+import {readTestTaxonDictionaries, readTestTaxomapData} from '../../test/testData';
 
 describe('getSubtaxonCount', () => {
   beforeEach(() => fetchMock.restore());
@@ -12,7 +12,7 @@ describe('getSubtaxonCount', () => {
   it('Calculates subtaxons for "Mollusca"', async () => {
     // GIVEN
     const data = await readTestTaxomapData();
-    const dictionaries = await readTestDictionaries();
+    const dictionaries = await readTestTaxonDictionaries();
     const filters: Filters = {
       taxon: {
         level: TaxonomicLevel.phylum,
@@ -25,6 +25,6 @@ describe('getSubtaxonCount', () => {
     const subtaxonCount = getSubtaxonCount(data, dictionaries, filters) as SubtaxonCount;
 
     // THEN
-    expect(Object.values(subtaxonCount)).to.have.members([19314, 1640, 39, 27, 12, 6]);
+    expect(Object.values(subtaxonCount)).to.have.members([29, 12, 1596, 19057, 35, 5]);
   });
 });

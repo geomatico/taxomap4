@@ -5,12 +5,12 @@ import {lighten} from '@mui/material/styles';
 import {grey} from '@mui/material/colors';
 import {DataGrid, esES, GridRenderCellParams} from '@mui/x-data-grid';
 
-import {INSTITUTION_COLOR} from '../config';
+import {LEGEND_FILTER_COLOR} from '../config';
 import {InstitutionCode, Occurrence} from '../commonTypes';
 
 const renderInstitution = (params: GridRenderCellParams<Occurrence, InstitutionCode>) => {
   if (params.value) {
-    const chipColor = INSTITUTION_COLOR[params.value] || '#d3d3d3';
+    const chipColor = LEGEND_FILTER_COLOR[params.value] || '#d3d3d3';
     return <Chip
       label={params.value}
       variant='outlined'

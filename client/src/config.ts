@@ -1,4 +1,4 @@
-import {BasisOfRecord, HEXColor, InstitutionCode, MapStyle, Phylum, TaxonomicLevel, Viewport} from './commonTypes';
+import {BasisOfRecord, HEXColor, MapStyle, TaxonomicLevel, Viewport} from './commonTypes';
 
 export const DRAWER_WIDTH = 300;
 export const SM_BREAKPOINT = 600;
@@ -45,31 +45,29 @@ export const ARROW_FIELDS = [
 export const FILTER_BY = ['basisofrecord', 'institutioncode'];
 
 export const INITIAL_TAXONOMIC_LEVEL = TaxonomicLevel.kingdom;
-export const INITIAL_TAXONOMIC_NAME = 'Animalia';
+export const INITIAL_TAXONOMIC_ID = 1; // Animalia
 
 export const GEOSERVER_BASE_URL = process.env.GEOSERVER_BASE_URL;
 
 export const API_BASE_URL = process.env.API_BASE_URL as string;
 
-export const INSTITUTION_COLOR: Record<InstitutionCode, HEXColor> = {
+export const LEGEND_FILTER_COLOR: Record<string | BasisOfRecord, HEXColor> = {
   MCNB: '#FABB5C',
   MVHN: '#343FCE',
   UB: '#5A9DDA',
   IMEDEA: '#F02921',
-  IBB: '#58A062'
-};
-
-export const PHYLUM_COLOR: Record<Phylum, HEXColor> = {
-  TRACHEOPHYTA: '#58A062',
-  CHORDATA: '#F07971',
-  MOLLUSCA: '#54BFDE',
-  ARTHROPODA: '#666666',
-  OTHER: '#FABB5C'
-};
-
-export const BASISOFRECORD_COLOR: Record<BasisOfRecord, HEXColor> = {
+  IBB: '#58A062',
+  //---
   FOSSIL: '#F07971',
   NON_FOSSIL: '#58A062'
+};
+
+export const LEGEND_TAXON_COLOR: Record<number, HEXColor> = {
+  7707728: '#58A062', // Tracheophyta
+  54: '#F07971', // Arthropoda
+  44: '#54BFDE', // Chordata
+  52: '#666666', // Mollusca
+  0: '#FABB5C' // ...other
 };
 
 export const STATIC_RESOURCES_HOST = process.env.STATIC_RESOURCES_HOST || '';

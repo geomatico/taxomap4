@@ -16,27 +16,26 @@ const getPalette = (legends: Legends, field: SymbolizeBy) => {
   switch (field) {
   case SymbolizeBy.phylum:
     return legends.phylumLegend.reduce((acc, {id, color}) => {
-      acc[id] = color;
+      acc[id] = hexToRgb(color);
       return acc;
-    }, [] as Array<HEXColor>).map(hexToRgb);
+    }, {} as Record<number, RGBArrayColor>);
   case SymbolizeBy.basisofrecord:
     return legends.basisOfRecordLegend.reduce((acc, {id, color}) => {
-      acc[id] = color;
+      acc[id] = hexToRgb(color);
       return acc;
-    }, [] as Array<HEXColor>).map(hexToRgb);
+    }, {} as Record<number, RGBArrayColor>);
   case SymbolizeBy.institutioncode:
     return legends.institutionlegend.reduce((acc, {id, color}) => {
-      acc[id] = color;
+      acc[id] = hexToRgb(color);
       return acc;
-    }, [] as Array<HEXColor>).map(hexToRgb);
+    }, {} as Record<number, RGBArrayColor>);
   }
 };
 
 const useApplyColor = (legends: Legends, field: SymbolizeBy) => {
   const palette = getPalette(legends, field);
   return (value: number, target: RGBAArrayColor) => {
-    const color: RGBArrayColor = palette && palette[value]
-        || (field === SymbolizeBy.phylum ? otherPhylumColor(legends.phylumLegend) : [0, 0, 0]);
+    const color: RGBArrayColor = palette && palette[value] || (field === SymbolizeBy.phylum ? otherPhylumColor(legends.phylumLegend) : [0, 0, 0]);
     target[0] = color[0];
     target[1] = color[1];
     target[2] = color[2];

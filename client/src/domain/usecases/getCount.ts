@@ -1,15 +1,14 @@
-import {BBOX, Dictionaries, Filters, GroupBy, TaxomapData, TaxonomicLevel} from '../../commonTypes';
+import {BBOX, Filters, GroupBy, TaxomapData, TaxonomicLevel} from '../../commonTypes';
 
 export type Counts = Record<number, number>;
 
 const getCount = (
   data: TaxomapData | undefined,
-  dictionaries: Dictionaries,
   filters: Filters,
   groupBy: GroupBy
 ): Counts => {
   const isLeaf = filters.taxon.level === TaxonomicLevel.subspecies;
-  if (!data || !dictionaries || isLeaf) {
+  if (!data || isLeaf) {
     // No data available yet
     return {};
   }

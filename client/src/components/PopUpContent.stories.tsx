@@ -27,7 +27,10 @@ Default.args = {
     },
     institutioncode: {
       id: 2,
-      name: 'Museu Ciències Naturals Barcelona'
+      code: 'MCNB',
+      name_ca: 'Museu Ciències Naturals Barcelona',
+      name_en: 'Museu Ciències Naturals Barcelona',
+      name_es: 'Museu Ciències Naturals Barcelona'
     },
     lat: 41.383515977377535,
     lon: -4.611523437500166
