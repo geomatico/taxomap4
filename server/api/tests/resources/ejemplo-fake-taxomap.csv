@@ -1,0 +1,7 @@
+institutionCode,collectionCode,catalogNumber,basisOfRecord,taxonID,decimalLatitude,decimalLongitude,eventDate,countryCode,stateProvince,county,municipality
+IMEDEA,MAM,MAM-0001,FOSSIL,2435099,39.7100,2.6200,1984-05-12,ES,Illes Balears,Mallorca,Palma
+MCNB,BOT,BOT-0123,NON_FOSSIL,2882316,41.7667,2.4500,2001-08-23,ES,Catalunya,Barcelona,Fogars de Montclús
+MVHN,GEO,GEO-0456,FOSSIL,4813103,-34.6037,-58.3816,1975-03-04,AR,Buenos Aires,Buenos Aires,Ciudad Autónoma de Buenos Aires
+UB,ORN,ORN-0789,NON_FOSSIL,5229167,42.3500,1.1500,2015-07-19,ES,Catalunya,Lleida,Vielha e Mijaran
+IBB,ENT,ENT-0999,NON_FOSSIL,2163352,41.3870,2.1700,1998-09-10,ES,Catalunya,Barcelona,Barcelona
+ 

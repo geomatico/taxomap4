@@ -3,9 +3,9 @@ from datetime import datetime
 from django.contrib.gis import geos
 from rest_framework.exceptions import ParseError
 
-from api.repositories.basis_of_record import BasisOfRecordRepository, BasisOfRecordCode
+from api.repositories.basis_of_record import BasisOfRecordCode, BasisOfRecordRepository
 from api.repositories.country import CountryRepository
-from api.repositories.institution import InstitutionRepository, InstitutionCode
+from api.repositories.institution import InstitutionCode, InstitutionRepository
 from api.repositories.occurrence import Occurrence, OccurrenceRepository, VerificationStatus
 from api.repositories.taxonomy import TaxonomyRepository
 
@@ -14,19 +14,22 @@ EXPECTED_COLUMNS = (
     'institutionCode', 'basisOfRecord', 'countryCode', 'municipality', 'county', 'stateProvince',
 )
 NOT_NULL_COLUMNS = (
-    'collectionCode', 'catalogNumber', 'taxonID', 'decimalLatitude', 'decimalLongitude',
+    'catalogNumber', 'taxonID', 'decimalLatitude', 'decimalLongitude',
     'institutionCode', 'basisOfRecord',
 )
 
 
 def persist_csv(csv_reader):
     repository = OccurrenceRepository()
-    header = next(csv_reader)
+    try:
+        header = next(csv_reader)
+    except StopIteration:
+        raise ParseError('Empty file.')
     _validate_header(header)
 
     errors = []
     for row in csv_reader:
-        if not row:
+        if not row or (len(row) == 1 and row[0].strip() == ''):
             # ignore last line if empty
             continue
 
@@ -54,7 +57,7 @@ def _row_to_occurrence(header, row) -> Occurrence:
 
     columns_with_invalid_nulls = [column for column in NOT_NULL_COLUMNS if not get_value(column)]
     if columns_with_invalid_nulls:
-        raise CsvValueError(f'Nulos para las columnas: {columns_with_invalid_nulls}')
+        raise CsvValueError(f'Las siguientes columnas obligatorias están vacías: {columns_with_invalid_nulls}')
 
     collection_code = get_value('collectionCode')
     catalog_number = get_value('catalogNumber')
