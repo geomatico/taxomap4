@@ -2,23 +2,23 @@ import React, {FC} from 'react';
 import PieChart, {ChartData} from './Charts/PieChart';
 import useCount from '../hooks/useCount';
 import useArrowData from '../hooks/useArrowData';
-import useDictionaries from '../hooks/useDictionaries';
-import {Filters, LegendItem, SymbolizeBy, TaxomapData} from '../commonTypes';
+import {Filters, Lang, LegendItem, SymbolizeBy, TaxomapData} from '../commonTypes';
 import useLegends from '../hooks/useLegends';
+import {useTranslation} from 'react-i18next';
 
 const calculatePercentage = (partialValue: number, total: number) => partialValue * 100 / total;
 
 export interface GraphicByLegendProps {
-  filters : Filters,
+  filters: Filters,
   symbolizeBy: SymbolizeBy,
 }
 
 const GraphicByLegend: FC<GraphicByLegendProps> = ({filters, symbolizeBy}) => {
   const data: TaxomapData | undefined = useArrowData();
-  const dictionaries = useDictionaries();
-  const legends = useLegends();
+  const {i18n: {language}} = useTranslation();
+  const legends = useLegends(language as Lang);
 
-  const totals = useCount({data, dictionaries, filters, groupBy: symbolizeBy});
+  const totals = useCount({data, filters, groupBy: symbolizeBy});
 
   const sumTotalresults = Object.keys(totals).length && Object.values(totals).reduce((a, b) => a + b);
 
@@ -35,13 +35,13 @@ const GraphicByLegend: FC<GraphicByLegendProps> = ({filters, symbolizeBy}) => {
 
       return {
         color: elementConf.color,
-        label: elementConf.id?.toString(),
+        label: elementConf.label,
         id: elementConf.id,
         percentage: calculatePercentage(value, sumTotalresults)
       };
     }).filter(el => el !== undefined)
     : []) as ChartData;
-  
+
   return <>
     {
       formattedForChart.length > 0

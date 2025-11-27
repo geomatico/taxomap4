@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {CardActions, CardContent} from '@mui/material';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
-import {DictionaryEntry} from '../commonTypes';
+import {TaxonDictionaryEntry, FilterDictionaryEntry} from '../commonTypes';
 import {getWfsFeatureProperties, WFS_PROPERTY, WfsProperties} from '../wfs/wfs';
 
 import './utils/popUp.css';
@@ -12,8 +12,8 @@ import './utils/popUp.css';
 export type SelectedFeature = {
   id?: number,
   catalognumber?: string,
-  species?: DictionaryEntry,
-  institutioncode?: DictionaryEntry,
+  species?: TaxonDictionaryEntry,
+  institutioncode?: FilterDictionaryEntry,
   lat?: number,
   lon?: number
 }
@@ -57,10 +57,9 @@ export const getDateLabel = (properties: PopupWfsProperties, lang: string): stri
 type Props = {
   selectedFeature: SelectedFeature,
   isTactile: boolean
-  museuId: number
 }
 
-const PopUpContent: FC<Props> = ({selectedFeature, isTactile, museuId}) => {
+const PopUpContent: FC<Props> = ({selectedFeature, isTactile}) => {
   const {t, i18n: {language}} = useTranslation();
 
   const [wfsProperties, setWfsProperties] = useState<PopupWfsProperties>();
@@ -80,6 +79,8 @@ const PopUpContent: FC<Props> = ({selectedFeature, isTactile, museuId}) => {
   const placeLabel = wfsProperties && getPlaceLabel(wfsProperties);
   const dateLabel = wfsProperties && getDateLabel(wfsProperties, language);
 
+  const nameAttr = language == 'es' ? 'name_es' : language == 'en' ? 'name_en' : 'name_ca';
+
   return <Card variant="outlined">
     <CardContent>
       <Typography variant='button' color="text.secondary">
@@ -89,7 +90,7 @@ const PopUpContent: FC<Props> = ({selectedFeature, isTactile, museuId}) => {
         {scientificNameLabel}
       </Typography>
       <Typography sx={{fontSize: 14}} color="text.secondary">
-        {selectedFeature.institutioncode?.name}
+        {selectedFeature.institutioncode?.[nameAttr]}
       </Typography>
       {placeLabel &&
         <Typography variant="caption" sx={{marginTop: 1, display: 'block'}} color="text.secondary">
@@ -101,7 +102,7 @@ const PopUpContent: FC<Props> = ({selectedFeature, isTactile, museuId}) => {
         </Typography>}
     </CardContent>
     {
-      selectedFeature.institutioncode?.id === museuId && !isTactile &&
+      selectedFeature.institutioncode?.code === 'MCNB' && !isTactile &&
       <CardActions>
         <Link href={getMoreInfoUrl(selectedFeature)} color="inherit" underline="none" target="_blank" sx={{ml: 1,mb: 1, textTransform: 'uppercase'}}>
           {t('moreInfo')}

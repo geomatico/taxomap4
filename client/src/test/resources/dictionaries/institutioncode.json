@@ -1,5 +1,37 @@
-[{"id":1,"name":"Institut Mediterrani d'Estudis Avançats"}, 
- {"id":2,"name":"Museu Ciències Naturals Barcelona"}, 
- {"id":3,"name":"Museu Valencià d'Història Natural"}, 
- {"id":4,"name":"Universitat de Barcelona"}, 
- {"id":5,"name":"Institut Botànic de Barcelona"}]
+[
+  {
+    "id": 1,
+    "code": "IMEDEA",
+    "name_ca": "Institut Mediterrani d'Estudis Avançats",
+    "name_en": "Mediterranean Institute for Advanced Studies",
+    "name_es": "Instituto Mediterráneo de Estudios Avanzados"
+  },
+  {
+    "id": 2,
+    "code": "MCNB",
+    "name_ca": "Museu Ciències Naturals Barcelona",
+    "name_en": "Museum of Natural Sciences of Barcelona",
+    "name_es": "Museo de Ciencias Naturales de Barcelona"
+  },
+  {
+    "id": 3,
+    "code": "MVHN",
+    "name_ca": "Museu Valencià d'Història Natural",
+    "name_en": "Natural History Museum of Valencia",
+    "name_es": "Museo Valenciano de Historia Natural"
+  },
+  {
+    "id": 4,
+    "code": "UB",
+    "name_ca": "Universitat de Barcelona",
+    "name_en": "University of Barcelona",
+    "name_es": "Universidad de Barcelona"
+  },
+  {
+    "id": 5,
+    "code": "IBB",
+    "name_ca": "Institut Botànic de Barcelona",
+    "name_en": "Botanical Institute of Barcelona",
+    "name_es": "Instituto Botánico de Barcelona"
+  }
+]

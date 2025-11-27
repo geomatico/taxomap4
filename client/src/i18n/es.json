@@ -1,9 +1,5 @@
 {
   "about": "¿Qué es?",
-  "basisofrecordLegend": {
-    "fossil": "Fosil",
-    "nonFossil": "No fosil"
-  },
   "csv": "Hoja de cálculo (CSV)",
   "data": {
     "aggregatedData": "Ver datos agregados",
@@ -26,13 +22,6 @@
   "geojson": "Geometría (GeoJSON)",
   "help": "Ayuda",
   "infoTaxon": "Ficha de taxon",
-  "institutionLegend": {
-    "botanic": "Institut Botànic de Barcelona",
-    "imea": "Institut Mediterrani d'Estudis Avançats",
-    "mcnb": "Museu Ciències Naturals Barcelona",
-    "ub": "Universitat de Barcelona",
-    "valencia": "Museu Valencià d'Història Natural"
-  },
   "login": {
     "enter": "Entrar"
   },

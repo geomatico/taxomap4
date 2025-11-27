@@ -1,8 +1,8 @@
-import {ChildCount, Dictionaries, SubtaxonCount, Taxon} from '../../commonTypes';
+import {ChildCount, SubtaxonCount, Taxon, TaxonDictionaries} from '../../commonTypes';
 import {isLeafTaxonomicLevel, nextTaxonomicLevel} from '../../taxonomicLevelUtils';
 
 const getTaxonChildren = (
-  subtaxonCount: SubtaxonCount | undefined, selectedTaxon: Taxon | undefined, dictionaries: Dictionaries
+  subtaxonCount: SubtaxonCount | undefined, selectedTaxon: Taxon | undefined, dictionaries: TaxonDictionaries
 ): Array<ChildCount> | undefined => {
   if (!subtaxonCount || !selectedTaxon || isLeafTaxonomicLevel(selectedTaxon.level)) {
     return [];

@@ -53,7 +53,7 @@ export type RGBAArrayColor = [number, number, number, number];
 
 export type LegendItem = {
   id: number,
-  labelKey: string,
+  label: string,
   color: HEXColor
 };
 
@@ -96,8 +96,8 @@ export type Range = [number, number];
  */
 export type BBOX = [number, number, number, number];
 
-export type DictionaryEntry = {
-  id: FilterId | TaxonId,
+export type TaxonDictionaryEntry = {
+  id: TaxonId,
   name: string,
   domain_id?: number,
   kingdom_id?: number,
@@ -110,13 +110,25 @@ export type DictionaryEntry = {
   subspecies_id?: number
 }
 
-export type Dictionary = Array<DictionaryEntry>;
+export type TaxonDictionary = Array<TaxonDictionaryEntry>;
 
-export type Dictionaries = {
-  [key in TaxonomicLevel]: Dictionary
-} & {
-  [FilterBy.institutioncode]: Dictionary,
-  [FilterBy.basisofrecord]: Dictionary
+export type TaxonDictionaries = {
+  [key in TaxonomicLevel]: TaxonDictionary
+}
+
+export type FilterDictionaryEntry = {
+  id: FilterId,
+  code: string,
+  name_ca: string,
+  name_en: string,
+  name_es: string
+}
+
+export type FilterDictionary = Array<FilterDictionaryEntry>;
+
+export type FilterDictionaries = {
+  [FilterBy.institutioncode]: FilterDictionary,
+  [FilterBy.basisofrecord]: FilterDictionary
 }
 
 export type SubtaxonCount = Record<TaxonId, number>;
@@ -139,8 +151,9 @@ export enum MapType {
   aggregateData = 'aggregateData'
 }
 
+export type Lang = 'ca' | 'en' | 'es';
+
 export type InstitutionCode = 'MCNB' | 'MVHN' | 'UB' | 'IMEDEA' | 'IBB';
-export type Phylum = 'TRACHEOPHYTA' | 'CHORDATA' | 'MOLLUSCA' | 'ARTHROPODA' | 'OTHER';
 export type BasisOfRecord = 'FOSSIL' | 'NON_FOSSIL';
 export type VerificationSatus = 'VERIFIED' | 'UNVERIFIED';
 

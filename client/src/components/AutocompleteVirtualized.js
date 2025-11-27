@@ -7,7 +7,7 @@ import {useTheme, styled} from '@mui/material/styles';
 import {VariableSizeList} from 'react-window';
 import Typography from '@mui/material/Typography';
 import Popper from '@mui/material/Popper';
-import useDictionaries from '../hooks/useDictionaries';
+import useTaxonDictionaries from '../hooks/useTaxonDictionaries';
 import {useMemo, useState} from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import {InputAdornment} from '@mui/material';
@@ -105,16 +105,16 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(props, ref) 
 
 export const AutocompleteVirtualized = ({onFilteredTaxonChange}) => {
   const {t} = useTranslation();
-  const dictionaries = useDictionaries();
+  const taxonDictionaries = useTaxonDictionaries();
   const [options, setOptions] = useState([]);
 
 
 
   useMemo(() => {
-    if (dictionaries) {
-      const opts = Object.keys(dictionaries)
+    if (taxonDictionaries) {
+      const opts = Object.keys(taxonDictionaries)
         .map((key) => {
-          return dictionaries[key]
+          return taxonDictionaries[key]
             .filter(el => el.name)
             .map(r => {
               return {level: key, id: r.id, label: r.name};
@@ -125,7 +125,7 @@ export const AutocompleteVirtualized = ({onFilteredTaxonChange}) => {
       setOptions(uniqueOpts);
     }
 
-  }, [dictionaries]);
+  }, [taxonDictionaries]);
 
   const handleAutocompleteChange = (x, selected) => {
     onFilteredTaxonChange(selected);

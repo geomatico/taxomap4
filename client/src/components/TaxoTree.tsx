@@ -9,7 +9,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import {useTranslation} from 'react-i18next';
-import useDictionaries from '../hooks/useDictionaries';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -28,6 +27,7 @@ import {
   previousTaxonomicLevel
 } from '../taxonomicLevelUtils';
 import {getWfsDownloadUrl} from '../wfs/wfs';
+import useTaxonDictionaries from '../hooks/useTaxonDictionaries';
 
 //STYLES
 const contentTaxoStyle = {
@@ -85,10 +85,10 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, isTactile, onSubtaxonVisibilityCh
 
   const subtaxonCountBBOX = useSubtaxonCount(filters);
 
-  const dictionaries = useDictionaries();
+  const taxonDictionaries = useTaxonDictionaries();
   const {t} = useTranslation();
 
-  const currentDictionaryEntry = findDictionaryEntry(filters.taxon.level, filters.taxon.id, dictionaries);
+  const currentDictionaryEntry = findDictionaryEntry(filters.taxon.level, filters.taxon.id, taxonDictionaries);
 
   const handleOnChildClick = (child: TaxonId) => onTaxonChanged({
     level: nextTaxonomicLevel(filters.taxon.level),
@@ -100,7 +100,7 @@ const TaxoTree: FC<TaxoTreeProps> = ({filters, isTactile, onSubtaxonVisibilityCh
 
     const parentLevel = previousTaxonomicLevel(filters.taxon.level);
     const parentId = currentDictionaryEntry[`${parentLevel}_id`] ?? NaN;
-    const parentEntry = findDictionaryEntry(parentLevel, parentId, dictionaries);
+    const parentEntry = findDictionaryEntry(parentLevel, parentId, taxonDictionaries);
     return getTaxonLabel(currentDictionaryEntry.name, parentEntry?.name);
   };
 

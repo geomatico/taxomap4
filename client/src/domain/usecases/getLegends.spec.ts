@@ -1,18 +1,21 @@
 import {expect} from 'chai';
-import {readTestDictionaries} from '../../test/testData';
+import {readTestFilterDictionaries, readTestTaxonDictionaries} from '../../test/testData';
 import getLegends from './getLegends';
 
 describe('getLegends', () => {
   it('get legends', async () => {
     // GIVEN
-    const dictionaries = await readTestDictionaries();
+    console.log('readTestFilterDictionaries');
+    const filterDictionaries = await readTestFilterDictionaries();
+    console.log('readTestTaxonDictionaries');
+    const taxonDictionaries = await readTestTaxonDictionaries();
 
     // WHEN
-    const legends = getLegends(dictionaries);
+    const legends = getLegends(filterDictionaries, taxonDictionaries, 'ca');
 
     // THEN
-    expect(legends.basisOfRecordLegend.map(entry => entry.id)).to.eql([2, 1]);
-    expect(legends.institutionlegend.map(entry => entry.id)).to.eql([5, 1, 3, 4, 2]);
-    expect(legends.phylumLegend.map(entry => entry.id)).to.eql([12, 3, 15, 21, 0]);
+    expect(legends.basisOfRecordLegend.map(entry => entry.id)).to.eql([1, 2]);
+    expect(legends.institutionlegend.map(entry => entry.id)).to.eql([1, 2, 3, 4, 5]);
+    expect(legends.phylumLegend.map(entry => entry.id)).to.eql([0, 44, 52, 54, 7707728]); // The ones in LEGEND_TAXON_COLOR
   });
 });

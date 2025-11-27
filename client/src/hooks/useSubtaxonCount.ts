@@ -1,6 +1,6 @@
 import useArrowData from './useArrowData';
-import useDictionaries from './useDictionaries';
-import {Dictionaries, Filters, TaxomapData} from '../commonTypes';
+import useTaxonDictionaries from './useTaxonDictionaries';
+import {Filters, TaxomapData} from '../commonTypes';
 import {useMemo} from 'react';
 import getSubtaxonCount from '../domain/usecases/getSubtaxonCount';
 
@@ -8,11 +8,11 @@ const useSubtaxonCount = (
   {taxon, institutionId, basisOfRecordId, yearRange, bbox, subtaxonVisibility}: Partial<Filters>
 ) => {
   const data: TaxomapData | undefined = useArrowData();
-  const dictionaries: Dictionaries = useDictionaries();
+  const taxonDictionaries = useTaxonDictionaries();
   return useMemo(
-    () => getSubtaxonCount(data, dictionaries,
+    () => getSubtaxonCount(data, taxonDictionaries,
       {taxon, institutionId, basisOfRecordId, yearRange, bbox, subtaxonVisibility}),
-    [data, dictionaries, taxon, institutionId, basisOfRecordId, yearRange, bbox, subtaxonVisibility]);
+    [data, taxonDictionaries, taxon, institutionId, basisOfRecordId, yearRange, bbox, subtaxonVisibility]);
 };
 
 export default useSubtaxonCount;

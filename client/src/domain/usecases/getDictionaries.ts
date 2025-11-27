@@ -1,28 +1,35 @@
-import {Dictionaries, Dictionary, FilterBy, TaxonomicLevel} from '../../commonTypes';
+import {
+  FilterBy,
+  FilterDictionaries,
+  TaxonDictionaries,
+  TaxonomicLevel
+} from '../../commonTypes';
 import {STATIC_RESOURCES_HOST} from '../../config';
 
 
 export const PATH = `${STATIC_RESOURCES_HOST}/static/dictionaries`;
-export const FIELDS = [
-  ...Object.keys(TaxonomicLevel),
-  ...Object.keys(FilterBy)
-].filter(k => k !== 'year'); // "year" is an exception, no dictionary available for it
+const TAXONOMIC_LEVELS = Object.keys(TaxonomicLevel);
+const FILTER_TYPES = [FilterBy.basisofrecord, FilterBy.institutioncode];
 
-const getDictionaries = async (): Promise<Dictionaries> => {
-  const dictionaries: Array<Dictionary> = await Promise.all(FIELDS.map(fetchField));
+const getTaxonDictionaries = async (): Promise<TaxonDictionaries> => {
+  const dictionaries = await Promise.all(TAXONOMIC_LEVELS.map(fetchJson));
   return dictionaries.reduce((acc, dictionary, i) => {
-    const dictKey = FIELDS[i] as keyof Dictionaries;
-    acc[dictKey] = dictionary;
+    acc[TAXONOMIC_LEVELS[i]] = dictionary;
     return acc;
-  }, {} as Dictionaries);
+  }, {});
 };
 
-const fetchField = async (field: string): Promise<Dictionary> => {
-  const response = await fetch(`${PATH}/${field}.json`);
+const getFilterDictionaries = async (): Promise<FilterDictionaries> => {
+  const dictionaries = await Promise.all(FILTER_TYPES.map(fetchJson));
+  return dictionaries.reduce((acc, dictionary, i) => {
+    acc[FILTER_TYPES[i]] = dictionary;
+    return acc;
+  }, {});
+};
+
+const fetchJson = async (name: string) => {
+  const response = await fetch(`${PATH}/${name}.json`);
   return response.json();
 };
 
-export const getIdByName = (dictionary: Dictionary, name: string) =>
-  dictionary.find(entry => entry.name === name)?.id ?? 0;
-
-export default getDictionaries;
+export {getTaxonDictionaries, getFilterDictionaries};
