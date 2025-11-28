@@ -153,7 +153,9 @@ services:
   taxomap-geoserver:
     image: geomatico/{{ name }}-geoserver:{{TAG}}
 {% if build_needed is not defined or build_needed %}
-    build: docker/geoserver
+    build:
+      dockerfile: docker/geoserver/Dockerfile
+      context: ./
 {% endif %}
     container_name:  {{ name }}-geoserver
     restart: {{ docker.restart_containers | default('always') }}
@@ -166,8 +168,6 @@ services:
       TAXOMAP_PASSWORD: {{ database.taxomap_password }}
       GEOSERVER_ADMIN_PASSWORD: {{ geoserver.admin_password }}
       PROXY_BASE_URL: {{ geoserver.url }}
-    volumes:
-      - {{ geoserver.data_dir }}:/var/local/geoserver
 {% if 'extra_ports' in geoserver %}
     ports:
 {% for port in geoserver.extra_ports %}
