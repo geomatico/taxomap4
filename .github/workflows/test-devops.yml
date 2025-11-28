@@ -27,5 +27,5 @@ jobs:
           else
             export ANSIBLE_VAULT_PASSWORD_FILE=~/.vaultfile_staging
           fi
-          ansible-playbook -c local -i $inventory render_templates.yml;
+          ansible-playbook -c local -i $inventory render-templates.yml;
         done
