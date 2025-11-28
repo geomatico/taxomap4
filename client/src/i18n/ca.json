@@ -1,5 +1,22 @@
 {
   "about": "Què és?",
+  "admin": {
+    "partialRecordsImported": "S'han incorporat parcialment les dades. En acceptar, es descarregarà un fitxer amb les dades descartades i el motiu del seu rebuig.",
+    "allRecordImported": "S'han incorporat totes les dades correctament.",
+    "publishingFailed": "Tot i que les dades s'han incorporat a la base de dades, s'ha produït un error en el procés de publicació i no seran visibles. Contacta amb l'administrador del sistema per investigar-ne la causa.",
+    "discardedDataFileName": "dades-descartades.csv",
+    "error": "Error",
+    "uploadFinished": "Pujada finalitzada",
+    "noRows": "Sense Ocurrències",
+    "loading": "Carregant...",
+    "csvFileExpected": "S'espera un arxiu de dades en format .csv",
+    "singleFileExpected": "Si us plau, afegiu un sol fitxer",
+    "addFile": "Afegeix arxiu de dades",
+    "dropFileOr": "Arrossegueu aquí l'arxiu o",
+    "selectCsv": "SELECCIONEU CSV",
+    "accept": "Accepta",
+    "cancel": "Cancel·la"
+  },
   "csv": "Full de càlcul (csv)",
   "data": {
     "aggregatedData": "Veure dades agregades",
@@ -81,7 +98,7 @@
     "other": "Altres",
     "tracheophyta": "Tracheophyta"
   },
-  "search": "Cerca de taxon",
+  "search": "Cerca per taxon",
   "selectFilter": "Selecciona filtre",
   "slogan": "Explora la natura, explora el museu"
 }

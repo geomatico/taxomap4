@@ -16,7 +16,7 @@ export const Loading: FC  = () => {
   return <Dialog open={true}>
     <DialogContent>
       <Paper sx={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems: 'center', width: '400px'}} elevation={0}>
-        <Typography variant='overline' sx={{fontSize: 12}}>{t('loading')}</Typography>
+        <Typography variant='overline' sx={{fontSize: 12}}>{t('admin.loading')}</Typography>
         <Box sx={{width: '300px', mt: 1}}>
           <LinearProgress/>
         </Box>

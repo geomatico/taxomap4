@@ -6,6 +6,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Alert from './Alert';
+import {useTranslation} from 'react-i18next';
 
 //TYPES
 export type FileDropperProps = {
@@ -13,6 +14,7 @@ export type FileDropperProps = {
 };
 
 const FileDropper: FC<FileDropperProps> = ({onInput}) => {
+  const {t} = useTranslation();
     
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [alertReason, setAlertReason] = useState<string | undefined>(undefined);
@@ -68,7 +70,7 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
   const getTitleAlert = (reason: string) => {
     switch (reason) {
     case 'errorType':
-      return 'Error';
+      return t('admin.error');
     default:
       return '';
     }
@@ -77,9 +79,9 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
   const getDescriptionAlert = (reason: string) => {
     switch (reason) {
     case 'errorType':
-      return 'Se espera un archivo de datos en formato .csv';
+      return t('admin.csvFileExpected');
     case 'numberFiles':
-      return 'Por favor, añade un solo fichero';
+      return t('admin.singleFileExpected');
     default:
       return '';
     }
@@ -87,13 +89,13 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
 
   return <><Card elevation={1}>
     <CardHeader sx={{bgcolor: 'secondary.main', m: 0, py: 0}}
-      title={<Typography variant='overline' sx={{fontSize: 12}}>Añadir archivo de datos</Typography>}>
+      title={<Typography variant='overline' sx={{fontSize: 12}}>{t('admin.addFile')}</Typography>}>
     </CardHeader>
     <CardContent sx={contentSx} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} onDrop={(e: DragEvent<HTMLDivElement>) => handleDrop(e)}>
       <FileUploadIcon sx={{fontSize: 45}}/>
-      <Typography>Arrastre aquí un un archivo o</Typography>
+      <Typography>{t('admin.dropFileOr')}</Typography>
       <Button variant='contained' component="label">
-        <Typography variant='button'>SELECCIONAR CSV</Typography>
+        <Typography variant='button'>{t('admin.selectCsv')}</Typography>
         <input
           type='file'
           hidden
