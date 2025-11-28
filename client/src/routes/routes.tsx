@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {HashRouter, Navigate, Route, Routes} from 'react-router-dom';
 import MapView from '../views/Map';
-import Backoffice from '../views/Backoffice';
+import Backoffice from '../views/Admin';
 
 const AppRoutes: FC = () =>
   <HashRouter>

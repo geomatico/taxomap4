@@ -60,7 +60,7 @@ const helperTextStyle = {
 
 
 
-export type LayoutProps = {
+type Props = {
   sidePanelContent: ReactElement,
   mainContent:  ReactElement,
   selectedTaxon: {
@@ -71,7 +71,7 @@ export type LayoutProps = {
   onTaxonChange: (taxon: Taxon) => void
 }
 
-const Layout: FC<LayoutProps> = ({mainContent, sidePanelContent, selectedTaxon, isTactile, onTaxonChange}) => {
+const MapLayout: FC<Props> = ({mainContent, sidePanelContent, selectedTaxon, isTactile, onTaxonChange}) => {
   const {t} = useTranslation();
   const taxonDictionaries = useTaxonDictionaries();
   const taxonPath = useTaxonPath(selectedTaxon, taxonDictionaries);
@@ -135,4 +135,4 @@ const Layout: FC<LayoutProps> = ({mainContent, sidePanelContent, selectedTaxon, 
   </>;
 };
 
-export default Layout;
+export default MapLayout;

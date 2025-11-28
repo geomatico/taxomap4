@@ -1,5 +1,22 @@
 {
   "about": "¿Qué es?",
+  "admin": {
+    "partialRecordsImported": "Se han incorporado parcialmente los datos. Al aceptar, se descargará un fichero con los datos descartados y el motivo de su rechazo.",
+    "allRecordImported": "Se han incorporado todos los datos correctamente.",
+    "publishingFailed": "Aunque los datos se han incorporado a la base de datos, se ha producido un error en el proceso de publicación y no serán visibles. Contacta con el administrador del sistema para investigar la causa.",
+    "discardedDataFileName": "datos-descartados.csv",
+    "error": "Error",
+    "uploadFinished": "Subida finalizada",
+    "noRows": "Sin Ocurrencias",
+    "loading": "Loading...",
+    "csvFileExpected": "Se espera un archivo de datos en formato .csv",
+    "singleFileExpected": "Por favor, añade un solo fichero",
+    "addFile": "Añadir archivo de datos",
+    "dropFileOr": "Arrastra aquí el archivo o",
+    "selectCsv": "SELECCIONAR CSV",
+    "accept": "Aceptar",
+    "cancel": "Cancelar"
+  },
   "csv": "Hoja de cálculo (CSV)",
   "data": {
     "aggregatedData": "Ver datos agregados",

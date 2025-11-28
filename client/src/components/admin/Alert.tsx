@@ -3,6 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import {DialogActions, DialogContent, DialogTitle} from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
+import {useTranslation} from 'react-i18next';
 
 //TYPES
 export type AlertProps = {
@@ -21,6 +22,7 @@ const titleStyle = {
 };
 
 const Alert: FC<AlertProps> = ({isOpen, title, description, onCancel, onAccept}) => {
+  const {t} = useTranslation();
   return <Dialog open={isOpen}>
     <DialogTitle sx={titleStyle}>
       {title.toUpperCase()}
@@ -32,10 +34,10 @@ const Alert: FC<AlertProps> = ({isOpen, title, description, onCancel, onAccept})
     </DialogContent>
     <DialogActions>
       {onCancel && <Button onClick={onCancel} color="secondary" variant='text'>
-        Cancelar
+        {t('admin.cancel')}
       </Button>}
       {onAccept && <Button onClick={onAccept} color="secondary">
-        Aceptar
+        {t('admin.accept')}
       </Button>}
     </DialogActions>
   </Dialog>;

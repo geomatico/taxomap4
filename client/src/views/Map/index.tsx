@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useMemo, useState} from 'react';
 
-import Layout from '../../components/Layout';
+import MapLayout from '../../components/MapLayout';
 import SidePanelContent from './SidePanelContent';
 import MainContent from './MainContent';
 
@@ -119,7 +119,7 @@ const Index: FC<IndexProps> = ({isTactile}) => {
     onBBOXChanged={setBBOX}
   />;
 
-  return <Layout
+  return <MapLayout
     sidePanelContent={sidePanelContent}
     mainContent={mainContent}
     selectedTaxon={selectedTaxon}
