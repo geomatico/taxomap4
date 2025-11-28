@@ -34,7 +34,7 @@ Todos los endpoints del backoffice están cerrados para cualquier usuario no aut
 
 El dataset son ~7M de filas que importamos de un fichero de texto: https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28
 
-Por defecto la BDD trae un extracto de GBIF. Para cargar el backbone completo, montar el fichero `gbif-backbone.txt` en `/tmb/gbif-backbone.txt` y
+Por defecto la BDD trae un extracto de GBIF. Para cargar el backbone completo, montar el fichero `gbif-backbone.txt` en `/tmp/gbif-backbone.txt` y
 ejecutar los siguientes comandos:
 
 ```sql
