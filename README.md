@@ -68,7 +68,7 @@ alter table backbone add constraint backbone_species_fk foreign key (species_key
 ```
 
 
-## Interfaz de  Admin: Carga y consulta de datos
+## Interfaz de Admin: Carga y consulta de datos
 
 Accesible en https://taxomap.geomatico.es/#/admin
 
@@ -81,19 +81,19 @@ datos nuevos o actualizados, según la siguiente especificación:
 * `institutionCode` es obligatorio y solo puede tomar los valores `IMEDEA, MCNB, MVHN, UB, IBB`.
 * `collectionCode` es opcional e indica la colección a la que pertenece la ocurrencia.
 * `catalogNumber` es obligatorio y es único dentro de una institución y colección.
-* La combinación `institutionCode`+`collectionCode`+`catalogNumber` actúa de identificador único de una ocurrencia. Si ya existe esta combinación en la BDD se reemplaza por lo que venga en el CSV.
+* La combinación `institutionCode`+`collectionCode`+`catalogNumber` actúa de identificador único universal de una ocurrencia. Si se sube una ocurrencia con los mismos valores de una existente en la BDD, se reemplazará.
 * `basisOfRecord` es obligatorio y solo puede tomar los valores `FOSSIL, NON_FOSSIL`
-* `taxonID` es obligatorio y debe corresponderse con un identificador de GBIF.
+* `taxonID` es obligatorio y debe corresponderse con un identificador de [GBIF](https://www.gbif.org/).
 * `decimalLatitude` es la latitud en grados, sistema WGS84, entre -90 y 90.
 * `decimalLongitude` es la longitud en grados, sistema WGS84, entre -180 y 180.
 * `eventDate` es la fecha en formato ISO `YYYY-MM-DD`. Opcional.
 * `countryCode` es el código ISO de 2 letras del país. Opcional.
-* `stateProvince`, `county`, `municipality` opcionales, indica las divisiones administrativas de primer (CCAA), segundo (Provincia) y tercer (Municipio) orden respectivamente. Opcionales.
+* `stateProvince`, `county`, `municipality` opcionales, indica las divisiones administrativas de primer (CCAA), segundo (Provincia) y tercer (Municipio) orden respectivamente.
 
 Para más información sobre el significado de cada campo, referirse a la lista de términos
 de Darwin Core en https://dwc.tdwg.org/list/
 
-Al subir un CSV, si algún registro no cumple los crierios, no será validado. Se podrá
+Al subir un CSV, si algún registro no cumple los criterios, no será validado. Se podrá
 descargar un documento CSV de vuelta con los registros que no se han incorporado y
 el motivo de rechazo. 
 
