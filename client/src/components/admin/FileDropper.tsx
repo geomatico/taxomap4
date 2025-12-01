@@ -1,4 +1,5 @@
 import React, {FC, DragEvent, useState} from 'react';
+import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -57,13 +58,13 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
   const contentSx = {
     outline: isDragging ? '4px dashed lightgrey' : '0px solid lightgrey',
     bgcolor: isDragging ? '#f6f6f6' : 'white',
-    m: 2,
+    m: 1,
+    p: 0,
     width: 'auto',
     minheight: 100,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    p: 2,
     gap: 2
   };
   
@@ -92,8 +93,10 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
       title={<Typography variant='overline' sx={{fontSize: 12}}>{t('admin.addFile')}</Typography>}>
     </CardHeader>
     <CardContent sx={contentSx} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} onDrop={(e: DragEvent<HTMLDivElement>) => handleDrop(e)}>
-      <FileUploadIcon sx={{fontSize: 45}}/>
-      <Typography>{t('admin.dropFileOr')}</Typography>
+      <Stack direction="row" sx={{justifyContent: 'center', alignItems: 'center', p: 0, m:0}}>
+        <FileUploadIcon sx={{fontSize: 45}}/>
+        <Typography>{t('admin.dropFileOr')}</Typography>
+      </Stack>
       <Button variant='contained' component="label">
         <Typography variant='button'>{t('admin.selectCsv')}</Typography>
         <input
