@@ -22,7 +22,7 @@ const TableDocumentation: FC = () => {
     <Stack direction="column" sx={{mt: 2}}>
 
       <Typography sx={styles.text}>{t('admin.downloadExample')}</Typography>
-      <Link href="https://dwc.tdwg.org/list/" underline="none" sx={styles.link}>https://dwc.tdwg.org/list/</Link>
+      <Link href="csv/exemple-taxomap.csv" underline="none" sx={styles.link}>{`${t('admin.example')}-taxomap.csv`}</Link>
       <Typography sx={{color: 'grey.700', mt: 2}}>{t('admin.firstRow')}</Typography>
       <Stack direction="column" sx={styles.fieldContainer}>
         {
@@ -76,13 +76,14 @@ const styles = {
   },
   paragraph: {
     color: 'grey.700',
-    mb: 1
+    mt: 1
   },
   link: {
     fontSize: '18px',
     color: '#57B4DF',
     fontWeight: 600,
-    display: 'block'
+    display: 'inline',
+    texDecoration: 'none'
   }
 };
 

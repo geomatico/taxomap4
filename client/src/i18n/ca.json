@@ -9,7 +9,7 @@
     "csvSpecification": "S'ha de seguir la següent especificació per pujar un csv:",
     "discardedDataFileName": "dades-descartades.csv",
     "documentation": "Documentació",
-    "downloadExample": "Pots descarregar-te un fitxer d'exemple aquí:",
+    "downloadExample": "Pots descarregar-te un exemple:",
     "dropFileOr": "Arrossegueu aquí l'arxiu o",
     "encoding": "Encoding UTF-8",
     "error": "Error",
