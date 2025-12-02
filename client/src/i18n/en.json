@@ -4,19 +4,56 @@
     "accept": "Accept",
     "addFile": "Add data file",
     "allRecordImported": "All data has been imported successfully.",
+    "basisOfRecord": {
+      "description": "Type of record according to the nature of the specimen",
+      "restrictions": "May only take the values FOSSIL | NON_FOSSIL"
+    },
     "cancel": "Cancel",
+    "catalogNumber": {
+      "description": "Unique identifier within the institution and collection",
+      "restrictions": "Must be unique within an institution and collection"
+    },
+    "collectionCode": {
+      "description": "Indicates the collection to which the occurrence belongs"
+    },
+    "country": {
+      "description": "Second-level administrative division (Province)"
+    },
+    "countryCode": {
+      "description": "Country where the occurrence was recorded",
+      "restrictions": "Two-letter ISO code"
+    },
     "csvFileExpected": "A data file in .csv format is expected",
     "csvSpecification": "You must follow the following specification to upload a CSV:",
+    "decimalLatitude": {
+      "description": "Geographic latitude of the event",
+      "restrictions": "WGS84 latitude between -90 and 90"
+    },
+    "decimalLongitude": {
+      "description": "Geographic longitude of the event",
+      "restrictions": "WGS84 longitude between -180 and 180"
+    },
     "discardedDataFileName": "discarded-data.csv",
     "documentation": "Documentation",
     "downloadExample": "You can download an example:",
     "dropFileOr": "Drag a file here or",
     "encoding": "UTF-8 Encoding",
     "error": "Error",
+    "eventDate": {
+      "description": "Date of the event",
+      "restrictions": "ISO format YYYY-MM-DD"
+    },
     "example": "Example",
     "firstRow": "The first row contains the names of the following fields:",
+    "institutionCode": {
+      "description": "Code of the institution hosting the collection",
+      "restrictions": "May only take the values IMEDEA | MCNB | MVHN | UB | IBB"
+    },
     "loading": "Carregant...",
     "moreInformation": "For more information on the meaning of each field, refer to the Darwin Core term list at:",
+    "municipality": {
+      "description": "Third-level administrative division (Municipality)"
+    },
     "noRows": "No Occurrences",
     "optional": "Optional",
     "partialRecordsImported": "Data has been partially imported. Upon accepting, a file will be downloaded with the discarded data and the reason for rejection.",
@@ -26,6 +63,14 @@
     "selectCsv": "SELECT CSV",
     "singleFileExpected": "Please add a single file",
     "sparatedBy": "Separated by commas",
+    "stateProvince": {
+      "description": "First-level administrative division"
+    },
+    "taxonID": {
+      "description": "Numeric taxonomic identifier according to GBIF",
+      "restrictions": "Must correspond to a valid GBIF identifier"
+    },
+    "uniqueIdentificator": "They act jointly as a universal unique identifier; therefore, they cannot be duplicated within the same CSV, and if that combination already exists in the database, the record will be replaced.",
     "uploadError": "When uploading a CSV, if any record does not meet the criteria, it will not be validated. You will be able to download a CSV file containing the rejected records and the reason for rejection.",
     "uploadFinished": "Upload finished"
   },

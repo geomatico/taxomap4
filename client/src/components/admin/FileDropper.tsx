@@ -61,7 +61,7 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
     m: 1,
     p: 0,
     width: 'auto',
-    minheight: 100,
+    minheight: 0,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -88,7 +88,7 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
     }
   };
 
-  return <><Card elevation={1}>
+  return <><Card elevation={1} sx={{height: 'auto'}}>
     <CardHeader sx={{bgcolor: 'secondary.main', m: 0, py: 0}}
       title={<Typography variant='overline' sx={{fontSize: 12}}>{t('admin.addFile')}</Typography>}>
     </CardHeader>

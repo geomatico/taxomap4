@@ -20,7 +20,10 @@ const FieldDocumentation: FC<FieldDocumentationProps> = ({fieldName, required, d
 
   const {t} = useTranslation();
 
+  const hasRestrictions = (t(`admin.${fieldName}.restrictions`)) !== `admin.${fieldName}.restrictions`;
+
   const chipStyles = {
+    fontSize: '14px',
     bgcolor: required ? '#30834a' : undefined,
     color: required ? 'common.white' : 'grey.700',
     fontWeight: 700
@@ -29,11 +32,11 @@ const FieldDocumentation: FC<FieldDocumentationProps> = ({fieldName, required, d
   return <Stack direction="column">
     <Stack direction="row" sx={styles.field}>
       <code style={styles.code}>{fieldName}</code>
-      <Chip size='small' label={required ? t('admin.required') : t('admin.optional')} sx={chipStyles}/>
+      <Chip size="small" label={required ? t('admin.required') : t('admin.optional')} sx={chipStyles}/>
     </Stack>
     <Stack sx={{mx: 2, mt: 1}}>
       <Typography variant="body2" sx={styles.description}>{description}</Typography>
-      {restrictions && <Stack direction="column" sx={styles.restrictions}>
+      {hasRestrictions && <Stack direction="column" sx={styles.restrictions}>
         <Typography sx={styles.restrictionsTitle}>{t('admin.restrictions')}</Typography>
         <Typography variant="body2" sx={styles.text}>{restrictions}</Typography>
       </Stack>}
@@ -43,7 +46,7 @@ const FieldDocumentation: FC<FieldDocumentationProps> = ({fieldName, required, d
       </Stack>}
     </Stack>
     
-    <Divider sx={{my: 3, mx: 2}}/>
+    <Divider sx={{my: 3, mx: 1}}/>
   </Stack>;
 };
 export default FieldDocumentation;
@@ -54,6 +57,8 @@ const styles = {
     alignItems: 'center'
   },
   code: {
+    color: '#000000',
+    backgroundColor: 'transparent',
     fontSize: '14px',
     fontWeight: 700
   },

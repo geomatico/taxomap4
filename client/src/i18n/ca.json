@@ -4,19 +4,56 @@
     "accept": "Accepta",
     "addFile": "Afegeix arxiu de dades",
     "allRecordImported": "S'han incorporat totes les dades correctament.",
+    "basisOfRecord": {
+      "description": "Tipus de registre segons la naturalesa de l'espècimen",
+      "restrictions": "Només pot prendre els valors FOSSIL | NON_FOSSIL"
+    },
     "cancel": "Cancel·la",
+    "catalogNumber": {
+      "description": "Identificador únic dins de la institució i col·lecció",
+      "restrictions": "Ha de ser únic dins d'una institució i col·lecció"
+    },
+    "collectionCode": {
+      "description": "Indica la col·lecció a la qual pertany la ocurrència"
+    },
+    "country": {
+      "description": "Divisió administrativa de segon nivell (Província)"
+    },
+    "countryCode": {
+      "description": "País on es va registrar la ocurrència",
+      "restrictions": "Codi ISO de 2 lletres"
+    },
     "csvFileExpected": "S'espera un arxiu de dades en format .csv",
     "csvSpecification": "S'ha de seguir la següent especificació per pujar un csv:",
+    "decimalLatitude": {
+      "description": "Latitud geogràfica de l'esdeveniment",
+      "restrictions": "Latitud WGS84 entre -90 i 90"
+    },
+    "decimalLongitude": {
+      "description": "Longitud geogràfica de l'esdeveniment",
+      "restrictions": "Longitud WGS84 entre -180 i 180"
+    },
     "discardedDataFileName": "dades-descartades.csv",
     "documentation": "Documentació",
     "downloadExample": "Pots descarregar-te un exemple:",
     "dropFileOr": "Arrossegueu aquí l'arxiu o",
     "encoding": "Encoding UTF-8",
     "error": "Error",
+    "eventDate": {
+      "description": "Data de l'esdeveniment",
+      "restrictions": "Format ISO YYYY-MM-DD"
+    },
     "example": "Exemple",
     "firstRow": "La primera fila conté noms dels camps següents:",
+    "institutionCode": {
+      "description": "Codi de la institució que allotja la col·lecció",
+      "restrictions": "Només pot prendre els valors IMEDEA | MCNB | MVHN | UB | IBB"
+    },
     "loading": "Carregant...",
     "moreInformation": "Per a més informació sobre el significat de cada camp, referir-se a la llista de termes de Darwin Core a:",
+    "municipality": {
+      "description": "Divisió administrativa de tercer nivell (Municipi)"
+    },
     "noRows": "Sense Ocurrències",
     "optional": "Opcional",
     "partialRecordsImported": "S'han incorporat parcialment les dades. En acceptar, es descarregarà un fitxer amb les dades descartades i el motiu del seu rebuig.",
@@ -26,6 +63,14 @@
     "selectCsv": "SELECCIONEU CSV",
     "singleFileExpected": "Si us plau, afegiu un sol fitxer",
     "sparatedBy": "Separat per comes",
+    "stateProvince": {
+      "description": "Divisió administrativa de primer nivell (CCAA)"
+    },
+    "taxonID": {
+      "description": "Identificador numèric taxonòmic segons GBIF",
+      "restrictions": "Ha de correspondre a un identificador vàlid de GBIF"
+    },
+    "uniqueIdentificator": "Actuen conjuntament com a identificador únic universal; per tant, no poden estar duplicats en un mateix CSV, i si aquesta combinació ja existeix a la base de dades, el registre se substituirà.",
     "uploadError": "En pujar un CSV, si algun registre no compleix els criteris, no serà validat. Es podrà descarregar un document CSV de tornada amb els registres que no s'han incorporat i el motiu de rebuig.",
     "uploadFinished": "Pujada finalitzada"
   },
