@@ -7,9 +7,9 @@ const stackSx = {
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'flex-end',
-  flexGrow: 2,
   minHeight: 25,
-  my: 1,
+  marginTop: 'auto',
+  mb: 2,
   mr: 1
 };
 

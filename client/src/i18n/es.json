@@ -1,21 +1,78 @@
 {
   "about": "¿Qué es?",
   "admin": {
-    "partialRecordsImported": "Se han incorporado parcialmente los datos. Al aceptar, se descargará un fichero con los datos descartados y el motivo de su rechazo.",
-    "allRecordImported": "Se han incorporado todos los datos correctamente.",
-    "publishingFailed": "Aunque los datos se han incorporado a la base de datos, se ha producido un error en el proceso de publicación y no serán visibles. Contacta con el administrador del sistema para investigar la causa.",
-    "discardedDataFileName": "datos-descartados.csv",
-    "error": "Error",
-    "uploadFinished": "Subida finalizada",
-    "noRows": "Sin Ocurrencias",
-    "loading": "Loading...",
-    "csvFileExpected": "Se espera un archivo de datos en formato .csv",
-    "singleFileExpected": "Por favor, añade un solo fichero",
-    "addFile": "Añadir archivo de datos",
-    "dropFileOr": "Arrastra aquí el archivo o",
-    "selectCsv": "SELECCIONAR CSV",
     "accept": "Aceptar",
-    "cancel": "Cancelar"
+    "addFile": "Añadir archivo de datos",
+    "allRecordImported": "Se han incorporado todos los datos correctamente.",
+    "basisOfRecord": {
+      "description": "Tipo de registro según la naturaleza del espécimen",
+      "restrictions": "Solo puede tomar los valores FOSSIL | NON_FOSSIL"
+    },
+    "cancel": "Cancelar",
+    "catalogNumber": {
+      "description": "Identificador único dentro de la institución y colección",
+      "restrictions": "Debe ser único dentro de una institución y colección"
+    },
+    "collectionCode": {
+      "description": "Indica la colección a la que pertenece la ocurrencia"
+    },
+    "country": {
+      "description": "División administrativa de segundo nivel (Provincia)"
+    },
+    "countryCode": {
+      "description": "País donde se registró la ocurrencia",
+      "restrictions": "Código ISO de 2 letras"
+    },
+    "csvFileExpected": "Se espera un archivo de datos en formato .csv",
+    "csvSpecification": "Se debe seguir la siguiente especificación para subir un CSV:",
+    "decimalLatitude": {
+      "description": "Latitud geográfica del evento",
+      "restrictions": "Latitud WGS84 entre -90 y 90"
+    },
+    "decimalLongitude": {
+      "description": "Longitud geográfica del evento",
+      "restrictions": "Longitud WGS84 entre -180 y 180"
+    },
+    "discardedDataFileName": "datos-descartados.csv",
+    "documentation": "Documentación",
+    "downloadExample": "Puedes descargar un ejemplo:",
+    "dropFileOr": "Arrastra aquí el archivo o",
+    "encoding": "Codificación UTF-8",
+    "error": "Error",
+    "eventDate": {
+      "description": "Fecha del evento",
+      "restrictions": "Formato ISO YYYY-MM-DD"
+    },
+    "example": "Ejemplo",
+    "firstRow": "La primera fila contiene los nombres de los siguientes campos:",
+    "institutionCode": {
+      "description": "Código de la institución que aloja la colección",
+      "restrictions": "Solo puede tomar los valores IMEDEA | MCNB | MVHN | UB | IBB"
+    },
+    "loading": "Cargando...",
+    "moreInformation": "Para más información sobre el significado de cada campo, consulta la lista de términos de Darwin Core en:",
+    "municipality": {
+      "description": "División administrativa de tercer nivel (Municipio)"
+    },
+    "noRows": "Sin Ocurrencias",
+    "optional": "Opcional",
+    "partialRecordsImported": "Se han incorporado parcialmente los datos. Al aceptar, se descargará un fichero con los datos descartados y el motivo de su rechazo.",
+    "publishingFailed": "Aunque los datos se han incorporado a la base de datos, se ha producido un error en el proceso de publicación y no serán visibles. Contacta con el administrador del sistema para investigar la causa.",
+    "required": "Obligatorio",
+    "restrictions": "Restricciones",
+    "selectCsv": "SELECCIONA CSV",
+    "singleFileExpected": "Por favor, añade un solo fichero",
+    "sparatedBy": "Separado por comas",
+    "stateProvince": {
+      "description": "División administrativa de primer nivel (CCAA)"
+    },
+    "taxonID": {
+      "description": "Identificador numérico taxonómico según GBIF",
+      "restrictions": "Debe corresponderse con un identificador válido de GBIF"
+    },
+    "uniqueIdentificator": "Actúan combinadamente de identificador único universal, por tanto, no pueden estar duplicados en un mismo CSV, y si ya existe esa combinación en la BDD se sustituirá el dato.",
+    "uploadError": "Al subir un CSV, si algún registro no cumple los criterios, no será validado. Podrás descargar un documento CSV con los registros rechazados y el motivo del rechazo.",
+    "uploadFinished": "Subida finalizada"
   },
   "csv": "Hoja de cálculo (CSV)",
   "data": {
