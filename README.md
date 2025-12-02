@@ -32,7 +32,7 @@ Todos los endpoints del backoffice están cerrados para cualquier usuario no aut
 
 ### Cargar la taxonomia GBIF completa
 
-El dataset son ~7M de filas que importamos de un fichero de texto: https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28
+El dataset son ~7M de filas que importamos de un fichero de texto (simple.txt.gz): https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28
 
 Por defecto la BDD trae un extracto de GBIF. Para cargar el backbone completo, montar el fichero `gbif-backbone.txt` en `/tmb/gbif-backbone.txt` y
 ejecutar los siguientes comandos:
@@ -138,3 +138,36 @@ docker compose up -d
 
 Esto volverá a ejecutar el contenido de `initdb-scripts` del contenedor de `database`, replicando la BDD que se tiene en entorno de desarrollo.
 Tras resetear la BDD, será necesario cargar el backbone GBIF completo como se detalla más arriba.
+
+
+# Desplegar en los servidores del Museu
+
+Los despligues a producción no se lanzan automáticamente en actions como pasa con staging.
+
+Las imágenes se construyen y se suben a ghcr.io, asociadas a este repo y con tag production. 
+Se pone a disposición del departamento de sistemas del museu, un docker compose compilado, para que ellos sólo tengan que hacer pull y up.
+En el primer despliegue sí que es necesario poblar la base de datos con los datos gbif, que se detella a continuación.
+
+Subir imágenes:
+
+    # asegurarse que estamos logueados en ghcr.io:
+    docker login ghcr.io
+    # nos pide user y pass. El user da igual, no lo usa, pero hay que cubrilo. El password es un personal access token de github. Hay uno en keepass.
+
+    ansible-playbook -i inventories/prod.yml upload-production-images.yml --ask-vault-password
+    # La vault pass está en su sitio. taxomap > produccion
+
+Esta tarea, además de hacer build y push de las imágenes, genera un docker compose renderizado en `devops/docker-compose.yml`. 
+Este es el que hay que mandar al museu. Como contiene contraseñas y demas configuración, no se guarda en el repo. 
+Se puede usar https://cloud.geomatico.es/apps/secrets/ para hacérselo llegar.
+
+Desde el museu, sólo tienen que ejecutar docker compose pull, y docker compose up para actualizar los servicios.
+
+## Cargar datos GBIF en la base de datos
+
+La primera vez que se despliega, hay que cargar los datos GBIF en la base de datos:
+
+    docker exec -it taxomap-database load_backbone_data.sh
+
+Esto descargará los datos, y los importará en la base de datos. Tarda unos minutos.
+

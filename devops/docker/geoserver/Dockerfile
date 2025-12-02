@@ -1,4 +1,5 @@
 FROM oscarfonts/geoserver:2.24.4
+LABEL org.opencontainers.image.source https://github.com/geomatico/taxomap4
 
 WORKDIR /usr/local/tomcat/webapps/
 

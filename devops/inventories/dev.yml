@@ -8,6 +8,8 @@ all:
     service_path: /tmp/taxomap
     api_base_url: "http://localhost:8000/api/v1"
 
+    use_external_proxy: false
+
     docker:
       image_tag: "latest"
       restart_containers: "no"

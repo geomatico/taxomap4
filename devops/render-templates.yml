@@ -1,5 +1,5 @@
 - hosts: all
-  remote_user: '{{ deploy_user }}'
+  connection: local
   tasks:
     - name: Get commit hash
       local_action: shell git rev-parse --short HEAD

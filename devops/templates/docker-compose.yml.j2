@@ -1,16 +1,22 @@
 services:
 {% if use_proxy is not defined or use_proxy %}
   taxomap-proxy:
+{% if domain == 'taxomap.bioexplora.cat' %}
+    image: ghcr.io/geomatico/{{ name }}-proxy:${TAG:-production}
+{% else %}
     image: geomatico/{{ name }}-proxy:{{TAG}}
+{% endif %}
 {% if build_needed is not defined or build_needed %}
     build: docker/proxy
 {% endif %}
     container_name: {{ name }}-proxy
     restart: {{ docker.restart_containers | default('always') }}
+{% if use_external_proxy is not defined or use_external_proxy %}
     environment:
       - VIRTUAL_HOST={{ domain }}
       - LETSENCRYPT_HOST={{ domain }}
       - LETSENCRYPT_EMAIL={{ letsencrypt_mail | default('not_used') }}
+{% endif %}
     volumes:
       - "{{ service_path }}/static:/static"
       - "{{ service_path }}/media:/media"
@@ -18,14 +24,16 @@ services:
       - taxomap-database
       - taxomap-frontend
       - taxomap-backend
-{% if domain == 'localhost' %}
+{% if domain == 'localhost' or not use_external_proxy %}
     ports:
       - "80:80"
     networks:
       - internal
 {% else %}
     networks:
+{% if use_external_proxy is not defined or use_external_proxy %}
       - base-proxy
+{% endif %}
       - internal
 {% endif %}
 {% endif %}
@@ -34,7 +42,11 @@ services:
 {% if build_needed is not defined or build_needed %}
     build: docker/database
 {% endif %}
+{% if domain == 'taxomap.bioexplora.cat' %}
+    image: ghcr.io/geomatico/{{ name }}-database:${TAG:-production}
+{% else %}
     image: geomatico/{{ name }}-database:{{TAG}}
+{% endif %}
     container_name: {{ name }}-database
     restart: {{ docker.restart_containers | default('always') }}
     environment:
@@ -65,7 +77,11 @@ services:
 {% endif %}
 
   taxomap-backend:
+{% if domain == 'taxomap.bioexplora.cat' %}
+    image: ghcr.io/geomatico/{{ name }}-backend:${TAG:-production}
+{% else %}
     image: geomatico/{{ name }}-backend:{{TAG}}
+{% endif %}
 {% if build_needed is not defined or build_needed %}
     build:
       dockerfile: devops/docker/backend/Dockerfile
@@ -108,7 +124,11 @@ services:
       - internal
 
   taxomap-gdal:
+{% if domain == 'taxomap.bioexplora.cat' %}
+    image: ghcr.io/geomatico/{{ name }}-gdal:${TAG:-production}
+{% else %}
     image: geomatico/{{ name }}-gdal:{{TAG}}
+{% endif %}
     build: docker/gdal
     container_name: {{ name }}-gdal
     depends_on:
@@ -134,7 +154,11 @@ services:
 
 {% if use_frontend is not defined or use_frontend %}
   taxomap-frontend:
+{% if domain == 'taxomap.bioexplora.cat' %}
+    image: ghcr.io/geomatico/{{ name }}-frontend:${TAG:-production}
+{% else %}
     image: geomatico/{{ name }}-frontend:{{TAG}}
+{% endif %}
 {% if build_needed is not defined or build_needed %}
     build:
       dockerfile: devops/docker/frontend/Dockerfile
@@ -151,7 +175,11 @@ services:
 
 {% if use_geoserver is not defined or use_geoserver %}
   taxomap-geoserver:
+{% if domain == 'taxomap.bioexplora.cat' %}
+    image: ghcr.io/geomatico/{{ name }}-geoserver:${TAG:-production}
+{% else %}
     image: geomatico/{{ name }}-geoserver:{{TAG}}
+{% endif %}
 {% if build_needed is not defined or build_needed %}
     build:
       dockerfile: docker/geoserver/Dockerfile
@@ -179,7 +207,7 @@ services:
 {% endif %}
 
 networks:
-{% if use_proxy is not defined or use_proxy %}
+{% if use_external_proxy is not defined or use_external_proxy %}
   base-proxy:
     external: true
     name: base-proxy

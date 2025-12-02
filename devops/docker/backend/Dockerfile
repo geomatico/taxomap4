@@ -1,4 +1,5 @@
 FROM ghcr.io/geomatico/django-service:12.0-base
+LABEL org.opencontainers.image.source https://github.com/geomatico/taxomap4
 
 WORKDIR /server
 

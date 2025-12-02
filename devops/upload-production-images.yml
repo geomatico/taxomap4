@@ -1,0 +1,26 @@
+- name: Build
+  ansible.builtin.import_playbook: build.yml
+
+- hosts: all
+  connection: local
+  tasks:
+    # Download previous images, if exists, to use as cache
+    - name: Download latest images
+      local_action:
+        module: ansible.builtin.shell
+        cmd: docker compose -f docker-compose.yml pull --ignore-pull-failures
+
+    # Build images, the second compose build is for tag same images with latest
+    - name: build images
+      local_action:
+        module: ansible.builtin.shell
+        cmd: |
+          export TAG=production && docker compose -f docker-compose.yml build
+
+    # NOTE: This task need to be logged to ghcr.io (GitHub Container Registry)
+    - name: push images
+      local_action:
+        module: ansible.builtin.shell
+        cmd: |
+          export TAG=production && docker compose -f docker-compose.yml push
+    
