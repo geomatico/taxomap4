@@ -10,6 +10,7 @@ all:
     api_url: "https://{{ domain }}/api/v1"
 
     use_external_proxy: true
+    use_github_containers: false
 
     geoserver:
       url: "https://{{ domain }}/geoserver"

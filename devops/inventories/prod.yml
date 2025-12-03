@@ -9,6 +9,7 @@ all:
 
     use_proxy: true
     use_external_proxy: false
+    use_github_containers: true
 
 
     geoserver:

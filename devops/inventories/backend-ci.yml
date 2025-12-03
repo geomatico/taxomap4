@@ -13,6 +13,7 @@ all:
     use_proxy: false
     use_external_proxy: false
     use_geoserver: false
+    use_github_containers: false
 
     docker:
       image_tag: latest

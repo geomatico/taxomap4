@@ -1,7 +1,7 @@
 services:
 {% if use_proxy is not defined or use_proxy %}
   taxomap-proxy:
-{% if domain == 'taxomap.bioexplora.cat' %}
+{% if use_github_containers %}
     image: ghcr.io/geomatico/{{ name }}-proxy:${TAG:-production}
 {% else %}
     image: geomatico/{{ name }}-proxy:{{TAG}}
@@ -42,7 +42,7 @@ services:
 {% if build_needed is not defined or build_needed %}
     build: docker/database
 {% endif %}
-{% if domain == 'taxomap.bioexplora.cat' %}
+{% if use_github_containers %}
     image: ghcr.io/geomatico/{{ name }}-database:${TAG:-production}
 {% else %}
     image: geomatico/{{ name }}-database:{{TAG}}
@@ -77,7 +77,7 @@ services:
 {% endif %}
 
   taxomap-backend:
-{% if domain == 'taxomap.bioexplora.cat' %}
+{% if use_github_containers %}
     image: ghcr.io/geomatico/{{ name }}-backend:${TAG:-production}
 {% else %}
     image: geomatico/{{ name }}-backend:{{TAG}}
@@ -124,7 +124,7 @@ services:
       - internal
 
   taxomap-gdal:
-{% if domain == 'taxomap.bioexplora.cat' %}
+{% if use_github_containers %}
     image: ghcr.io/geomatico/{{ name }}-gdal:${TAG:-production}
 {% else %}
     image: geomatico/{{ name }}-gdal:{{TAG}}
@@ -154,7 +154,7 @@ services:
 
 {% if use_frontend is not defined or use_frontend %}
   taxomap-frontend:
-{% if domain == 'taxomap.bioexplora.cat' %}
+{% if use_github_containers %}
     image: ghcr.io/geomatico/{{ name }}-frontend:${TAG:-production}
 {% else %}
     image: geomatico/{{ name }}-frontend:{{TAG}}
@@ -175,7 +175,7 @@ services:
 
 {% if use_geoserver is not defined or use_geoserver %}
   taxomap-geoserver:
-{% if domain == 'taxomap.bioexplora.cat' %}
+{% if use_github_containers %}
     image: ghcr.io/geomatico/{{ name }}-geoserver:${TAG:-production}
 {% else %}
     image: geomatico/{{ name }}-geoserver:{{TAG}}
