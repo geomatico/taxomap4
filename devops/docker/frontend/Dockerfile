@@ -23,5 +23,6 @@ COPY client .
 RUN npm run build
 
 FROM nginx:1.20.2-alpine
+LABEL org.opencontainers.image.source https://github.com/geomatico/taxomap4
 
 COPY --from=build /srv/dist/ /usr/share/nginx/html/

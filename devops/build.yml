@@ -2,7 +2,7 @@
   import_playbook: render-templates.yml
 
 - hosts: all
-  remote_user: '{{ deploy_user }}'
+  connection: local
   tasks:
     - name: Build images
       local_action:
