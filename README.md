@@ -1,24 +1,18 @@
 # TAXOMAP
 
-## Setup
+* Mapa principal: https://taxomap.geomatico.es
+* Planetavida (versión táctil sin enlaces externos): https://taxomap.geomatico.es/#/planetavida/
+* Interfaz de admin (para actualizar datos): https://taxomap.geomatico.es/#/admin
 
-### Crear (super)usuarios
 
-Se pueden gestionar usuarios a través de la API ([Djoser](https://djoser.readthedocs.io/en/latest/base_endpoints.html)).
+## Crear usuarios
 
-Únicamente administradores (`is_staff` para Django) pueden gestionar usuarios.
-El resto solo pueden actualizar sus datos (nombre, apellidos, ...), restablecer su contraseña y hacer login.
-Esto implica que el despliegue en cualquier entorno implica crear un superusuario:
+Para crear usuarios es necesario que exista al menos un administrador (`is_staff` en Django). En entorno dev se crea uno
+con usuario info@geomatico.es y password 1234.  Para otros entornos el password está configurado en
+`backend.django_superuser_password` en el inventario de ansible correspondiente.
 
-```bash
-./manage.py createsuperuser
-```
-
-En local para pruebas ya se incluye uno por defecto (info@geomatico.es:1234).
-
-Se pueden añadir para otros entornos configurando `backend.django_superuser_password` en el inventario de ansible correspondiente.
-
-Luego se pueden crear los usuarios normales necesarios manualmente mediante `POST /auth/users`.
+Se pueden crear usuarios normales mediante `POST /auth/users` (ver [API Djoser](https://djoser.readthedocs.io/en/latest/base_endpoints.html)).
+Ejemplo con proceso de activación:
 
 ```bash
 export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
@@ -26,89 +20,23 @@ curl http://localhost:8000/api/v1/auth/users/ --data '{"firstName": "Regular", "
 curl http://localhost:8000/api/v1/auth/users/activation/ --data '{"uid": "<from_email_in_backend_logs>", "token": "<from_email_in_backend_logs>"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
-Todos los endpoints del backoffice están abiertos para cualquier usuario autenticado.
-Todos los endpoints del backoffice están cerrados para cualquier usuario no autenticado.
+Todos los endpoints del backoffice necesitan de un usuario autenticado para poder utilizarse.
 
 
-### Cargar la taxonomia GBIF completa
+## Cargar la taxonomia GBIF completa
 
-El dataset son ~7M de filas que importamos de un fichero de texto (simple.txt.gz): https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28
+Por defecto la BDD trae un extracto de GBIF solo con el subconjunto de taxones del dataset inicial.
+Para cargar el backbone completo, existe un script en taxomap-database:
 
-Por defecto la BDD trae un extracto de GBIF. Para cargar el backbone completo, montar el fichero `gbif-backbone.txt` en `/tmb/gbif-backbone.txt` y
-ejecutar los siguientes comandos:
+    docker exec -it taxomap-database load_backbone_data.sh
 
-```sql
-alter table backbone drop constraint backbone_parent_key_fk;
-alter table backbone drop constraint backbone_kingdom_fk;
-alter table backbone drop constraint backbone_phylum_fk;
-alter table backbone drop constraint backbone_class_fk;
-alter table backbone drop constraint backbone_order_fk;
-alter table backbone drop constraint backbone_family_fk;
-alter table backbone drop constraint backbone_genus_fk;
-alter table backbone drop constraint backbone_species_fk;
-
-CREATE TEMP TABLE backbone_temp (LIKE backbone);
-
-\copy backbone_temp from '/tmp/gbif-backbone.txt';
-
-INSERT INTO backbone
-SELECT * FROM backbone_temp
-ON CONFLICT (id) DO NOTHING;
-
-DROP TABLE backbone_temp;
-
-alter table backbone add constraint backbone_parent_key_fk foreign key (parent_key) references backbone (id);
-alter table backbone add constraint backbone_kingdom_fk foreign key (kingdom_key) references backbone (id);
-alter table backbone add constraint backbone_phylum_fk foreign key (phylum_key) references backbone (id);
-alter table backbone add constraint backbone_class_fk foreign key (class_key) references backbone (id);
-alter table backbone add constraint backbone_order_fk foreign key (order_key) references backbone (id);
-alter table backbone add constraint backbone_family_fk foreign key (family_key) references backbone (id);
-alter table backbone add constraint backbone_genus_fk foreign key (genus_key) references backbone (id);
-alter table backbone add constraint backbone_species_fk foreign key (species_key) references backbone (id);
-```
+Este script se descarga los datos de https://hosted-datasets.gbif.org/datasets/backbone/2023-08-28/simple.txt.gz
+y los inserta en la base de datos. Son 7 millones de registros. Tarda unos minutos.
 
 
-## Interfaz de  Admin: Carga y consulta de datos
+## Forzar la regeneración de geoarrow y dictionaries para frontend
 
-Accesible en https://taxomap.geomatico.es/#/admin
-
-Interfaz para visualizar los contenidos de Taxomap en formato de tabla y subir CSVs con
-datos nuevos o actualizados, según la siguiente especificación:
-
-* Encoding UTF-8
-* Separado por comas
-* Primera fila contiene nombres de los campos: `institutionCode,collectionCode,catalogNumber,basisOfRecord,taxonID,decimalLatitude,decimalLongitude,eventDate,countryCode,stateProvince,county,municipality`
-* `institutionCode` es obligatorio y solo puede tomar los valores `IMEDEA, MCNB, MVHN, UB, IBB`.
-* `collectionCode` es opcional e indica la colección a la que pertenece la ocurrencia.
-* `catalogNumber` es obligatorio y es único dentro de una institución y colección.
-* La combinación `institutionCode`+`collectionCode`+`catalogNumber` actúa de identificador único de una ocurrencia. Si ya existe esta combinación en la BDD se reemplaza por lo que venga en el CSV.
-* `basisOfRecord` es obligatorio y solo puede tomar los valores `FOSSIL, NON_FOSSIL`
-* `taxonID` es obligatorio y debe corresponderse con un identificador de GBIF.
-* `decimalLatitude` es la latitud en grados, sistema WGS84, entre -90 y 90.
-* `decimalLongitude` es la longitud en grados, sistema WGS84, entre -180 y 180.
-* `eventDate` es la fecha en formato ISO `YYYY-MM-DD`. Opcional.
-* `countryCode` es el código ISO de 2 letras del país. Opcional.
-* `stateProvince`, `county`, `municipality` opcionales, indica las divisiones administrativas de primer (CCAA), segundo (Provincia) y tercer (Municipio) orden respectivamente. Opcionales.
-
-Para más información sobre el significado de cada campo, referirse a la lista de términos
-de Darwin Core en https://dwc.tdwg.org/list/
-
-Al subir un CSV, si algún registro no cumple los crierios, no será validado. Se podrá
-descargar un documento CSV de vuelta con los registros que no se han incorporado y
-el motivo de rechazo. 
-
-
-## Versión Planeta Vida (aplicación táctil)
-
-La URL para acceder es
-([https://taxomap.geomatico.es/#/planetavida/](https://taxomap.geomatico.es/#/planetavida/))
-
-
-## HOW-TOs
-
-### Forzar la regeneración de geoarrow y dictionaries para frontend
-
-Estos recursos se regeneran cada vez que se sube un CSV desde el admin.
+Estos recursos se regeneran cada vez que se sube un CSV desde la interfaz de admin.
 Pero se puede forzar su (re)construcción mediante una llamada a la API `manage/generate-resources/`:
 
 ```
@@ -117,13 +45,13 @@ curl -X POST http://localhost/api/v1/manage/generate-resources/ -H "Accept: appl
 ```
 
 
-### Resetear de la base de datos en Staging
+## Resetear de la base de datos en Staging
 
-Ahora mismo la base de datos se persiste entre despliegues. Si en algún momento en necesario resetearla, se puede hacer entrando en el servidor.
-El proceso sería:
+La base de datos se persiste entre despliegues, ya que se pueden haber importado nuevos registros.
+Si en algún momento en necesario resetearla, se puede hacer entrando en el servidor. El proceso sería:
 
 1. Apagar Servicios
-2. Borrar Volumen
+2. Borrar Volumen de datos PostGIS
 3. Arrancar Servicios
 
 ```shell
@@ -136,17 +64,17 @@ exit
 docker compose up -d
 ```
 
-Esto volverá a ejecutar el contenido de `initdb-scripts` del contenedor de `database`, replicando la BDD que se tiene en entorno de desarrollo.
+Esto volverá a ejecutar el contenido de `initdb-scripts` del contenedor de `database`, instanciando la BDD tal como se tiene en dev.
 Tras resetear la BDD, será necesario cargar el backbone GBIF completo como se detalla más arriba.
 
 
-# Desplegar en los servidores del Museu
+## Desplegar en los servidores del Museu
 
-Los despligues a producción no se lanzan automáticamente en actions como pasa con staging.
+Los despliegues a producción no se lanzan automáticamente en actions como pasa con staging.
 
 Las imágenes se construyen y se suben a ghcr.io, asociadas a este repo y con tag production. 
-Se pone a disposición del departamento de sistemas del museu, un docker compose compilado, para que ellos sólo tengan que hacer pull y up.
-En el primer despliegue sí que es necesario poblar la base de datos con los datos gbif, que se detella a continuación.
+Se pone a disposición del departamento de sistemas del museu un docker compose compilado, para que ellos solo tengan que hacer pull y up.
+En el primer despliegue sí que es necesario poblar la base de datos con los datos gbif, tal como se detalla más arriba.
 
 Subir imágenes:
 
@@ -158,16 +86,7 @@ Subir imágenes:
     # La vault pass está en su sitio. taxomap > produccion
 
 Esta tarea, además de hacer build y push de las imágenes, genera un docker compose renderizado en `devops/docker-compose.yml`. 
-Este es el que hay que mandar al museu. Como contiene contraseñas y demas configuración, no se guarda en el repo. 
+Este es el que hay que mandar al museu. Como contiene contraseñas y demás configuración, no se guarda en el repo. 
 Se puede usar https://cloud.geomatico.es/apps/secrets/ para hacérselo llegar.
 
-Desde el museu, sólo tienen que ejecutar docker compose pull, y docker compose up para actualizar los servicios.
-
-## Cargar datos GBIF en la base de datos
-
-La primera vez que se despliega, hay que cargar los datos GBIF en la base de datos:
-
-    docker exec -it taxomap-database load_backbone_data.sh
-
-Esto descargará los datos, y los importará en la base de datos. Tarda unos minutos.
-
+Desde el museu, solo tienen que ejecutar docker compose pull, y docker compose up para actualizar los servicios.
