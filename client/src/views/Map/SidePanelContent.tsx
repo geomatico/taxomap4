@@ -66,7 +66,7 @@ const SidePanelContent: FC<SidePanelContentProps> = ({
         onSubtaxonVisibilityChanged={onSubtaxonVisibilityChanged}
       />
     </ScrollableContent>
-    <GeomaticoLink/>
+    {!isTactile && <GeomaticoLink/>}
   </Stack>;
 };
 
