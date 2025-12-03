@@ -7,8 +7,10 @@
 
 ## Crear usuarios
 
+Todos los endpoints del backoffice necesitan de un usuario autenticado para poder utilizarse.
+
 Para crear usuarios es necesario que exista al menos un administrador (`is_staff` en Django). En entorno dev se crea uno
-con usuario info@geomatico.es y password 1234.  Para otros entornos el password está configurado en
+con usuario info@geomatico.es y password 1234. Para otros entornos el password está configurado en
 `backend.django_superuser_password` en el inventario de ansible correspondiente.
 
 Se pueden crear usuarios normales mediante `POST /auth/users` (ver [API Djoser](https://djoser.readthedocs.io/en/latest/base_endpoints.html)).
@@ -20,10 +22,9 @@ curl http://localhost:8000/api/v1/auth/users/ --data '{"firstName": "Regular", "
 curl http://localhost:8000/api/v1/auth/users/activation/ --data '{"uid": "<from_email_in_backend_logs>", "token": "<from_email_in_backend_logs>"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
-Todos los endpoints del backoffice necesitan de un usuario autenticado para poder utilizarse.
-
 
 ## Cargar la taxonomia GBIF completa
+
 
 Por defecto la BDD trae un extracto de GBIF solo con el subconjunto de taxones del dataset inicial.
 Para cargar el backbone completo, existe un script en taxomap-database:
@@ -45,7 +46,7 @@ curl -X POST http://localhost/api/v1/manage/generate-resources/ -H "Accept: appl
 ```
 
 
-## Resetear de la base de datos en Staging
+## Resetear la base de datos en Staging
 
 La base de datos se persiste entre despliegues, ya que se pueden haber importado nuevos registros.
 Si en algún momento en necesario resetearla, se puede hacer entrando en el servidor. El proceso sería:

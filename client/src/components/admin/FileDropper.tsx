@@ -1,4 +1,5 @@
 import React, {FC, DragEvent, useState} from 'react';
+import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -6,6 +7,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Alert from './Alert';
+import {useTranslation} from 'react-i18next';
 
 //TYPES
 export type FileDropperProps = {
@@ -13,6 +15,7 @@ export type FileDropperProps = {
 };
 
 const FileDropper: FC<FileDropperProps> = ({onInput}) => {
+  const {t} = useTranslation();
     
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [alertReason, setAlertReason] = useState<string | undefined>(undefined);
@@ -55,20 +58,20 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
   const contentSx = {
     outline: isDragging ? '4px dashed lightgrey' : '0px solid lightgrey',
     bgcolor: isDragging ? '#f6f6f6' : 'white',
-    m: 2,
+    m: 1,
+    p: 0,
     width: 'auto',
-    minheight: 100,
+    minheight: 0,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    p: 2,
     gap: 2
   };
   
   const getTitleAlert = (reason: string) => {
     switch (reason) {
     case 'errorType':
-      return 'Error';
+      return t('admin.error');
     default:
       return '';
     }
@@ -77,23 +80,25 @@ const FileDropper: FC<FileDropperProps> = ({onInput}) => {
   const getDescriptionAlert = (reason: string) => {
     switch (reason) {
     case 'errorType':
-      return 'Se espera un archivo de datos en formato .csv';
+      return t('admin.csvFileExpected');
     case 'numberFiles':
-      return 'Por favor, añade un solo fichero';
+      return t('admin.singleFileExpected');
     default:
       return '';
     }
   };
 
-  return <><Card elevation={1}>
+  return <><Card elevation={1} sx={{height: 'auto'}}>
     <CardHeader sx={{bgcolor: 'secondary.main', m: 0, py: 0}}
-      title={<Typography variant='overline' sx={{fontSize: 12}}>Añadir archivo de datos</Typography>}>
+      title={<Typography variant='overline' sx={{fontSize: 12}}>{t('admin.addFile')}</Typography>}>
     </CardHeader>
     <CardContent sx={contentSx} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} onDrop={(e: DragEvent<HTMLDivElement>) => handleDrop(e)}>
-      <FileUploadIcon sx={{fontSize: 45}}/>
-      <Typography>Arrastre aquí un un archivo o</Typography>
+      <Stack direction="row" sx={{justifyContent: 'center', alignItems: 'center', p: 0, m:0}}>
+        <FileUploadIcon sx={{fontSize: 45}}/>
+        <Typography>{t('admin.dropFileOr')}</Typography>
+      </Stack>
       <Button variant='contained' component="label">
-        <Typography variant='button'>SELECCIONAR CSV</Typography>
+        <Typography variant='button'>{t('admin.selectCsv')}</Typography>
         <input
           type='file'
           hidden

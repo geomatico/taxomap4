@@ -6,13 +6,15 @@ import {BasisOfRecord, InstitutionCode, Occurrence, VerificationSatus} from '../
 import authService, {CannotRefreshTokenError} from '../../services/auth';
 import taxomapService, {CsvUploadResult} from '../../services/taxomapImpl';
 import LoginForm from '../../components/login/LoginForm';
-import Loading from '../../components/Loading';
-import AdminPage from './AdminPage';
-import Alert from '../../components/Alert';
+import Loading from '../../components/admin/Loading';
+import MainContent from './MainContent';
+import Alert from '../../components/admin/Alert';
 import {useTranslation} from 'react-i18next';
+import AdminLayout from '../../components/admin/AdminLayout';
+import SidePanelContent from './SidePanelContent';
 
 const Index = () => {
-  const {i18n: {language}} = useTranslation();
+  const {t, i18n: {language}} = useTranslation();
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
@@ -62,29 +64,36 @@ const Index = () => {
       .finally(() => setLoading(false));
   };
 
-  let uploadFinishedMessage = uploadResult?.discardedRecords ? 'Se han incorporado parcialmente los datos. Al aceptar, se descargará un fichero con los datos descartados y el motivo de su rechazo.' : 'Se han incorporado todos los datos correctamente.';
+  let uploadFinishedMessage = uploadResult?.discardedRecords ?
+    t('admin.partialRecordsImported') :
+    t('admin.allRecordsImported');
   if (uploadResult?.publishingFailed) {
-    uploadFinishedMessage += ' Aunque los datos se han incorporado a la base de datos, se ha producido un error en el proceso de publicación y no serán visibles. Contacta con el administrador del sistema para investigar la causa.';
+    uploadFinishedMessage += ' ' +
+      t('admin.publishingFailed');
   }
 
   const handleUploadFinishedAccept = () => {
     if (uploadResult?.discardedRecords) {
-      downloadFile(uploadResult.discardedRecords, 'datos-descartados.csv');
+      downloadFile(uploadResult.discardedRecords, t('admin.discardedDataFileName'));
     }
     setUploadResult(undefined);
     fetchData();
   };
 
+
   return !isLoggedIn ?
     <LoginForm error={error} onLogin={handleLogin}/> :
     data ? <>
       {error &&
-        <Alert isOpen={true} title="Error" description={error} onAccept={() => setError(undefined)}/>
+        <Alert isOpen={true} title={t('admin.error')} description={error} onAccept={() => setError(undefined)}/>
       }
       {uploadResult &&
-        <Alert isOpen={true} title="Subida finalizada" description={uploadFinishedMessage} onAccept={handleUploadFinishedAccept}/>
+        <Alert isOpen={true} title={t('admin.uploadFinished')} description={uploadFinishedMessage} onAccept={handleUploadFinishedAccept}/>
       }
-      <AdminPage data={data} onUpload={handleUpload} isUploading={isLoading}/>
+      <AdminLayout
+        sidePanelContent={<SidePanelContent onUpload={handleUpload}/>}
+        mainContent={<MainContent data={data} isUploading={isLoading}/>}
+      />
     </> :
       <Loading/>;
 };

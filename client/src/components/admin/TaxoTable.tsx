@@ -3,10 +3,12 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import {lighten} from '@mui/material/styles';
 import {grey} from '@mui/material/colors';
-import {DataGrid, esES, GridRenderCellParams} from '@mui/x-data-grid';
+import {DataGrid, esES, enUS, GridRenderCellParams} from '@mui/x-data-grid';
+import {caEs} from './x-data-grid-extra-locales';
 
-import {LEGEND_FILTER_COLOR} from '../config';
-import {InstitutionCode, Occurrence} from '../commonTypes';
+import {LEGEND_FILTER_COLOR} from '../../config';
+import {InstitutionCode, Occurrence} from '../../commonTypes';
+import {useTranslation} from 'react-i18next';
 
 const renderInstitution = (params: GridRenderCellParams<Occurrence, InstitutionCode>) => {
   if (params.value) {
@@ -25,6 +27,8 @@ type Props = {
 };
 
 const TaxoTable: FC<Props> = ({data}) => {
+  const {t, i18n: {language}} = useTranslation();
+
   const columns = [
     {
       field: 'id',
@@ -105,6 +109,13 @@ const TaxoTable: FC<Props> = ({data}) => {
     }
   ];
 
+  const localeText = {
+    ...(language == 'es' ? esES.components.MuiDataGrid.defaultProps.localeText :
+      language === 'en' ? enUS.components.MuiDataGrid.defaultProps.localeText :
+        caEs.components.MuiDataGrid.defaultProps.localeText),
+    noRowsLabel: t('admin.noRows')
+  };
+
   return <Box sx={{height: '90vh'}}>
     <DataGrid
       sx={{
@@ -128,13 +139,11 @@ const TaxoTable: FC<Props> = ({data}) => {
       rows={data}
       columns={columns}
       autoHeight={false}
-      localeText={{
-        ...esES.components.MuiDataGrid.defaultProps.localeText, // Extiende las traducciones en español
-        noRowsLabel: 'Sin Ocurrencias', // Sobrescribe el texto para filas vacías
-      }}
+      localeText={localeText}
       //hideFooter
       getRowId={params => params.id}
     />
   </Box>;
 };
+
 export default TaxoTable;
