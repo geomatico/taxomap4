@@ -50,8 +50,7 @@ export const Default = Template.bind({});
 
 Default.args = {
   data: dataExample,
-  yearRange: [1900, 1910],
-  fullYearRange: [1900, 1920]
+  yearRange: [1900, 1910]
 };
 
 export const Managed = ManagedTemplate.bind({});

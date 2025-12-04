@@ -5,22 +5,27 @@ import RangeHistogram from './Charts/RangeHistogram';
 
 export interface RangeSliderProps {
   yearRange?: Range,
-  fullYearRange?: Range,
   onYearRangeChange: (newRange?: Range) => void,
   data: Record<number, number>
 }
 
-export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, fullYearRange, onYearRangeChange}) => {
-  const isFullYearRange = (range?: Range) => range !== undefined && fullYearRange !== undefined && range[0] === fullYearRange[0] && range[1] === fullYearRange[1];
+export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, onYearRangeChange}) => {
+  const fullSpan: Range = Object.keys(data).map(year => parseInt(year)).reduce((acc, curr) => {
+    return [Math.min(acc[0], curr), Math.max(acc[1], curr)];
+  }, [9999, 0]);
 
-  // Full range sets year filter to undefined so records with year == null are also taken into account
-  const handleYearRangeChanged = (range?: Range) => onYearRangeChange(isFullYearRange(range) ? undefined : range);
+  const isFullSpan = (range?: Range) => range !== undefined && fullSpan !== undefined && range[0] <= fullSpan[0] && range[1] >= fullSpan[1];
+
+  // Full span unsets year filter so records without date are also count
+  const handleYearRangeChanged = (range?: Range) => {
+    onYearRangeChange(isFullSpan(range) ? undefined : range);
+  };
 
   return <Box sx={{p: 1, pb: 0, background: '#333333e0', borderRadius: '3px'}}>
-    {data && fullYearRange &&
+    {data && fullSpan &&
       <RangeHistogram
         data={data}
-        value={(yearRange || fullYearRange)}
+        value={(yearRange || fullSpan)}
         onValueChange={handleYearRangeChanged}
         onChangeCommitted={handleYearRangeChanged}
         height={50}
