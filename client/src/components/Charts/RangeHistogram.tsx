@@ -289,7 +289,17 @@ const RangeHistogram: FC<RangeHistogramProps> = ({
     },
     '& .RangeSlider-iconRange': {
       color: 'white'
-    }
+    },
+    '& .RangeSlider-slider': {
+      '& .MuiSlider-track': {
+        border: 'none'
+      },
+      '& .MuiSlider-thumb': {
+        '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+          boxShadow: 'none'
+        }
+      }
+    },
   }), [barWidth]);
 
   return (
