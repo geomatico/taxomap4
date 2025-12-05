@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import YearSlider, {RangeSliderProps} from './YearSlider';
+import React, {ComponentProps, useState} from 'react';
+import YearSlider from './YearSlider';
 import {Meta, Story} from '@storybook/react';
 import {Range} from '../commonTypes';
 
@@ -35,10 +35,12 @@ const dataExample: Record<number, number> = {
   1920: 1105
 };
 
-const Template: Story<RangeSliderProps>  = (args) => <YearSlider {...args} />;
+type Props = ComponentProps<typeof YearSlider>;
+
+const Template: Story<Props>  = (args) => <YearSlider {...args} />;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ManagedTemplate: Story<RangeSliderProps> = ({ yearRange, onYearRangeChange, data, ...args}) => {
+const ManagedTemplate: Story<Props> = ({ yearRange, onYearRangeChange, data, ...args}) => {
 
   const [getSelectedYear, setSelectedYear] = useState(yearRange);
 
@@ -50,8 +52,7 @@ export const Default = Template.bind({});
 
 Default.args = {
   data: dataExample,
-  yearRange: [1900, 1910],
-  fullYearRange: [1900, 1920]
+  yearRange: [1900, 1910]
 };
 
 export const Managed = ManagedTemplate.bind({});

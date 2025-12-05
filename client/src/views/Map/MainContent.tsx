@@ -269,10 +269,9 @@ const MainContent: FC<MainContentProps> = ({filters, isTactile, onYearFilterChan
       onStyleChange={setMapStyle}
     />
     <Box sx={rangeSliderContainer}>
-      {fullYearRange ?
+      {data ?
         <YearSlider
           yearRange={filters.yearRange}
-          fullYearRange={fullYearRange}
           onYearRangeChange={onYearFilterChange}
           data={countByYear}
         /> : null

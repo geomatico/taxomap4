@@ -279,7 +279,7 @@ const RangeHistogram: FC<RangeHistogramProps> = ({
   }, []);
 
   const rangeSliderStyles = useMemo(() => ({
-    p: `${barWidth / 2}px !important`,
+    p: '8px !important',
     '& .MuiSlider-root': {
       p: '0 !important',
       color: 'transparent'
@@ -289,7 +289,17 @@ const RangeHistogram: FC<RangeHistogramProps> = ({
     },
     '& .RangeSlider-iconRange': {
       color: 'white'
-    }
+    },
+    '& .RangeSlider-slider': {
+      '& .MuiSlider-track': {
+        border: 'none'
+      },
+      '& .MuiSlider-thumb': {
+        '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+          boxShadow: 'none'
+        }
+      }
+    },
   }), [barWidth]);
 
   return (
