@@ -3,13 +3,13 @@ import {Range} from '../commonTypes';
 import Box from '@mui/material/Box';
 import RangeHistogram from './Charts/RangeHistogram';
 
-export interface RangeSliderProps {
+interface Props {
   yearRange?: Range,
   onYearRangeChange: (newRange?: Range) => void,
   data: Record<number, number>
 }
 
-export const YearSlider: FC<RangeSliderProps> = ({data, yearRange, onYearRangeChange}) => {
+export const YearSlider: FC<Props> = ({data, yearRange, onYearRangeChange}) => {
   const fullSpan: Range = Object.keys(data).map(year => parseInt(year)).reduce((acc, curr) => {
     return [Math.min(acc[0], curr), Math.max(acc[1], curr)];
   }, [9999, 0]);

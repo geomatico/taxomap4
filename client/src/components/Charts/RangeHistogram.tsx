@@ -279,7 +279,7 @@ const RangeHistogram: FC<RangeHistogramProps> = ({
   }, []);
 
   const rangeSliderStyles = useMemo(() => ({
-    p: `${barWidth / 2}px !important`,
+    p: '8px !important',
     '& .MuiSlider-root': {
       p: '0 !important',
       color: 'transparent'
