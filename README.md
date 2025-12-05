@@ -1,8 +1,8 @@
 # TAXOMAP
 
-* Mapa principal: https://taxomap.geomatico.es
-* Planetavida (versión táctil sin enlaces externos): https://taxomap.geomatico.es/#/planetavida/
-* Interfaz de admin (para actualizar datos): https://taxomap.geomatico.es/#/admin
+* Mapa principal: https://taxomap.bioexplora.cat
+* Planetavida (versión táctil sin enlaces externos): https://taxomap.bioexplora.cat/#/planetavida/
+* Interfaz de admin (para actualizar datos): https://taxomap.bioexplora.cat/#/admin
 
 
 ## Crear usuarios
@@ -17,9 +17,9 @@ Se pueden crear usuarios normales mediante `POST /auth/users` (ver [API Djoser](
 Ejemplo con proceso de activación:
 
 ```bash
-export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
-curl http://localhost:8000/api/v1/auth/users/ --data '{"firstName": "Regular", "lastName": "User", "email": "regular.user@geomatico.es", "password": "regu"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
-curl http://localhost:8000/api/v1/auth/users/activation/ --data '{"uid": "<from_email_in_backend_logs>", "token": "<from_email_in_backend_logs>"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
+export JWT_TOKEN=$(curl http://localhost/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
+curl http://localhost/api/v1/auth/users/ --data '{"firstName": "Regular", "lastName": "User", "email": "regular.user@geomatico.es", "password": "regu"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
+curl http://localhost/api/v1/auth/users/activation/ --data '{"uid": "<from_email_in_backend_logs>", "token": "<from_email_in_backend_logs>"}' -H 'content-type: application/json' -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
 
@@ -41,7 +41,7 @@ Estos recursos se regeneran cada vez que se sube un CSV desde la interfaz de adm
 Pero se puede forzar su (re)construcción mediante una llamada a la API `manage/generate-resources/`:
 
 ```
-export JWT_TOKEN=$(curl http://localhost:8000/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
+export JWT_TOKEN=$(curl http://localhost/api/v1/auth/jwt/create --data '{"email": "info@geomatico.es", "password": "1234"}' -H 'content-type: application/json' | jq -r .access)
 curl -X POST http://localhost/api/v1/manage/generate-resources/ -H "Accept: application/json" -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
