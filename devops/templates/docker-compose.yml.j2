@@ -24,9 +24,13 @@ services:
       - taxomap-database
       - taxomap-frontend
       - taxomap-backend
-{% if domain == 'localhost' or not use_external_proxy %}
+{% if proxy is defined and 'ports' in proxy %}
     ports:
-      - "80:80"
+{% for port in proxy.ports %}
+      - "{{ port }}"
+{% endfor %}
+{% endif %}
+{% if domain == 'localhost' or not use_external_proxy %}
     networks:
       - internal
 {% else %}

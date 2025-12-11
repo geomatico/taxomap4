@@ -11,6 +11,10 @@ all:
     use_external_proxy: false
     use_github_containers: false
 
+    proxy:
+      ports:
+        - "80:80"
+
     docker:
       image_tag: "latest"
       restart_containers: "no"
