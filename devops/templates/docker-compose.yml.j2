@@ -24,7 +24,7 @@ services:
       - taxomap-database
       - taxomap-frontend
       - taxomap-backend
-{% if 'ports' in proxy %}
+{% if proxy is defined and 'ports' in proxy %}
     ports:
 {% for port in proxy.ports %}
       - "{{ port }}"
