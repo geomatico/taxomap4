@@ -26,7 +26,7 @@ CREATE TEMP TABLE backbone_temp (LIKE backbone);
 
 INSERT INTO backbone
 SELECT * FROM backbone_temp
-ON CONFLICT (id) DO UPDATE;
+ON CONFLICT (id) DO NOTHING;
 
 DROP TABLE backbone_temp;
 
