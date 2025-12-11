@@ -3,7 +3,7 @@
   "admin": {
     "accept": "Accept",
     "addFile": "Add data file",
-    "allRecordImported": "All data has been imported successfully.",
+    "allRecordsImported": "All data has been imported successfully.",
     "basisOfRecord": {
       "description": "Type of record according to the nature of the specimen",
       "restrictions": "May only take the values FOSSIL | NON_FOSSIL"

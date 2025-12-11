@@ -3,7 +3,7 @@
   "admin": {
     "accept": "Aceptar",
     "addFile": "Añadir archivo de datos",
-    "allRecordImported": "Se han incorporado todos los datos correctamente.",
+    "allRecordsImported": "Se han incorporado todos los datos correctamente.",
     "basisOfRecord": {
       "description": "Tipo de registro según la naturaleza del espécimen",
       "restrictions": "Solo puede tomar los valores FOSSIL | NON_FOSSIL"
