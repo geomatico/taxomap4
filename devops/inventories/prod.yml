@@ -2,7 +2,7 @@ all:
   vars:
     name: taxomap
     domain: taxomap.bioexplora.cat
-    service_path: /srv/services/taxomap
+    service_path: /home/taxomap/taxomap_docker
     deploy_user: geomatico
     letsencrypt_mail: francisco.perez@geomatico.es
     api_base_url: "https://{{ domain }}/api/v1"
@@ -11,6 +11,9 @@ all:
     use_external_proxy: false
     use_github_containers: true
 
+    proxy:
+      ports:
+        - "8082:80"
 
     geoserver:
       url: "https://{{ domain }}/geoserver"
