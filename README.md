@@ -4,6 +4,30 @@
 * Planetavida (versión táctil sin enlaces externos): https://taxomap.bioexplora.cat/#/planetavida/
 * Interfaz de admin (para actualizar datos): https://taxomap.bioexplora.cat/#/admin
 
+## Arrancar la aplicación en modo desarrollo
+
+Se debe tener arrancada, por un lado, la BDD y el backend:
+
+```shell
+cd client
+npm run docker-start
+```
+
+También se arranca en el puerto 80 el frontend dockerizado, que se puede volver a compilar con:
+
+```shell
+cd devops
+docker compose build
+```
+
+Para desarrollar front sin compilar cada vez, arrancar también el servidor de desarrollo:
+
+```shell
+cd client
+npm run dev
+```
+
+Se servirá en http://localhost:8080
 
 ## Crear usuarios
 

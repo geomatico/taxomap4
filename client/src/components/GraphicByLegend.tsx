@@ -30,6 +30,8 @@ const GraphicByLegend: FC<GraphicByLegendProps> = ({filters, symbolizeBy}) => {
         elementConf = legends.institutionlegend.find(el => el.id === parseInt(key));
       } else if (symbolizeBy === 'basisofrecord') {
         elementConf = legends.basisOfRecordLegend.find(el => el.id === parseInt(key));
+      } else if (symbolizeBy === 'phylum') {
+        elementConf = legends.phylumLegend.find(el => el.id === parseInt(key));
       }
       if (!elementConf) return undefined;
 
