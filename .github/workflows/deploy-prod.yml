@@ -1,7 +1,6 @@
 name: Push prod images
 on:
   workflow_dispatch:
-  pull_request:
 
 concurrency:
   group: push_prod_images

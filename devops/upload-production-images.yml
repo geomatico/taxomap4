@@ -23,5 +23,6 @@
       local_action:
         module: ansible.builtin.shell
         cmd: |
+          export TAG=`git rev-parse --short HEAD` && docker compose -f docker-compose.yml push
           export TAG=production && docker compose -f docker-compose.yml push
     
