@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: create ansible vault file
-        run: echo ${{ secrets.ANSIBLE_STAGING_VAULT }} > ~/.vaultfile
+        run: echo ${{ secrets.ANSIBLE_PRODUCTION_VAULT }} > ~/.vaultfile
 
       - name: run upload-images playbook
         run: ansible-playbook -i inventories/prod.yml upload-production-images.yml
