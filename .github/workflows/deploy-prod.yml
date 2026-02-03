@@ -1,0 +1,46 @@
+name: Push prod images
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: push_prod_images
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: ./devops
+
+env:
+    ANSIBLE_HOST_KEY_CHECKING: False
+    ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
+
+jobs:
+  backend-tests:
+    uses: ./.github/workflows/test-backend.yml
+    secrets:
+      DJANGO_PIPELINE: ${{ secrets.DJANGO_PIPELINE }}
+  frontend-tests:
+    uses: ./.github/workflows/test-frontend.yml
+
+  upload:
+    name: Build and upload images
+    needs: [backend-tests, frontend-tests]
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create ansible vault file
+        run: echo ${{ secrets.ANSIBLE_PRODUCTION_VAULT }} > ~/.vaultfile
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run upload-production-images playbook
+        run: ansible-playbook -i inventories/prod.yml upload-production-images.yml
