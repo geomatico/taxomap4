@@ -11,6 +11,10 @@ defaults:
   run:
     working-directory: ./devops
 
+env:
+    ANSIBLE_HOST_KEY_CHECKING: False
+    ANSIBLE_VAULT_PASSWORD_FILE: ~/.vaultfile
+
 jobs:
   backend-tests:
     uses: ./.github/workflows/test-backend.yml
